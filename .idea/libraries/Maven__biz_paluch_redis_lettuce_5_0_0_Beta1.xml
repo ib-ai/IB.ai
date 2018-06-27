@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: biz.paluch.redis:lettuce:5.0.0.Beta1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/biz/paluch/redis/lettuce/5.0.0.Beta1/lettuce-5.0.0.Beta1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/biz/paluch/redis/lettuce/5.0.0.Beta1/lettuce-5.0.0.Beta1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/biz/paluch/redis/lettuce/5.0.0.Beta1/lettuce-5.0.0.Beta1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
