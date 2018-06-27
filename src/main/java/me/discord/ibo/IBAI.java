@@ -39,15 +39,28 @@ public class IBAI {
     public static void main(String[] args) {
         try{
             jda = new JDABuilder(AccountType.BOT)
-                    .setToken("NDYxNjEyMDAzNjQ4MzM5OTY4.DhV1MQ.r0KAcbSfhWIW7plXF5EcmJjNUfU")
+                    .setToken(readToken())
                     .setStatus(OnlineStatus.DO_NOT_DISTURB)
                     .setGame(Game.of("[.]  DM For Mod-Mail"))
                     .buildBlocking();
             jda.setAutoReconnect(true);
 
         }catch(Exception ex){
-
             ex.printStackTrace();
+        }
+    }
+
+    private static String readToken() {
+        BufferedReader reader = new BufferedReader(new FileReader("token.txt"));
+        try {
+            return reader.readLine();
+
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        finally {
+            reader.close();
         }
     }
 }
