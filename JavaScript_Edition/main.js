@@ -1,10 +1,12 @@
 const Discord = require('discord.js');
+//const Listeners = require('./listeners/listeners.js');
+const fs = require('fs');
+
 const client = new Discord.Client();
 var token = '';
 
 // Opens file reader and gets token from token.json file
 // If file does not exist, generates file and stops
-var fs = require('fs');
 if (fs.existsSync('token.json')) {
     var tokenJSONObj = JSON.parse(fs.readFileSync('token.json', 'utf8'));
     token = tokenJSONObj.token;
@@ -22,7 +24,7 @@ client.on('ready', () => {
 });
 
 // Bot 'message' event
-// Hears DMs, Group DMs and Text-Channels
+// Hears DMs, Group DMs and Text-ChannelsJ
 client.on('message', msg => {
 
     // Filter out bot messages
@@ -31,7 +33,7 @@ client.on('message', msg => {
     }
 
     if (msg.channel.type === 'dm') {
-        console.log('DM from ' + msg.author.username + '#' + msg.author.discriminator + ': ' + msg.content);
+        console.log('DM from ' + msg.author.username + '#' + msg.author.discriminator + ': \"' + msg.content + '\"');
     }
 });
 
