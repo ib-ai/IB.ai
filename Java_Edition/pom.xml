@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ib-ai</groupId>
-    <artifactId>ib-ai</artifactId>
-    <version>0.0.1</version>
+    <groupId>gg.discord.ibo</groupId>
+    <artifactId>ib-bot</artifactId>
+    <version>2.2.2</version>
 
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -58,7 +58,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>/lib</classpathPrefix>
-                            <mainClass>me.discord.ibo.IBAI</mainClass>
+                            <mainClass>gg.discord.ibo.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
