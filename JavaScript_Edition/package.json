@@ -1,0 +1,28 @@
+{
+  "name": "ib.ai",
+  "version": "1.0.0",
+  "description": "The main private Discord bot for the /r/IBO Discord server.",
+  "main": "main.js",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pants1/IB.ai.git"
+  },
+  "keywords": [
+    "Bot",
+    "Discord",
+    "IBO"
+  ],
+  "author": "pants",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/pants1/IB-Bot/issues"
+  },
+  "homepage": "https://github.com/pants1/IB-Bot#readme"
+}
