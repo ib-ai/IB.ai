@@ -15,7 +15,7 @@ class Bot {
 		// Opens file reader and gets token from token.json file
 		// If file does not exist, generates file and stops
 		if (fs.existsSync(path)) {
-			let tokenJSONObj = JSON.parse(fs.readFileSync('token.json', 'utf8'));
+			let tokenJSONObj = JSON.parse(fs.readFileSync(path, 'utf8'));
 			return tokenJSONObj.token;
 
 		} else {
