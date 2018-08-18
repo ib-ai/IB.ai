@@ -14,45 +14,18 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.main;
-
-import com.ibdiscord.utils.JavaVersionUtil;
-import com.ibdiscord.utils.exceptions.JavaVersionException;
+package com.ibdiscord.utils.exceptions;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /* @author pants
  * @since 2018.08.18
  */
 
-public enum IBai {
+public class JavaVersionException extends Exception{
 
-    /**
-     *  Singleton instance of Bot.
-     */
-    INSTANCE;
+    // No Params
+    public JavaVersionException() {}
 
-    public static void main(String[] args) {
-        // Checks Java version
-        // Error thrown on version != 10 and exits
-        try{
-            JavaVersionUtil.checkVersion();
-
-        } catch(JavaVersionException ex) {
-            ex.printStackTrace();
-            return;
-        }
-
-        Thread.currentThread().setName("Main");
-        IBai.INSTANCE.init();
-    }
-
-    private void init(){
-        // Start logging
-
-        // Get local config
-        // Connect to database
-        // Start bot
-
-        // Throw up splash screen if all succeeds
-    }
+    // Constructor w/ params
+    public JavaVersionException(String message) {}
 }
