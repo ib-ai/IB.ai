@@ -1,7 +1,6 @@
 /.idea/
 
-/IB.ai/.idea
-/IB.ai/target/
+/IB.ai/.idea/
 /IB.ai/IB.ai.iml
 
 /Mod-Mail/node_modules/
