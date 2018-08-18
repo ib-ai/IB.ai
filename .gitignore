@@ -1,11 +1,17 @@
-/JavaScript_Edition/node_modules/
-/JavaScript_Edition/package-lock.json
-/JavaScript_Edition/token.json
-/JavaScript_Edition/Mod-Mail-Icon.png
+/.idea/
 
-/Java_Edition/target/
-/Java_Edition/.idea/
-/Java_Edition/src/test/
-/Java_Edition/IB BOT LOGO.png
-/Java_Edition/WelcomeGIF.gif
-/Java_Edition/Configuration.JSON
+/IB.ai/.idea
+/IB.ai/target/
+/IB.ai/IB.ai.iml
+
+/Mod-Mail/node_modules/
+/Mod_Mail/package-lock.json
+/Mod_Mail/token.json
+/Mod_Mail/Mod-Mail-Icon.png
+
+/Old_Edition/target/
+/Old_Edition/.idea/
+/Old_Edition/src/test/
+/Old_Edition/IB BOT LOGO.png
+/Old_Edition/WelcomeGIF.gif
+/Old_Edition/Configuration.JSON
