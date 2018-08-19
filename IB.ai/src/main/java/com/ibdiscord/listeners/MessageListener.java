@@ -20,7 +20,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* @author pants
+/** @author pants
  * @since 2018.08.19
  */
 

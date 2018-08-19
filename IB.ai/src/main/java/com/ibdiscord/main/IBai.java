@@ -28,7 +28,7 @@ import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* @author pants
+/** @author pants
  * @since 2018.08.18
  */
 
@@ -41,16 +41,11 @@ public enum IBai {
 
     private static JDA jda;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JavaVersionException {
+
         // Checks Java version
         // Error thrown on version != 10 and exits
-        try{
-            JavaVersionUtil.checkVersion();
-
-        } catch(JavaVersionException ex) {
-            ex.printStackTrace();
-            return;
-        }
+        JavaVersionUtil.checkVersion();
 
         Thread.currentThread().setName("Main");
         IBai.INSTANCE.init();

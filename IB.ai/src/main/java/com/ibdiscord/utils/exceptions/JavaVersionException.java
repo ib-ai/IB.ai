@@ -17,7 +17,7 @@
 package com.ibdiscord.utils.exceptions;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* @author pants
+/** @author pants
  * @since 2018.08.18
  */
 

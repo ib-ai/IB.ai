@@ -15,11 +15,42 @@
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.data;
+
+import com.moandjiezana.toml.Toml;
+
+import lombok.Getter;
+
+import java.io.File;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* @author pants
+/** @author pants
  * @since 2018.08.19
  */
 
 public class LocalConfig {
+    private static Toml toml;
+    private static String localPath = "Config.toml";
+
+    // Metadata
+    @Getter private static String[] botAuthors;
+    @Getter private static String[] developIDs;
+    @Getter private static String githubLink;
+
+    // Bot
+    @Getter private static String botToken;
+    @Getter private static String botTokenBeta;
+    @Getter private static boolean betaMode;
+    @Getter private static String botVersion;
+    @Getter private static String staticPrefix;
+
+    // Database
+    @Getter private static String mongoPort;
+    @Getter private static String mongoPassword;
+
+
+    public static void read() {
+
+        toml = new Toml().read(new File(localPath));
+
+    }
 }

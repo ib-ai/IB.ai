@@ -17,7 +17,7 @@
 package com.ibdiscord.utils;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* @author pants
+/** @author pants
  * @since 2018.08.18
  */
 
@@ -26,12 +26,22 @@ import com.ibdiscord.utils.exceptions.JavaVersionException;
 public class JavaVersionUtil {
 
     private static final String errorMessage = "You need Java 10 or higher to run this app.";
+    private static boolean javaCorrect = true;
 
     public static void checkVersion() throws JavaVersionException {
         double version = Double.parseDouble(System.getProperty("java.specification.version"));
 
         if(version != 10) {
-            throw new JavaVersionException(errorMessage);
+            throwError();
+            shutdown();
         }
+    }
+
+    private static void shutdown() {
+        System.exit(1);
+    }
+
+    private static void throwError() throws JavaVersionException {
+        throw new JavaVersionException(errorMessage);
     }
 }
