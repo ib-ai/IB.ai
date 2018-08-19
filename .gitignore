@@ -2,6 +2,7 @@
 
 /.idea/
 
+/IB.ai/docker/Config.toml
 /IB.ai/.idea/
 /IB.ai/IB.ai.iml
 
