@@ -1,4 +1,5 @@
 com/ibdiscord/utils/SplasherUtil.class
 com/ibdiscord/utils/exceptions/JavaVersionException.class
+com/ibdiscord/listeners/MessageListener.class
 com/ibdiscord/utils/JavaVersionUtil.class
 com/ibdiscord/main/IBai.class

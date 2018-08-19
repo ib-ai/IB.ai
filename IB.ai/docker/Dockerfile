@@ -1,6 +1,9 @@
 FROM openjdk:10
 MAINTAINER pants <pantsForBusiness@gmail.com>
+ENV ENV docker
 
-ADD /IB.ai-0.0.1.jar //
+COPY Config.toml /opt/IB.ai/Config.toml
+COPY IB.ai.jar /opt/IB.ai/IB.ai.jar
+WORKDIR /opt/IB.ai/
 
-ENTRYPOINT ["java", "-jar", "/IB.ai-0.0.1.jar"]
+ENTRYPOINT ["java", "-jar", "IB.ai.jar"]

@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  bot:
+    image: ib.ai
+    restart: always
+    build: ./docker
+    volumes:
+      - ./docker/Config.toml:/opt/IB.ai/Config.toml
+    depends_on:
+      - mongo
+      - mongo-express
+
+  mongo:
+    image: mongo
+    restart: always
+    depends_on:
+      - mongo-express
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081

@@ -16,8 +16,16 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.main;
 
+import com.ibdiscord.data.LocalConfig;
+import com.ibdiscord.listeners.MessageListener;
 import com.ibdiscord.utils.JavaVersionUtil;
 import com.ibdiscord.utils.exceptions.JavaVersionException;
+
+import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Game;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /* @author pants
@@ -30,6 +38,8 @@ public enum IBai {
      *  Singleton instance of Bot.
      */
     INSTANCE;
+
+    private static JDA jda;
 
     public static void main(String[] args) {
         // Checks Java version
@@ -46,7 +56,22 @@ public enum IBai {
         IBai.INSTANCE.init();
     }
 
-    private void init(){
+    private void init() {
+
+        try {
+            jda = new JDABuilder(AccountType.BOT)
+                    .setToken(LocalConfig.getToken())
+                    .setStatus(OnlineStatus.DO_NOT_DISTURB)
+                    .setGame(Game.playing("a game"))
+                    .addEventListener(new MessageListener())
+                    .build();
+            jda.setAutoReconnect(true);
+            jda.awaitReady();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         // Start logging
 
         // Get local config
