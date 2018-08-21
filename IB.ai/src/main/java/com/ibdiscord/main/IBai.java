@@ -55,7 +55,7 @@ public enum IBai {
 
         try {
             jda = new JDABuilder(AccountType.BOT)
-                    .setToken(LocalConfig.getToken())
+                    .setToken(LocalConfig.getBotToken())
                     .setStatus(OnlineStatus.DO_NOT_DISTURB)
                     .setGame(Game.playing("a game"))
                     .addEventListener(new MessageListener())

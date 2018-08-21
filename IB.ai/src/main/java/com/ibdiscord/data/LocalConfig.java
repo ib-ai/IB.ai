@@ -28,12 +28,13 @@ import java.io.File;
  */
 
 public class LocalConfig {
-    private static Toml toml;
+
+    private static Toml config;
     private static String localPath = "Config.toml";
 
     // Metadata
     @Getter private static String[] botAuthors;
-    @Getter private static String[] developIDs;
+    @Getter private static Long[] developIDs;
     @Getter private static String githubLink;
 
     // Bot
@@ -47,10 +48,27 @@ public class LocalConfig {
     @Getter private static String mongoPort;
     @Getter private static String mongoPassword;
 
+    public LocalConfig() {
+        config = new Toml().read(new File(localPath));
+    }
 
-    public static void read() {
+    public static void init() {
 
-        toml = new Toml().read(new File(localPath));
+        // Initialising values
+        // [metadata]
+        botAuthors = (String[]) config.getList("bot_authors").toArray();
+        developIDs = (Long[]) config.getList("developer_ids").toArray();
+        githubLink = config.getString("github_link");
 
+        // [bot]
+        botToken = config.getString("bot_token");
+        botTokenBeta = config.getString("bot_token_beta");
+        betaMode = config.getBoolean("beta_mode");
+        botVersion = config.getString("bot_version");
+        staticPrefix = config.getString("static_prefix");
+
+        // [database]
+        mongoPort = config.getString("mongo_port");
+        mongoPassword = config.getString("mongo_password");
     }
 }
