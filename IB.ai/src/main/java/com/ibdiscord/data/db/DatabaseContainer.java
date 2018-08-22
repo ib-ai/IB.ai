@@ -28,16 +28,13 @@ import org.mongodb.morphia.Morphia;
 
 public class DatabaseContainer {
 
-    private final Morphia morphia = new Morphia();
-    private Datastore database;
+    private static final Morphia morphia = new Morphia();
+    private static Datastore database;
 
-    public DatabaseContainer() {
+    // Empty constructor
+    public DatabaseContainer() {}
 
-    }
-
-    public void connect(String mongoUsername,
-                        String mongoPort,
-                        String mongoPassword) {
+    public static void connect() {
 
         // Declaring map for Morphia to find entity classes
         morphia.mapPackage("com.ibdiscord.data.db.entities");
