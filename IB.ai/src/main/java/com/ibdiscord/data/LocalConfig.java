@@ -33,23 +33,23 @@ public class LocalConfig {
     private static String localPath = "Config.toml";
 
     // Metadata
-    @Getter private static String[] botAuthors;
-    @Getter private static Long[] developIDs;
-    @Getter private static String githubLink;
+    @Getter private String[] botAuthors;
+    @Getter private Long[] developIDs;
+    @Getter private String githubLink;
 
     // Bot
-    @Getter private static String botToken;
-    @Getter private static String botTokenBeta;
-    @Getter private static boolean betaMode;
-    @Getter private static String botVersion;
-    @Getter private static String staticPrefix;
+    @Getter private String botToken;
+    @Getter private String botTokenBeta;
+    @Getter private boolean betaMode;
+    @Getter private String botVersion;
+    @Getter private String staticPrefix;
 
     public LocalConfig() {
         config = new Toml().read(new File(localPath));
+        this.init();
     }
 
-    public static void init() {
-
+    private void init() {
         // Initialising values
         // [metadata]
         botAuthors = (String[]) config.getList("bot_authors").toArray();

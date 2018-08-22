@@ -28,7 +28,6 @@ public class SplasherUtil {
     private String[] contributors;
 
     public static void makeASplash(){
-
-
+        //TODO: Splashscreen
     }
 }

@@ -17,15 +17,10 @@
 package com.ibdiscord.main;
 
 import com.ibdiscord.data.LocalConfig;
-import com.ibdiscord.listeners.MessageListener;
+import com.ibdiscord.startup.Startup;
 import com.ibdiscord.utils.JavaVersionUtil;
+import com.ibdiscord.utils.SplasherUtil;
 import com.ibdiscord.utils.exceptions.JavaVersionException;
-
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.Game;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /** @author pants
@@ -39,7 +34,7 @@ public enum IBai {
      */
     INSTANCE;
 
-    private static JDA jda;
+    private LocalConfig config;
 
     public static void main(String[] args) throws JavaVersionException {
 
@@ -53,26 +48,9 @@ public enum IBai {
 
     private void init() {
 
-        try {
-            jda = new JDABuilder(AccountType.BOT)
-                    .setToken(LocalConfig.getBotToken())
-                    .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                    .setGame(Game.playing("a game"))
-                    .addEventListener(new MessageListener())
-                    .build();
-            jda.setAutoReconnect(true);
-            jda.awaitReady();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        // Start logging
-
-        // Get local config
-        // Connect to database
-        // Start bot
-
-        // Throw up splash screen if all succeeds
+        //TODO: Start logging
+        config = new LocalConfig();
+        Startup.start();
+        SplasherUtil.makeASplash();
     }
 }

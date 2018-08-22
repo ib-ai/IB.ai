@@ -14,9 +14,11 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.startup.tasks;
+package testing.startup;
 
-import com.ibdiscord.startup.AbstractStartupTask;
+import com.ibdiscord.startup.Startup;
+
+import org.junit.Test;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
@@ -24,14 +26,10 @@ import com.ibdiscord.startup.AbstractStartupTask;
  * @since 2018.08.22
  */
 
-public class StartCommands extends AbstractStartupTask {
+public class StartupTest {
 
-    public StartCommands() {
-        super("Start-Commands");
-    }
-
-    @Override
-    public void doTask() throws Exception {
-        //TODO: Start command instantiation
+    @Test
+    public void doTest() {
+        Startup.start();
     }
 }

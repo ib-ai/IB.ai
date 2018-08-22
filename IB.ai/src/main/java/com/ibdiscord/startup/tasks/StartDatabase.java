@@ -32,6 +32,6 @@ public class StartDatabase extends AbstractStartupTask {
 
     @Override
     public void doTask() throws Exception {
-        // Start the database
+        //TODO: Start the database
     }
 }
