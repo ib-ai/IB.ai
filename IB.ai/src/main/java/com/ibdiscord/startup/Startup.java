@@ -22,6 +22,7 @@ import com.ibdiscord.startup.tasks.StartDatabase;
 import com.ibdiscord.utils.objects.AbstractTask;
 
 import java.util.Arrays;
+import java.util.Set;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
@@ -29,7 +30,7 @@ import java.util.Arrays;
  * @since 2018.08.22
  */
 
-public final class Startup {
+public class Startup {
 
     private static final AbstractStartupTask[] startupTasks = new AbstractStartupTask[] {
             new StartDatabase(),
@@ -47,14 +48,14 @@ public final class Startup {
             public void execute() {
                 while (!Arrays.stream(startupTasks).allMatch(AbstractStartupTask::isCompleted)) {
                     try {
+                        System.out.println("Sleeping...");
                         Thread.sleep(50);
+                        System.out.println("Sleep finished.");
                     } catch (InterruptedException ignored) {}
                 }
                 new StartBot().create();
             }
 
         }.create();
-
-        // Finally: Bot after all startup tasks successfully start
     }
 }
