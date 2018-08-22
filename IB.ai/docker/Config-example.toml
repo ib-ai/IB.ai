@@ -21,7 +21,3 @@ bot_token_beta = "bot-beta-token-here"
 beta_mode = false
 bot_version = "x.y.z"
 static_prefix = "prefix-here"
-
-[database]
-mongo_port = "port-here"
-mongo_password = "password-here"
