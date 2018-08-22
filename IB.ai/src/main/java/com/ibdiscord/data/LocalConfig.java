@@ -44,10 +44,6 @@ public class LocalConfig {
     @Getter private static String botVersion;
     @Getter private static String staticPrefix;
 
-    // Database
-    @Getter private static String mongoPort;
-    @Getter private static String mongoPassword;
-
     public LocalConfig() {
         config = new Toml().read(new File(localPath));
     }
@@ -66,9 +62,5 @@ public class LocalConfig {
         betaMode = config.getBoolean("beta_mode");
         botVersion = config.getString("bot_version");
         staticPrefix = config.getString("static_prefix");
-
-        // [database]
-        mongoPort = config.getString("mongo_port");
-        mongoPassword = config.getString("mongo_password");
     }
 }
