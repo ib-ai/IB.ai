@@ -29,7 +29,6 @@ public abstract class AbstractTask implements Runnable{
     /* Usage:
      * Instantiate thread and use to #sleep(timeInMillis)
      */
-
     public AbstractTask(String name) {
         this.name = name;
     }

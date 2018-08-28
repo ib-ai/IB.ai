@@ -17,6 +17,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package gg.discord.ibo;
 
+import gg.discord.ibo.utils.UtilMassKicker;
 import gg.discord.ibo.utils.UtilSplasher;
 
 import java.io.IOException;
@@ -44,6 +45,15 @@ public class Main {
      */
     public static void main(String[] args) throws IOException{
         IBBot.startup();
+        Thread.currentThread().setName("Main");
         UtilSplasher.makeItRain();
+
+        if(!(args.length == 0)) {
+            if(args[0] == "purge") {
+
+                UtilMassKicker kicker = new UtilMassKicker();
+                kicker.create();
+            }
+        }
     }
 }

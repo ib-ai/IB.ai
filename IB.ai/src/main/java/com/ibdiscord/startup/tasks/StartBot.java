@@ -18,6 +18,7 @@ package com.ibdiscord.startup.tasks;
 
 import com.ibdiscord.data.LocalConfig;
 import com.ibdiscord.listeners.MessageListener;
+import com.ibdiscord.main.IBai;
 import com.ibdiscord.startup.AbstractStartupTask;
 
 import net.dv8tion.jda.core.AccountType;
@@ -46,7 +47,7 @@ public class StartBot extends AbstractStartupTask {
 
         // TODO: Move to proper bot instantiater
         jda = new JDABuilder(AccountType.BOT)
-                .setToken(LocalConfig.getBotToken())
+                .setToken(IBai.getConfig().getBotToken())
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
                 .setGame(Game.playing("a game"))
                 .addEventListener(new MessageListener())

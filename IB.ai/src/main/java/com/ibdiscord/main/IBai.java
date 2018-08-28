@@ -21,6 +21,8 @@ import com.ibdiscord.startup.Startup;
 import com.ibdiscord.utils.JavaVersionUtil;
 import com.ibdiscord.utils.SplasherUtil;
 import com.ibdiscord.utils.exceptions.JavaVersionException;
+
+import lombok.Getter;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /** @author pants
@@ -34,12 +36,14 @@ public enum IBai {
      */
     INSTANCE;
 
-    private LocalConfig config;
+    @Getter private static LocalConfig config;
 
     public static void main(String[] args) throws JavaVersionException {
 
-        // Checks Java version
-        // Error thrown on version != 10 and exits
+        /* Checks Java version
+         * Error thrown on version != 10 and terminates
+         * Docker will handle the JRE10 dependency if executed properly
+         */
         JavaVersionUtil.checkVersion();
 
         Thread.currentThread().setName("Main");

@@ -25,14 +25,13 @@ import com.ibdiscord.utils.exceptions.JavaVersionException;
 
 public class JavaVersionUtil {
 
-    private static final String errorMessage = "You need Java 10 or higher to run this app.";
-    private static boolean javaCorrect = true;
+    private static final String errorMessage = "You need Java 10 or higher to run this app. Your version: ";
 
     public static void checkVersion() throws JavaVersionException {
         double version = Double.parseDouble(System.getProperty("java.specification.version"));
 
         if(version != 10) {
-            throwError();
+            throwError(version);
             shutdown();
         }
     }
@@ -41,7 +40,7 @@ public class JavaVersionUtil {
         System.exit(1);
     }
 
-    private static void throwError() throws JavaVersionException {
-        throw new JavaVersionException(errorMessage);
+    private static void throwError(double version) throws JavaVersionException {
+        throw new JavaVersionException(errorMessage + version);
     }
 }
