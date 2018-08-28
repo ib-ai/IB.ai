@@ -16,7 +16,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.startup.tasks;
 
-import com.ibdiscord.data.LocalConfig;
 import com.ibdiscord.listeners.MessageListener;
 import com.ibdiscord.main.IBai;
 import com.ibdiscord.startup.AbstractStartupTask;
