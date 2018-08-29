@@ -21,6 +21,7 @@ import com.moandjiezana.toml.Toml;
 import lombok.Getter;
 
 import java.io.File;
+import java.util.List;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /** @author pants
@@ -33,8 +34,9 @@ public class LocalConfig {
     private static String localPath = "Config.toml";
 
     // Metadata
-    @Getter private String[] botAuthors;
-    @Getter private Long[] developIDs;
+    @Getter private String botName;
+    @Getter private List<String> botAuthors;
+    @Getter private List<Long> developIDs;
     @Getter private String githubLink;
 
     // Bot
@@ -49,18 +51,23 @@ public class LocalConfig {
         this.init();
     }
 
+
     private void init() {
         // Initialising values
+        botName = config.getString("bot_name");
+
         // [metadata]
-        botAuthors = (String[]) config.getList("bot_authors").toArray();
-        developIDs = (Long[]) config.getList("developer_ids").toArray();
-        githubLink = config.getString("github_link");
+        //TODO: Fix list inits
+        botAuthors = config.getList("metadata.bot_authors");
+        developIDs = config.getList("metadata.developer_ids");
+        githubLink = config.getString("metadata.github_link");
 
         // [bot]
-        botToken = config.getString("bot_token");
-        botTokenBeta = config.getString("bot_token_beta");
-        betaMode = config.getBoolean("beta_mode");
-        botVersion = config.getString("bot_version");
-        staticPrefix = config.getString("static_prefix");
+        botToken = config.getString("bot.bot_token");
+        botTokenBeta = config.getString("bot.bot_token_beta");
+        betaMode = config.getBoolean("bot.beta_mode");
+        botVersion = config.getString("bot.bot_version");
+        staticPrefix = config.getString("bot.static_prefix");
     }
+
 }
