@@ -3,7 +3,7 @@ version: '3.4'
 services:
   bot:
     image: ib.ai
-    restart: always
+    restart: on-failure:3
     build: ./docker
     volumes:
       - ./docker/Config.toml:/opt/IB.ai/Config.toml
