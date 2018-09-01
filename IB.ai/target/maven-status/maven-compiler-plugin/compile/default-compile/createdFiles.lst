@@ -4,10 +4,12 @@ com/ibdiscord/data/db/DatabaseContainer.class
 com/ibdiscord/listeners/MessageListener.class
 com/ibdiscord/startup/tasks/StartDatabase.class
 com/ibdiscord/startup/AbstractStartupTask.class
+com/ibdiscord/data/db/entities/Harry.class
 com/ibdiscord/startup/tasks/StartBot.class
 com/ibdiscord/data/LocalConfig.class
 com/ibdiscord/startup/Startup.class
 com/ibdiscord/main/IBai.class
+com/ibdiscord/data/db/entities/BotMeta.class
 com/ibdiscord/data/db/DatabaseController.class
 com/ibdiscord/utils/SplasherUtil.class
 com/ibdiscord/utils/exceptions/JavaVersionException.class

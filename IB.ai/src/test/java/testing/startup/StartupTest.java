@@ -28,7 +28,7 @@ import org.junit.Test;
 
 public class StartupTest {
 
-    @Test
+    //@Test
     public void doTest() {
         Startup.start();
     }

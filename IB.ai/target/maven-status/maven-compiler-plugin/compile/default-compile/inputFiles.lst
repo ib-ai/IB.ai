@@ -1,4 +1,5 @@
 /Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/startup/AbstractStartupTask.java
+/Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/data/db/entities/Harry.java
 /Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/startup/tasks/StartDatabase.java
 /Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/data/db/DatabaseController.java
 /Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/startup/tasks/StartBot.java
@@ -6,6 +7,7 @@
 /Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/startup/Startup.java
 /Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/data/db/DatabaseContainer.java
 /Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/main/IBai.java
+/Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/data/db/entities/BotMeta.java
 /Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/utils/JavaVersionUtil.java
 /Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/utils/SplasherUtil.java
 /Users/jarredvardy/Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/listeners/MessageListener.java

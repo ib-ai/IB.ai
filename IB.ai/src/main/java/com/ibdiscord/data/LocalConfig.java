@@ -46,6 +46,10 @@ public class LocalConfig {
     @Getter private String botVersion;
     @Getter private String staticPrefix;
 
+    @Getter private String mainDatabaseName;
+    @Getter private String mainDatabaseUsername;
+    @Getter private String mainDatabasePassword;
+
     public LocalConfig() {
         config = new Toml().read(new File(localPath));
         this.init();
@@ -68,6 +72,11 @@ public class LocalConfig {
         betaMode = config.getBoolean("bot.beta_mode");
         botVersion = config.getString("bot.bot_version");
         staticPrefix = config.getString("bot.static_prefix");
+
+        // [database]
+        mainDatabaseName = config.getString("database.main_name");
+        mainDatabaseUsername = config.getString("database.main_username");
+        mainDatabasePassword = config.getString("database.main_password");
     }
 
 }

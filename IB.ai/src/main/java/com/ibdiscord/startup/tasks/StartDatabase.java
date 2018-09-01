@@ -16,6 +16,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.startup.tasks;
 
+import com.ibdiscord.data.db.DatabaseContainer;
 import com.ibdiscord.startup.AbstractStartupTask;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -32,6 +33,6 @@ public class StartDatabase extends AbstractStartupTask {
 
     @Override
     public void doTask() throws Exception {
-        //TODO: Start the database
+        DatabaseContainer.connect();
     }
 }

@@ -16,9 +16,19 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.data.db;
 
+import com.ibdiscord.data.LocalConfig;
+import com.ibdiscord.data.db.entities.BotMeta;
+import com.ibdiscord.data.db.entities.Harry;
+import com.ibdiscord.main.IBai;
+import com.mongodb.DB;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+
+import java.util.ArrayList;
+import java.util.List;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
@@ -28,13 +38,29 @@ import org.mongodb.morphia.Morphia;
 
 public class DatabaseContainer {
 
-    private static final Morphia morphia = new Morphia();
     private static Datastore database;
 
     // Empty constructor
     public DatabaseContainer() {}
 
     public static void connect() {
+        String mainDb = IBai.getConfig().getMainDatabaseName();
+        String mainDbUsername = IBai.getConfig().getMainDatabaseUsername();
+        String mainDbPassword = IBai.getConfig().getMainDatabasePassword();
+
+        // Instantiating Morphia
+        Morphia morphia = new Morphia();
+
+        ServerAddress address = new ServerAddress("localhost", 27017);
+        List<MongoCredential> credentialsList = new ArrayList<>();
+        MongoCredential credential = MongoCredential.createCredential(
+                mainDbUsername, mainDb, mainDbPassword.toCharArray());
+        credentialsList.add(credential);
+
+        MongoClient client = new MongoClient(address, credentialsList);
+
+        // setting the main database
+        database = morphia.createDatastore(client, mainDb);
 
         // Declaring map for Morphia to find entity classes
         morphia.mapPackage("com.ibdiscord.data.db.entities");
@@ -43,7 +69,13 @@ public class DatabaseContainer {
         morphia.getMapper().getOptions().setStoreNulls(true);
         morphia.getMapper().getOptions().setStoreEmpties(true);
 
-        // setting the main database
-        database = morphia.createDatastore(new MongoClient(), "main");
+        Harry harry = new Harry();
+        harry.setName("hazza");
+        database.save(harry);
+
+        BotMeta meta = BotMeta.getBotMeta();
+        meta.setBotGame("Yeet");
+        database.save(meta);
+
     }
 }

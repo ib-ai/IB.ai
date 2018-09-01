@@ -21,3 +21,8 @@ bot_token_beta = "bot-beta-token-here"
 beta_mode = false
 bot_version = "x.y.z"
 static_prefix = "prefix-here"
+
+[database]
+main_name = "main"
+main_username = "username"
+main_password = "password"

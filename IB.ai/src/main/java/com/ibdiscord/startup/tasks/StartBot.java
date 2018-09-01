@@ -16,6 +16,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.startup.tasks;
 
+import com.ibdiscord.data.db.DatabaseController;
 import com.ibdiscord.listeners.MessageListener;
 import com.ibdiscord.main.IBai;
 import com.ibdiscord.startup.AbstractStartupTask;
@@ -43,16 +44,17 @@ public class StartBot extends AbstractStartupTask {
 
     @Override
     public void doTask() throws Exception {
+        String token = IBai.getConfig().getBotToken();
+        String botGame = DatabaseController.getBotMeta().getBotGame();
 
         // TODO: Move to proper bot instantiater
         jda = new JDABuilder(AccountType.BOT)
-                .setToken(IBai.getConfig().getBotToken())
+                .setToken(token)
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                .setGame(Game.playing("a game"))
+                .setGame(Game.playing(botGame))
                 .addEventListener(new MessageListener())
                 .build();
         jda.setAutoReconnect(true);
         jda.awaitReady();
-
     }
 }
