@@ -14,6 +14,7 @@ Run-time:
  - Maven
  - Lombok Plugin for IDE
  
-Run-time will require a properly formatted local config 
-file, a valid connection to a MongoDB database and connection
+Run-time will require a properly formatted local `.toml` config 
+file for the bot, a `.conf` file for Redis a valid connection to 
+a Redis database via. Docker-Compose and connection
 to the Discord API websocket (requires a bot token).
