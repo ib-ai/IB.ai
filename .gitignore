@@ -7,11 +7,7 @@
 /IB.ai/.idea/
 /IB.ai/IB.ai.iml
 /IB.ai/Config.toml
-
-/Mod-Mail/node_modules/
-/Mod_Mail/package-lock.json
-/Mod_Mail/token.json
-/Mod_Mail/Mod-Mail-Icon.png
+/IB.ai/dependency-reduced-pom.xml
 
 /Old_Edition/target/
 /Old_Edition/.idea/
