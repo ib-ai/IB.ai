@@ -15,8 +15,6 @@
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.data.db;
-
-import com.ibdiscord.data.db.entities.BotMeta;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
@@ -25,15 +23,5 @@ import com.ibdiscord.data.db.entities.BotMeta;
  */
 
 public class DatabaseController {
-    private static BotMeta meta;
 
-    public static void init() {
-
-    }
-
-
-    // Gets the bot meta data
-    public static BotMeta getBotMeta() {
-        return meta;
-    }
 }

@@ -17,12 +17,14 @@
 package com.ibdiscord.main;
 
 import com.ibdiscord.data.LocalConfig;
+import com.ibdiscord.data.db.DatabaseContainer;
 import com.ibdiscord.startup.Startup;
 import com.ibdiscord.utils.JavaVersionUtil;
 import com.ibdiscord.utils.SplasherUtil;
 import com.ibdiscord.utils.exceptions.JavaVersionException;
 
 import lombok.Getter;
+import lombok.Setter;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /** @author pants
@@ -37,6 +39,7 @@ public enum IBai {
     INSTANCE;
 
     @Getter private static LocalConfig config;
+    @Getter @Setter private static DatabaseContainer database;
 
     public static void main(String[] args) throws JavaVersionException {
 

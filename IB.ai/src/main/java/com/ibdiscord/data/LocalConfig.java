@@ -46,8 +46,8 @@ public class LocalConfig {
     @Getter private String botVersion;
     @Getter private String staticPrefix;
 
-    @Getter private String mainDatabaseName;
-    @Getter private String mainDatabaseUsername;
+    @Getter private String dbIP;
+    @Getter private Long mainDatabaseNum;
     @Getter private String mainDatabasePassword;
 
     public LocalConfig() {
@@ -74,8 +74,8 @@ public class LocalConfig {
         staticPrefix = config.getString("bot.static_prefix");
 
         // [database]
-        mainDatabaseName = config.getString("database.main_name");
-        mainDatabaseUsername = config.getString("database.main_username");
+        dbIP = config.getString("database.db_ip");
+        mainDatabaseNum = config.getLong("database.main_db");
         mainDatabasePassword = config.getString("database.main_password");
     }
 

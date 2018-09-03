@@ -45,7 +45,7 @@ public class StartBot extends AbstractStartupTask {
     @Override
     public void doTask() throws Exception {
         String token = IBai.getConfig().getBotToken();
-        String botGame = DatabaseController.getBotMeta().getBotGame();
+        String botGame = "yeet";
 
         // TODO: Move to proper bot instantiater
         jda = new JDABuilder(AccountType.BOT)

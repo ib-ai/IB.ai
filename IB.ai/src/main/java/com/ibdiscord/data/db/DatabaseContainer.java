@@ -16,19 +16,15 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.data.db;
 
-import com.ibdiscord.data.LocalConfig;
-import com.ibdiscord.data.db.entities.BotMeta;
-import com.ibdiscord.data.db.entities.Harry;
 import com.ibdiscord.main.IBai;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisURI;
+import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.async.RedisAsyncCommands;
+import io.lettuce.core.api.sync.RedisCommands;
+
+import static java.lang.Math.toIntExact;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
@@ -38,44 +34,44 @@ import java.util.List;
 
 public class DatabaseContainer {
 
-    private static Datastore database;
+    private static DatabaseContainer instance;
+    private static StatefulRedisConnection<String, String> connection;
+    private static RedisAsyncCommands async;
+    private static RedisCommands sync;
 
     // Empty constructor
-    public DatabaseContainer() {}
+    private DatabaseContainer() {}
+
+    public static DatabaseContainer getInstance() {
+        if(instance == null) {
+            instance = new DatabaseContainer();
+            return instance;
+        }
+        return instance;
+    }
 
     public static void connect() {
-        String mainDb = IBai.getConfig().getMainDatabaseName();
-        String mainDbUsername = IBai.getConfig().getMainDatabaseUsername();
+        String dbIP = IBai.getConfig().getDbIP();
+        int mainDbNum = toIntExact(IBai.getConfig().getMainDatabaseNum());
         String mainDbPassword = IBai.getConfig().getMainDatabasePassword();
 
-        // Instantiating Morphia
-        Morphia morphia = new Morphia();
+        if(connection != null){
+            return;
+        }
 
-        ServerAddress address = new ServerAddress("localhost", 27017);
-        List<MongoCredential> credentialsList = new ArrayList<>();
-        MongoCredential credential = MongoCredential.createCredential(
-                mainDbUsername, mainDb, mainDbPassword.toCharArray());
-        credentialsList.add(credential);
+        //Generating a URI to be used to generate connection
+        RedisURI.Builder uri = RedisURI.Builder.redis(dbIP)
+                .withDatabase(mainDbNum)
+                .withPassword(mainDbPassword);
 
-        MongoClient client = new MongoClient(address, credentialsList);
+        //Connecting with the built URI object
+        RedisClient client = RedisClient.create(uri.build());
+        connection = client.connect(); //Establishing the connection
 
-        // setting the main database
-        database = morphia.createDatastore(client, mainDb);
+        sync = connection.sync();
+        async = connection.async();
 
-        // Declaring map for Morphia to find entity classes
-        morphia.mapPackage("com.ibdiscord.data.db.entities");
-
-        // Tells the Morphia mapper to store null and empty values in Mongo
-        morphia.getMapper().getOptions().setStoreNulls(true);
-        morphia.getMapper().getOptions().setStoreEmpties(true);
-
-        Harry harry = new Harry();
-        harry.setName("hazza");
-        database.save(harry);
-
-        BotMeta meta = BotMeta.getBotMeta();
-        meta.setBotGame("Yeet");
-        database.save(meta);
-
+        sync.set("test", "value");
+        System.out.println(sync.get("test"));
     }
 }

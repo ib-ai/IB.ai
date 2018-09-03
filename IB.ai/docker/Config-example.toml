@@ -23,6 +23,6 @@ bot_version = "x.y.z"
 static_prefix = "prefix-here"
 
 [database]
-main_name = "main"
-main_username = "username"
-main_password = "password"
+db_ip = "db" # Name of database container
+main_db = 0 # Integer 0-15 for Redis
+main_password = "password-here"

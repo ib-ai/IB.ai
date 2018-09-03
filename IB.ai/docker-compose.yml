@@ -1,24 +1,40 @@
 version: '3.4'
 
 services:
+
+  # The Java bot process -- uses Dockerfile in ./docker
+  # Will attempt to restart 3 times.
+  # Depends on __Config.toml__ for startup config
   bot:
     image: ib.ai
     restart: on-failure:3
     build: ./docker
+    container_name: bot
     volumes:
       - ./docker/Config.toml:/opt/IB.ai/Config.toml
+    networks:
+      - bot-db-net
     depends_on:
-      - mongo
-      - mongo-express
+      - db
 
-  mongo:
-    image: mongo
+  # Redis database
+  # Running on port 6379, on a failure it will restart itself
+  # Depends on __redis.conf__ for startup config.
+  # Connect via the URL 'db:{PORT}'
+  db:
     restart: always
-    depends_on:
-      - mongo-express
-
-  mongo-express:
-    image: mongo-express
-    restart: always
+    image: redis
+    container_name: db
+    command: redis-server /opt/IB.ai/Redis.conf
+    volumes:
+      - ./docker/Redis.conf:/opt/IB.ai/Redis.conf
+    networks:
+      - bot-db-net
     ports:
-      - 8081:8081
+      - "6379"
+    environment:
+      DB_URL: "http://db:6379"
+
+networks:
+  bot-db-net:
+    driver: bridge
