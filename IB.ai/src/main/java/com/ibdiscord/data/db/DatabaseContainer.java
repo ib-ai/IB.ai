@@ -71,7 +71,6 @@ public class DatabaseContainer {
         sync = connection.sync();
         async = connection.async();
 
-        sync.set("test", "value");
         System.out.println(sync.get("test"));
     }
 }

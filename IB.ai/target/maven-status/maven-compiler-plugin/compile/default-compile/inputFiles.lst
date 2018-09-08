@@ -6,6 +6,7 @@
 /home/pants/_Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/data/db/DatabaseContainer.java
 /home/pants/_Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/data/db/DatabaseController.java
 /home/pants/_Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/startup/tasks/StartBot.java
+/home/pants/_Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/listeners/ReadyListener.java
 /home/pants/_Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/listeners/MessageListener.java
 /home/pants/_Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/utils/JavaVersionUtil.java
 /home/pants/_Documents/Repositories/IB.ai/IB.ai/src/main/java/com/ibdiscord/utils/SplasherUtil.java

@@ -28,6 +28,31 @@ public class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        System.out.println("Message received!");
+        if(event.getAuthor().isBot()){
+            return;
+        }
+
+        switch (event.getMessage().getType()) {
+            case CALL: return;
+            case CHANNEL_ICON_CHANGE: return;
+            case CHANNEL_NAME_CHANGE: return;
+            case RECIPIENT_ADD: return;
+            case RECIPIENT_REMOVE: return;
+            case GUILD_MEMBER_JOIN: return;
+            case CHANNEL_PINNED_ADD: return;
+            case DEFAULT: break;
+            case UNKNOWN: break;
+        }
+
+        switch (event.getMessage().getChannel().getType()) {
+            case TEXT:
+                break;
+            case GROUP:
+                break;
+            case PRIVATE:
+                break;
+            case UNKNOWN:
+                break;
+        }
     }
 }
