@@ -34,7 +34,7 @@ import net.dv8tion.jda.core.entities.Game;
  */
 
 public class StartBot extends AbstractStartupTask {
-
+//t
     // TODO: Move to proper bot instantiater
     private static JDA jda;
 
