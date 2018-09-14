@@ -23,7 +23,7 @@ package com.ibdiscord.utils;
 
 import com.ibdiscord.utils.exceptions.JavaVersionException;
 
-public class JavaVersionUtil {
+public class UJavaVersion {
 
     private static final String errorMessage = "You need Java 10 or higher to run this app. Your version: ";
 
