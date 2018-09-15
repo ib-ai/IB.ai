@@ -4,6 +4,10 @@ If you are reading this page, then thank you for your interest in contributing t
 We are grateful for any help, however, please ensure you follow the guidelines laid out below.
 Ensure that any code you produce for IB.ai is licensed with the Apache License 2.0. 
 
+# Contributions
+
+Not all contribution PRs (read below) will be accepted. For ideas as to what to contribute please refer to the issues section.
+
 # VCS
 
 1) Create a new branch. Label it appropriately.
