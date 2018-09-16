@@ -4,7 +4,7 @@ The new private build for the /r/IBO Discord server bot.
 
 # Contributing
 
-[Please read the contributions guidelines](CONTRIBUTING.md).
+[Please read the contributions guidelines](../CONTRIBUTING.md).
 
 # Dependencies
 
