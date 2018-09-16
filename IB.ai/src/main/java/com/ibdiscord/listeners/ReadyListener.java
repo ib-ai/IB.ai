@@ -26,7 +26,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
  * @since 2018.09.05
  */
 
-public class ReadyListener extends ListenerAdapter {
+public final class ReadyListener extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent event) {

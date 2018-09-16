@@ -14,27 +14,34 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.startup.tasks;
+package com.ibdiscord.data.db;
 
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.main.IBai;
-import com.ibdiscord.startup.AbstractStartupTask;
+import com.ibdiscord.data.db.coordinator.DataType;
+import com.ibdiscord.data.db.coordinator.Prefixion;
+
+import io.lettuce.core.api.sync.RedisCommands;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 /**
  * @author pants
- * @since 2018.08.22
+ * @since 2018.08.21
  */
 
-public final class StartDatabase extends AbstractStartupTask {
+public final class DController {
 
-    public StartDatabase() {
-        super("Start-Database");
+    private final RedisCommands sync;
+
+    public DController() {
+        sync = DContainer.getSync();
     }
 
-    @Override
-    public void doTask() throws Exception {
-        IBai.setDatabase(DContainer.INSTANCE);
-        DContainer.connect();
+    public String get(DataType type, String key) {
+        Object value = sync.get(Prefixion.getPrefixedKey(type, key));
+        return value == null ? null : value.toString();
+    }
+
+    public void set(DataType type, String key, Object value) {
+        sync.set(Prefixion.getPrefixedKey(type, key), value.toString());
     }
 }

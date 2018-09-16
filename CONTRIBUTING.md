@@ -1,12 +1,14 @@
 # Contributing
 
 If you are reading this page, then thank you for your interest in contributing towards the bot. 
-We are grateful for any help, however, please ensure you follow the guidelines laid out below.
-Ensure that any code you produce for IB.ai is licensed with the Apache License 2.0. 
+We are grateful for any help, however, please ensure you follow the guidelines laid out below 
+and ensure that any code you produce for IB.ai is licensed with the Apache License 2.0. 
 
 # Contributions
 
-Not all contribution PRs (read below) will be accepted. For ideas as to what to contribute please refer to the issues section.
+Not all contribution PRs (read below) will be accepted. For ideas as to what to contribute please refer to the issues section of this GitHub repository, or discuss it with pants#0001 or other contributors.
+
+Bug fixes and optimisations are also greatly appreciated!
 
 # VCS
 
@@ -14,6 +16,8 @@ Not all contribution PRs (read below) will be accepted. For ideas as to what to 
 2) Make the changes on that branch.
 3) Commit to and push the branch.
 4) Create a PR.
+
+If you have questions, please ask pants#0001 or another contributor.
 
 # Code
 
@@ -51,7 +55,9 @@ Exceptions exist for loop variables (i.e. `for(int i = 0; i < 10; i++) {}`, in t
 ## Singletons
 
 * Use an enumeration, with the only field being the value `INSTANCE`. 
+  * An example of this is seen in the main `IBai` class.
 * Alternatively, enumerations can be created in the following fashion:
+
 ```java
 public final class Singleton {
 
@@ -72,3 +78,4 @@ public final class Singleton {
   }
 
 }
+```

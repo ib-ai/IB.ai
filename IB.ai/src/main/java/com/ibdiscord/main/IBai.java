@@ -17,10 +17,10 @@
 package com.ibdiscord.main;
 
 import com.ibdiscord.data.LocalConfig;
-import com.ibdiscord.data.db.DatabaseContainer;
+import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.startup.Startup;
-import com.ibdiscord.utils.JavaVersionUtil;
-import com.ibdiscord.utils.SplasherUtil;
+import com.ibdiscord.utils.UJavaVersion;
+import com.ibdiscord.utils.USplasher;
 import com.ibdiscord.utils.exceptions.JavaVersionException;
 
 import lombok.Getter;
@@ -39,7 +39,7 @@ public enum IBai {
     INSTANCE;
 
     @Getter private static LocalConfig config;
-    @Getter @Setter private static DatabaseContainer database;
+    @Getter @Setter private static DContainer database;
 
     public static void main(String[] args) throws JavaVersionException {
 
@@ -47,7 +47,7 @@ public enum IBai {
          * Error thrown on version != 10 and terminates
          * Docker will handle the JRE10 dependency if executed properly
          */
-        JavaVersionUtil.checkVersion();
+        UJavaVersion.checkVersion();
 
         Thread.currentThread().setName("Main");
         IBai.INSTANCE.init();
@@ -58,6 +58,6 @@ public enum IBai {
         //TODO: Start logging
         config = new LocalConfig();
         Startup.start();
-        SplasherUtil.makeASplash();
+        USplasher.makeASplash();
     }
 }

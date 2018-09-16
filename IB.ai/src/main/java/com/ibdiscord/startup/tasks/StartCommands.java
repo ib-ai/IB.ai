@@ -24,7 +24,7 @@ import com.ibdiscord.startup.AbstractStartupTask;
  * @since 2018.08.22
  */
 
-public class StartCommands extends AbstractStartupTask {
+public final class StartCommands extends AbstractStartupTask {
 
     public StartCommands() {
         super("Start-Commands");

@@ -33,7 +33,7 @@ import net.dv8tion.jda.core.entities.Game;
  * @since 2018.08.22
  */
 
-public class StartBot extends AbstractStartupTask {
+public final class StartBot extends AbstractStartupTask {
 
     // TODO: Move to proper bot instantiater
     private static JDA jda;
@@ -58,6 +58,4 @@ public class StartBot extends AbstractStartupTask {
         jda.setAutoReconnect(true);
         jda.awaitReady();
     }
-
-    // Dev branch
 }

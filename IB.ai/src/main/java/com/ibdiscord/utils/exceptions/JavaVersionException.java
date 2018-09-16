@@ -21,7 +21,7 @@ package com.ibdiscord.utils.exceptions;
  * @since 2018.08.18
  */
 
-public class JavaVersionException extends Exception{
+public class JavaVersionException extends Exception {
 
     // No Params
     public JavaVersionException() {}
