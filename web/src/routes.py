@@ -1,18 +1,17 @@
 from flask import render_template, session, flash, redirect, url_for, abort, request, jsonify
-from web import app
+from src import app
 import pprint
 import logging
 from requests_oauthlib import OAuth2Session
 import os
 import toml
 
-
 pp = pprint.PrettyPrinter(indent=4)
 
 gunicorn_logger = logging.getLogger('gunicorn.error')
 app.logger.handlers = gunicorn_logger.handlers
 
-info = toml.load("./info.toml")
+info = toml.load("../Config-Web.toml")
 
 CLIENT_ID = info["CLIENT_ID"]
 CLIENT_SECRET = info["CLIENT_SECRET"]

@@ -4,14 +4,14 @@
 
 /docker/docker-bot/Config.toml
 /docker/docker-db/Redis.conf
-/docker/docker-web/Config.toml
+/docker/docker-web/Config-Web.toml
 
 /IB.ai/.idea/
 /IB.ai/IB.ai.iml
 /IB.ai/Config.toml
 /IB.ai/dependency-reduced-pom.xml
 
-/web/Config.toml
+/web/Config-Web.toml
 
 /Old_Edition/target/
 /Old_Edition/.idea/
@@ -201,4 +201,3 @@ fabric.properties
 
 venv
 __pycache__
-*.toml

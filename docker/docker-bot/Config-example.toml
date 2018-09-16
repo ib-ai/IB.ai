@@ -1,0 +1,28 @@
+# TOML Reference:
+# https://github.com/toml-lang/toml
+#
+# This file serves as local configuration for
+# the IB.ai bot. Please fill out this document
+# according Config-example.toml as provided.
+#
+# Acknowledgement of original authors are appreciated <3
+#
+
+bot_name = "bot-name-here"
+
+[metadata]
+bot_authors = [ "pants" ]
+developer_ids = [ 152832260310040576 ]
+github_link = "https://example.com"
+
+[bot]
+bot_token = "bot-token-here"
+bot_token_beta = "bot-beta-token-here"
+beta_mode = false
+bot_version = "x.y.z"
+static_prefix = "prefix-here"
+
+[database]
+db_ip = "db" # Name of database container
+main_db = 0 # Integer 0-15 for Redis
+main_password = "password-here"
