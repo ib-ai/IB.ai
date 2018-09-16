@@ -14,27 +14,27 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.startup.tasks;
+package com.ibdiscord.data.db.coordinator;
 
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.main.IBai;
-import com.ibdiscord.startup.AbstractStartupTask;
+import lombok.Getter;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
  * @author pants
- * @since 2018.08.22
+ * @since 2018.09.14
  */
 
-public class StartDatabase extends AbstractStartupTask {
+public enum DataType {
 
-    public StartDatabase() {
-        super("Start-Database");
+    META("meta"),
+    USER("user"),
+    GUILD("guild"),
+    MENU_ITEM("menuItem");
+
+    DataType(String prefix) {
+        typePrefix = prefix;
     }
 
-    @Override
-    public void doTask() throws Exception {
-        IBai.setDatabase(DContainer.INSTANCE);
-        DContainer.connect();
-    }
+    @Getter private String typePrefix;
+
 }

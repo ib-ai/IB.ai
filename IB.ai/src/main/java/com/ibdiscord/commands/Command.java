@@ -14,33 +14,13 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.utils;
+package com.ibdiscord.commands;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/** @author pants
- * @since 2018.08.18
+/**
+ * @author pants
+ * @since 2018.09.16
  */
 
-import com.ibdiscord.utils.exceptions.JavaVersionException;
-
-public class JavaVersionUtil {
-
-    private static final String errorMessage = "You need Java 10 or higher to run this app. Your version: ";
-
-    public static void checkVersion() throws JavaVersionException {
-        double version = Double.parseDouble(System.getProperty("java.specification.version"));
-
-        if(version != 10) {
-            throwError(version);
-            shutdown();
-        }
-    }
-
-    private static void shutdown() {
-        System.exit(1);
-    }
-
-    private static void throwError(double version) throws JavaVersionException {
-        throw new JavaVersionException(errorMessage + version);
-    }
+public class Command {
 }

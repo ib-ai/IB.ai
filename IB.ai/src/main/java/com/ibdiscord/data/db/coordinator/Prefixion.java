@@ -14,27 +14,35 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.startup.tasks;
-
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.main.IBai;
-import com.ibdiscord.startup.AbstractStartupTask;
+package com.ibdiscord.data.db.coordinator;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
  * @author pants
- * @since 2018.08.22
+ * @since 2018.09.14
  */
 
-public class StartDatabase extends AbstractStartupTask {
+public class Prefixion {
 
-    public StartDatabase() {
-        super("Start-Database");
+    public static String getPrefixedKey(DataType type, String key) {
+        return getPrefixedKey(type, key, null, null);
     }
 
-    @Override
-    public void doTask() throws Exception {
-        IBai.setDatabase(DContainer.INSTANCE);
-        DContainer.connect();
+    public static String getPrefixedKey(DataType type, String key, String keyTwo) {
+        return getPrefixedKey(type, key, keyTwo, null);
+    }
+
+    public static String getPrefixedKey(DataType type, String key, String keyTwo, String keyThree) {
+        String returnVal = type.getTypePrefix() + "_" + key;
+
+        if(keyTwo != null) {
+            returnVal = returnVal + "_" + keyTwo;
+        }
+
+        if(keyThree != null) {
+            returnVal = returnVal + "_" + keyThree;
+        }
+
+        return returnVal;
     }
 }

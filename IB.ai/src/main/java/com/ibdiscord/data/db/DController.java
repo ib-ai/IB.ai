@@ -14,20 +14,34 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.utils;
+package com.ibdiscord.data.db;
+
+import com.ibdiscord.data.db.coordinator.DataType;
+import com.ibdiscord.data.db.coordinator.Prefixion;
+
+import io.lettuce.core.api.sync.RedisCommands;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/** @author pants
- * @since 2018.08.18
+
+/**
+ * @author pants
+ * @since 2018.08.21
  */
 
-public class SplasherUtil {
+public class DController {
 
-    private String splashPath;
-    private String author;
-    private String[] contributors;
+    private final RedisCommands sync;
 
-    public static void makeASplash(){
-        //TODO: Splashscreen
+    public DController() {
+        sync = DContainer.getSync();
+    }
+
+    public String get(DataType type, String key) {
+        Object value = sync.get(Prefixion.getPrefixedKey(type, key));
+        return value == null ? null : value.toString();
+    }
+
+    public void set(DataType type, String key, Object value) {
+        sync.set(Prefixion.getPrefixedKey(type, key), value.toString());
     }
 }

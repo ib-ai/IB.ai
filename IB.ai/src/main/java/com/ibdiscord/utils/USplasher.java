@@ -14,27 +14,20 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.startup.tasks;
-
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.main.IBai;
-import com.ibdiscord.startup.AbstractStartupTask;
+package com.ibdiscord.utils;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/**
- * @author pants
- * @since 2018.08.22
+/** @author pants
+ * @since 2018.08.18
  */
 
-public class StartDatabase extends AbstractStartupTask {
+public class USplasher {
 
-    public StartDatabase() {
-        super("Start-Database");
-    }
+    private String splashPath;
+    private String author;
+    private String[] contributors;
 
-    @Override
-    public void doTask() throws Exception {
-        IBai.setDatabase(DContainer.INSTANCE);
-        DContainer.connect();
+    public static void makeASplash(){
+        //TODO: Splashscreen
     }
 }

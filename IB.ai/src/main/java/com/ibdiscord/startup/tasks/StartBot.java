@@ -58,6 +58,4 @@ public class StartBot extends AbstractStartupTask {
         jda.setAutoReconnect(true);
         jda.awaitReady();
     }
-
-    // Dev branch
 }
