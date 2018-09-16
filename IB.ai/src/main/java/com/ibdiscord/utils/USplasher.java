@@ -27,7 +27,7 @@ public final class USplasher {
     private String author;
     private String[] contributors;
 
-    public static void makeASplash(){
+    public static void makeASplash() {
         //TODO: Splashscreen
     }
 }
