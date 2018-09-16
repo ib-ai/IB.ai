@@ -2,13 +2,16 @@
 
 /.idea/
 
-/docker-bot/Config.toml
-/docker-db/Redis.conf
+/docker/docker-bot/Config.toml
+/docker/docker-db/Redis.conf
+/docker/docker-web/Config.toml
 
 /IB.ai/.idea/
 /IB.ai/IB.ai.iml
 /IB.ai/Config.toml
 /IB.ai/dependency-reduced-pom.xml
+
+/web/Config.toml
 
 /Old_Edition/target/
 /Old_Edition/.idea/
