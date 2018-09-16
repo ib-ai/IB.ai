@@ -14,27 +14,13 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.startup.tasks;
-
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.main.IBai;
-import com.ibdiscord.startup.AbstractStartupTask;
+package com.ibdiscord.modularity;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
  * @author pants
- * @since 2018.08.22
+ * @since 2018.09.16
  */
 
-public final class StartDatabase extends AbstractStartupTask {
-
-    public StartDatabase() {
-        super("Start-Database");
-    }
-
-    @Override
-    public void doTask() throws Exception {
-        IBai.setDatabase(DContainer.INSTANCE);
-        DContainer.connect();
-    }
+public class ModuleRegister {
 }

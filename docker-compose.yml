@@ -8,10 +8,10 @@ services:
   bot:
     image: ib.ai
     restart: on-failure:3
-    build: ./docker
+    build: ./docker-bot
     container_name: bot
     volumes:
-      - ./docker/Config.toml:/opt/IB.ai/Config.toml
+      - ./docker-bot/Config.toml:/opt/IB.ai/Config.toml
     networks:
       - bot-db-net
     depends_on:
@@ -27,7 +27,7 @@ services:
     container_name: db
     command: redis-server /opt/IB.ai/Redis.conf
     volumes:
-      - ./docker/Redis.conf:/opt/IB.ai/Redis.conf
+      - ./docker-db/Redis.conf:/opt/IB.ai/Redis.conf
     networks:
       - bot-db-net
     ports:

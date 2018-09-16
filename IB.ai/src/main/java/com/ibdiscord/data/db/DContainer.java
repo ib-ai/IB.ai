@@ -23,6 +23,7 @@ import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.api.sync.RedisCommands;
+import lombok.Getter;
 
 import static java.lang.Math.toIntExact;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -32,23 +33,14 @@ import static java.lang.Math.toIntExact;
  * @since 2018.08.21
  */
 
-public class DatabaseContainer {
+public enum DContainer {
 
-    private static DatabaseContainer instance;
-    private static StatefulRedisConnection<String, String> connection;
-    private static RedisAsyncCommands async;
-    private static RedisCommands sync;
+    /** <p> Singleton instance of container.</p>
+     */
+    INSTANCE;
 
-    // Empty constructor
-    private DatabaseContainer() {}
-
-    public static DatabaseContainer getInstance() {
-        if(instance == null) {
-            instance = new DatabaseContainer();
-            return instance;
-        }
-        return instance;
-    }
+    @Getter private static StatefulRedisConnection<String, String> connection;
+    @Getter private static RedisCommands sync;
 
     public static void connect() {
         String dbIP = IBai.getConfig().getDbIP();
@@ -69,8 +61,5 @@ public class DatabaseContainer {
         connection = client.connect(); //Establishing the connection
 
         sync = connection.sync();
-        async = connection.async();
-
-        System.out.println(sync.get("test"));
     }
 }

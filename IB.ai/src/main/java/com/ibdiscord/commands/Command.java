@@ -14,14 +14,13 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.data.db;
+package com.ibdiscord.commands;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
  * @author pants
- * @since 2018.08.21
+ * @since 2018.09.16
  */
 
-public class DatabaseController {
-
+public class Command {
 }

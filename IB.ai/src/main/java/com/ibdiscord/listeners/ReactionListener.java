@@ -16,42 +16,51 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.listeners;
 
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/** @author pants
- * @since 2018.08.19
+/**
+ * @author pants
+ * @since 2018.09.14
  */
 
-public final class MessageListener extends ListenerAdapter {
+public final class ReactionListener extends ListenerAdapter {
 
+    /** <p>Triggered when a reaction is added from a message in a private chat,
+     * private group DM or within a guild. <br>
+     * Uses a case to filter the event down to a single group type.</p>
+     */
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
-        if(event.getAuthor().isBot()){
-            return;
-        }
+    public void onMessageReactionAdd(MessageReactionAddEvent event) {
+        // Reaction added to message
+        switch(event.getChannelType()) {
+            case GROUP:
+            break;
 
-        switch (event.getMessage().getType()) {
-            case CALL: return;
-            case CHANNEL_ICON_CHANGE: return;
-            case CHANNEL_NAME_CHANGE: return;
-            case RECIPIENT_ADD: return;
-            case RECIPIENT_REMOVE: return;
-            case GUILD_MEMBER_JOIN: return;
-            case CHANNEL_PINNED_ADD: return;
-            case DEFAULT: break;
-            case UNKNOWN: break;
-        }
+            case PRIVATE:
+            break;
 
-        switch (event.getMessage().getChannel().getType()) {
             case TEXT:
-                break;
+            break;
+        }
+    }
+
+    /** <p>Triggered when a reaction is removed from a message in a private chat,
+     * private group DM or within a guild. <br>
+     * Uses a case to filter the event down to a single group type.</p>
+     */
+    @Override
+    public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
+        switch(event.getChannelType()) {
             case GROUP:
                 break;
+
             case PRIVATE:
                 break;
-            case UNKNOWN:
+
+            case TEXT:
                 break;
         }
     }

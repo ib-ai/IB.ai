@@ -24,7 +24,7 @@ import com.ibdiscord.utils.objects.AbstractTask;
  * @since 2018.08.22
  */
 
-public abstract class AbstractStartupTask extends AbstractTask{
+public abstract class AbstractStartupTask extends AbstractTask {
 
     private boolean completed = false;
 

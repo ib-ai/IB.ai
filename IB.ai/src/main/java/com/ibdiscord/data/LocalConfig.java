@@ -28,7 +28,7 @@ import java.util.List;
  * @since 2018.08.19
  */
 
-public class LocalConfig {
+public final class LocalConfig {
 
     private static Toml config;
     private static String localPath = "Config.toml";

@@ -21,13 +21,13 @@ package com.ibdiscord.utils;
  * @since 2018.08.18
  */
 
-public class SplasherUtil {
+public final class USplasher {
 
     private String splashPath;
     private String author;
     private String[] contributors;
 
-    public static void makeASplash(){
+    public static void makeASplash() {
         //TODO: Splashscreen
     }
 }
