@@ -9,6 +9,7 @@
 /IB.ai/.idea/
 /IB.ai/IB.ai.iml
 /IB.ai/Config.toml
+/IB.ai/Config-web.toml
 /IB.ai/dependency-reduced-pom.xml
 
 /web/Config-Web.toml
@@ -201,3 +202,4 @@ fabric.properties
 
 venv
 __pycache__
+Config-web.toml
