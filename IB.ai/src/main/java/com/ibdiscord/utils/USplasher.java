@@ -21,7 +21,7 @@ package com.ibdiscord.utils;
  * @since 2018.08.18
  */
 
-public class USplasher {
+public final class USplasher {
 
     private String splashPath;
     private String author;

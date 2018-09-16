@@ -22,7 +22,7 @@ package com.ibdiscord.data.db.coordinator;
  * @since 2018.09.14
  */
 
-public class Prefixion {
+public final class Prefixion {
 
     public static String getPrefixedKey(DataType type, String key) {
         return getPrefixedKey(type, key, null, null);

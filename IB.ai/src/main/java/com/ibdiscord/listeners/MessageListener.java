@@ -24,7 +24,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
  * @since 2018.08.19
  */
 
-public class MessageListener extends ListenerAdapter {
+public final class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {

@@ -26,7 +26,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
  * @since 2018.09.14
  */
 
-public class ReactionListener extends ListenerAdapter {
+public final class ReactionListener extends ListenerAdapter {
 
     /** <p>Triggered when a reaction is added from a message in a private chat,
      * private group DM or within a guild. <br>

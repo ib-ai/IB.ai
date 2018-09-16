@@ -28,7 +28,7 @@ import io.lettuce.core.api.sync.RedisCommands;
  * @since 2018.08.21
  */
 
-public class DController {
+public final class DController {
 
     private final RedisCommands sync;
 
