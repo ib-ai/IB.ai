@@ -29,7 +29,7 @@ import java.util.Arrays;
  * @since 2018.08.22
  */
 
-public class Startup {
+public final class Startup {
 
     private static final AbstractStartupTask[] startupTasks = new AbstractStartupTask[] {
             new StartDatabase(),
@@ -41,7 +41,7 @@ public class Startup {
             task.create();
         }
 
-        new AbstractTask("Task-Startup-Waiting"){
+        new AbstractTask("Task-Startup-Waiting") {
 
             @Override
             public void execute() {

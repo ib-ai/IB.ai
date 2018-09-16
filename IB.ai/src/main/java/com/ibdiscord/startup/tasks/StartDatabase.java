@@ -26,7 +26,7 @@ import com.ibdiscord.startup.AbstractStartupTask;
  * @since 2018.08.22
  */
 
-public class StartDatabase extends AbstractStartupTask {
+public final class StartDatabase extends AbstractStartupTask {
 
     public StartDatabase() {
         super("Start-Database");
