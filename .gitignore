@@ -2,8 +2,8 @@
 
 /.idea/
 
-/docker/Config.toml
-/docker/Redis.conf
+/docker-bot/Config.toml
+/docker-db/Redis.conf
 
 /IB.ai/.idea/
 /IB.ai/IB.ai.iml
