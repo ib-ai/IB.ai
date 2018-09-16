@@ -18,3 +18,8 @@ Run-time will require a properly formatted local `.toml` config
 file for the bot, a `.conf` file for Redis a valid connection to 
 a Redis database via. Docker-Compose and connection
 to the Discord API websocket (requires a bot token).
+
+### Branches
+
+All development takes place on the `origin/dev` branch. Once live,
+features move onto `origin/master`.
