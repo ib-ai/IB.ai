@@ -30,8 +30,9 @@ import java.util.List;
 
 public final class LocalConfig {
 
+    private static final String LOCAL_PATH = "Config.toml";
+
     private static Toml config;
-    private static String localPath = "Config.toml";
 
     // Metadata
     @Getter private String botName;
@@ -51,7 +52,7 @@ public final class LocalConfig {
     @Getter private String mainDatabasePassword;
 
     public LocalConfig() {
-        config = new Toml().read(new File(localPath));
+        config = new Toml().read(new File(LOCAL_PATH));
         this.init();
     }
 

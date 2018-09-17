@@ -16,8 +16,14 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.listeners;
 
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.main.IBai;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import org.apache.commons.lang3.ArrayUtils;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /** @author pants
@@ -26,6 +32,27 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public final class MessageListener extends ListenerAdapter {
 
+    @Override
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        if(event.getAuthor().isBot()
+                || !event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_WRITE)) {
+            return;
+        }
+        // todo user input
+        String message = event.getMessage().getContentRaw();
+        if(!message.startsWith(IBai.getConfig().getStaticPrefix())) {
+            return;
+        }
+        message = message.substring(IBai.getConfig().getStaticPrefix().length()).replaceAll(" +", " ");
+        String[] arguments = message.split(" ");
+        String commandName = arguments[0].toLowerCase();
+        Command command = Command.find(null, commandName);
+        if(command != null) {
+            command.preprocess(CommandContext.construct(event.getMessage(), ArrayUtils.remove(arguments, 0)));
+        }
+    }
+
+    // todo maybe remove this, I'm gonna use specific listeners - Arraying
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if(event.getAuthor().isBot()){
