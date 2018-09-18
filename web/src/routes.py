@@ -107,6 +107,7 @@ def discord_logout():
     flash("Successfully logged out!")
     return redirect(url_for('index'))
 
+
 @app.route('/test')
 def hello_world():
     return 'Hello world!'
