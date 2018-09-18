@@ -1,15 +1,3 @@
-package com.ibdiscord.command;
-
-import com.ibdiscord.command.commands.PingCommand;
-import com.ibdiscord.command.commands.TestOptionsCommand;
-import lombok.Getter;
-import lombok.Setter;
-import net.dv8tion.jda.core.entities.Channel;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.Set;
-import java.util.TreeSet;
-
 /**
  * Copyright 2018 Arraying
  * <p>
@@ -25,6 +13,22 @@ import java.util.TreeSet;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package com.ibdiscord.command;
+
+import com.ibdiscord.utils.objects.Comparator;
+import com.ibdiscord.command.permissions.CommandPermission;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import org.apache.commons.lang3.ArrayUtils;
+
+import net.dv8tion.jda.core.entities.Channel;
+
+import java.util.Set;
+import java.util.TreeSet;
+
 public abstract class Command {
 
     /**
@@ -46,8 +50,8 @@ public abstract class Command {
     }
 
     public static void init() {
-        for(Collection collection : Collection.values()) {
-            COMMANDS.add(collection.command);
+        for(CommandCollection commandCollection : CommandCollection.values()) {
+            COMMANDS.add(commandCollection.getCommand());
         }
     }
 
@@ -81,30 +85,6 @@ public abstract class Command {
             context.reply("Unknown sub command %s.", args[0]);
         } else {
             subCommand.preprocess(context.clone(ArrayUtils.remove(context.getArguments(), 0)));
-        }
-    }
-
-    public static final class Comparator implements java.util.Comparator<Command> {
-
-        @Override
-        public int compare(Command o1, Command o2) {
-            return o1.name.compareTo(o2.name);
-        }
-
-    }
-
-    /**
-     * A collection of commands so that they can be registered easily.
-     */
-    private enum Collection {
-
-        PING(new PingCommand()),
-        TEST_OPTIONS(new TestOptionsCommand());
-
-        private final Command command;
-
-        Collection(Command command) {
-            this.command = command;
         }
     }
 

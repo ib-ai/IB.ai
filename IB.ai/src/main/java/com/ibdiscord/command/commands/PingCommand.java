@@ -2,7 +2,7 @@ package com.ibdiscord.command.commands;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.CommandPermission;
+import com.ibdiscord.command.permissions.CommandPermission;
 
 import java.util.HashSet;
 import java.util.stream.Collectors;

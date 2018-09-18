@@ -1,6 +1,7 @@
-package com.ibdiscord.command;
+package com.ibdiscord.command.permissions;
 
 import com.ibdiscord.main.IBai;
+
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Member;
@@ -23,35 +24,35 @@ import net.dv8tion.jda.core.entities.Member;
 @SuppressWarnings("unused")
 public final class CommandPermission {
 
-    private final Type type;
+    private final PermissionType type;
     private final Object value;
 
     public static CommandPermission discord() {
-        return new CommandPermission(Type.DISCORD, Permission.MESSAGE_WRITE);
+        return new CommandPermission(PermissionType.DISCORD, Permission.MESSAGE_WRITE);
     }
 
     public static CommandPermission discord(Permission permission) {
-        return new CommandPermission(Type.DISCORD, permission);
+        return new CommandPermission(PermissionType.DISCORD, permission);
     }
 
     public static CommandPermission roleId(long id) {
-        return new CommandPermission(Type.ROLE_ID, id);
+        return new CommandPermission(PermissionType.ROLE_ID, id);
     }
 
     public static CommandPermission roleName(String name) {
-        return new CommandPermission(Type.ROLE_NAME, name);
+        return new CommandPermission(PermissionType.ROLE_NAME, name);
     }
 
     public static CommandPermission developer(CommandPermission onTopOfThat) {
-        return new CommandPermission(Type.DEVELOPER, onTopOfThat);
+        return new CommandPermission(PermissionType.DEVELOPER, onTopOfThat);
     }
 
-    private CommandPermission(Type type, Object value) {
+    private CommandPermission(PermissionType type, Object value) {
         this.type = type;
         this.value = value;
     }
 
-    boolean hasPermission(Member member, Channel channel) {
+    public boolean hasPermission(Member member, Channel channel) {
         switch(type) {
             case DISCORD:
                 return member.hasPermission(channel, (Permission) value);
@@ -65,17 +66,4 @@ public final class CommandPermission {
         }
         throw new IllegalStateException("permission not exhaustive");
     }
-
-    public enum Type {
-
-        DISCORD,
-
-        ROLE_ID,
-
-        ROLE_NAME,
-
-        DEVELOPER
-
-    }
-
 }
