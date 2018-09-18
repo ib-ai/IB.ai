@@ -19,14 +19,15 @@ package com.ibdiscord.listeners;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.main.IBai;
+
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+
 import org.apache.commons.lang3.ArrayUtils;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/** @author pants
+/** @author pants, Arraying
  * @since 2018.08.19
  */
 
@@ -49,37 +50,6 @@ public final class MessageListener extends ListenerAdapter {
         Command command = Command.find(null, commandName);
         if(command != null) {
             command.preprocess(CommandContext.construct(event.getMessage(), ArrayUtils.remove(arguments, 0)));
-        }
-    }
-
-    // todo maybe remove this, I'm gonna use specific listeners - Arraying
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
-        if(event.getAuthor().isBot()){
-            return;
-        }
-
-        switch (event.getMessage().getType()) {
-            case CALL: return;
-            case CHANNEL_ICON_CHANGE: return;
-            case CHANNEL_NAME_CHANGE: return;
-            case RECIPIENT_ADD: return;
-            case RECIPIENT_REMOVE: return;
-            case GUILD_MEMBER_JOIN: return;
-            case CHANNEL_PINNED_ADD: return;
-            case DEFAULT: break;
-            case UNKNOWN: break;
-        }
-
-        switch (event.getMessage().getChannel().getType()) {
-            case TEXT:
-                break;
-            case GROUP:
-                break;
-            case PRIVATE:
-                break;
-            case UNKNOWN:
-                break;
         }
     }
 }
