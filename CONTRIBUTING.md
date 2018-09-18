@@ -45,12 +45,12 @@ Then declare the constructor(s) (public, package-private, protected, private), f
 * Variables are to be declared in `camelCase`. They should be be somewhat descriptive. Abbreviations are strongly discouraged.
 Exceptions exist for loop variables (i.e. `for(int i = 0; i < 10; i++) {}`, in this case `i` is perfectly acceptable).
 
-## Access and mofification
+## Access and modification
 
 * Use the lowest possible access modifier.
 * Use the `final` modifier on all classes at the end of the inheritance chain.
-* All class fields defined by constructor parameters should be labled as `private final`, unless not possible due to reflection.
-* Do not label in-method scoped variables as `final` unless (optioanl) they are required to be effectively final to be used inside a lambda.
+* All class fields defined by constructor parameters should be labelled as `private final`, unless not possible due to reflection.
+* Do not label in-method scoped variables as `final` unless (optional) they are required to be effectively final to be used inside a lambda.
 
 ## JavaDocs
 
