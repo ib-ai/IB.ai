@@ -28,6 +28,8 @@ import lombok.Getter;
 
 public enum CommandCollection {
 
+    // Commands listed as enumerations.
+    // COMMAND_NAME(new NameCommand());
     PING(new PingCommand()),
     TEST_OPTIONS(new TestOptionsCommand());
 
