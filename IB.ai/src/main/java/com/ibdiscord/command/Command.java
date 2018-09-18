@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * @author Arraying
+ * @since 2018.09.17
+ */
+
 package com.ibdiscord.command;
 
 import com.ibdiscord.utils.objects.Comparator;

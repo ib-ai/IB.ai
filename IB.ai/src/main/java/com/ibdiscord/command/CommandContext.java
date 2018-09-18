@@ -1,17 +1,3 @@
-package com.ibdiscord.command;
-
-import lombok.Data;
-import lombok.Getter;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 /**
  * Copyright 2018 Arraying
  * <p>
@@ -27,6 +13,26 @@ import java.util.Set;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * @author Arraying
+ * @since 2018.09.17
+ */
+
+package com.ibdiscord.command;
+
+import lombok.Data;
+import lombok.Getter;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public final class CommandContext {
 
     @Getter final Message message;

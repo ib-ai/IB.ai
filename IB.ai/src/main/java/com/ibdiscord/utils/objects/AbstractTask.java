@@ -23,6 +23,7 @@ package com.ibdiscord.utils.objects;
  */
 
 public abstract class AbstractTask implements Runnable{
+
     private final String name;
     Thread currentThread;
 

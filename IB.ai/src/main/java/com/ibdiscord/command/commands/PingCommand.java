@@ -1,13 +1,3 @@
-package com.ibdiscord.command.commands;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * Copyright 2018 Arraying
  * <p>
@@ -23,6 +13,22 @@ import java.util.stream.Stream;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * @author Arraying
+ * @since 2018.09.17
+ */
+
+package com.ibdiscord.command.commands;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+
+import java.util.HashSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public final class PingCommand extends Command {
 
     public PingCommand() {
@@ -37,5 +43,4 @@ public final class PingCommand extends Command {
     protected void execute(CommandContext context) {
         context.reply("Pong! WebSocket latency is currently %d.", context.getGuild().getJDA().getPing());
     }
-
 }

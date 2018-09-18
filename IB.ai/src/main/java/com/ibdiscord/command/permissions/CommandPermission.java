@@ -1,11 +1,3 @@
-package com.ibdiscord.command.permissions;
-
-import com.ibdiscord.main.IBai;
-
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Member;
-
 /**
  * Copyright 2018 Arraying
  * <p>
@@ -21,6 +13,20 @@ import net.dv8tion.jda.core.entities.Member;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * @author Arraying
+ * @since 2018.09.17
+ */
+
+package com.ibdiscord.command.permissions;
+
+import com.ibdiscord.main.IBai;
+
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.Member;
+
 @SuppressWarnings("unused")
 public final class CommandPermission {
 
@@ -64,6 +70,6 @@ public final class CommandPermission {
                 return IBai.getConfig().getDevelopIDs().contains(member.getUser().getIdLong())
                         && (value == null || ((CommandPermission) value).hasPermission(member, channel));
         }
-        throw new IllegalStateException("permission not exhaustive");
+        throw new IllegalStateException("Permission not exhaustive");
     }
 }
