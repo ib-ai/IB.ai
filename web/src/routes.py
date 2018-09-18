@@ -11,7 +11,7 @@ pp = pprint.PrettyPrinter(indent=4)
 gunicorn_logger = logging.getLogger('gunicorn.error')
 app.logger.handlers = gunicorn_logger.handlers
 
-info = toml.load("../Config-Web.toml")
+info = toml.load("Config-Web.toml")
 
 CLIENT_ID = info["CLIENT_ID"]
 CLIENT_SECRET = info["CLIENT_SECRET"]
@@ -106,3 +106,7 @@ def discord_logout():
     session.pop('discriminator', None)
     flash("Successfully logged out!")
     return redirect(url_for('index'))
+
+@app.route('/test')
+def hello_world():
+    return 'Hello world!'
