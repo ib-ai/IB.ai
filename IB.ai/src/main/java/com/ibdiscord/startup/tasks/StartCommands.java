@@ -16,6 +16,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.startup.tasks;
 
+import com.ibdiscord.command.Command;
 import com.ibdiscord.startup.AbstractStartupTask;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -32,6 +33,7 @@ public final class StartCommands extends AbstractStartupTask {
 
     @Override
     public void doTask() throws Exception {
-        //TODO: Start command instantiation
+        Command.init();
     }
+
 }
