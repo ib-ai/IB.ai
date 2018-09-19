@@ -77,7 +77,7 @@ import com.etc;
  * @since YYYY.MM.DD (date of class creation)
  */
 
-public class Example{
+public class Example {
 
   /** <p>Example line
    * on the same line before a line break. <br>
