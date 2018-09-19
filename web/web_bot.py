@@ -1,7 +1,7 @@
 from src import app
 import toml
 
-info = toml.load("Config-Web.toml")
+info = toml.load("./docker/Config-Web.toml")
 REDIRECT_URI = info["REDIRECT_URI"]
 
 if __name__ == '__main__':

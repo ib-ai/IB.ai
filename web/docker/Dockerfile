@@ -1,6 +1,6 @@
 FROM python:3.7
 
-COPY . /usr/src/app
+COPY .. /usr/src/app
 WORKDIR /usr/src/app
 
 EXPOSE 80
