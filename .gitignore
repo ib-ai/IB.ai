@@ -1,24 +1,36 @@
-## Custom
+#
+# Ignored files
+#
+#
+#
+#
+#
 
-/.idea/
+# Sensitive config files
+# Public alternatives marked *-example.toml
+# Used by docker
+/IB.ai/docker/Config.toml
+/web/docker/Config-Web.toml
+/database-config/Redis.conf
 
-/docker/docker-bot/Config.toml
-/docker/docker-db/Redis.conf
-/docker/docker-web/Config-Web.toml
-
+# Java project files in IB.ai
+# Testing config.toml ignored
 /IB.ai/.idea/
 /IB.ai/IB.ai.iml
 /IB.ai/Config.toml
 /IB.ai/dependency-reduced-pom.xml
 
+# Web python project
+# Testing Config-Web.toml ignored
 /web/Config-Web.toml
 
-/Old_Edition/target/
-/Old_Edition/.idea/
-/Old_Edition/src/test/
-/Old_Edition/IB BOT LOGO.png
-/Old_Edition/WelcomeGIF.gif
-/Old_Edition/Configuration.JSON
+#
+# Generic ignored files
+#
+#
+#
+#
+#
 
 ### Windows ###
 
@@ -201,3 +213,4 @@ fabric.properties
 
 venv
 __pycache__
+*.pyc
