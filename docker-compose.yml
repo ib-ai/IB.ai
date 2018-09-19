@@ -26,13 +26,9 @@ services:
     build: ./web/docker
     container_name: web
     volumes:
-      - ./web/:/usr/src/app
-    networks:
-      - bot-db-net
+      - ./web:/usr/src/app
     ports:
-      - "80"
-    environment:
-      WEB_URL: "http://web:80"
+      - 5001:80
     depends_on:
       - db
 
