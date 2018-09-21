@@ -11,7 +11,7 @@
 # Used by docker
 bot/docker/Config.toml
 /web/docker/Config-Web.toml
-/database-config/Redis.conf
+/db/Redis.conf
 
 # Java project files in bot
 # Testing config.toml ignored
