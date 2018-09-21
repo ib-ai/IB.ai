@@ -21,12 +21,12 @@
 
 package com.ibdiscord.command;
 
-import lombok.Data;
 import lombok.Getter;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.HashSet;
@@ -100,18 +100,4 @@ public final class CommandContext {
     CommandContext clone(String[] arguments) {
         return new CommandContext(message, arguments, options);
     }
-
-    public static final @Data class Option {
-
-        private final String name;
-        private final String value;
-        private final boolean declaredAsValue;
-
-        @Override
-        public String toString() {
-            return "Option[" + name + "](" + value + ")";
-        }
-
-    }
-
 }
