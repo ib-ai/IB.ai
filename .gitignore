@@ -9,16 +9,16 @@
 # Sensitive config files
 # Public alternatives marked *-example.toml
 # Used by docker
-/IB.ai/docker/Config.toml
+bot/docker/Config.toml
 /web/docker/Config-Web.toml
 /database-config/Redis.conf
 
-# Java project files in IB.ai
+# Java project files in bot
 # Testing config.toml ignored
-/IB.ai/.idea/
-/IB.ai/IB.ai.iml
-/IB.ai/Config.toml
-/IB.ai/dependency-reduced-pom.xml
+bot/.idea/
+bot.iml
+bot/Config.toml
+bot/dependency-reduced-pom.xml
 
 # Web python project
 # Testing Config-Web.toml ignored
