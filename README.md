@@ -14,3 +14,9 @@ Arraying#7363 | @Arraying | Quality Assurance
 # Contributing
 
 [Please read the contributions guidelines](CONTRIBUTING.md).
+
+# Task Sheet
+
+\# | Task Name
+--- | ---
+01 | <task>

@@ -6,7 +6,7 @@
 
 ### Next Document
 
-[Click here][next] to read 'yeet'
+[Click here][next] to read '04 - Commands'
 
 [previous]: 02%20-%20Database.md
-[next]: https://google.com
+[next]: 04%20-%20Commands.md

@@ -90,7 +90,7 @@ public class Example {
    * @see ClassName
    */
   @Override
-  public static void methodOne(String nameOfParam) {
+  public static OtherClass methodOne(String nameOfParam) {
       // Do something
       return new OtherClass(...);
   }
