@@ -1,7 +1,7 @@
 >> AUTHOR       = "Author's Name"
 >> AUTHOR_URL   = "https://example.com/"
 >> TITLE        = "Title of embed"
->> TUTLE_URL    = "https://example.com/"
+>> TITLE_URL    = "https://example.com/"
 >> AUTHOR_ICON  = "https://example.com/image.jpg/"
 >> THUMBNAIL    = "https://example.com/image.jpg/"
 >> INLINE_IMAGE = "https://example.com/image.jpg/"
