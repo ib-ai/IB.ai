@@ -1,5 +1,5 @@
 FROM openjdk:10
-MAINTAINER pants <pantsForBusiness@gmail.com>
+MAINTAINER Jarred Vardy <jarred.vardy@gmail.com>
 ENV ENV docker
 
 COPY Config.toml /opt/IB.ai/Config.toml
