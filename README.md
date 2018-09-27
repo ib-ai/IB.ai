@@ -8,7 +8,7 @@ IB.ai is currently being maintained by the following volunteers:
 
 Discord Name | GitHub Name | Role
 --- | --- | ---
-pants#0001 | @pants1 | Project Lead
+pants#0001 | @vardy | Project Lead
 Arraying#7363 | @Arraying | Quality Assurance
 
 # Contributing
