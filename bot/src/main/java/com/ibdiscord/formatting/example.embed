@@ -1,0 +1,32 @@
+>> AUTHOR       = "Author's Name"
+>> AUTHOR_URL   = "https://example.com/"
+>> TITLE        = "Title of embed"
+>> TITLE_URL    = "https://example.com/"
+>> AUTHOR_ICON  = "https://example.com/image.jpg/"
+>> THUMBNAIL    = "https://example.com/image.jpg/"
+>> INLINE_IMAGE = "https://example.com/image.jpg/"
+>> FOOTER       = "Footer text"
+>> FOOTER_ICON  = "https://example.com/image.jpg/"
+
+|| The embed's description goes here.
+|| A new line adds a line break!
+|| Whitespace on either side of the line is trimmed.
+
+## This is an inline field heading
+
+The content of the field goes below the heading.
+A new line adds a line break -- Whitespace above and below is ignored.
+
+## Inline field, again
+
+Inline fields stack in columns -- side by side.
+Inline fields will wrap onto new lines if the content exceeds the embed width.
+
+# This is a non-inline field heading.
+
+Content.
+New line :emoji:.
+
+# This is another non-inline field heading.
+
+More content goes here.

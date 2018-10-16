@@ -15,15 +15,18 @@ bot/docker/Config.toml
 
 # Java project files in bot
 # Testing config.toml ignored
+<<<<<<< HEAD
 /IB.ai/.idea/
 /IB.ai/IB.ai.iml
 /IB.ai/Config.toml
 /IB.ai/Config-web.toml
 /IB.ai/dependency-reduced-pom.xml
+=======
 bot/.idea/
 bot.iml
 bot/Config.toml
 bot/dependency-reduced-pom.xml
+>>>>>>> bf47bfc6fb4f27000cc345ea71ffeda99fe26f95
 
 # Web python project
 # Testing Config-Web.toml ignored
