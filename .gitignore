@@ -28,6 +28,7 @@ bot/dependency-reduced-pom.xml
 # Web python project
 # Testing Config-Web.toml ignored
 /web/Config-Web.toml
+/web/docker/Config-Web.toml
 
 #
 # Generic ignored files
@@ -218,5 +219,5 @@ fabric.properties
 
 venv
 __pycache__
-Config-web.toml
+/**/Config-web.toml
 *.pyc
