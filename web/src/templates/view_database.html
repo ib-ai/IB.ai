@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>The database looks like this:</h1>
+
+    <div>
+    {{ r }}
+    </div>
+
+    <!-- <h2 style="color: red">This is a testing site only</h2> -->
+    <!-- TODO: welcome page -->
+{% endblock %}

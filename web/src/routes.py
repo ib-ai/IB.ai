@@ -5,8 +5,11 @@ import logging
 from requests_oauthlib import OAuth2Session
 import os
 import toml
+import redis
 
 pp = pprint.PrettyPrinter(indent=4)
+
+r = redis.Redis(host='localhost', port=6379, db=0)
 
 gunicorn_logger = logging.getLogger('gunicorn.error')
 app.logger.handlers = gunicorn_logger.handlers
@@ -96,6 +99,14 @@ def me():
     # guilds = discord.get(API_BASE_URL + '/users/@me/guilds').json()
     # connections = discord.get(API_BASE_URL + '/users/@me/connections').json()
     return jsonify(user=user)
+
+
+@app.route("/view_db")
+def view_db():
+    if "username" not in session:
+        flash("You are not logged in!")
+        return redirect(url_for("index"))
+    return render_template("view_database.html", title="Database", db=r)
 
 
 @app.route('/logout')
