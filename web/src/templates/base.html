@@ -107,6 +107,7 @@
                 {% if "username" not in session %}
                     <a href="{{ url_for('discord_login') }}">Login with discord</a>
                 {% else %}
+                    <a href="{{ url_for('me') }}">Your data</a>
                     <a href="{{ url_for('discord_logout') }}">Logout</a>
                 {% endif %}
             </div>

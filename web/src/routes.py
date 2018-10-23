@@ -93,9 +93,11 @@ def discord_callback():
 def me():
     discord = make_session(token=session.get('oauth2_token'))
     user = discord.get(API_BASE_URL + '/users/@me').json()
-    # guilds = discord.get(API_BASE_URL + '/users/@me/guilds').json()
+    guilds = discord.get(API_BASE_URL + '/users/@me/guilds').json()
     # connections = discord.get(API_BASE_URL + '/users/@me/connections').json()
-    return jsonify(user=user)
+    out = f"""{pprint.pformat(user, indent=4)}\n{pprint.pformat(guilds, indent=4)}"""
+    # out = f"""<pre>{pprint.pformat(user, indent=4)}\n{pprint.pformat(guilds, indent=4)}</pre>"""
+    return render_template("blank.html", arg=out)
 
 
 @app.route('/logout')
