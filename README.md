@@ -10,6 +10,7 @@ Discord Name | GitHub Name | Role
 --- | --- | ---
 pants#0001 | @vardy | Project Lead
 Arraying#7363 | @Arraying | Quality Assurance
+redstone.tehnik#7139 | @LenartBucar | Web Interface Developer
 
 # Contributing
 
