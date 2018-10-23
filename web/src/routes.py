@@ -41,7 +41,7 @@ def has_perm(perm_int: int, perm: int):
     return perm_int & perm
 
 
-def multi_perm(perm_int: int, wanted: list, op: function):
+def multi_perm(perm_int: int, wanted: list, op):
     """
     Checks for multiple permissions
     :param perm_int: permission int for the user (potentially different for each server)
