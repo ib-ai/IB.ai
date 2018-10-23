@@ -1,5 +1,6 @@
 from flask import render_template, session, flash, redirect, url_for, abort, request, jsonify
 from src import app
+from functools import partial
 import pprint
 import logging
 from requests_oauthlib import OAuth2Session
@@ -28,6 +29,18 @@ if 'http://' in REDIRECT_URI:
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = 'true'
 
 app.logger.setLevel(logging.INFO)
+
+
+def has_perm(perm_int: int, perm: int):
+    return perm_int & perm
+
+
+def multi_perm(perm_int: int, wanted: list, op: function):
+    op(has_perm(perm_int, perm) for perm in wanted)
+
+
+perm_any = partial(multi_perm, op=any)
+perm_all = partial(multi_perm, op=all)
 
 
 def token_updater(token):
