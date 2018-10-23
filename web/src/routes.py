@@ -32,11 +32,24 @@ app.logger.setLevel(logging.INFO)
 
 
 def has_perm(perm_int: int, perm: int):
+    """
+    Returns whether user has specified permission
+    :param perm_int: permission int for the user (potentially different for each server)
+    :param perm: permission that we want to check for
+    :return: bool
+    """
     return perm_int & perm
 
 
 def multi_perm(perm_int: int, wanted: list, op: function):
-    op(has_perm(perm_int, perm) for perm in wanted)
+    """
+    Checks for multiple permissions
+    :param perm_int: permission int for the user (potentially different for each server)
+    :param wanted: list of permissions (type: int) to check for
+    :param op: function to feed the list of bools, one for each permission, through (`any` or `all` for example)
+    :return: bool
+    """
+    return op(has_perm(perm_int, perm) for perm in wanted)
 
 
 perm_any = partial(multi_perm, op=any)
