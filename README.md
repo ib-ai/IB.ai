@@ -17,6 +17,4 @@ Arraying#7363 | @Arraying | Quality Assurance
 
 # Task Sheet
 
-\# | Task Name
---- | ---
-01 | <task>
+[Click here for project Kanban.](https://github.com/vardy/IB.ai/projects/1) Includes information on what needs to be done, what's in progress, and what has been done already.
