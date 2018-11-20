@@ -13,7 +13,7 @@ Arraying#7363 | @Arraying | Quality Assurance
 
 # Contributing
 
-[Please read the contributions guidelines](CONTRIBUTING.md).
+[Please read the contributions guidelines](https://github.com/vardy/IB.ai/wiki/Contributing).
 
 # Task Sheet
 
