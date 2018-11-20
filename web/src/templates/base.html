@@ -7,6 +7,11 @@
         <title>Welcome to IB.ai Web Interface</title>
       {% endif %}
     <style>
+        :root {
+            --ib-blue: #45A6D9;
+            --old-blue: #26458F;
+        }
+
         html {
           font-family: Roboto, Helvetica, Arial, sans-serif;
         }
@@ -18,7 +23,7 @@
 
         .menubar {
           color: white;
-          background-color: #26458F;
+          background-color: var(--ib-blue);
           padding: 15px 20px;
           box-shadow: 0px 1px 8px rgba(0,0,0,0.3);
         }
@@ -51,7 +56,7 @@
         {# p {text-align:center;} #}
         /* Dropdown Button */
         .dropbtn {
-            background-color: #26458F;
+            background-color: var(--ib-blue);
             color: white;
             padding: 16px 16px 16px 0px;
             font-size: 16px;
@@ -95,18 +100,26 @@
 
         /* Change the background color of the dropdown button when the dropdown content is shown */
         .dropdown:hover .dropbtn {
-            background-color: #26458F;
+            background-color: var(--ib-blue);
         }
     </style>
     </head>
     <body>
         <div class="menubar">
+{#            <div style="position: relative; top: 50%; transform: translateY(-50%);">#}
+{#            <div style="float: left; position: relative; top: -7px">#}
+{#            <img src="{{ url_for("static", filename="images/ib_world_school_logo_1_colour_rev.png") }}" width="32px"/>#}
+{#            </div>#}
             <div class="menu">
+{#                <div style="text-align: left; float: left; position: relative; left: -100px">#}
+{#                </div>#}
                 IB.ai Web Interface
                 <a href="{{ url_for('index') }}">Home</a>
                 {% if "username" not in session %}
                     <a href="{{ url_for('discord_login') }}">Login with discord</a>
                 {% else %}
+                    <a href="{{ url_for('me') }}">Your data</a>
+                    <a href="{{ url_for('view_db') }}">View Database</a>
                     <a href="{{ url_for('discord_logout') }}">Logout</a>
                 {% endif %}
             </div>

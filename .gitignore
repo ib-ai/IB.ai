@@ -15,6 +15,11 @@ bot/docker/Config.toml
 
 # Java project files in bot
 # Testing config.toml ignored
+/IB.ai/.idea/
+/IB.ai/IB.ai.iml
+/IB.ai/Config.toml
+/IB.ai/Config-web.toml
+/IB.ai/dependency-reduced-pom.xml
 bot/.idea/
 bot.iml
 bot/Config.toml
@@ -23,6 +28,7 @@ bot/dependency-reduced-pom.xml
 # Web python project
 # Testing Config-Web.toml ignored
 /web/Config-Web.toml
+/web/docker/Config-Web.toml
 
 #
 # Generic ignored files
@@ -213,4 +219,5 @@ fabric.properties
 
 venv
 __pycache__
+/**/Config-web.toml
 *.pyc

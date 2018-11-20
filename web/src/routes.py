@@ -1,12 +1,16 @@
 from flask import render_template, session, flash, redirect, url_for, abort, request, jsonify
 from src import app
+from functools import partial
 import pprint
 import logging
 from requests_oauthlib import OAuth2Session
 import os
 import toml
+import redis
 
 pp = pprint.PrettyPrinter(indent=4)
+
+r = redis.Redis(host='localhost', port=6379, db=0)
 
 gunicorn_logger = logging.getLogger('gunicorn.error')
 app.logger.handlers = gunicorn_logger.handlers
@@ -25,6 +29,31 @@ if 'http://' in REDIRECT_URI:
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = 'true'
 
 app.logger.setLevel(logging.INFO)
+
+
+def has_perm(perm_int: int, perm: int):
+    """
+    Returns whether user has specified permission
+    :param perm_int: permission int for the user (potentially different for each server)
+    :param perm: permission that we want to check for
+    :return: bool
+    """
+    return perm_int & perm
+
+
+def multi_perm(perm_int: int, wanted: list, op):
+    """
+    Checks for multiple permissions
+    :param perm_int: permission int for the user (potentially different for each server)
+    :param wanted: list of permissions (type: int) to check for
+    :param op: function to feed the list of bools, one for each permission, through (`any` or `all` for example)
+    :return: bool
+    """
+    return op(has_perm(perm_int, perm) for perm in wanted)
+
+
+perm_any = partial(multi_perm, op=any)
+perm_all = partial(multi_perm, op=all)
 
 
 def token_updater(token):
@@ -93,9 +122,19 @@ def discord_callback():
 def me():
     discord = make_session(token=session.get('oauth2_token'))
     user = discord.get(API_BASE_URL + '/users/@me').json()
-    # guilds = discord.get(API_BASE_URL + '/users/@me/guilds').json()
+    guilds = discord.get(API_BASE_URL + '/users/@me/guilds').json()
     # connections = discord.get(API_BASE_URL + '/users/@me/connections').json()
-    return jsonify(user=user)
+    out = f"""{pprint.pformat(user, indent=4)}\n{pprint.pformat(guilds, indent=4)}"""
+    # out = f"""<pre>{pprint.pformat(user, indent=4)}\n{pprint.pformat(guilds, indent=4)}</pre>"""
+    return render_template("blank.html", arg=out)
+
+
+@app.route("/view_db")
+def view_db():
+    if "username" not in session:
+        flash("You are not logged in!")
+        return redirect(url_for("index"))
+    return render_template("view_database.html", title="Database", db=r)
 
 
 @app.route('/logout')
@@ -106,6 +145,7 @@ def discord_logout():
     session.pop('discriminator', None)
     flash("Successfully logged out!")
     return redirect(url_for('index'))
+
 
 @app.route('/test')
 def hello_world():
