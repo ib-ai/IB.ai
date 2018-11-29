@@ -22,6 +22,7 @@
 package com.ibdiscord.command;
 
 import com.ibdiscord.command.commands.PingCommand;
+import com.ibdiscord.command.commands.TagCommand;
 import com.ibdiscord.command.commands.TestOptionsCommand;
 
 import lombok.Getter;
@@ -31,7 +32,8 @@ public enum CommandCollection {
     // Commands listed as enumerations.
     // COMMAND_NAME(new NameCommand());
     PING(new PingCommand()),
-    TEST_OPTIONS(new TestOptionsCommand());
+    TEST_OPTIONS(new TestOptionsCommand()),
+    TAG(new TagCommand());
 
     @Getter private final Command command;
 
