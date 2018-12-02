@@ -22,10 +22,8 @@
 package com.ibdiscord.command;
 
 import lombok.Getter;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.*;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -95,6 +93,10 @@ public final class CommandContext {
 
     public void reply(String message, Object... format) {
         channel.sendMessageFormat(message, (Object[]) format).queue(null, Throwable::printStackTrace);
+    }
+
+    public void reply(MessageEmbed message) {
+        channel.sendMessage(message);
     }
 
     CommandContext clone(String[] arguments) {
