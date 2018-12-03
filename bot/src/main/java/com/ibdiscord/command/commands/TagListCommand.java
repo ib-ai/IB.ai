@@ -24,8 +24,10 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -40,6 +42,12 @@ public final class TagListCommand extends Command {
 
     @Override
     protected void execute(CommandContext context) {
-        context.reply("List: " + "Options: %s, Arguments: %s", context.getOptions().toString(), Arrays.asList(context.getArguments()));
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Color.white);
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        embedBuilder.addField("List of Tags:", stringBuilder.toString(), false);
+        context.reply(embedBuilder.build());
     }
 }
