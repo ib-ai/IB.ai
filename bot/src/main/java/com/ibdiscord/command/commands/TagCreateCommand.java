@@ -24,6 +24,8 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.TagData;
 import com.ibdiscord.main.IBai;
 import net.dv8tion.jda.core.Permission;
 
@@ -71,6 +73,13 @@ public final class TagCreateCommand extends Command {
             }
         }
 
+        try {
+            TagData tags = new TagData();
+            tags.set(trigger, output);
+            IBai.getDatabase().getGravity().save(tags);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         context.reply("Create: Trigger = '" + trigger + "' and Output = '" + output + "'");
     }
 }

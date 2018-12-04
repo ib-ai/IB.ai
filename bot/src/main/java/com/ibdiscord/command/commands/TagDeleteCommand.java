@@ -24,6 +24,8 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.TagData;
 import com.ibdiscord.main.IBai;
 import net.dv8tion.jda.core.Permission;
 
@@ -51,6 +53,13 @@ public final class TagDeleteCommand extends Command {
             }
             String trigger = triggerBuilder.toString().split("\"")[1];
             context.reply("Are you sure you wanna delete the trigger: " + trigger);
+            try {
+                TagData tags = IBai.getDatabase().getGravity().load(new TagData());
+                tags.unset(trigger);
+                IBai.getDatabase().getGravity().save(tags);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
 
     }
