@@ -18,6 +18,7 @@ package com.ibdiscord.listeners;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.data.db.TagData;
 import com.ibdiscord.main.IBai;
 
 import net.dv8tion.jda.core.Permission;
@@ -25,6 +26,8 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.Set;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /** @author vardy, Arraying
@@ -41,6 +44,13 @@ public final class MessageListener extends ListenerAdapter {
         }
         // todo user input
         String message = event.getMessage().getContentRaw();
+
+        //TODO: accept wildcards by using REGEX
+        TagData tags = IBai.getDatabase().getGravity().load(new TagData());
+        if(tags.getKeys().contains(message)) {
+            event.getChannel().sendMessage(tags.get(message).toString()).queue();
+        }
+
         if(!message.startsWith(IBai.getConfig().getStaticPrefix())) {
             return;
         }
