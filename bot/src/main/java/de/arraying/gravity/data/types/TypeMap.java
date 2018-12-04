@@ -86,6 +86,14 @@ public abstract class TypeMap extends DataType {
     }
 
     /**
+     * Gets all the keys in the TypeMap.
+     * @return
+     */
+    public final Set<String> getKeys() {
+        return properties.keySet();
+    }
+
+    /**
      * Sets the property to a new value.
      * @param key The key.
      * @param value The value.
