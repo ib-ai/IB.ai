@@ -96,7 +96,7 @@ public final class CommandContext {
     }
 
     public void reply(MessageEmbed message) {
-        channel.sendMessage(message);
+        channel.sendMessage(message).queue();
     }
 
     CommandContext clone(String[] arguments) {
