@@ -40,7 +40,7 @@ public final class TagListCommand extends Command {
     public TagListCommand() {
         super("list",
                 new HashSet<String>(),
-                CommandPermission.discord(Permission.MANAGE_SERVER),
+                CommandPermission.discord(Permission.MANAGE_CHANNEL),
                 new HashSet<Command>());
     }
 
@@ -52,11 +52,10 @@ public final class TagListCommand extends Command {
         StringBuilder stringBuilder = new StringBuilder();
 
         try {
-            Set<String> keys = IBai.getDatabase().getGravity().load(new TagData()).getKeys();
+            Set<String> keys = IBai.getDatabase().getGravity().load(new TagData(context.getGuild().getId())).getKeys();
             for (String key : keys) {
-                stringBuilder.append(key).append(", ");
+                stringBuilder.append(stringBuilder.length() == 0 ? "" :  ", ").append(key);
             }
-            stringBuilder.deleteCharAt(stringBuilder.length()-1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

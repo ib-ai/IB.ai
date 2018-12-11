@@ -37,7 +37,7 @@ public final class TagCommand extends Command {
     public TagCommand() {
         super("tag",
                 new HashSet<String>(),
-                CommandPermission.discord(Permission.MANAGE_SERVER),
+                CommandPermission.discord(Permission.MANAGE_CHANNEL),
                 Stream.of(new TagListCommand(), new TagCreateCommand(), new TagDeleteCommand()).collect(Collectors.toSet()));
     }
 

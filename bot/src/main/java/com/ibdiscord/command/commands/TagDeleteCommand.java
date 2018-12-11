@@ -37,7 +37,7 @@ public final class TagDeleteCommand extends Command {
     public TagDeleteCommand() {
         super("delete",
                 new HashSet<String>(),
-                CommandPermission.discord(Permission.MANAGE_SERVER),
+                CommandPermission.discord(Permission.MANAGE_CHANNEL),
                 new HashSet<Command>());
     }
 
@@ -54,7 +54,7 @@ public final class TagDeleteCommand extends Command {
             String trigger = triggerBuilder.toString().split("\"")[1];
             context.reply("Are you sure you wanna delete the trigger: " + trigger);
             try {
-                TagData tags = IBai.getDatabase().getGravity().load(new TagData());
+                TagData tags = IBai.getDatabase().getGravity().load(new TagData(context.getGuild().getId()));
                 tags.unset(trigger);
                 IBai.getDatabase().getGravity().save(tags);
             } catch (Exception e) {

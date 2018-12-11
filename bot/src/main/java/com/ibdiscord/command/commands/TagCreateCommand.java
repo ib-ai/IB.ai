@@ -37,7 +37,7 @@ public final class TagCreateCommand extends Command {
     public TagCreateCommand() {
         super("create",
                 new HashSet<String>(),
-                CommandPermission.discord(Permission.MANAGE_SERVER),
+                CommandPermission.discord(Permission.MANAGE_CHANNEL),
                 new HashSet<Command>());
     }
 
@@ -74,7 +74,7 @@ public final class TagCreateCommand extends Command {
         }
 
         try {
-            TagData tags = new TagData();
+            TagData tags = IBai.getDatabase().getGravity().load(new TagData(context.getGuild().getId()));
             tags.set(trigger, output);
             IBai.getDatabase().getGravity().save(tags);
         } catch (Exception e) {
