@@ -43,6 +43,7 @@ public final class TagCommand extends Command {
 
     @Override
     protected void execute(CommandContext context) {
-        context.reply("Correct usage: `" + IBai.getConfig().getStaticPrefix() + "tag [list/create/delete] \"[trigger]\" \"[output]\"`");
+        String botPrefix = IBai.getConfig().getStaticPrefix();
+        context.reply("Correct usage: `" + botPrefix + "tag [list/create/delete] \"[trigger]\" \"[output]\"`");
     }
 }
