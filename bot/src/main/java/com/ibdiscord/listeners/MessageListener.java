@@ -46,7 +46,7 @@ public final class MessageListener extends ListenerAdapter {
         String message = event.getMessage().getContentRaw();
 
         //TODO: accept wildcards by using REGEX
-        TagData tags = IBai.getDatabase().getGravity().load(new TagData());
+        TagData tags = IBai.getDatabase().getGravity().load(new TagData(event.getGuild().getId()));
         if(tags.getKeys().contains(message)) {
             event.getChannel().sendMessage(tags.get(message).toString()).queue();
         }
