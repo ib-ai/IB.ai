@@ -12,6 +12,6 @@ public class ModLogData extends TypeValue {
 
     @Override
     protected String getUniqueIdentifier() {
-        return "guild_" + this.guildID + "_modLogID ";
+        return "guild_" + this.guildID + "_modLogID";
     }
 }

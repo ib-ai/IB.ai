@@ -14,6 +14,6 @@ public class TagData extends TypeMap {
 
     @Override
     protected String getUniqueIdentifier() {
-        return "guild_" + this.guildID + "_tags ";
+        return "guild_" + this.guildID + "_tags";
     }
 }
