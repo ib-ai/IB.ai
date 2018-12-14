@@ -33,7 +33,8 @@ public enum CommandCollection {
     TEST_OPTIONS(new TestOptionsCommand()),
     TAG(new TagCommand()),
     HELP(new HelpCommand()),
-    MOD_LOG(new ModLogCommand());
+    MOD_LOG(new ModLogCommand()),
+    KICK(new KickCommand());
 
     @Getter private final Command command;
 
