@@ -36,5 +36,6 @@ public final class StartDatabase extends AbstractStartupTask {
     public void doTask() throws Exception {
         IBai.setDatabase(DContainer.INSTANCE);
         DContainer.connect();
+        //TODO: Set up defaults if required
     }
 }
