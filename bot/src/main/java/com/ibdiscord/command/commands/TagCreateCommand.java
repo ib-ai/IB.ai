@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Arraying
+ * Copyright 2018 raynichc
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 
 /**
- * @author Arraying
- * @since 2018.09.17
+ * @author raynichc
+ * @since 2018.11.29
  */
 
 package com.ibdiscord.command.commands;
