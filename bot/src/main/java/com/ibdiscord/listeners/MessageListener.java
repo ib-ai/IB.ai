@@ -18,6 +18,8 @@ package com.ibdiscord.listeners;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.data.db.BotPrefixData;
+import com.ibdiscord.data.db.TagData;
 import com.ibdiscord.main.IBai;
 
 import net.dv8tion.jda.core.Permission;
@@ -25,6 +27,8 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.Set;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /** @author vardy, Arraying
@@ -41,10 +45,23 @@ public final class MessageListener extends ListenerAdapter {
         }
         // todo user input
         String message = event.getMessage().getContentRaw();
-        if(!message.startsWith(IBai.getConfig().getStaticPrefix())) {
+
+        //TODO: accept wildcards by using REGEX
+        TagData tags = IBai.getDatabase().getGravity().load(new TagData(event.getGuild().getId()));
+        if(tags.getKeys().contains(message)) {
+            event.getChannel().sendMessage(tags.get(message).toString()).queue();
+        }
+
+        String botPrefix = IBai.getConfig().getStaticPrefix();
+        try {
+            botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(event.getGuild().getId())).get().toString();
+        } catch(Exception e) {
+        }
+
+        if(!message.startsWith(botPrefix)) {
             return;
         }
-        message = message.substring(IBai.getConfig().getStaticPrefix().length()).replaceAll(" +", " ");
+        message = message.substring(botPrefix.length()).replaceAll(" +", " ");
         String[] arguments = message.split(" ");
         String commandName = arguments[0].toLowerCase();
         Command command = Command.find(null, commandName);
