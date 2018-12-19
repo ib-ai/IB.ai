@@ -34,7 +34,8 @@ public enum CommandCollection {
     TAG(new TagCommand()),
     HELP(new HelpCommand()),
     MOD_LOG(new ModLogCommand()),
-    KICK(new KickCommand());
+    KICK(new KickCommand()),
+    SET_PREFIX(new SetPrefixCommand());
 
     @Getter private final Command command;
 
