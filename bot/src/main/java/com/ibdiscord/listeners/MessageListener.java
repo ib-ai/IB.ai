@@ -18,6 +18,7 @@ package com.ibdiscord.listeners;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.data.db.BotPrefixData;
 import com.ibdiscord.data.db.TagData;
 import com.ibdiscord.main.IBai;
 
@@ -51,10 +52,16 @@ public final class MessageListener extends ListenerAdapter {
             event.getChannel().sendMessage(tags.get(message).toString()).queue();
         }
 
-        if(!message.startsWith(IBai.getConfig().getStaticPrefix())) {
+        String botPrefix = IBai.getConfig().getStaticPrefix();
+        try {
+            botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(event.getGuild().getId())).get().toString();
+        } catch(Exception e) {
+        }
+
+        if(!message.startsWith(botPrefix)) {
             return;
         }
-        message = message.substring(IBai.getConfig().getStaticPrefix().length()).replaceAll(" +", " ");
+        message = message.substring(botPrefix.length()).replaceAll(" +", " ");
         String[] arguments = message.split(" ");
         String commandName = arguments[0].toLowerCase();
         Command command = Command.find(null, commandName);

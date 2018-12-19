@@ -26,6 +26,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.BannedUserData;
 import com.ibdiscord.data.db.BansData;
+import com.ibdiscord.data.db.BotPrefixData;
 import com.ibdiscord.data.db.ModLogData;
 import com.ibdiscord.main.IBai;
 import net.dv8tion.jda.core.Permission;
@@ -45,8 +46,11 @@ public final class KickCommand extends Command {
 
     @Override
     protected void execute(CommandContext context) {
-        //TODO: Replace with guild specific prefix via db call
         String botPrefix = IBai.getConfig().getStaticPrefix();
+        try {
+            botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
+        } catch(Exception e){
+        }
         if (context.getArguments().length == 0) {
             context.reply("Correct usage: `" + botPrefix + "Kick @User` or `" + botPrefix + "Kick [UserID]`");
             return;

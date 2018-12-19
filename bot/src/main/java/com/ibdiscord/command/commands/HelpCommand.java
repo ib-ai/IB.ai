@@ -24,6 +24,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.BotPrefixData;
 import com.ibdiscord.main.IBai;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
@@ -44,8 +45,11 @@ public class HelpCommand extends Command {
     }
     @Override
     protected void execute(CommandContext context) {
-        //TODO: Replace with guild specific prefix via db call
         String botPrefix = IBai.getConfig().getStaticPrefix();
+        try {
+            botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
+        } catch(Exception e){
+        }
 
         EmbedBuilder ebHelpMenu = new EmbedBuilder();
         ebHelpMenu.setColor(Color.white);

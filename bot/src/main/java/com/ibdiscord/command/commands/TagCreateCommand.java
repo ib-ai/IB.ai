@@ -24,6 +24,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.BotPrefixData;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.TagData;
 import com.ibdiscord.main.IBai;
@@ -44,8 +45,12 @@ public final class TagCreateCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length < 2) {
-            //TODO: Replace with guild specific prefix via db call
-            context.reply("Correct usage: `" + IBai.getConfig().getStaticPrefix() + "tag create \"[trigger]\" \"[output]\"`");
+            String botPrefix = IBai.getConfig().getStaticPrefix();
+            try {
+                botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
+            } catch(Exception e) {
+            }
+            context.reply("Correct usage: `" + botPrefix + "tag create \"[trigger]\" \"[output]\"`");
             return;
         }
         StringBuilder argumentBuilder = new StringBuilder();
