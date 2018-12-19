@@ -44,6 +44,7 @@ public final class TagCreateCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length < 2) {
+            //TODO: Replace with guild specific prefix via db call
             context.reply("Correct usage: `" + IBai.getConfig().getStaticPrefix() + "tag create \"[trigger]\" \"[output]\"`");
             return;
         }
@@ -80,6 +81,5 @@ public final class TagCreateCommand extends Command {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        context.reply("Create: Trigger = '" + trigger + "' and Output = '" + output + "'");
     }
 }

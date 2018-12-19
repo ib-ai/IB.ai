@@ -45,6 +45,7 @@ public final class TagDeleteCommand extends Command {
     protected void execute(CommandContext context) {
 
         if (context.getArguments().length == 0) {
+            //TODO: Replace with guild specific prefix via db call
             context.reply("Correct usage: `" + IBai.getConfig().getStaticPrefix() + "tag delete \"[trigger]\"`");
         } else {
             StringBuilder triggerBuilder = new StringBuilder();
@@ -52,7 +53,6 @@ public final class TagDeleteCommand extends Command {
                 triggerBuilder.append(message);
             }
             String trigger = triggerBuilder.toString().split("\"")[1];
-            context.reply("Are you sure you wanna delete the trigger: " + trigger);
             try {
                 TagData tags = IBai.getDatabase().getGravity().load(new TagData(context.getGuild().getId()));
                 tags.unset(trigger);

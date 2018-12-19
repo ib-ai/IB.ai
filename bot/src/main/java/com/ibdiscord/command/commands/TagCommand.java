@@ -43,6 +43,7 @@ public final class TagCommand extends Command {
 
     @Override
     protected void execute(CommandContext context) {
+        //TODO: Replace with guild specific prefix via db call
         String botPrefix = IBai.getConfig().getStaticPrefix();
         context.reply("Correct usage: `" + botPrefix + "tag [list/create/delete] \"[trigger]\" \"[output]\"`");
     }

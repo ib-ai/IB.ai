@@ -44,6 +44,7 @@ public class HelpCommand extends Command {
     }
     @Override
     protected void execute(CommandContext context) {
+        //TODO: Replace with guild specific prefix via db call
         String botPrefix = IBai.getConfig().getStaticPrefix();
 
         EmbedBuilder ebHelpMenu = new EmbedBuilder();

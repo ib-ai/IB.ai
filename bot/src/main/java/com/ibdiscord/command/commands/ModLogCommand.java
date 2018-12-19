@@ -42,6 +42,7 @@ public class ModLogCommand extends Command {
     }
     @Override
     protected void execute(CommandContext context) {
+        //TODO: Replace with guild specific prefix via db call
         String botPrefix = IBai.getConfig().getStaticPrefix();
         if (context.getArguments().length != 1) {
             context.reply("Correct usage: `" + botPrefix + "SetModLog [ModLog Channel ID]`");
