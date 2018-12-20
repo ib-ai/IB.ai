@@ -146,6 +146,10 @@
             <name>jcenter-bintray</name>
             <url>http://jcenter.bintray.com</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <!-- Dependency declarations -->
@@ -196,6 +200,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vardy</groupId>
+            <artifactId>Gravity</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 </project>
