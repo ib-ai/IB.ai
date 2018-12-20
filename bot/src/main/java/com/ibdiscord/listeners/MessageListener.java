@@ -41,7 +41,7 @@ public final class MessageListener extends ListenerAdapter {
                 || !event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_WRITE)) {
             return;
         }
-        // todo user input
+        //TODO: user input
         String message = event.getMessage().getContentRaw();
 
         //TODO: accept wildcards by using REGEX
