@@ -22,10 +22,10 @@
 package com.ibdiscord.command;
 
 import lombok.Getter;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.*;
 
 import org.apache.commons.lang3.ArrayUtils;
+
+import net.dv8tion.jda.core.entities.*;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;

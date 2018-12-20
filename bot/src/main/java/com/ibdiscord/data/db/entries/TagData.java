@@ -23,8 +23,6 @@ package com.ibdiscord.data.db.entries;
 
 import de.arraying.gravity.data.types.TypeMap;
 
-import java.util.Set;
-
 public class TagData extends TypeMap {
 
     private String guildID;

@@ -19,11 +19,12 @@ package com.ibdiscord.data.db;
 import com.ibdiscord.main.IBai;
 
 import de.arraying.gravity.Gravity;
+
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.api.sync.RedisCommands;
+
 import lombok.Getter;
 
 import static java.lang.Math.toIntExact;

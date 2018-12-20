@@ -22,6 +22,7 @@
 package com.ibdiscord.data.db;
 
 import de.arraying.gravity.GravityProvider;
+
 import io.lettuce.core.api.sync.RedisCommands;
 
 import java.util.HashSet;
