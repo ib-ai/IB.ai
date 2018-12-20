@@ -202,9 +202,9 @@
             <version>3.8</version>
         </dependency>
         <dependency>
-            <groupId>com.github.vardy</groupId>
+            <groupId>com.github.Arraying</groupId>
             <artifactId>Gravity</artifactId>
-            <version>1.0.0</version>
+            <version>2b2ed728501f15a2a9baf654981a24fcc04f5187</version>
         </dependency>
     </dependencies>
 </project>
