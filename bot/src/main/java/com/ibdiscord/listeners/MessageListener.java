@@ -50,6 +50,7 @@ public final class MessageListener extends ListenerAdapter {
             event.getChannel().sendMessage(tags.get(message).toString()).queue();
         }
 
+        //TODO: change bot prefix usage project-wide to use guild-specific prefices instead of static prefix.
         String botPrefix = IBai.getConfig().getStaticPrefix();
         try {
             botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(event.getGuild().getId())).get().toString();
