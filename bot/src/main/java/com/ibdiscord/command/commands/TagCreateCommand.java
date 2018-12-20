@@ -83,7 +83,7 @@ public final class TagCreateCommand extends Command {
             tags.set(trigger, output);
             IBai.getDatabase().getGravity().save(tags);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

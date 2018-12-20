@@ -56,7 +56,7 @@ public final class TagListCommand extends Command {
                 stringBuilder.append(stringBuilder.length() == 0 ? "" :  ", ").append(key);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         embedBuilder.addField("List of Tags:", stringBuilder.toString(), false);

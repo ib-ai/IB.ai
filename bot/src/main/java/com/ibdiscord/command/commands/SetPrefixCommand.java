@@ -63,7 +63,7 @@ public class SetPrefixCommand extends Command {
             botPrefixData.set(prefix);
             IBai.getDatabase().getGravity().save(botPrefixData);
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

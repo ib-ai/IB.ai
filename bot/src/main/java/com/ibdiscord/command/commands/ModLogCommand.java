@@ -64,7 +64,7 @@ public class ModLogCommand extends Command {
             modLogID.set(channelID);
             IBai.getDatabase().getGravity().save(modLogID);
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

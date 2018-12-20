@@ -62,7 +62,7 @@ public final class TagDeleteCommand extends Command {
                 tags.unset(trigger);
                 IBai.getDatabase().getGravity().save(tags);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
 
