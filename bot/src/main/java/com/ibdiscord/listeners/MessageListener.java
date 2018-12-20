@@ -18,8 +18,8 @@ package com.ibdiscord.listeners;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.data.db.BotPrefixData;
-import com.ibdiscord.data.db.TagData;
+import com.ibdiscord.data.db.entries.BotPrefixData;
+import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.main.IBai;
 
 import net.dv8tion.jda.core.Permission;
@@ -27,8 +27,6 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.Set;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /** @author vardy, Arraying

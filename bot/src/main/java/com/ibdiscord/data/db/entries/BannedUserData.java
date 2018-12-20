@@ -19,7 +19,7 @@
  * @since 2018.11.29
  */
 
-package com.ibdiscord.data.db;
+package com.ibdiscord.data.db.entries;
 
 import de.arraying.gravity.data.types.TypeMap;
 

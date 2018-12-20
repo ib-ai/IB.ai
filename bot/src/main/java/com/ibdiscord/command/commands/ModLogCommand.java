@@ -24,13 +24,11 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.BotPrefixData;
-import com.ibdiscord.data.db.ModLogData;
+import com.ibdiscord.data.db.entries.BotPrefixData;
+import com.ibdiscord.data.db.entries.ModLogData;
 import com.ibdiscord.main.IBai;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 
-import java.awt.*;
 import java.util.HashSet;
 
 public class ModLogCommand extends Command {

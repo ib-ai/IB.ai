@@ -16,23 +16,23 @@
 
 /**
  * @author raynichc
- * @since 2018.12.19
+ * @since 2018.11.29
  */
 
-package com.ibdiscord.data.db;
+package com.ibdiscord.data.db.entries;
 
 import de.arraying.gravity.data.types.TypeValue;
 
-public class BotPrefixData extends TypeValue {
+public class ModLogData extends TypeValue {
 
     private String guildID;
 
-    public BotPrefixData(String guildID) {
+    public ModLogData(String guildID) {
         this.guildID = guildID;
     }
 
     @Override
     protected String getUniqueIdentifier() {
-        return "guild_" + this.guildID + "_botPrefix";
+        return "guild_" + this.guildID + "_modLogID";
     }
 }

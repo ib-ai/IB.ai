@@ -19,20 +19,22 @@
  * @since 2018.11.29
  */
 
-package com.ibdiscord.data.db;
+package com.ibdiscord.data.db.entries;
 
-import de.arraying.gravity.data.types.TypeValue;
+import de.arraying.gravity.data.types.TypeMap;
 
-public class ModLogData extends TypeValue {
+import java.util.Set;
+
+public class TagData extends TypeMap {
 
     private String guildID;
 
-    public ModLogData(String guildID) {
+    public TagData(String guildID) {
         this.guildID = guildID;
     }
 
     @Override
     protected String getUniqueIdentifier() {
-        return "guild_" + this.guildID + "_modLogID";
+        return "guild_" + this.guildID + "_tags";
     }
 }

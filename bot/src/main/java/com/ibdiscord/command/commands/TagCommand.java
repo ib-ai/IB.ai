@@ -24,11 +24,10 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.BotPrefixData;
+import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.main.IBai;
 import net.dv8tion.jda.core.Permission;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
