@@ -33,7 +33,7 @@ import net.dv8tion.jda.core.Permission;
 
 import java.util.HashSet;
 
-public class ModLogCommand extends Command {
+public final class ModLogCommand extends Command {
 
     public ModLogCommand() {
         super("setmodlog",

@@ -33,7 +33,7 @@ import net.dv8tion.jda.core.Permission;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class SetPrefixCommand extends Command {
+public final class SetPrefixCommand extends Command {
 
     public SetPrefixCommand() {
         super("setprefix",

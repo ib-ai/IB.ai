@@ -23,7 +23,7 @@ package com.ibdiscord.data.db.entries;
 
 import de.arraying.gravity.data.types.TypeValue;
 
-public class ModLogData extends TypeValue {
+public final class ModLogData extends TypeValue {
 
     private String guildID;
 

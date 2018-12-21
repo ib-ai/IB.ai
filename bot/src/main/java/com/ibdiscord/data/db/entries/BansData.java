@@ -23,7 +23,7 @@ package com.ibdiscord.data.db.entries;
 
 import de.arraying.gravity.data.types.TypeSet;
 
-public class BansData extends TypeSet {
+public final class BansData extends TypeSet {
 
     private String guildID;
 

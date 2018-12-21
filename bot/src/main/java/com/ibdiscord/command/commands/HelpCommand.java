@@ -33,7 +33,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import java.awt.*;
 import java.util.HashSet;
 
-public class HelpCommand extends Command {
+public final class HelpCommand extends Command {
 
     public HelpCommand() {
         super("help",

@@ -23,7 +23,7 @@ package com.ibdiscord.data.db.entries;
 
 import de.arraying.gravity.data.types.TypeMap;
 
-public class BannedUserData extends TypeMap {
+public final class BannedUserData extends TypeMap {
 
     private String userID;
 

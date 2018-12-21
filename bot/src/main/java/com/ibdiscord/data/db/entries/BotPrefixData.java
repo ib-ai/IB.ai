@@ -23,7 +23,7 @@ package com.ibdiscord.data.db.entries;
 
 import de.arraying.gravity.data.types.TypeValue;
 
-public class BotPrefixData extends TypeValue {
+public final class BotPrefixData extends TypeValue {
 
     private String guildID;
 

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DProvider implements GravityProvider {
+public final class DProvider implements GravityProvider {
     private final RedisCommands sync;
 
     public DProvider() {
