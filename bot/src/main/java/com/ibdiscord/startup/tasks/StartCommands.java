@@ -32,7 +32,7 @@ public final class StartCommands extends AbstractStartupTask {
     }
 
     @Override
-    public void doTask() throws Exception {
+    public void doTask() {
         Command.init();
     }
 

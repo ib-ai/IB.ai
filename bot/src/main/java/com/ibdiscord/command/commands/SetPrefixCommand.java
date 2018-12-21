@@ -24,6 +24,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.main.IBai;
 
@@ -44,7 +45,7 @@ public class SetPrefixCommand extends Command {
     protected void execute(CommandContext context) {
         String botPrefix = IBai.getConfig().getStaticPrefix();
         try {
-            botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
+            botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
         } catch(Exception e){
         }
         if(context.getArguments().length != 1) {
@@ -61,7 +62,7 @@ public class SetPrefixCommand extends Command {
         try {
             BotPrefixData botPrefixData = new BotPrefixData(context.getGuild().getId());
             botPrefixData.set(prefix);
-            IBai.getDatabase().getGravity().save(botPrefixData);
+            DContainer.getGravity().save(botPrefixData);
         } catch(Exception e) {
             e.printStackTrace();
         }

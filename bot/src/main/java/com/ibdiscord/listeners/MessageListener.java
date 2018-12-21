@@ -18,6 +18,7 @@ package com.ibdiscord.listeners;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.main.IBai;
@@ -46,7 +47,7 @@ public final class MessageListener extends ListenerAdapter {
         String message = event.getMessage().getContentRaw();
 
         //TODO: accept wildcards by using REGEX
-        TagData tags = IBai.getDatabase().getGravity().load(new TagData(event.getGuild().getId()));
+        TagData tags = DContainer.getGravity().load(new TagData(event.getGuild().getId()));
         Property tagValueAsProperty = tags.get(message);
         if(tagValueAsProperty != null) {
             event.getChannel().sendMessage(tagValueAsProperty.toString()).queue();
@@ -55,7 +56,7 @@ public final class MessageListener extends ListenerAdapter {
         //TODO: change bot prefix usage project-wide to use guild-specific prefices instead of static prefix.
         String botPrefix = IBai.getConfig().getStaticPrefix();
         try {
-            botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(event.getGuild().getId())).get().toString();
+            botPrefix = DContainer.getGravity().load(new BotPrefixData(event.getGuild().getId())).get().toString();
         } catch(Exception e) {
             e.printStackTrace();
         }

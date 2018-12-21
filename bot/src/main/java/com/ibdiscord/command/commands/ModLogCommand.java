@@ -24,6 +24,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.data.db.entries.ModLogData;
 import com.ibdiscord.main.IBai;
@@ -44,7 +45,7 @@ public class ModLogCommand extends Command {
     protected void execute(CommandContext context) {
         String botPrefix = IBai.getConfig().getStaticPrefix();
         try {
-            botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
+            botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -63,7 +64,7 @@ public class ModLogCommand extends Command {
         try {
             ModLogData modLogID = new ModLogData(context.getGuild().getId());
             modLogID.set(channelID);
-            IBai.getDatabase().getGravity().save(modLogID);
+            DContainer.getGravity().save(modLogID);
         } catch(Exception e) {
             e.printStackTrace();
         }

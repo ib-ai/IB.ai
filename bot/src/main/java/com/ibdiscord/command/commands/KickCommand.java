@@ -24,6 +24,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BannedUserData;
 import com.ibdiscord.data.db.entries.BansData;
 import com.ibdiscord.data.db.entries.BotPrefixData;
@@ -49,7 +50,7 @@ public final class KickCommand extends Command {
     protected void execute(CommandContext context) {
         String botPrefix = IBai.getConfig().getStaticPrefix();
         try {
-            botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
+            botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
         } catch(Exception e){
         }
         if (context.getArguments().length == 0) {
@@ -72,11 +73,11 @@ public final class KickCommand extends Command {
 
         context.getGuild().getController().kick(userToKick.getId()).queue();
 
-        ModLogData modLog = IBai.getDatabase().getGravity().load(new ModLogData(context.getGuild().getId()));
+        ModLogData modLog = DContainer.getGravity().load(new ModLogData(context.getGuild().getId()));
         if(!modLog.get().asString().equals("000")) {
             BansData bans;
             try {
-                bans = IBai.getDatabase().getGravity().load(new BansData(context.getGuild().getId()));
+                bans = DContainer.getGravity().load(new BansData(context.getGuild().getId()));
             } catch(Exception e) {
                 bans = new BansData(context.getGuild().getId());
             }
@@ -103,7 +104,7 @@ public final class KickCommand extends Command {
             context.getGuild().getTextChannelById(modLogChannelID).sendMessage(kickMessage).queue(owo ->
                     bannedUser.set("banLogID", owo.getId())
             );
-            IBai.getDatabase().getGravity().save(bannedUser);
+            DContainer.getGravity().save(bannedUser);
         }
 
     }

@@ -24,6 +24,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.main.IBai;
@@ -46,7 +47,7 @@ public final class TagCreateCommand extends Command {
         if(context.getArguments().length < 2) {
             String botPrefix = IBai.getConfig().getStaticPrefix();
             try {
-                botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
+                botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
             } catch(Exception e) {
             }
             context.reply("Correct usage: `" + botPrefix + "tag create \"[trigger]\" \"[output]\"`");
@@ -79,9 +80,9 @@ public final class TagCreateCommand extends Command {
         }
 
         try {
-            TagData tags = IBai.getDatabase().getGravity().load(new TagData(context.getGuild().getId()));
+            TagData tags = DContainer.getGravity().load(new TagData(context.getGuild().getId()));
             tags.set(trigger, output);
-            IBai.getDatabase().getGravity().save(tags);
+            DContainer.getGravity().save(tags);
         } catch (Exception e) {
             e.printStackTrace();
         }

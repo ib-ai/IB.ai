@@ -24,6 +24,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.main.IBai;
 
@@ -51,7 +52,7 @@ public final class TagListCommand extends Command {
         StringBuilder stringBuilder = new StringBuilder();
 
         try {
-            Set<String> keys = IBai.getDatabase().getGravity().load(new TagData(context.getGuild().getId())).getKeys();
+            Set<String> keys = DContainer.getGravity().load(new TagData(context.getGuild().getId())).getKeys();
             for (String key : keys) {
                 stringBuilder.append(stringBuilder.length() == 0 ? "" :  ", ").append(key);
             }
