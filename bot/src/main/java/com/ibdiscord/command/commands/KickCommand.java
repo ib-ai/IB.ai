@@ -70,7 +70,7 @@ public final class KickCommand extends Command {
             }
         }
 
-        context.getGuild().getController().kick(userToKick.getId()).complete();
+        context.getGuild().getController().kick(userToKick.getId()).queue();
 
         ModLogData modLog = IBai.getDatabase().getGravity().load(new ModLogData(context.getGuild().getId()));
         if(!modLog.get().asString().equals("000")) {
@@ -100,7 +100,9 @@ public final class KickCommand extends Command {
                     "**Moderator: **" + modUserName + " (ID: " + modUserID + ")\n" +
                     "**Reason: ** Use `" + botPrefix + "Reason [Case Number]` to append a reason.";
 
-            context.getGuild().getTextChannelById(modLogChannelID).sendMessage(kickMessage).queue(owo -> bannedUser.set("banLogID", owo.getId()));
+            context.getGuild().getTextChannelById(modLogChannelID).sendMessage(kickMessage).queue(owo ->
+                    bannedUser.set("banLogID", owo.getId())
+            );
             IBai.getDatabase().getGravity().save(bannedUser);
         }
 
