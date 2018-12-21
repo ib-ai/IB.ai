@@ -49,6 +49,7 @@ public final class TagDeleteCommand extends Command {
             try {
                 botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
             } catch(Exception e) {
+                e.printStackTrace();
             }
             context.reply("Correct usage: `" + botPrefix + "tag delete \"[trigger]\"`");
         } else {
