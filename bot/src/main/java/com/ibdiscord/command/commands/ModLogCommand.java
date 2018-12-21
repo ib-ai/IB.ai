@@ -46,6 +46,7 @@ public class ModLogCommand extends Command {
         try {
             botPrefix = IBai.getDatabase().getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
         } catch(Exception e){
+            e.printStackTrace();
         }
         if (context.getArguments().length != 1) {
             context.reply("Correct usage: `" + botPrefix + "SetModLog [ModLog Channel ID]`");
