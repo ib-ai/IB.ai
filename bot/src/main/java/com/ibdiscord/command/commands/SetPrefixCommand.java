@@ -41,12 +41,14 @@ public final class SetPrefixCommand extends Command {
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 new HashSet<>());
     }
+    
     @Override
     protected void execute(CommandContext context) {
         String botPrefix = IBai.getConfig().getStaticPrefix();
         try {
             botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
         } catch(Exception e){
+            e.printStackTrace();
         }
         if(context.getArguments().length != 1) {
             context.reply("Correct usage: `" + botPrefix + "SetPrefix [Prefix]`");
