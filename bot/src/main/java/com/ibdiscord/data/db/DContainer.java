@@ -18,11 +18,13 @@ package com.ibdiscord.data.db;
 
 import com.ibdiscord.main.IBai;
 
+import de.arraying.gravity.Gravity;
+
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.api.sync.RedisCommands;
+
 import lombok.Getter;
 
 import static java.lang.Math.toIntExact;
@@ -41,6 +43,7 @@ public enum DContainer {
 
     @Getter private static StatefulRedisConnection<String, String> connection;
     @Getter private static RedisCommands sync;
+    @Getter private static Gravity gravity;
 
     public static void connect() {
         String dbIP = IBai.getConfig().getDbIP();
@@ -61,5 +64,6 @@ public enum DContainer {
         connection = client.connect(); //Establishing the connection
 
         sync = connection.sync();
+        gravity = new Gravity(new DProvider());
     }
 }

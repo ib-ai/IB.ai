@@ -22,5 +22,5 @@ package com.ibdiscord.modularity;
  * @since 2018.09.16
  */
 
-public class ModuleRegister {
+public final class ModuleRegister {
 }

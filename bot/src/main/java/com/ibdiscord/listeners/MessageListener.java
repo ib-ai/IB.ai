@@ -18,8 +18,12 @@ package com.ibdiscord.listeners;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.BotPrefixData;
+import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.main.IBai;
 
+import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -39,12 +43,28 @@ public final class MessageListener extends ListenerAdapter {
                 || !event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_WRITE)) {
             return;
         }
-        // todo user input
+        //TODO: user input
         String message = event.getMessage().getContentRaw();
-        if(!message.startsWith(IBai.getConfig().getStaticPrefix())) {
+
+        //TODO: accept wildcards by using REGEX
+        TagData tags = DContainer.getGravity().load(new TagData(event.getGuild().getId()));
+        Property tagValueAsProperty = tags.get(message);
+        if(tagValueAsProperty != null) {
+            event.getChannel().sendMessage(tagValueAsProperty.toString()).queue();
+        }
+
+        //TODO: change bot prefix usage project-wide to use guild-specific prefices instead of static prefix.
+        String botPrefix = IBai.getConfig().getStaticPrefix();
+        try {
+            botPrefix = DContainer.getGravity().load(new BotPrefixData(event.getGuild().getId())).get().toString();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        if(!message.startsWith(botPrefix)) {
             return;
         }
-        message = message.substring(IBai.getConfig().getStaticPrefix().length()).replaceAll(" +", " ");
+        message = message.substring(botPrefix.length()).replaceAll(" +", " ");
         String[] arguments = message.split(" ");
         String commandName = arguments[0].toLowerCase();
         Command command = Command.find(null, commandName);

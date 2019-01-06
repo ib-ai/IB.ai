@@ -33,8 +33,9 @@ public final class StartDatabase extends AbstractStartupTask {
     }
 
     @Override
-    public void doTask() throws Exception {
+    public void doTask() {
         IBai.setDatabase(DContainer.INSTANCE);
         DContainer.connect();
+        //TODO: Set up defaults if required
     }
 }
