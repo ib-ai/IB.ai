@@ -19,7 +19,7 @@
  * @since 2018.11.29
  */
 
-package com.ibdiscord.command.commands;
+package com.ibdiscord.command.commands.tag;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
@@ -27,7 +27,6 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.main.IBai;
-
 import net.dv8tion.jda.core.Permission;
 
 import java.util.HashSet;

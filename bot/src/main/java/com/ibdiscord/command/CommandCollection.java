@@ -22,20 +22,23 @@
 package com.ibdiscord.command;
 
 import com.ibdiscord.command.commands.*;
-
+import com.ibdiscord.command.commands.tag.TagCommand;
 import lombok.Getter;
 
 public enum CommandCollection {
 
     // Commands listed as enumerations.
     // COMMAND_NAME(new NameCommand());
-    PING(new PingCommand()),
-    TEST_OPTIONS(new TestOptionsCommand()),
-    TAG(new TagCommand()),
+    // Have the decency to put them in alphabetical order you imbeciles.
+    ECHO(new EchoCommand()),
+    EVAL(new EvalCommand()),
     HELP(new HelpCommand()),
-    MOD_LOG(new ModLogCommand()),
     KICK(new KickCommand()),
-    SET_PREFIX(new SetPrefixCommand());
+    MOD_LOG(new ModLogCommand()),
+    PING(new PingCommand()),
+    SET_PREFIX(new SetPrefixCommand()),
+    TAG(new TagCommand()),
+    TEST_OPTIONS(new TestOptionsCommand());
 
     @Getter private final Command command;
 

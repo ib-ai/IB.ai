@@ -17,7 +17,6 @@
 package com.ibdiscord.data;
 
 import com.moandjiezana.toml.Toml;
-
 import lombok.Getter;
 
 import java.io.File;
@@ -30,6 +29,9 @@ import java.util.List;
 
 public final class LocalConfig {
 
+    /**
+     * The local configuration path.
+     */
     private static final String LOCAL_PATH = "Config.toml";
 
     private static Toml config;
@@ -56,7 +58,10 @@ public final class LocalConfig {
         this.init();
     }
 
-
+    /**
+     * Initializes the config.
+     * TODO: Add CLI
+     */
     private void init() {
         // Initialising values
         botName = config.getString("bot_name");

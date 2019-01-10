@@ -19,7 +19,7 @@
  * @since 2018.11.29
  */
 
-package com.ibdiscord.command.commands;
+package com.ibdiscord.command.commands.tag;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
@@ -28,7 +28,6 @@ import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.main.IBai;
-
 import net.dv8tion.jda.core.Permission;
 
 import java.util.HashSet;
@@ -37,9 +36,9 @@ public final class TagCreateCommand extends Command {
 
     public TagCreateCommand() {
         super("create",
-                new HashSet<String>(),
+                new HashSet<>(),
                 CommandPermission.discord(Permission.MANAGE_CHANNEL),
-                new HashSet<Command>());
+                new HashSet<>());
     }
 
     @Override

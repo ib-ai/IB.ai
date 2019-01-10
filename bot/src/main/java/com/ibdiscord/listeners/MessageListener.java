@@ -22,12 +22,16 @@ import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.main.IBai;
-
 import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.audit.ActionType;
+import net.dv8tion.jda.core.audit.AuditLogEntry;
+import net.dv8tion.jda.core.events.guild.GuildBanEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-
 import org.apache.commons.lang3.ArrayUtils;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -37,9 +41,14 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public final class MessageListener extends ListenerAdapter {
 
+    /**
+     * When an message is sent in a guild channel (because DMs are boring).
+     * @param event The event instance.
+     */
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         if(event.getAuthor().isBot()
+                || event.getAuthor().isFake()
                 || !event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_WRITE)) {
             return;
         }
@@ -47,6 +56,7 @@ public final class MessageListener extends ListenerAdapter {
         String message = event.getMessage().getContentRaw();
 
         //TODO: accept wildcards by using REGEX
+        //TODO: if doing this ensure to precomile the regular expression and cache it somewhere
         TagData tags = DContainer.getGravity().load(new TagData(event.getGuild().getId()));
         Property tagValueAsProperty = tags.get(message);
         if(tagValueAsProperty != null) {
@@ -72,4 +82,64 @@ public final class MessageListener extends ListenerAdapter {
             command.preprocess(CommandContext.construct(event.getMessage(), ArrayUtils.remove(arguments, 0)));
         }
     }
+
+    /**
+     * When a message is deleted.
+     * @param event The event instance.
+     */
+    @Override
+    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
+        //TODO: I don't know what to do with this, we need some form of cache to cache messages
+    }
+
+    /**
+     * When a member joins a server.
+     * @param event The event instance.
+     */
+    @Override
+    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+        //TODO: I don't know what to do with this
+    }
+
+    /**
+     * When a member leaves a server.
+     * This also includes if they are kicked, because sending separate kick events
+     * alongside ban events for consistency is completely overrated and an insane,
+     * ridiculous idea. I hate developers.
+     * @param event The event instance.
+     */
+    @Override
+    public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
+        var guild = event.getGuild();
+        var user = event.getUser();
+        if(guild.getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS)) {
+            guild.getAuditLogs().queue(entries -> {
+                if(entries.isEmpty()) {
+                    return;
+                }
+                AuditLogEntry first = entries.get(0);
+                if(first.getUser() == null
+                        || first.getTargetIdLong() != user.getIdLong()
+                        || first.getType() != ActionType.KICK
+                        || first.getUser().getIdLong() == guild.getSelfMember().getUser().getIdLong()) {
+                    //noinspection UnnecessaryReturnStatement
+                    return;
+                }
+                //TODO: it's a kick here
+            });
+        }
+        //TODO: it's a regular leave here
+    }
+
+    /**
+     * When a member is banned from the server.
+     * @param event The event instance.
+     */
+    @Override
+    public void onGuildBan(GuildBanEvent event) {
+        //TODO: I don't know what to do with this
+    }
+
+
+
 }

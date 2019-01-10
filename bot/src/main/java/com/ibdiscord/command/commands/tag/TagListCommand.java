@@ -19,15 +19,13 @@
  * @since 2018.11.29
  */
 
-package com.ibdiscord.command.commands;
+package com.ibdiscord.command.commands.tag;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.TagData;
-import com.ibdiscord.main.IBai;
-
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 
@@ -39,9 +37,9 @@ public final class TagListCommand extends Command {
 
     public TagListCommand() {
         super("list",
-                new HashSet<String>(),
+                new HashSet<>(),
                 CommandPermission.discord(Permission.MANAGE_CHANNEL),
-                new HashSet<Command>());
+                new HashSet<>());
     }
 
     @Override
