@@ -26,6 +26,7 @@ import de.arraying.gravity.GravityProvider;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.api.sync.RedisCommands;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
@@ -79,9 +80,9 @@ public final class DProvider implements GravityProvider {
 
     @Override
     public Set<String> hkeys(String key) {
-        Set<String> keys = new HashSet<String>(sync.hkeys(key));
+        Set<String> keys = new HashSet<>();
         try {
-            keys = new HashSet<String>(sync.hkeys(key));
+            keys.addAll(sync.hkeys(key));
         } catch(RedisException re) {
             re.printStackTrace();
         }
@@ -108,9 +109,9 @@ public final class DProvider implements GravityProvider {
 
     @Override
     public Set<String> smembers(String key) {
-        Set<String> members = null;
+        Set<String> members = new HashSet<String>();
         try {
-            members = new HashSet<String>(sync.smembers(key));
+            members.addAll(sync.smembers(key));
         } catch(RedisException re) {
             re.printStackTrace();
         }
@@ -137,7 +138,7 @@ public final class DProvider implements GravityProvider {
 
     @Override
     public List<String> lrange(String key, int from, int to) {
-        List<String> range = null;
+        List<String> range = new ArrayList();
         try {
             range = sync.lrange(key, from, to);
         } catch(RedisException re) {

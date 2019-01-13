@@ -45,12 +45,7 @@ public final class TagDeleteCommand extends Command {
     protected void execute(CommandContext context) {
 
         if (context.getArguments().length == 0) {
-            String botPrefix = IBai.getConfig().getStaticPrefix();
-            try {
-                botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
+            String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
             context.reply("Correct usage: `" + botPrefix + "tag delete \"[trigger]\"`");
         } else {
             StringBuilder triggerBuilder = new StringBuilder();
@@ -58,13 +53,10 @@ public final class TagDeleteCommand extends Command {
                 triggerBuilder.append(message);
             }
             String trigger = triggerBuilder.toString().split("\"")[1];
-            try {
-                TagData tags = DContainer.getGravity().load(new TagData(context.getGuild().getId()));
-                tags.unset(trigger);
-                DContainer.getGravity().save(tags);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            TagData tags = DContainer.getGravity().load(new TagData(context.getGuild().getId()));
+            tags.unset(trigger);
+            DContainer.getGravity().save(tags);
+            context.reply(trigger + " has been deleted.");
         }
 
     }

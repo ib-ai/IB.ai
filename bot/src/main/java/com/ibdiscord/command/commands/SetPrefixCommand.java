@@ -44,12 +44,7 @@ public final class SetPrefixCommand extends Command {
     
     @Override
     protected void execute(CommandContext context) {
-        String botPrefix = IBai.getConfig().getStaticPrefix();
-        try {
-            botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
         if(context.getArguments().length != 1) {
             context.reply("Correct usage: `" + botPrefix + "SetPrefix [Prefix]`");
             return;
@@ -61,12 +56,8 @@ public final class SetPrefixCommand extends Command {
             return;
         }
 
-        try {
-            BotPrefixData botPrefixData = new BotPrefixData(context.getGuild().getId());
-            botPrefixData.set(prefix);
-            DContainer.getGravity().save(botPrefixData);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        BotPrefixData botPrefixData = new BotPrefixData(context.getGuild().getId());
+        botPrefixData.set(prefix);
+        DContainer.getGravity().save(botPrefixData);
     }
 }

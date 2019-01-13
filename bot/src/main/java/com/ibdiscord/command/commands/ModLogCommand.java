@@ -43,12 +43,8 @@ public final class ModLogCommand extends Command {
     }
     @Override
     protected void execute(CommandContext context) {
-        String botPrefix = IBai.getConfig().getStaticPrefix();
-        try {
-            botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).toString();
+
         if (context.getArguments().length != 1) {
             context.reply("Correct usage: `" + botPrefix + "SetModLog [ModLog Channel ID]`");
             return;

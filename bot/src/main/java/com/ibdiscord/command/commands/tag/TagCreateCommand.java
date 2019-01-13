@@ -44,11 +44,7 @@ public final class TagCreateCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length < 2) {
-            String botPrefix = IBai.getConfig().getStaticPrefix();
-            try {
-                botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
-            } catch(Exception e) {
-            }
+            String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
             context.reply("Correct usage: `" + botPrefix + "tag create \"[trigger]\" \"[output]\"`");
             return;
         }
@@ -78,12 +74,8 @@ public final class TagCreateCommand extends Command {
             }
         }
 
-        try {
-            TagData tags = DContainer.getGravity().load(new TagData(context.getGuild().getId()));
-            tags.set(trigger, output);
-            DContainer.getGravity().save(tags);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        TagData tags = DContainer.getGravity().load(new TagData(context.getGuild().getId()));
+        tags.set(trigger, output);
+        DContainer.getGravity().save(tags);
     }
 }

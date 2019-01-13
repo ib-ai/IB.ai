@@ -43,11 +43,7 @@ public final class HelpCommand extends Command {
     }
     @Override
     protected void execute(CommandContext context) {
-        String botPrefix = IBai.getConfig().getStaticPrefix();
-        try {
-            botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
-        } catch(Exception e){
-        }
+        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
 
         EmbedBuilder ebHelpMenu = new EmbedBuilder();
         ebHelpMenu.setColor(Color.white);
