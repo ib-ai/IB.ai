@@ -56,7 +56,6 @@ public final class TagDeleteCommand extends Command {
             TagData tags = DContainer.getGravity().load(new TagData(context.getGuild().getId()));
             tags.unset(trigger);
             DContainer.getGravity().save(tags);
-            context.reply(trigger + " has been deleted.");
         }
 
     }
