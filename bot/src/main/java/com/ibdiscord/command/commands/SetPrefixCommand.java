@@ -27,7 +27,6 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.main.IBai;
-
 import net.dv8tion.jda.core.Permission;
 
 import java.util.Arrays;
@@ -50,7 +49,7 @@ public final class SetPrefixCommand extends Command {
         } catch(Exception e){
             e.printStackTrace();
         }
-        if(context.getArguments().length != 1) {
+        if(context.getArguments().length < 2) {
             context.reply("Correct usage: `" + botPrefix + "SetPrefix [Prefix]`");
             return;
         }
