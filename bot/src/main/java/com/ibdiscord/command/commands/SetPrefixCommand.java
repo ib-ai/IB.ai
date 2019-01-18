@@ -27,7 +27,6 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.main.IBai;
-
 import net.dv8tion.jda.core.Permission;
 
 import java.util.Arrays;
@@ -45,7 +44,7 @@ public final class SetPrefixCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
-        if(context.getArguments().length != 1) {
+        if(context.getArguments().length < 2) {
             context.reply("Correct usage: `" + botPrefix + "SetPrefix [Prefix]`");
             return;
         }

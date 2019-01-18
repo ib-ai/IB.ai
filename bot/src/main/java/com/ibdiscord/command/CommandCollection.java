@@ -36,9 +36,12 @@ public enum CommandCollection {
     KICK(new KickCommand()),
     MOD_LOG(new ModLogCommand()),
     PING(new PingCommand()),
+    SERVER_INFO(new ServerInfoCommand()),
     SET_PREFIX(new SetPrefixCommand()),
     TAG(new TagCommand()),
-    TEST_OPTIONS(new TestOptionsCommand());
+    TEST_OPTIONS(new TestOptionsCommand()),
+    USER_INFO(new UserInfoCommand()),
+    USER_ROLES(new UserRolesCommand());
 
     @Getter private final Command command;
 
