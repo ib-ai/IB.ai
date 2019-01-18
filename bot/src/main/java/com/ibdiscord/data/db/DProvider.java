@@ -23,11 +23,13 @@ package com.ibdiscord.data.db;
 
 import de.arraying.gravity.GravityProvider;
 
+import io.lettuce.core.RedisException;
 import io.lettuce.core.api.sync.RedisCommands;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.List;
 
 public final class DProvider implements GravityProvider {
     private final RedisCommands sync;
@@ -38,61 +40,110 @@ public final class DProvider implements GravityProvider {
 
     @Override
     public String get(String key) {
-        Object value = sync.get(key);
-        return value == null ? null : value.toString();
+        String value = null;
+        try {
+            value = sync.get(key).toString();
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
+        return value;
     }
 
     @Override
     public void set(String key, String value) {
-        sync.set(key, value);
+        try {
+            sync.set(key, value);
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
     }
 
     @Override
     public void del(String key) {
-        sync.del(key);
+        try {
+            sync.del(key);
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
     }
 
     @Override
     public String hget(String key, String property) {
-        Object value = sync.hget(key, property);
-        return value == null ? null : value.toString();
+        String value = null;
+        try {
+            value = sync.hget(key, property).toString();
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
+        return value;
     }
 
     @Override
     public Set<String> hkeys(String key) {
-        Set<String> keys = new HashSet<String>(sync.hkeys(key));
+        Set<String> keys = new HashSet<>();
+        try {
+            keys.addAll(sync.hkeys(key));
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
         return keys;
     }
 
     @Override
     public void hset(String key, String property, String value) {
-        sync.hset(key, property, value);
+        try {
+            sync.hset(key, property, value);
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
     }
 
     @Override
     public void hdel(String key, String property) {
-        sync.hdel(key, property);
+        try {
+            sync.hdel(key, property);
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
     }
 
     @Override
     public Set<String> smembers(String key) {
-        Set<String> members = new HashSet<String>(sync.smembers(key));
+        Set<String> members = new HashSet<String>();
+        try {
+            members.addAll(sync.smembers(key));
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
         return members;
     }
 
     @Override
     public void sadd(String key, String value) {
-        sync.sadd(key, value);
+        try {
+            sync.sadd(key, value);
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
     }
 
     @Override
     public void ladd(String key, String value) {
-        sync.lpush(key, value);
+        try {
+            sync.lpush(key, value);
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
     }
 
     @Override
     public List<String> lrange(String key, int from, int to) {
-        List<String> range = sync.lrange(key, from, to);
+        List<String> range = new ArrayList();
+        try {
+            range = sync.lrange(key, from, to);
+        } catch(RedisException re) {
+            re.printStackTrace();
+        }
         return range;
     }
 }

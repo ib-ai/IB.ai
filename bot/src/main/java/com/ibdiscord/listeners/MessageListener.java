@@ -54,22 +54,16 @@ public final class MessageListener extends ListenerAdapter {
         }
         //TODO: user input
         String message = event.getMessage().getContentRaw();
-
         //TODO: accept wildcards by using REGEX
         //TODO: if doing this ensure to precomile the regular expression and cache it somewhere
         TagData tags = DContainer.getGravity().load(new TagData(event.getGuild().getId()));
-        Property tagValueAsProperty = tags.get(message);
-        if(tagValueAsProperty != null) {
-            event.getChannel().sendMessage(tagValueAsProperty.toString()).queue();
+        Property tagValueAsProperty = tags.get(message).defaulting("");
+        if (!tagValueAsProperty.asString().isEmpty()) {
+            event.getChannel().sendMessage(tagValueAsProperty.asString()).queue();
         }
 
         //TODO: change bot prefix usage project-wide to use guild-specific prefices instead of static prefix.
-        String botPrefix = IBai.getConfig().getStaticPrefix();
-        try {
-            botPrefix = DContainer.getGravity().load(new BotPrefixData(event.getGuild().getId())).get().toString();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        String botPrefix = DContainer.getGravity().load(new BotPrefixData(event.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
 
         if(!message.startsWith(botPrefix)) {
             return;
