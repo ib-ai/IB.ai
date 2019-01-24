@@ -48,11 +48,7 @@ public final class KickCommand extends Command {
 
     @Override
     protected void execute(CommandContext context) {
-        String botPrefix = IBai.getConfig().getStaticPrefix();
-        try {
-            botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
-        } catch(Exception e){
-        }
+        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
         if (context.getArguments().length == 0) {
             context.reply("Correct usage: `" + botPrefix + "Kick @User` or `" + botPrefix + "Kick [UserID]`");
             return;
@@ -74,13 +70,9 @@ public final class KickCommand extends Command {
         context.getGuild().getController().kick(userToKick.getId()).queue();
 
         ModLogData modLog = DContainer.getGravity().load(new ModLogData(context.getGuild().getId()));
-        if(!modLog.get().asString().equals("000")) {
-            BansData bans;
-            try {
-                bans = DContainer.getGravity().load(new BansData(context.getGuild().getId()));
-            } catch(Exception e) {
-                bans = new BansData(context.getGuild().getId());
-            }
+        if(modLog.get().defaulting("000").asString() != "000") {
+            BansData bans = DContainer.getGravity().load(new BansData(context.getGuild().getId()));
+
             String caseNumber = String.valueOf(bans.size());
 
             String kickedUserName = userToKick.getName();

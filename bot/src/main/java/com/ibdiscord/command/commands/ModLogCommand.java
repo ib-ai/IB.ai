@@ -28,6 +28,7 @@ import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.data.db.entries.ModLogData;
 import com.ibdiscord.main.IBai;
+
 import net.dv8tion.jda.core.Permission;
 
 import java.util.HashSet;
@@ -42,13 +43,9 @@ public final class ModLogCommand extends Command {
     }
     @Override
     protected void execute(CommandContext context) {
-        String botPrefix = IBai.getConfig().getStaticPrefix();
-        try {
-            botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        if (context.getArguments().length < 1) {
+        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).toString();
+
+        if (context.getArguments().length != 1) {
             context.reply("Correct usage: `" + botPrefix + "SetModLog [ModLog Channel ID]`");
             return;
         }

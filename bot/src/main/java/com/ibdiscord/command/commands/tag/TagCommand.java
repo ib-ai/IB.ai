@@ -44,12 +44,7 @@ public final class TagCommand extends Command {
 
     @Override
     protected void execute(CommandContext context) {
-        String botPrefix = IBai.getConfig().getStaticPrefix();
-        try {
-            botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().toString();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
         context.reply("Correct usage: `" + botPrefix + "tag [list/create/delete] \"[trigger]\" \"[output]\"`");
     }
 }

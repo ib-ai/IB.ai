@@ -49,13 +49,9 @@ public final class TagListCommand extends Command {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        try {
-            Set<String> keys = DContainer.getGravity().load(new TagData(context.getGuild().getId())).getKeys();
-            for (String key : keys) {
-                stringBuilder.append(stringBuilder.length() == 0 ? "" :  ", ").append(key);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Set<String> keys = DContainer.getGravity().load(new TagData(context.getGuild().getId())).getKeys();
+        for (String key : keys) {
+            stringBuilder.append(stringBuilder.length() == 0 ? "" :  ", ").append(key);
         }
 
         embedBuilder.addField("List of Tags:", stringBuilder.toString(), false);
