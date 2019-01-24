@@ -16,11 +16,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.startup.tasks;
 
+import com.ibdiscord.listeners.GuildListener;
 import com.ibdiscord.listeners.MessageListener;
+import com.ibdiscord.listeners.ReactionListener;
 import com.ibdiscord.listeners.ReadyListener;
 import com.ibdiscord.main.IBai;
 import com.ibdiscord.startup.AbstractStartupTask;
-
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -52,8 +53,7 @@ public final class StartBot extends AbstractStartupTask {
                 .setToken(token)
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
                 .setGame(Game.playing(botGame))
-                .addEventListener(new MessageListener())
-                .addEventListener(new ReadyListener())
+                .addEventListener(new GuildListener(), new MessageListener(), new ReactionListener(), new ReadyListener())
                 .build();
         jda.setAutoReconnect(true);
         jda.awaitReady();

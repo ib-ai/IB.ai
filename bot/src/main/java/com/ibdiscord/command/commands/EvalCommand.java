@@ -43,10 +43,10 @@ public final class EvalCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        if(context.getArguments().length < 2) {
+        if(context.getArguments().length < 1) {
             context.reply("Please give some code to evaluate");
         }
-        var code = UString.concat(context.getArguments(), " ", 1);
+        var code = UString.concat(context.getArguments(), " ", 0);
         engine.put("c", context);
         engine.put("ctx", context);
         engine.put("context", context);

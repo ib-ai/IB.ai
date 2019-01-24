@@ -24,11 +24,6 @@ import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.main.IBai;
 import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.audit.ActionType;
-import net.dv8tion.jda.core.audit.AuditLogEntry;
-import net.dv8tion.jda.core.events.guild.GuildBanEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -91,55 +86,5 @@ public final class MessageListener extends ListenerAdapter {
     public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
         //TODO: I don't know what to do with this, we need some form of cache to cache messages
     }
-
-    /**
-     * When a member joins a server.
-     * @param event The event instance.
-     */
-    @Override
-    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        //TODO: I don't know what to do with this
-    }
-
-    /**
-     * When a member leaves a server.
-     * This also includes if they are kicked, because sending separate kick events
-     * alongside ban events for consistency is completely overrated and an insane,
-     * ridiculous idea. I hate developers.
-     * @param event The event instance.
-     */
-    @Override
-    public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
-        var guild = event.getGuild();
-        var user = event.getUser();
-        if(guild.getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS)) {
-            guild.getAuditLogs().queue(entries -> {
-                if(entries.isEmpty()) {
-                    return;
-                }
-                AuditLogEntry first = entries.get(0);
-                if(first.getUser() == null
-                        || first.getTargetIdLong() != user.getIdLong()
-                        || first.getType() != ActionType.KICK
-                        || first.getUser().getIdLong() == guild.getSelfMember().getUser().getIdLong()) {
-                    //noinspection UnnecessaryReturnStatement
-                    return;
-                }
-                //TODO: it's a kick here
-            });
-        }
-        //TODO: it's a regular leave here
-    }
-
-    /**
-     * When a member is banned from the server.
-     * @param event The event instance.
-     */
-    @Override
-    public void onGuildBan(GuildBanEvent event) {
-        //TODO: I don't know what to do with this
-    }
-
-
 
 }

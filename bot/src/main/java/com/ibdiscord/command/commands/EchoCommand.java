@@ -38,12 +38,12 @@ public final class EchoCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        if(context.getArguments().length < 2) {
+        if(context.getArguments().length < 1) {
             context.reply("You need to provide a message.");
             return;
         }
         context.reply(UString.stripMassMentions(
-                UString.concat(context.getArguments(), " ", 1)
+                UString.concat(context.getArguments(), " ", 0)
         ));
     }
 

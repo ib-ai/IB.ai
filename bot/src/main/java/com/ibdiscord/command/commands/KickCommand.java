@@ -30,8 +30,8 @@ import com.ibdiscord.data.db.entries.BansData;
 import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.data.db.entries.ModLogData;
 import com.ibdiscord.main.IBai;
-
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 
 import java.util.HashSet;
@@ -95,13 +95,16 @@ public final class KickCommand extends Command {
             bannedUser.set("moderatorID", modUserID);
 
             Long modLogChannelID = modLog.get().asLong();
-
+            TextChannel daddy = context.getGuild().getTextChannelById(modLogChannelID);
+            if(daddy == null) {
+                return; // NPEs are bad
+            }
             String kickMessage = "**Case: #" + caseNumber + " | Kick :boot:**\n" +
                     "**Offender: **" + kickedUserName + " (ID: " + kickedUserID + ")\n" +
                     "**Moderator: **" + modUserName + " (ID: " + modUserID + ")\n" +
                     "**Reason: ** Use `" + botPrefix + "Reason [Case Number]` to append a reason.";
 
-            context.getGuild().getTextChannelById(modLogChannelID).sendMessage(kickMessage).queue(owo ->
+            daddy.sendMessage(kickMessage).queue(owo ->
                     bannedUser.set("banLogID", owo.getId())
             );
             DContainer.getGravity().save(bannedUser);
