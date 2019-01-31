@@ -21,8 +21,7 @@
 
 package com.ibdiscord.command.permissions;
 
-import com.ibdiscord.main.IBai;
-
+import com.ibdiscord.IBai;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Member;
@@ -67,7 +66,7 @@ public final class CommandPermission {
             case ROLE_NAME:
                 return member.getRoles().stream().anyMatch(it -> it.getName().equals(value));
             case DEVELOPER:
-                return IBai.getConfig().getDevelopIDs().contains(member.getUser().getIdLong())
+                return IBai.INSTANCE.getConfig().getDevelopIDs().contains(member.getUser().getIdLong())
                         && (value == null || ((CommandPermission) value).hasPermission(member, channel));
         }
         throw new IllegalStateException("Permission not exhaustive");

@@ -14,20 +14,17 @@
  * limitations under the License.
  *******************************************************************************/
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.ibdiscord.main;
+package com.ibdiscord;
 
 import com.ibdiscord.data.LocalConfig;
-import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.startup.Startup;
+import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.UJavaVersion;
-import com.ibdiscord.utils.USplasher;
 import com.ibdiscord.utils.exceptions.JavaVersionException;
-
 import lombok.Getter;
-import lombok.Setter;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/** @author vardy
+/** @author vardy, Arraying
  * @since 2018.08.18
  */
 
@@ -38,8 +35,7 @@ public enum IBai {
      */
     INSTANCE;
 
-    @Getter private static LocalConfig config;
-    @Getter @Setter private static DContainer database;
+    @Getter private LocalConfig config;
 
     public static void main(String[] args) throws JavaVersionException {
 
@@ -54,10 +50,9 @@ public enum IBai {
     }
 
     private void init() {
-
         //TODO: Start logging
         config = new LocalConfig();
         Startup.start();
-        USplasher.makeASplash();
+        UFormatter.makeASplash();
     }
 }

@@ -25,12 +25,13 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.BotPrefixData;
 import com.ibdiscord.data.db.entries.TagData;
-import com.ibdiscord.main.IBai;
+import com.ibdiscord.utils.UDatabase;
+import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.Permission;
 
 import java.util.HashSet;
+import java.util.List;
 
 public final class TagDeleteCommand extends Command {
 
@@ -43,19 +44,26 @@ public final class TagDeleteCommand extends Command {
 
     @Override
     protected void execute(CommandContext context) {
-
-        if (context.getArguments().length == 0) {
-            String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
-            context.reply("Correct usage: `" + botPrefix + "tag delete \"[trigger]\"`");
+        if(context.getArguments().length == 0) {
+            context.reply("Correct usage: `" + UDatabase.getPrefix(context.getGuild()) + "tag delete \"[trigger]\"`");
         } else {
-            StringBuilder triggerBuilder = new StringBuilder();
-            for(String message : context.getArguments()) {
-                triggerBuilder.append(message);
+            List<String> names = UInput.extractQuotedStrings(context.getArguments());
+            if(names.isEmpty()) {
+                context.reply("Invalid name, please provide it in quotation marks.");
+                return;
             }
-            String trigger = triggerBuilder.toString().split("\"")[1];
-            TagData tags = DContainer.getGravity().load(new TagData(context.getGuild().getId()));
-            tags.unset(trigger);
-            DContainer.getGravity().save(tags);
+            TagData tagData = DContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
+            tagData.unset(names.get(0));
+            DContainer.INSTANCE.getGravity().save(tagData);
+            context.reply("The tag has been removed.");
+//            StringBuilder triggerBuilder = new StringBuilder();
+//            for(String message : context.getArguments()) {
+//                triggerBuilder.append(message);
+//            }
+//            String trigger = triggerBuilder.toString().split("\"")[1];
+//            TagData tags = DContainer.getGravity().load(new TagData(context.getGuild().getId()));
+//            tags.unset(trigger);
+//            DContainer.getGravity().save(tags);
         }
 
     }

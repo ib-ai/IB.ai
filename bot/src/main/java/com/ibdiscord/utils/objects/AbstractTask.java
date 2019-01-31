@@ -25,7 +25,6 @@ package com.ibdiscord.utils.objects;
 public abstract class AbstractTask implements Runnable{
 
     private final String name;
-    Thread currentThread;
 
     /* Usage:
      * Instantiate thread and use to #sleep(timeInMillis)
@@ -38,7 +37,6 @@ public abstract class AbstractTask implements Runnable{
         Thread currentThread = new Thread(this);
         currentThread.setName(name);
         currentThread.start();
-        this.currentThread = currentThread;
     }
 
     @Override

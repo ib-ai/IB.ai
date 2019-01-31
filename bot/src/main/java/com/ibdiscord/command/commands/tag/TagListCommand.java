@@ -47,15 +47,9 @@ public final class TagListCommand extends Command {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.white);
 
-        StringBuilder stringBuilder = new StringBuilder();
+        Set<String> keys = DContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId())).getKeys();
 
-        Set<String> keys = DContainer.getGravity().load(new TagData(context.getGuild().getId())).getKeys();
-        for (String key : keys) {
-            stringBuilder.append(stringBuilder.length() == 0 ? "" :  ", ").append(key);
-        }
-
-        embedBuilder.addField("List of Tags:", stringBuilder.toString(), false);
-
+        embedBuilder.addField("List of Tags: ", String.join(", ", keys), false);
         context.reply(embedBuilder.build());
     }
 }

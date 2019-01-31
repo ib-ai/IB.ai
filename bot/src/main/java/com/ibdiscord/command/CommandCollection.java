@@ -33,7 +33,6 @@ public enum CommandCollection {
     ECHO(new EchoCommand()),
     EVAL(new EvalCommand()),
     HELP(new HelpCommand()),
-    KICK(new KickCommand()),
     MOD_LOG(new ModLogCommand()),
     PING(new PingCommand()),
     SERVER_INFO(new ServerInfoCommand()),

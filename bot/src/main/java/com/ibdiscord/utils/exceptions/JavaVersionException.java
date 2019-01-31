@@ -23,9 +23,12 @@ package com.ibdiscord.utils.exceptions;
 
 public class JavaVersionException extends Exception {
 
+    @SuppressWarnings("unused")
     // No Params
     public JavaVersionException() {}
 
     // Constructor w/ params
-    public JavaVersionException(String message) {}
+    public JavaVersionException(String message) {
+        super(message);
+    }
 }

@@ -25,15 +25,18 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.BotPrefixData;
-import com.ibdiscord.data.db.entries.ModLogData;
-import com.ibdiscord.main.IBai;
-
+import com.ibdiscord.data.db.entries.GuildData;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.HashSet;
 
 public final class ModLogCommand extends Command {
+
+    /**
+     * The ID of a disabled modlog.
+     */
+    public static final long DISABLED_MOD_LOG = 0L;
 
     public ModLogCommand() {
         super("setmodlog",
@@ -43,26 +46,35 @@ public final class ModLogCommand extends Command {
     }
     @Override
     protected void execute(CommandContext context) {
-        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).toString();
-
-        if (context.getArguments().length != 1) {
-            context.reply("Correct usage: `" + botPrefix + "SetModLog [ModLog Channel ID]`");
+        if(context.getMessage().getMentionedChannels().isEmpty()) {
+            context.reply("Please mention the channel to use.");
             return;
         }
-
-        String channelID = context.getArguments()[0];
-
-        if(context.getGuild().getTextChannelById(channelID) == null) {
-            context.reply("Invalid Channel ID ( " +  channelID + ")." );
-            return;
-        }
-
-        try {
-            ModLogData modLogID = new ModLogData(context.getGuild().getId());
-            modLogID.set(channelID);
-            DContainer.getGravity().save(modLogID);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        TextChannel channel = context.getMessage().getMentionedChannels().get(0);
+        GuildData guildData = DContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
+        guildData.set(GuildData.MODLOGS, channel.getId());
+        DContainer.INSTANCE.getGravity().save(guildData);
+        context.reply("The channel has been set to: " + channel.getAsMention() + ".");
+//        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).toString();
+//
+//        if (context.getArguments().length != 1) {
+//            context.reply("Correct usage: `" + botPrefix + "SetModLog [ModLog Channel ID]`");
+//            return;
+//        }
+//
+//        String channelID = context.getArguments()[0];
+//
+//        if(context.getGuild().getTextChannelById(channelID) == null) {
+//            context.reply("Invalid Channel ID ( " +  channelID + ")." );
+//            return;
+//        }
+//
+//        try {
+//            ModLogData modLogID = new ModLogData(context.getGuild().getId());
+//            modLogID.set(channelID);
+//            DContainer.getGravity().save(modLogID);
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//        }
     }
 }

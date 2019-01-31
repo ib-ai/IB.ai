@@ -3,6 +3,8 @@ package com.ibdiscord.utils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -58,6 +60,29 @@ public final class UInput {
         } else {
             return null;
         }
+    }
+
+    public static List<String> extractQuotedStrings(String[] arguments) {
+        List<String> output = new ArrayList<>();
+        StringBuilder current = null;
+        for(String argument : arguments) {
+            if(argument.startsWith("\"") && current == null) {
+                current = new StringBuilder();
+                continue;
+            }
+            if(argument.endsWith("\"") && current != null) {
+                int index = argument.length() - 2;
+                if(index < 0 || argument.charAt(index) != '\\') {
+                    output.add(current.toString());
+                    current = null;
+                    continue;
+                }
+            }
+            if(current != null) {
+                current.append(argument);
+            }
+        }
+        return output;
     }
 
 }

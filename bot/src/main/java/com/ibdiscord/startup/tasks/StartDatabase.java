@@ -17,7 +17,6 @@
 package com.ibdiscord.startup.tasks;
 
 import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.main.IBai;
 import com.ibdiscord.startup.AbstractStartupTask;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -34,8 +33,7 @@ public final class StartDatabase extends AbstractStartupTask {
 
     @Override
     public void doTask() {
-        IBai.setDatabase(DContainer.INSTANCE);
-        DContainer.connect();
+        DContainer.INSTANCE.connect();
         //TODO: Set up defaults if required
     }
 }

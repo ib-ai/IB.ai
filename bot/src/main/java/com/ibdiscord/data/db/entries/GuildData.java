@@ -1,5 +1,9 @@
+package com.ibdiscord.data.db.entries;
+
+import de.arraying.gravity.data.types.TypeMap;
+
 /**
- * Copyright 2018 raynichc
+ * Copyright 2018 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +17,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public final class GuildData extends TypeMap {
 
-/**
- * @author raynichc
- * @since 2018.11.29
- */
+    /**
+     * The prefix key.
+     */
+    public static final String PREFIX = "prefix";
 
-package com.ibdiscord.data.db.entries;
+    public static final String MODLOGS = "modlogs";
 
-import de.arraying.gravity.data.types.TypeMap;
+    private final String guild;
 
-public final class BannedUserData extends TypeMap {
-
-    private String userID;
-
-    public BannedUserData(String userID) {
-        this.userID = userID;
+    public GuildData(String guild) {
+        this.guild = guild;
     }
 
     @Override
     protected String getUniqueIdentifier() {
-        return "ban_" + userID;
+        return "guild_" + guild;
     }
+
 }

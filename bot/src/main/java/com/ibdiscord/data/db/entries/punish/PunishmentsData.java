@@ -1,5 +1,9 @@
+package com.ibdiscord.data.db.entries.punish;
+
+import de.arraying.gravity.data.types.TypeSet;
+
 /**
- * Copyright 2018 raynichc
+ * Copyright 2018 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +17,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public final class PunishmentsData extends TypeSet {
 
-/**
- * @author raynichc
- * @since 2018.11.29
- */
+    private final String guild;
 
-package com.ibdiscord.data.db.entries;
-
-import de.arraying.gravity.data.types.TypeValue;
-
-public final class ModLogData extends TypeValue {
-
-    private String guildID;
-
-    public ModLogData(String guildID) {
-        this.guildID = guildID;
+    public PunishmentsData(String guild) {
+        this.guild = guild;
     }
 
     @Override
     protected String getUniqueIdentifier() {
-        return "guild_" + this.guildID + "_modLogID";
+        return "punishments_" + guild;
     }
+
 }

@@ -19,9 +19,10 @@ package com.ibdiscord.listeners;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.BotPrefixData;
+import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.TagData;
-import com.ibdiscord.main.IBai;
+import com.ibdiscord.utils.UDatabase;
+import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
@@ -51,19 +52,19 @@ public final class MessageListener extends ListenerAdapter {
         String message = event.getMessage().getContentRaw();
         //TODO: accept wildcards by using REGEX
         //TODO: if doing this ensure to precomile the regular expression and cache it somewhere
-        TagData tags = DContainer.getGravity().load(new TagData(event.getGuild().getId()));
+        Gravity gravity = DContainer.INSTANCE.getGravity();
+        TagData tags = gravity.load(new TagData(event.getGuild().getId()));
         Property tagValueAsProperty = tags.get(message).defaulting("");
         if (!tagValueAsProperty.asString().isEmpty()) {
             event.getChannel().sendMessage(tagValueAsProperty.asString()).queue();
         }
 
-        //TODO: change bot prefix usage project-wide to use guild-specific prefices instead of static prefix.
-        String botPrefix = DContainer.getGravity().load(new BotPrefixData(event.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
-
-        if(!message.startsWith(botPrefix)) {
+        GuildData guildData = gravity.load(new GuildData(event.getGuild().getId()));
+        String prefix = UDatabase.getPrefix(event.getGuild());
+        if(!message.startsWith(prefix)) {
             return;
         }
-        message = message.substring(botPrefix.length()).replaceAll(" +", " ");
+        message = message.substring(prefix.length()).replaceAll(" +", " ");
         String[] arguments = message.split(" ");
         String commandName = arguments[0].toLowerCase();
         Command command = Command.find(null, commandName);

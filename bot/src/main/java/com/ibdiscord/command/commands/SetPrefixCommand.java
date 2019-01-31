@@ -25,8 +25,8 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.BotPrefixData;
-import com.ibdiscord.main.IBai;
+import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.utils.UDatabase;
 import net.dv8tion.jda.core.Permission;
 
 import java.util.Arrays;
@@ -43,20 +43,21 @@ public final class SetPrefixCommand extends Command {
     
     @Override
     protected void execute(CommandContext context) {
-        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
-        if(context.getArguments().length < 2) {
-            context.reply("Correct usage: `" + botPrefix + "SetPrefix [Prefix]`");
+        String prefix = UDatabase.getPrefix(context.getGuild());
+        if(context.getArguments().length == 0) {
+            context.reply("Correct usage: `" + prefix + "SetPrefix [Prefix]`");
             return;
         }
 
-        String prefix = context.getArguments()[0];
-        if(Arrays.stream(new String[]{"/", "$", "#", "+", "*", "?"}).anyMatch(prefix::equals)) {
-            context.reply("Invalid Prefix ( " +  prefix + ")." );
+        String prefixNew = context.getArguments()[0];
+        if(Arrays.stream(new String[]{"/", "$", "#", "+", "*", "?"}).anyMatch(prefixNew::equals)) {
+            context.reply("Invalid Prefix ( " +  prefixNew + ")." );
             return;
         }
 
-        BotPrefixData botPrefixData = new BotPrefixData(context.getGuild().getId());
-        botPrefixData.set(prefix);
-        DContainer.getGravity().save(botPrefixData);
+        GuildData guildData = DContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
+        guildData.set(GuildData.PREFIX, prefixNew);
+        DContainer.INSTANCE.getGravity().save(guildData);
+        context.reply("The prefix has been updated to (" + prefixNew + ")");
     }
 }

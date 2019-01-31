@@ -16,15 +16,13 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.data.db;
 
-import com.ibdiscord.main.IBai;
-
+import com.ibdiscord.IBai;
+import com.ibdiscord.data.LocalConfig;
 import de.arraying.gravity.Gravity;
-
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
-
 import lombok.Getter;
 
 import static java.lang.Math.toIntExact;
@@ -41,14 +39,15 @@ public enum DContainer {
      */
     INSTANCE;
 
-    @Getter private static StatefulRedisConnection<String, String> connection;
-    @Getter private static RedisCommands sync;
-    @Getter private static Gravity gravity;
+    @Getter private StatefulRedisConnection<String, String> connection;
+    @Getter private RedisCommands sync;
+    @Getter private Gravity gravity;
 
-    public static void connect() {
-        String dbIP = IBai.getConfig().getDbIP();
-        int mainDbNum = toIntExact(IBai.getConfig().getMainDatabaseNum());
-        String mainDbPassword = IBai.getConfig().getMainDatabasePassword();
+    public void connect() {
+        LocalConfig config = IBai.INSTANCE.getConfig();
+        String dbIP = config.getDbIP();
+        int mainDbNum = toIntExact(config.getMainDatabaseNum());
+        String mainDbPassword = config.getMainDatabasePassword();
 
         if(connection != null){
             return;

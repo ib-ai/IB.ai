@@ -24,9 +24,7 @@ package com.ibdiscord.command.commands.tag;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.BotPrefixData;
-import com.ibdiscord.main.IBai;
+import com.ibdiscord.utils.UDatabase;
 import net.dv8tion.jda.core.Permission;
 
 import java.util.HashSet;
@@ -37,14 +35,13 @@ public final class TagCommand extends Command {
 
     public TagCommand() {
         super("tag",
-                new HashSet<String>(),
+                new HashSet<>(),
                 CommandPermission.discord(Permission.MANAGE_CHANNEL),
                 Stream.of(new TagListCommand(), new TagCreateCommand(), new TagDeleteCommand()).collect(Collectors.toSet()));
     }
 
     @Override
     protected void execute(CommandContext context) {
-        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
-        context.reply("Correct usage: `" + botPrefix + "tag [list/create/delete] \"[trigger]\" \"[output]\"`");
+        context.reply("Correct usage: `" + UDatabase.getPrefix(context.getGuild()) + "tag [list/create/delete] \"[trigger]\" \"[output]\"`");
     }
 }

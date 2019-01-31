@@ -16,11 +16,12 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.startup.tasks;
 
+import com.ibdiscord.IBai;
+import com.ibdiscord.data.LocalConfig;
 import com.ibdiscord.listeners.GuildListener;
 import com.ibdiscord.listeners.MessageListener;
 import com.ibdiscord.listeners.ReactionListener;
 import com.ibdiscord.listeners.ReadyListener;
-import com.ibdiscord.main.IBai;
 import com.ibdiscord.startup.AbstractStartupTask;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -45,14 +46,14 @@ public final class StartBot extends AbstractStartupTask {
 
     @Override
     public void doTask() throws Exception {
-        String token = IBai.getConfig().getBotToken();
-        String botGame = "3.0 | Limited Beta";
+        LocalConfig localConfig = IBai.INSTANCE.getConfig();
+        String token = localConfig.isBetaMode() ? localConfig.getBotTokenBeta() : localConfig.getBotToken();
 
         // TODO: Move to proper bot instantiater
         jda = new JDABuilder(AccountType.BOT)
                 .setToken(token)
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                .setGame(Game.playing(botGame))
+                .setGame(Game.playing(String.format("v%s | %shelp", localConfig.getBotVersion(), localConfig.getStaticPrefix())))
                 .addEventListener(new GuildListener(), new MessageListener(), new ReactionListener(), new ReadyListener())
                 .build();
         jda.setAutoReconnect(true);

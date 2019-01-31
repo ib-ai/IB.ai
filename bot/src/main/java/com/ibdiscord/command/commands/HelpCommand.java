@@ -21,12 +21,11 @@
 
 package com.ibdiscord.command.commands;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.BotPrefixData;
-import com.ibdiscord.main.IBai;
+import com.ibdiscord.utils.UDatabase;
 import net.dv8tion.jda.core.EmbedBuilder;
 
 import java.awt.*;
@@ -42,12 +41,12 @@ public final class HelpCommand extends Command {
     }
     @Override
     protected void execute(CommandContext context) {
-        String botPrefix = DContainer.getGravity().load(new BotPrefixData(context.getGuild().getId())).get().defaulting(IBai.getConfig().getStaticPrefix()).asString();
+        String botPrefix = UDatabase.getPrefix(context.getGuild());
 
         EmbedBuilder ebHelpMenu = new EmbedBuilder();
         ebHelpMenu.setColor(Color.white);
         ebHelpMenu.setAuthor("IB.ai", "https://discord.me/pbh", null);
-        ebHelpMenu.setDescription("Hey! Welcome to the IBO Discord Server. I'm IB.ai version: `" + IBai.getConfig().getBotVersion() + "` Here's some of the things I can do:");
+        ebHelpMenu.setDescription("Hey! Welcome to the IBO Discord Server. I'm IB.ai version: `" + IBai.INSTANCE.getConfig().getBotVersion() + "` Here's some of the things I can do:");
         ebHelpMenu.addField("Getting Started:", "You can join subjects by typing `" + botPrefix + "Join [SubjectName]`, which will grant you access " +
                 "to its subject-specific channels.\n\nWhich subjects are available? See that by typing: `" + botPrefix + "SubjectList`.\n\n" +
                 "If you want to leave a role you can type: `" + botPrefix + "Leave [SubjectName]`.\n\n" +
@@ -58,7 +57,7 @@ public final class HelpCommand extends Command {
                 "- Details of a user: `" + botPrefix + "UserInfo [Username]`\n" +
                 "- The bot's ping: `" + botPrefix + "Ping`\n" +
                 "- See this help menu: `" + botPrefix + "Help`", false);
-        ebHelpMenu.addField("Information:", "Developed with <3 by the [development team on GitHub](" + IBai.getConfig().getGithubLink() +")", false);
+        ebHelpMenu.addField("Information:", "Developed with <3 by the [development team on GitHub](" + IBai.INSTANCE.getConfig().getGithubLink() +")", false);
         context.reply(ebHelpMenu.build());
     }
 }

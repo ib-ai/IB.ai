@@ -22,11 +22,25 @@
 package com.ibdiscord.command.permissions;
 
 public enum PermissionType {
+
+    /**
+     * A permission provided by Discord.
+     */
     DISCORD,
 
+    /**
+     * A role ID.
+     */
     ROLE_ID,
 
+    /**
+     * A role name.
+     */
     ROLE_NAME,
 
+    /**
+     * A developer command.
+     */
     DEVELOPER
+
 }

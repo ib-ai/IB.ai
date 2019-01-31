@@ -22,20 +22,20 @@
 package com.ibdiscord.data.db;
 
 import de.arraying.gravity.GravityProvider;
-
 import io.lettuce.core.RedisException;
 import io.lettuce.core.api.sync.RedisCommands;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
+@SuppressWarnings("unchecked")
 public final class DProvider implements GravityProvider {
     private final RedisCommands sync;
 
     public DProvider() {
-        sync = DContainer.getSync();
+        sync = DContainer.INSTANCE.getSync();
     }
 
     @Override
@@ -109,7 +109,7 @@ public final class DProvider implements GravityProvider {
 
     @Override
     public Set<String> smembers(String key) {
-        Set<String> members = new HashSet<String>();
+        Set<String> members = new HashSet<>();
         try {
             members.addAll(sync.smembers(key));
         } catch(RedisException re) {
@@ -138,7 +138,7 @@ public final class DProvider implements GravityProvider {
 
     @Override
     public List<String> lrange(String key, int from, int to) {
-        List<String> range = new ArrayList();
+        List<String> range = new ArrayList<>();
         try {
             range = sync.lrange(key, from, to);
         } catch(RedisException re) {

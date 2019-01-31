@@ -43,4 +43,5 @@ public final class PingCommand extends Command {
     protected void execute(CommandContext context) {
         context.reply("Pong! WebSocket latency is currently %d.", context.getGuild().getJDA().getPing());
     }
+
 }

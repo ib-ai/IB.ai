@@ -1,5 +1,13 @@
+package com.ibdiscord.utils;
+
+import com.ibdiscord.IBai;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.GuildData;
+import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.core.entities.Guild;
+
 /**
- * Copyright 2018 raynichc
+ * Copyright 2018 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +21,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public final class UDatabase {
 
-/**
- * @author raynichc
- * @since 2018.12.19
- */
-
-package com.ibdiscord.data.db.entries;
-
-import de.arraying.gravity.data.types.TypeValue;
-
-public final class BotPrefixData extends TypeValue {
-
-    private String guildID;
-
-    public BotPrefixData(String guildID) {
-        this.guildID = guildID;
+    public static String getPrefix(Guild guild) {
+        Gravity gravity = DContainer.INSTANCE.getGravity();
+        return gravity.load(new GuildData(guild.getId()))
+            .get(GuildData.PREFIX)
+            .defaulting(IBai.INSTANCE.getConfig().getStaticPrefix())
+            .asString();
     }
 
-    @Override
-    protected String getUniqueIdentifier() {
-        return "guild_" + this.guildID + "_botPrefix";
-    }
 }
