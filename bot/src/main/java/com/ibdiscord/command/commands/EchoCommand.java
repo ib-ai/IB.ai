@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,15 @@ import java.util.Set;
 public final class EchoCommand extends Command {
 
     /**
-     * Constructs the echo command.
+     * Creates the command.
      */
     public EchoCommand() {
-        super("echo", Set.of("copycat"), CommandPermission.discord(), new HashSet<>());
+        super("echo",
+                Set.of("copycat"),
+                CommandPermission.discord(),
+                new HashSet<>()
+        );
+        this.correctUsage = "echo <message>";
     }
 
     /**
@@ -39,7 +44,7 @@ public final class EchoCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length < 1) {
-            context.reply("You need to provide a message.");
+            sendUsage(context);
             return;
         }
         context.reply(UString.stripMassMentions(

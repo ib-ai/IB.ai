@@ -23,7 +23,7 @@ import static com.ibdiscord.command.commands.ModLogCommand.DISABLED_MOD_LOG;
 import static com.ibdiscord.data.db.entries.punish.PunishmentData.*;
 
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@ public abstract class PunishmentCommand extends Command {
     protected PunishmentCommand(String name, Set<String> aliases, CommandPermission permission, String display) {
         super(name, aliases, permission, new HashSet<>());
         this.display = display;
+        this.correctUsage = String.format("%s <user> [reason]", name);
     }
 
     /**
@@ -73,7 +74,7 @@ public abstract class PunishmentCommand extends Command {
      * @return Whether or not the punishment was successful. Please ensure that this
      * will always return a value that is as correct as possible.
      */
-    protected abstract boolean punish(Member member, String reason, long duration);
+    abstract boolean punish(Member member, String reason, long duration);
 
     /**
      * Executes the punishment command.
@@ -83,7 +84,7 @@ public abstract class PunishmentCommand extends Command {
     protected final void execute(CommandContext context) {
         String[] args = context.getArguments();
         if(args.length == 0) {
-            context.reply("Please provide a member that you would like to punish, as well as a reason.");
+            sendUsage(context);
             return;
         }
         Member member = UInput.getMember(context.getGuild(), args[0]);

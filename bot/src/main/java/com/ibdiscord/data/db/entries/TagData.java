@@ -1,5 +1,9 @@
+package com.ibdiscord.data.db.entries;
+
+import de.arraying.gravity.data.types.TypeMap;
+
 /**
- * Copyright 2018 raynichc
+ * Copyright 2019 Ray Clark
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +17,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @author raynichc
- * @since 2018.11.29
- */
-
-package com.ibdiscord.data.db.entries;
-
-import de.arraying.gravity.data.types.TypeMap;
-
 public final class TagData extends TypeMap {
 
-    private String guildID;
+    private final String guild;
 
-    public TagData(String guildID) {
-        this.guildID = guildID;
+    /**
+     * Creates the tag data.
+     * @param guild The guild ID.
+     */
+    public TagData(String guild) {
+        this.guild = guild;
     }
 
+    /**
+     * Gets the identifier.
+     * @return The identifier.
+     */
     @Override
     protected String getUniqueIdentifier() {
-        return "tags_" + this.guildID;
+        return "tags_" + this.guild;
     }
 }

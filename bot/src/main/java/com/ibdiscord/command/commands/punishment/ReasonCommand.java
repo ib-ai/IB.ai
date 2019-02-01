@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ public final class ReasonCommand extends Command {
     /**
      * Creates the command.
      */
-    protected ReasonCommand() {
+    public ReasonCommand() {
         super("reason", Set.of(), CommandPermission.roleId(230710782038376449L), new HashSet<>());
     }
 
@@ -59,7 +59,7 @@ public final class ReasonCommand extends Command {
             return;
         }
         PunishmentData caseData = gravity.load(new PunishmentData(context.getGuild().getId(), caseNumber));
-
+        // TODO finish this off :)
     }
 
 }

@@ -46,6 +46,11 @@ public final class UString {
         return result;
     }
 
+    /**
+     * Strips all mass mentions.
+     * @param input The input.
+     * @return Input with all the mass mentions stripped.
+     */
     public static String stripMassMentions(String input) {
         if(input == null) {
             throw new IllegalArgumentException("input null");
@@ -55,6 +60,11 @@ public final class UString {
                 .replace("@here", "@\u200Bhere");
     }
 
+    /**
+     * Escapes all formatting.
+     * @param input The input.
+     * @return Input with all formatting escaped.
+     */
     public static String escapeFormatting(String input) {
         if(input == null) {
             throw new IllegalArgumentException("input null");

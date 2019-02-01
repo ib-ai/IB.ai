@@ -1,5 +1,9 @@
+package com.ibdiscord.data.db.entries.punish;
+
+import de.arraying.gravity.data.types.TypeMap;
+
 /**
- * Copyright 2018 raynichc
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +17,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @author raynichc, Arraying
- * @since 2018.11.29
- */
-
-package com.ibdiscord.data.db.entries.punish;
-
-import de.arraying.gravity.data.types.TypeMap;
-
 public final class PunishmentData extends TypeMap {
 
     /**
@@ -58,11 +52,20 @@ public final class PunishmentData extends TypeMap {
     private final String guild;
     private final Object caseId;
 
+    /**
+     * Creates punishment data.
+     * @param guild The guild.
+     * @param caseId The case ID.
+     */
     public PunishmentData(String guild, Object caseId) {
         this.guild = guild;
         this.caseId = caseId;
     }
 
+    /**
+     * Gets the unique identifier.
+     * @return The unique identifier.
+     */
     @Override
     protected String getUniqueIdentifier() {
         return "case_" + guild + "_" + caseId;

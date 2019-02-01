@@ -3,7 +3,7 @@ package com.ibdiscord.data.db.entries.punish;
 import de.arraying.gravity.data.types.TypeSet;
 
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,18 @@ public final class PunishmentsData extends TypeSet {
 
     private final String guild;
 
+    /**
+     * Creates the punishment data list.
+     * @param guild The guild ID.
+     */
     public PunishmentsData(String guild) {
         this.guild = guild;
     }
 
+    /**
+     * Gets the identifier.
+     * @return The identifier.
+     */
     @Override
     protected String getUniqueIdentifier() {
         return "punishments_" + guild;

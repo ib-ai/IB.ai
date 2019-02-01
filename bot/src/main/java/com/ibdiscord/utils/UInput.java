@@ -27,7 +27,7 @@ public final class UInput {
     /**
      * The regular expression for a regular user ID.
      */
-    public static final Pattern ID_PATTERN = Pattern.compile("^\\d{17,20}$");
+    private static final Pattern ID_PATTERN = Pattern.compile("^\\d{17,20}$");
 
     /**
      * The regular expression for a mention.
@@ -62,24 +62,31 @@ public final class UInput {
         }
     }
 
+    /**
+     * Extracts quoted strings.
+     * @param arguments An array of arguments.
+     * @return A set, where each entry is one quoted string, without the quotations.
+     */
     public static List<String> extractQuotedStrings(String[] arguments) {
         List<String> output = new ArrayList<>();
         StringBuilder current = null;
         for(String argument : arguments) {
             if(argument.startsWith("\"") && current == null) {
                 current = new StringBuilder();
-                continue;
+            }
+            if(current != null) {
+                current.append(argument)
+                    .append(" ");
             }
             if(argument.endsWith("\"") && current != null) {
                 int index = argument.length() - 2;
                 if(index < 0 || argument.charAt(index) != '\\') {
-                    output.add(current.toString());
+                    String data = current.toString().trim();
+                    data = data.substring(1);
+                    data = data.substring(0, data.length() - 1);
+                    output.add(data);
                     current = null;
-                    continue;
                 }
-            }
-            if(current != null) {
-                current.append(argument);
             }
         }
         return output;

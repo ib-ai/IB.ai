@@ -7,7 +7,7 @@ import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.entities.Guild;
 
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,11 @@ import net.dv8tion.jda.core.entities.Guild;
  */
 public final class UDatabase {
 
+    /**
+     * Util method to get the prefix for a guild.
+     * @param guild The guild.
+     * @return A never null prefix (fallbacks to config if required).
+     */
     public static String getPrefix(Guild guild) {
         Gravity gravity = DContainer.INSTANCE.getGravity();
         return gravity.load(new GuildData(guild.getId()))

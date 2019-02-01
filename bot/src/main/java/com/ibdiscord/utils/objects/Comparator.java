@@ -1,5 +1,9 @@
+package com.ibdiscord.utils.objects;
+
+import com.ibdiscord.command.Command;
+
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +17,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @author Arraying
- * @since 2018.09.17
- */
-
-package com.ibdiscord.utils.objects;
-
-import com.ibdiscord.command.Command;
-
 public final class Comparator implements java.util.Comparator<Command> {
 
+    /**
+     * Compares two commands by name in order to present commands alphabetically.
+     * @param o1 The first command.
+     * @param o2 The second command.
+     * @return A comparison integer.
+     */
     @Override
     public int compare(Command o1, Command o2) {
         return o1.getName().compareTo(o2.getName());
     }
+
 }

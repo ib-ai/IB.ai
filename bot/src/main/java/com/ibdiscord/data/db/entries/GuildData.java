@@ -3,7 +3,7 @@ package com.ibdiscord.data.db.entries;
 import de.arraying.gravity.data.types.TypeMap;
 
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,14 +24,25 @@ public final class GuildData extends TypeMap {
      */
     public static final String PREFIX = "prefix";
 
+    /**
+     * The modlogs key for Redis.
+     */
     public static final String MODLOGS = "modlogs";
 
     private final String guild;
 
+    /**
+     * Creates the guild data.
+     * @param guild The guild ID.
+     */
     public GuildData(String guild) {
         this.guild = guild;
     }
 
+    /**
+     * Gets the identifier.
+     * @return The identifier.
+     */
     @Override
     protected String getUniqueIdentifier() {
         return "guild_" + guild;

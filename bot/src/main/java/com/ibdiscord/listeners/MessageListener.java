@@ -1,25 +1,8 @@
-/*******************************************************************************
- * Copyright 2018 Jarred Vardy
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.utils.UDatabase;
 import de.arraying.gravity.Gravity;
@@ -29,12 +12,22 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/** @author vardy, Arraying
- * @since 2018.08.19
+/**
+ * Copyright 2019 Jarred Vardy, Arraying
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 public final class MessageListener extends ListenerAdapter {
 
     /**
@@ -57,9 +50,8 @@ public final class MessageListener extends ListenerAdapter {
         Property tagValueAsProperty = tags.get(message).defaulting("");
         if (!tagValueAsProperty.asString().isEmpty()) {
             event.getChannel().sendMessage(tagValueAsProperty.asString()).queue();
+            return;
         }
-
-        GuildData guildData = gravity.load(new GuildData(event.getGuild().getId()));
         String prefix = UDatabase.getPrefix(event.getGuild());
         if(!message.startsWith(prefix)) {
             return;

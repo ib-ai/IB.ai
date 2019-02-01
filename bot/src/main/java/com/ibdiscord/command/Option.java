@@ -1,5 +1,9 @@
+package com.ibdiscord.command;
+
+import lombok.Data;
+
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +17,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @author Arraying
- * @since 2018.09.17
- */
-
-package com.ibdiscord.command;
-
-import lombok.Data;
-
 public final @Data class Option {
 
     private final String name;
     private final String value;
     private final boolean declaredAsValue;
 
+    /**
+     * Pretty prints the option for debug purposes.
+     * @return The string version.
+     */
     @Override
     public String toString() {
         return "Option[" + name + "](" + value + ")";
     }
+
 }

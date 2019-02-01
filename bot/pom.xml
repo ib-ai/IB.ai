@@ -160,18 +160,8 @@
             <version>3.7.1_395</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-nop</artifactId>
-            <version>1.7.5</version>
-        </dependency>
-        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
             <version>1.2.3</version>
         </dependency>
         <dependency>
@@ -195,6 +185,7 @@
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
             <version>5.0.5.RELEASE</version>
+
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -204,7 +195,7 @@
         <dependency>
             <groupId>com.github.Arraying</groupId>
             <artifactId>Gravity</artifactId>
-            <version>2b2ed728501f15a2a9baf654981a24fcc04f5187</version>
+            <version>master-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

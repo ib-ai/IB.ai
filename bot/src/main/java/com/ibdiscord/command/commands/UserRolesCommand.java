@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,11 @@ public final class UserRolesCommand extends Command {
      * Executes the command.
      */
     public UserRolesCommand() {
-        super("userroles", Set.of("myroles", "showroles"), CommandPermission.discord(), new HashSet<>());
+        super("userroles",
+                Set.of("myroles", "showroles"),
+                CommandPermission.discord(),
+                new HashSet<>()
+        );
     }
 
     /**

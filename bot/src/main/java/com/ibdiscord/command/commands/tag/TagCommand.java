@@ -1,5 +1,14 @@
+package com.ibdiscord.command.commands.tag;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import net.dv8tion.jda.core.Permission;
+
+import java.util.Set;
+
 /**
- * Copyright 2018 raynichc
+ * Copyright 2019 Ray Clark
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,35 +22,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @author raynichc
- * @since 2018.11.29
- */
-
-package com.ibdiscord.command.commands.tag;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.utils.UDatabase;
-import net.dv8tion.jda.core.Permission;
-
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public final class TagCommand extends Command {
 
+    /**
+     * Creates the command.
+     */
     public TagCommand() {
         super("tag",
-                new HashSet<>(),
+                Set.of("tags"),
                 CommandPermission.discord(Permission.MANAGE_CHANNEL),
-                Stream.of(new TagListCommand(), new TagCreateCommand(), new TagDeleteCommand()).collect(Collectors.toSet()));
+                Set.of(new TagCreateCommand(), new TagDeleteCommand(), new TagListCommand())
+        );
+        this.correctUsage = "tag <create/delete/list> \"tag name\" \"tag value\"";
     }
 
+    /**
+     * Shows a list of sub commands.
+     * @param context The command context.
+     */
     @Override
     protected void execute(CommandContext context) {
-        context.reply("Correct usage: `" + UDatabase.getPrefix(context.getGuild()) + "tag [list/create/delete] \"[trigger]\" \"[output]\"`");
+        sendUsage(context);
     }
+
 }
