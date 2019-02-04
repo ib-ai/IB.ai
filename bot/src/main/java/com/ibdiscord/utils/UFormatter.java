@@ -2,7 +2,7 @@ package com.ibdiscord.utils;
 
 import com.ibdiscord.IBai;
 import com.ibdiscord.data.LocalConfig;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 
 /**
@@ -46,38 +46,12 @@ public final class UFormatter {
     }
 
     /**
-     * Makes a mod log message with the given parameters.
-     * @param handle The case number.
-     * @param display The display name for the punishment.
-     * @param userDisplay The display name of the user.
-     * @param userId The ID of the user.
-     * @param staffDisplay The display name of the staff member.
-     * @param staffId The ID of the staff member.
-     * @param reason The reason for punishing. If null, no reason will be specified.
-     * @return A mod long message.
-     */
-    public static String makeAModLog(long handle, String display, String userDisplay, String userId, String staffDisplay, String staffId, String reason) {
-        String modLog = String.format("**Case: #%d | %s**\n**Offender: **%s (ID: %s)\n**Moderator: **%s (ID: %s)\n**Reason: **%s",
-                handle,
-                display,
-                userDisplay,
-                userId,
-                staffDisplay,
-                staffId,
-                reason == null ? String.format(DEFAULT_REASON, IBai.INSTANCE.getConfig().getStaticPrefix()) : reason);
-        if(modLog.length() > 2000) {
-            modLog = modLog.substring(0, 2000);
-        }
-        return modLog;
-    }
-
-    /**
-     * Formats a member to a user friendly name#discrim form.
-     * @param member The member.
+     * Formats a user to a user friendly name#discrim form.
+     * @param user The user.
      * @return The user, formatted.
      */
-    public static String formatMember(Member member) {
-        return member.getUser().getName() + "#" + member.getUser().getDiscriminator();
+    public static String formatMember(User user) {
+        return String.format("%s#%s", user.getName(), user.getDiscriminator());
     }
 
 }

@@ -30,6 +30,11 @@ public final @AllArgsConstructor class GuildData extends TypeMap {
      */
     public static final String MODLOGS = "modlogs";
 
+    /**
+     * The mute role key.
+     */
+    public static final String MUTE = "mute_role";
+
     private final String guild;
 
     /**

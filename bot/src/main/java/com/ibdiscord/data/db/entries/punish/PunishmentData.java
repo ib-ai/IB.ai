@@ -21,11 +21,6 @@ import lombok.AllArgsConstructor;
 public final @AllArgsConstructor class PunishmentData extends TypeMap {
 
     /**
-     * The case number.
-     */
-    public static final String CASE = "case";
-
-    /**
      * The type.
      */
     public static final String TYPE = "type";

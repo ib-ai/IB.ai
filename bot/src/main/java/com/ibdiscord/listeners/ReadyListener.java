@@ -1,7 +1,12 @@
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.punish.ExpiryData;
+import com.ibdiscord.punish.Punishment;
+import com.ibdiscord.punish.PunishmentExpiry;
 import net.dv8tion.jda.bot.entities.ApplicationInfo;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
@@ -40,6 +45,18 @@ public final class ReadyListener extends ListenerAdapter {
         logger.info("Bot \"{}\" by \"{}\" is now connected.", botName, botOwner);
         logger.info("Currently serving {} guilds.", guildNum);
         logger.info("Described as \"{}\", {}.", botDescription, (isPublicBot ? "public" : "private"));
+        for(Guild guild : event.getJDA().getGuilds()) {
+            ExpiryData expiryData = DContainer.INSTANCE.getGravity().load(new ExpiryData(guild.getId()));
+            for(String key : expiryData.getKeys()) {
+                long expiry = expiryData.get(key).asLong();
+                Punishment punishment = Punishment.of(guild, key);
+                if(System.currentTimeMillis() > expiry) {
+                    PunishmentExpiry.INSTANCE.expire(guild, key, punishment);
+                } else {
+                    PunishmentExpiry.INSTANCE.schedule(guild, key, expiry - System.currentTimeMillis(), punishment);
+                }
+            }
+        }
     }
 
 }

@@ -7,7 +7,6 @@ import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.utils.UDatabase;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
@@ -40,7 +39,6 @@ public final class MessageListener extends ListenerAdapter {
                 || !event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_WRITE)) {
             return;
         }
-        //TODO: user input
         String message = event.getMessage().getContentRaw();
         Gravity gravity = DContainer.INSTANCE.getGravity();
         TagData tags = gravity.load(new TagData(event.getGuild().getId()));
@@ -61,15 +59,6 @@ public final class MessageListener extends ListenerAdapter {
         if(command != null) {
             command.preprocess(CommandContext.construct(event.getMessage(), ArrayUtils.remove(arguments, 0)));
         }
-    }
-
-    /**
-     * When a message is deleted.
-     * @param event The event instance.
-     */
-    @Override
-    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
-        //TODO: I don't know what to do with this, we need some form of cache to cache messages
     }
 
 }

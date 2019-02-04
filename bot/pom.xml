@@ -157,7 +157,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>3.7.1_395</version>
+            <version>3.8.2_459</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -200,8 +200,14 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>13.0</version>
+            <version>16.0.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.12.1</version>
+        </dependency>
+
     </dependencies>
 </project>

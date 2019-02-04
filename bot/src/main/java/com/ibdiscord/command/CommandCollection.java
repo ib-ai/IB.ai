@@ -1,7 +1,6 @@
 package com.ibdiscord.command;
 
 import com.ibdiscord.command.commands.*;
-import com.ibdiscord.command.commands.punishment.ReasonCommand;
 import com.ibdiscord.command.commands.tag.TagCommand;
 import lombok.Getter;
 
@@ -24,15 +23,18 @@ public enum CommandCollection {
 
     ECHO(new EchoCommand()),
     EVAL(new EvalCommand()),
+    EXPIRE(new ExpireCommand()),
     HELP(new HelpCommand()),
     MOD_LOG(new ModLogCommand()),
+    MUTE_ROLE(new MuteRoleCommand()),
     PING(new PingCommand()),
     REASON(new ReasonCommand()),
     SERVER_INFO(new ServerInfoCommand()),
-    SET_PREFIX(new SetPrefixCommand()),
+    SET_PREFIX(new PrefixCommand()),
     TAG(new TagCommand()),
     USER_INFO(new UserInfoCommand()),
-    USER_ROLES(new UserRolesCommand());
+    USER_ROLES(new UserRolesCommand()),
+    WARN(new WarnCommand());
 
     @Getter private final Command command;
 
