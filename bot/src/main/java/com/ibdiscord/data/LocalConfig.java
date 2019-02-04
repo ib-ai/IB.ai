@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
  */
 public final class LocalConfig {
 
-
     /**
      * AUTHORS
      */
