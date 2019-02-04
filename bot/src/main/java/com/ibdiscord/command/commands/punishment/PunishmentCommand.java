@@ -4,23 +4,17 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.Option;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.GuildData;
-import com.ibdiscord.data.db.entries.punish.PunishmentData;
-import com.ibdiscord.data.db.entries.punish.PunishmentsData;
+import com.ibdiscord.punish.PunishmentHandler;
+import com.ibdiscord.punish.PunishmentType;
+import com.ibdiscord.punish.PunishmentWrapper;
 import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import com.ibdiscord.utils.UTime;
-import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import static com.ibdiscord.command.commands.ModLogCommand.DISABLED_MOD_LOG;
-import static com.ibdiscord.data.db.entries.punish.PunishmentData.*;
 
 /**
  * Copyright 2019 Arraying
@@ -44,19 +38,19 @@ public abstract class PunishmentCommand extends Command {
      */
     public static final long DURATION_INDEFINITELY = -1;
 
-    private final String display;
+    private final PunishmentType type;
 
     /**
      * Creates a new abstract punishment command.
      * @param name The name of the command.
      * @param aliases The aliases.
      * @param permission The permission.
-     * @param display The display name for the punishment type.
+     * @param type The punishment type.
      */
-    protected PunishmentCommand(String name, Set<String> aliases, CommandPermission permission, String display) {
+    protected PunishmentCommand(String name, Set<String> aliases, CommandPermission permission, PunishmentType type) {
         super(name, aliases, permission, new HashSet<>());
-        this.display = display;
-        this.correctUsage = String.format("%s <user> [reason]", name);
+        this.type = type;
+        this.correctUsage = String.format("%s <user> [--duration time] [reason]", name);
     }
 
     /**
@@ -111,41 +105,15 @@ public abstract class PunishmentCommand extends Command {
             context.reply("Something went wrong while punishing. Are the permissions correct?");
             return;
         }
-        String guildId = context.getGuild().getId();
-        Gravity gravity = DContainer.INSTANCE.getGravity();
-        PunishmentsData punishmentList = gravity.load(new PunishmentsData(guildId));
-        long caseNumber = punishmentList.size() + 1;
-        punishmentList.add(caseNumber);
-        PunishmentData punishmentData = gravity.load(new PunishmentData(guildId, caseNumber));
-        String userDisplay = UFormatter.formatMember(member);
-        String userId = member.getUser().getId();
-        String staffDisplay = UFormatter.formatMember(staff);
-        String staffId = staff.getUser().getId();
-        punishmentData.set(CASE, caseNumber);
-        punishmentData.set(USER_DISPLAY, userDisplay);
-        punishmentData.set(USER_ID, userId);
-        punishmentData.set(STAFF_DISPLAY, staffDisplay);
-        punishmentData.set(STAFF_ID, staffId);
-        GuildData guildData = gravity.load(new GuildData(guildId));
-        long modLogChannel = guildData
-                .get(GuildData.MODLOGS)
-                .defaulting(DISABLED_MOD_LOG)
-                .asLong();
-        if(modLogChannel != DISABLED_MOD_LOG) {
-            TextChannel textChannel = context.getGuild().getTextChannelById(modLogChannel);
-            if(textChannel != null) {
-                textChannel.sendMessage(UFormatter.makeAModLog(
-                        caseNumber,
-                        display,
-                        userDisplay,
-                        userId,
-                        staffDisplay,
-                        staffId,
-                        null
-                )).queue(wellPlayedSir -> punishmentData.set(MESSAGE, wellPlayedSir.getId()));
-            }
-        }
-        gravity.save(punishmentData);
+        PunishmentWrapper wrapper = new PunishmentWrapper(
+                type,
+                UFormatter.formatMember(member),
+                member.getUser().getId(),
+                UFormatter.formatMember(staff),
+                staff.getUser().getId(),
+                reason
+        );
+        new PunishmentHandler(context.getGuild(), wrapper).create();
     }
 
 }

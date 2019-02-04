@@ -1,7 +1,10 @@
-package com.ibdiscord.data.db.entries;
+package com.ibdiscord.command.commands.punishment;
 
-import de.arraying.gravity.data.types.TypeMap;
-import lombok.AllArgsConstructor;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.punish.PunishmentType;
+import net.dv8tion.jda.core.entities.Member;
+
+import java.util.Set;
 
 /**
  * Copyright 2019 Arraying
@@ -18,27 +21,25 @@ import lombok.AllArgsConstructor;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final @AllArgsConstructor class GuildData extends TypeMap {
+public final class MuteCommand extends PunishmentCommand {
 
     /**
-     * The prefix key.
+     * Creates the command.
      */
-    public static final String PREFIX = "prefix";
+    protected MuteCommand() {
+        super("mute",
+                Set.of("silence"),
+                CommandPermission.roleId(230710782038376449L),
+                PunishmentType.MUTE
+        );
+    }
 
     /**
-     * The modlogs key for Redis.
-     */
-    public static final String MODLOGS = "modlogs";
-
-    private final String guild;
-
-    /**
-     * Gets the identifier.
-     * @return The identifier.
+     * Attempts to mute the user.
      */
     @Override
-    protected String getUniqueIdentifier() {
-        return "guild_" + guild;
+    boolean punish(Member member, String reason, long duration) {
+        return false;
     }
 
 }

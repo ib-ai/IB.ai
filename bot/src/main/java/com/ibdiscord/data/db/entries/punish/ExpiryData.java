@@ -1,10 +1,10 @@
-package com.ibdiscord.data.db.entries;
+package com.ibdiscord.data.db.entries.punish;
 
 import de.arraying.gravity.data.types.TypeMap;
 import lombok.AllArgsConstructor;
 
 /**
- * Copyright 2019 Ray Clark
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final @AllArgsConstructor class TagData extends TypeMap {
+public final @AllArgsConstructor class ExpiryData extends TypeMap {
 
     private final String guild;
 
@@ -28,7 +28,7 @@ public final @AllArgsConstructor class TagData extends TypeMap {
      */
     @Override
     protected String getUniqueIdentifier() {
-        return "tags_" + this.guild;
+        return "expiry_" + guild;
     }
 
 }

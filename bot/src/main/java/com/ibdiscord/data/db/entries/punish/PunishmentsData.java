@@ -1,6 +1,7 @@
 package com.ibdiscord.data.db.entries.punish;
 
 import de.arraying.gravity.data.types.TypeSet;
+import lombok.AllArgsConstructor;
 
 /**
  * Copyright 2019 Arraying
@@ -17,17 +18,9 @@ import de.arraying.gravity.data.types.TypeSet;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class PunishmentsData extends TypeSet {
+public final @AllArgsConstructor class PunishmentsData extends TypeSet {
 
     private final String guild;
-
-    /**
-     * Creates the punishment data list.
-     * @param guild The guild ID.
-     */
-    public PunishmentsData(String guild) {
-        this.guild = guild;
-    }
 
     /**
      * Gets the identifier.

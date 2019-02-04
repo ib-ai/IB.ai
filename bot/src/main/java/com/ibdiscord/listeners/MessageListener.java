@@ -6,7 +6,6 @@ import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.utils.UDatabase;
 import de.arraying.gravity.Gravity;
-import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -43,14 +42,13 @@ public final class MessageListener extends ListenerAdapter {
         }
         //TODO: user input
         String message = event.getMessage().getContentRaw();
-        //TODO: accept wildcards by using REGEX
-        //TODO: if doing this ensure to precomile the regular expression and cache it somewhere
         Gravity gravity = DContainer.INSTANCE.getGravity();
         TagData tags = gravity.load(new TagData(event.getGuild().getId()));
-        Property tagValueAsProperty = tags.get(message).defaulting("");
-        if (!tagValueAsProperty.asString().isEmpty()) {
-            event.getChannel().sendMessage(tagValueAsProperty.asString()).queue();
-            return;
+        for(String key : tags.getKeys()) {
+            if(message.matches(key)) {
+                event.getChannel().sendMessage(tags.get(key).asString()).queue();
+                return;
+            }
         }
         String prefix = UDatabase.getPrefix(event.getGuild());
         if(!message.startsWith(prefix)) {

@@ -1,6 +1,7 @@
 package com.ibdiscord.data.db.entries.punish;
 
 import de.arraying.gravity.data.types.TypeMap;
+import lombok.AllArgsConstructor;
 
 /**
  * Copyright 2019 Arraying
@@ -17,12 +18,17 @@ import de.arraying.gravity.data.types.TypeMap;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class PunishmentData extends TypeMap {
+public final @AllArgsConstructor class PunishmentData extends TypeMap {
 
     /**
      * The case number.
      */
     public static final String CASE = "case";
+
+    /**
+     * The type.
+     */
+    public static final String TYPE = "type";
 
     /**
      * The user display string.
@@ -45,22 +51,17 @@ public final class PunishmentData extends TypeMap {
     public static final String STAFF_ID = "staff_id";
 
     /**
+     * The reason.
+     */
+    public static final String REASON = "reason";
+
+    /**
      * The message ID.
      */
     public static final String MESSAGE = "message_id";
 
     private final String guild;
     private final Object caseId;
-
-    /**
-     * Creates punishment data.
-     * @param guild The guild.
-     * @param caseId The case ID.
-     */
-    public PunishmentData(String guild, Object caseId) {
-        this.guild = guild;
-        this.caseId = caseId;
-    }
 
     /**
      * Gets the unique identifier.
