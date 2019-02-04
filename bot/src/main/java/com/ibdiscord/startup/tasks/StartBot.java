@@ -47,11 +47,10 @@ public final class StartBot extends AbstractStartupTask {
     @Override
     public void doTask() throws Exception {
         LocalConfig localConfig = IBai.INSTANCE.getConfig();
-        String token = localConfig.isBetaMode() ? localConfig.getBotTokenBeta() : localConfig.getBotToken();
 
         // TODO: Move to proper bot instantiater
         jda = new JDABuilder(AccountType.BOT)
-                .setToken(token)
+                .setToken(localConfig.getBotToken())
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
                 .setGame(Game.playing(String.format("v%s | %shelp", localConfig.getBotVersion(), localConfig.getStaticPrefix())))
                 .addEventListener(new GuildListener(), new MessageListener(), new ReactionListener(), new ReadyListener())

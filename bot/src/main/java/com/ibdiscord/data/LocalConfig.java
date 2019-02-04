@@ -1,10 +1,12 @@
 package com.ibdiscord.data;
 
-import com.moandjiezana.toml.Toml;
 import lombok.Getter;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Copyright 2019 Jarred Vardy
@@ -23,60 +25,92 @@ import java.util.List;
  */
 public final class LocalConfig {
 
+
     /**
-     * The local configuration path.
+     * AUTHORS
      */
-    private static final String LOCAL_PATH = "Config.toml";
+    @Getter private final List<String> botAuthors;
 
-    private static Toml config;
+    /**
+     * DEVELOPERS
+     */
+    @Getter private final List<Long> developIDs;
 
-    // Metadata
-    @Getter private String botName;
-    @Getter private List<String> botAuthors;
-    @Getter private List<Long> developIDs;
-    @Getter private String githubLink;
+    /**
+     * GITHUB
+     */
+    @Getter private final String githubLink;
 
-    // Bot
-    @Getter private String botToken;
-    @Getter private String botTokenBeta;
-    @Getter private boolean betaMode;
-    @Getter private String botVersion;
-    @Getter private String staticPrefix;
+    /**
+     * TOKEN
+     */
+    @Getter private final String botToken;
 
-    @Getter private String dbIP;
-    @Getter private Long mainDatabaseNum;
-    @Getter private String mainDatabasePassword;
+    /**
+     * VERSION
+     */
+    @Getter private final String botVersion;
+
+    /**
+     * PREFIX
+     */
+    @Getter private final String staticPrefix;
+
+    /**
+     * DATA_HOST
+     */
+    @Getter private final String dbIP;
+
+    /**
+     * DATA_INDEX
+     */
+    @Getter private final Long mainDatabaseNum;
+
+    /**
+     * DATA_AUTH
+     */
+    @Getter private final String mainDatabasePassword;
 
     public LocalConfig() {
-        config = new Toml().read(new File(LOCAL_PATH));
-        this.init();
+        this.botAuthors = getEnvironment("AUTHORS", raw -> Arrays.asList(raw.split(";")), new ArrayList<>());
+        this.developIDs = getEnvironment("DEVELOPERS", raw -> Arrays.stream(raw.split(";"))
+                    .map(Long::valueOf)
+                    .collect(Collectors.toList()),
+                new ArrayList<>());
+        this.githubLink = getEnvironment("GITHUB", "https://github.com");
+        this.botToken = getEnvironment("TOKEN", "");
+        this.botVersion = getEnvironment("VERSION", "BETA");
+        this.staticPrefix = getEnvironment("PREFIX", "&");
+        this.dbIP = getEnvironment("DATA_HOST", "localhost");
+        this.mainDatabaseNum = getEnvironment("DATA_INDEX", Long::valueOf, 0L);
+        this.mainDatabasePassword = getEnvironment("DATA_AUTH", null);
     }
 
     /**
-     * Initializes the config.
-     * TODO: Add CLI
+     * Gets an environment variable.
+     * @param key The key.
+     * @param fallback The fallback value.
+     * @return A non null value.
      */
-    private void init() {
-        // Initialising values
-        botName = config.getString("bot_name");
+    private String getEnvironment(String key, String fallback) {
+        String value = System.getenv(key);
+        return value == null ? fallback : value;
+    }
 
-        // [metadata]
-        //TODO: Fix list inits
-        botAuthors = config.getList("metadata.bot_authors");
-        developIDs = config.getList("metadata.developer_ids");
-        githubLink = config.getString("metadata.github_link");
-
-        // [bot]
-        botToken = config.getString("bot.bot_token");
-        botTokenBeta = config.getString("bot.bot_token_beta");
-        betaMode = config.getBoolean("bot.beta_mode");
-        botVersion = config.getString("bot.bot_version");
-        staticPrefix = config.getString("bot.static_prefix");
-
-        // [database]
-        dbIP = config.getString("database.db_ip");
-        mainDatabaseNum = config.getLong("database.main_db");
-        mainDatabasePassword = config.getString("database.main_password");
+    /**
+     * Gets an environment variable and maps it to a certain type.
+     * @param key The key.
+     * @param function The mapping function.
+     * @param fallback The fallback value.
+     * @param <T> The type.
+     * @return A non null value.
+     */
+    private <T> T getEnvironment(String key, Function<String, T> function, T fallback) {
+        String raw = getEnvironment(key, null);
+        if(raw == null) {
+            return fallback;
+        }
+        return function.apply(raw);
     }
 
 }
