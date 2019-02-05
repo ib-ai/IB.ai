@@ -1,5 +1,10 @@
+package com.ibdiscord.data.db.entries;
+
+import de.arraying.gravity.data.types.TypeMap;
+import lombok.AllArgsConstructor;
+
 /**
- * Copyright 2018 raynichc
+ * Copyright 2019 Ray Clark
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +18,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+public final @AllArgsConstructor class TagData extends TypeMap {
 
-/**
- * @author raynichc
- * @since 2018.11.29
- */
+    private final String guild;
 
-package com.ibdiscord.data.db.entries;
-
-import de.arraying.gravity.data.types.TypeMap;
-
-public final class TagData extends TypeMap {
-
-    private String guildID;
-
-    public TagData(String guildID) {
-        this.guildID = guildID;
-    }
-
+    /**
+     * Gets the identifier.
+     * @return The identifier.
+     */
     @Override
     protected String getUniqueIdentifier() {
-        return "guild_" + this.guildID + "_tags";
+        return "tags_" + this.guild;
     }
+
 }

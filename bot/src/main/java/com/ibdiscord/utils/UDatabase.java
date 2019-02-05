@@ -1,7 +1,10 @@
-package com.ibdiscord.startup.tasks;
+package com.ibdiscord.utils;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.startup.AbstractStartupTask;
+import com.ibdiscord.data.db.entries.GuildData;
+import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.core.entities.Guild;
 
 /**
  * Copyright 2019 Arraying
@@ -18,18 +21,19 @@ import com.ibdiscord.startup.AbstractStartupTask;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class StartDatabase extends AbstractStartupTask {
-
-    public StartDatabase() {
-        super("Start-Database");
-    }
+public final class UDatabase {
 
     /**
-     * Initializes/starts up the Redis database.
+     * Util method to get the prefix for a guild.
+     * @param guild The guild.
+     * @return A never null prefix (fallbacks to config if required).
      */
-    @Override
-    public void doTask() {
-        DContainer.INSTANCE.connect();
+    public static String getPrefix(Guild guild) {
+        Gravity gravity = DContainer.INSTANCE.getGravity();
+        return gravity.load(new GuildData(guild.getId()))
+            .get(GuildData.PREFIX)
+            .defaulting(IBai.INSTANCE.getConfig().getStaticPrefix())
+            .asString();
     }
 
 }

@@ -3,9 +3,14 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.utils.UString;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.GuildData;
+import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Role;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,33 +28,36 @@ import java.util.Set;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class EchoCommand extends Command {
+public final class MuteRoleCommand extends Command {
 
     /**
      * Creates the command.
      */
-    public EchoCommand() {
-        super("echo",
-                Set.of("copycat"),
-                CommandPermission.discord(),
+    public MuteRoleCommand() {
+        super("muterole",
+                Set.of("setmuterole"),
+                CommandPermission.discord(Permission.MANAGE_ROLES),
                 new HashSet<>()
         );
-        this.correctUsage = "echo <message>";
+        this.correctUsage = "muterole <role>";
     }
 
     /**
-     * Returns what the user inputs.
+     * Sets the mute role.
      * @param context The command context.
      */
     @Override
     protected void execute(CommandContext context) {
-        if(context.getArguments().length < 1) {
-            sendUsage(context);
+        List<Role> roles = context.getMessage().getMentionedRoles();
+        if(roles.isEmpty()) {
+            context.reply("Please mention the role that you would like to act as a muted role. It is recommended to do this in a private channel.");
             return;
         }
-        context.reply(UString.stripMassMentions(
-                UString.concat(context.getArguments(), " ", 0)
-        ));
+        Gravity gravity = DContainer.INSTANCE.getGravity();
+        GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
+        guildData.set(GuildData.MUTE, roles.get(0).getId());
+        gravity.save(guildData);
+        context.reply("The new role has been set.");
     }
 
 }

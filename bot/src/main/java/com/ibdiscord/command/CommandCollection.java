@@ -1,5 +1,11 @@
+package com.ibdiscord.command;
+
+import com.ibdiscord.command.commands.*;
+import com.ibdiscord.command.commands.tag.TagCommand;
+import lombok.Getter;
+
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,39 +19,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @author Arraying
- * @since 2018.09.17
- */
-
-package com.ibdiscord.command;
-
-import com.ibdiscord.command.commands.*;
-import com.ibdiscord.command.commands.tag.TagCommand;
-import lombok.Getter;
-
 public enum CommandCollection {
 
-    // Commands listed as enumerations.
-    // COMMAND_NAME(new NameCommand());
-    // Have the decency to put them in alphabetical order you imbeciles.
     ECHO(new EchoCommand()),
     EVAL(new EvalCommand()),
+    EXPIRE(new ExpireCommand()),
     HELP(new HelpCommand()),
-    KICK(new KickCommand()),
     MOD_LOG(new ModLogCommand()),
+    MUTE_ROLE(new MuteRoleCommand()),
     PING(new PingCommand()),
+    REASON(new ReasonCommand()),
     SERVER_INFO(new ServerInfoCommand()),
-    SET_PREFIX(new SetPrefixCommand()),
+    SET_PREFIX(new PrefixCommand()),
     TAG(new TagCommand()),
-    TEST_OPTIONS(new TestOptionsCommand()),
     USER_INFO(new UserInfoCommand()),
-    USER_ROLES(new UserRolesCommand());
+    USER_ROLES(new UserRolesCommand()),
+    WARN(new WarnCommand());
 
     @Getter private final Command command;
 
+    /**
+     * Registers a new command.
+     * @param command The command object.
+     */
     CommandCollection(Command command) {
         this.command = command;
     }
+
 }

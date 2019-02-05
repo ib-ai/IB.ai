@@ -3,13 +3,16 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.utils.UString;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.GuildData;
+import net.dv8tion.jda.core.Permission;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Copyright 2019 Arraying
+ * Copyright 2019 Ray Clark
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,33 +26,41 @@ import java.util.Set;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class EchoCommand extends Command {
+public final class PrefixCommand extends Command {
 
     /**
      * Creates the command.
      */
-    public EchoCommand() {
-        super("echo",
-                Set.of("copycat"),
-                CommandPermission.discord(),
+    public PrefixCommand() {
+        super("prefix",
+                Set.of("setprefix"),
+                CommandPermission.discord(Permission.MANAGE_SERVER),
                 new HashSet<>()
         );
-        this.correctUsage = "echo <message>";
+        this.correctUsage = "prefix <new prefix>";
     }
 
     /**
-     * Returns what the user inputs.
+     * Sets the prefix of the bot, per guild.
      * @param context The command context.
      */
     @Override
     protected void execute(CommandContext context) {
-        if(context.getArguments().length < 1) {
+        if(context.getArguments().length == 0) {
             sendUsage(context);
             return;
         }
-        context.reply(UString.stripMassMentions(
-                UString.concat(context.getArguments(), " ", 0)
-        ));
+
+        String prefixNew = context.getArguments()[0];
+        if(Arrays.stream(new String[]{"/", "$", "#", "+", "*", "?"}).anyMatch(prefixNew::equals)) {
+            context.reply("Invalid Prefix ( " +  prefixNew + ")." );
+            return;
+        }
+
+        GuildData guildData = DContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
+        guildData.set(GuildData.PREFIX, prefixNew);
+        DContainer.INSTANCE.getGravity().save(guildData);
+        context.reply("The prefix has been updated to (" + prefixNew + ").");
     }
 
 }

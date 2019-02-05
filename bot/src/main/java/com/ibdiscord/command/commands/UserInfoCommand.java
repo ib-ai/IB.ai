@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,11 @@ public final class UserInfoCommand extends Command {
      * Creates the command.
      */
     public UserInfoCommand() {
-        super("userinfo", Set.of("memberinfo", "ui"), CommandPermission.discord(), new HashSet<>());
+        super("userinfo",
+                Set.of("memberinfo", "ui"),
+                CommandPermission.discord(),
+                new HashSet<>()
+        );
     }
 
     /**

@@ -1,5 +1,16 @@
+package com.ibdiscord.data.db;
+
+import de.arraying.gravity.GravityProvider;
+import io.lettuce.core.RedisException;
+import io.lettuce.core.api.sync.RedisCommands;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
- * Copyright 2018 raynichc
+ * Copyright 2019 Ray Clark
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +24,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @author raynichc
- * @since 2018.11.29
- */
-
-package com.ibdiscord.data.db;
-
-import de.arraying.gravity.GravityProvider;
-
-import io.lettuce.core.RedisException;
-import io.lettuce.core.api.sync.RedisCommands;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
-
-public final class DProvider implements GravityProvider {
+@SuppressWarnings("unchecked")
+final class DProvider implements GravityProvider {
     private final RedisCommands sync;
 
-    public DProvider() {
-        sync = DContainer.getSync();
+    DProvider() {
+        sync = DContainer.INSTANCE.getSync();
     }
 
     @Override
@@ -109,7 +103,7 @@ public final class DProvider implements GravityProvider {
 
     @Override
     public Set<String> smembers(String key) {
-        Set<String> members = new HashSet<String>();
+        Set<String> members = new HashSet<>();
         try {
             members.addAll(sync.smembers(key));
         } catch(RedisException re) {
@@ -138,7 +132,7 @@ public final class DProvider implements GravityProvider {
 
     @Override
     public List<String> lrange(String key, int from, int to) {
-        List<String> range = new ArrayList();
+        List<String> range = new ArrayList<>();
         try {
             range = sync.lrange(key, from, to);
         } catch(RedisException re) {
@@ -146,4 +140,5 @@ public final class DProvider implements GravityProvider {
         }
         return range;
     }
+
 }

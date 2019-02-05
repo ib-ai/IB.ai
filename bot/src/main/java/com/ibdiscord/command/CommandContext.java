@@ -1,5 +1,15 @@
+package com.ibdiscord.command;
+
+import lombok.Getter;
+import net.dv8tion.jda.core.entities.*;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +23,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @author Arraying
- * @since 2018.09.17
- */
-
-package com.ibdiscord.command;
-
-import lombok.Getter;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import net.dv8tion.jda.core.entities.*;
-
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 public final class CommandContext {
 
     @Getter final Message message;
@@ -40,6 +32,12 @@ public final class CommandContext {
     @Getter private final String[] arguments;
     @Getter private final Set<Option> options;
 
+    /**
+     * Creates a new command context. Which is essentially metadata regarding command execution.
+     * @param message The message.
+     * @param arguments The arguments.
+     * @param options Any options of the command.
+     */
     private CommandContext(Message message, String[] arguments, Set<Option> options) {
         this.message = message;
         this.guild = message.getGuild();
@@ -49,6 +47,12 @@ public final class CommandContext {
         this.options = options;
     }
 
+    /**
+     * Constructs a command context by wrapping the constructor.
+     * @param message The message.
+     * @param args The arguments.
+     * @return A command context.
+     */
     public static CommandContext construct(Message message, String[] args) {
         Set<Option> options = new LinkedHashSet<>();
         Set<Integer> toRemove = new HashSet<>();
@@ -78,7 +82,6 @@ public final class CommandContext {
             }
             options.add(new Option(name, value, declareAsValue));
         }
-        System.out.println(toRemove);
         int decrementer = 0;
         for(int i : toRemove) {
             args = ArrayUtils.remove(args, i - decrementer); // the array size will shrink for every time something is removed
@@ -87,19 +90,39 @@ public final class CommandContext {
         return new CommandContext(message, args, options);
     }
 
+    /**
+     * Whether or not the value is a parameter.
+     * @param value The value.
+     * @return True if it is, false otherwise.
+     */
     private static boolean isParameter(String value) {
         return value.startsWith("-") && value.length() > 1;
     }
 
+    /**
+     * Replies to the context.
+     * @param message The message.
+     * @param format Any message formats.
+     */
     public void reply(String message, Object... format) {
         channel.sendMessageFormat(message, (Object[]) format).queue(null, Throwable::printStackTrace);
     }
 
+    /**
+     * Replies to the context.
+     * @param message A message embed.
+     */
     public void reply(MessageEmbed message) {
         channel.sendMessage(message).queue();
     }
 
+    /**
+     * Clones the command context with new arguments, for subcommands.
+     * @param arguments The new arguments.
+     * @return A new command context.
+     */
     CommandContext clone(String[] arguments) {
         return new CommandContext(message, arguments, options);
     }
+
 }

@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,11 @@ public final class ServerInfoCommand extends Command {
      * Creates a new command.
      */
     public ServerInfoCommand() {
-        super("serverinfo", Set.of("guildinfo", "si"), CommandPermission.discord(), new HashSet<>());
+        super("serverinfo",
+                Set.of("guildinfo", "si"),
+                CommandPermission.discord(),
+                new HashSet<>()
+        );
     }
 
     /**

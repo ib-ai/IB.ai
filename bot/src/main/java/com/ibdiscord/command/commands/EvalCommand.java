@@ -34,7 +34,17 @@ public final class EvalCommand extends Command {
      * Creates the command.
      */
     public EvalCommand() {
-        super("eval", Set.of("evaluate", "js", "justgeekythings"), CommandPermission.developer(CommandPermission.discord()), new HashSet<>());
+        super("eval",
+                Set.of("evaluate", "js", "justgeekythings"),
+                CommandPermission.developer(CommandPermission.discord()),
+                new HashSet<>()
+        );
+        this.correctUsage = "eval <JS code>";
+        try {
+            engine.eval("var imports = new JavaImporter(java.io, java.lang, java.util, java.net);");
+        } catch(ScriptException exception) {
+            exception.printStackTrace();
+        }
     }
 
     /**
@@ -43,10 +53,11 @@ public final class EvalCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        if(context.getArguments().length < 2) {
-            context.reply("Please give some code to evaluate");
+        if(context.getArguments().length < 1) {
+            sendUsage(context);
+            return;
         }
-        var code = UString.concat(context.getArguments(), " ", 1);
+        var code = UString.concat(context.getArguments(), " ", 0);
         engine.put("c", context);
         engine.put("ctx", context);
         engine.put("context", context);
@@ -64,7 +75,7 @@ public final class EvalCommand extends Command {
                     .queue(null, error -> context.reply("Well, it seems as if the output can't be sent as a file."));
             return;
         }
-        context.reply("__**Output**__\n\n" + response);
+        context.reply("**Output:**```" + response + "```");
     }
 
 }

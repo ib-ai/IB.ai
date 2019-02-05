@@ -1,5 +1,7 @@
+package com.ibdiscord.command.permissions;
+
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @author Arraying
- * @since 2018.09.17
- */
-
-package com.ibdiscord.command.permissions;
-
 public enum PermissionType {
+
+    /**
+     * A permission provided by Discord.
+     */
     DISCORD,
 
+    /**
+     * A role ID.
+     */
     ROLE_ID,
 
+    /**
+     * A role name.
+     */
     ROLE_NAME,
 
+    /**
+     * A developer command.
+     */
     DEVELOPER
+
 }

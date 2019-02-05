@@ -1,5 +1,15 @@
+package com.ibdiscord.command.commands;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+
+import java.util.HashSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
- * Copyright 2018 Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +23,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * @author Arraying
- * @since 2018.09.17
- */
-
-package com.ibdiscord.command.commands;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public final class PingCommand extends Command {
 
+    /**
+     * Creates the command.
+     */
     public PingCommand() {
         super("ping",
                 Stream.of("pong", "latency").collect(Collectors.toSet()),
@@ -39,8 +36,13 @@ public final class PingCommand extends Command {
         );
     }
 
+    /**
+     * Returns the current shard's WSS ping.
+     * @param context The command context.
+     */
     @Override
     protected void execute(CommandContext context) {
         context.reply("Pong! WebSocket latency is currently %d.", context.getGuild().getJDA().getPing());
     }
+
 }

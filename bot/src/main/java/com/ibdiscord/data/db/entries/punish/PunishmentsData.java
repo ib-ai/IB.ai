@@ -1,7 +1,7 @@
-package com.ibdiscord.startup.tasks;
+package com.ibdiscord.data.db.entries.punish;
 
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.startup.AbstractStartupTask;
+import de.arraying.gravity.data.types.TypeSet;
+import lombok.AllArgsConstructor;
 
 /**
  * Copyright 2019 Arraying
@@ -18,18 +18,17 @@ import com.ibdiscord.startup.AbstractStartupTask;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class StartDatabase extends AbstractStartupTask {
+public final @AllArgsConstructor class PunishmentsData extends TypeSet {
 
-    public StartDatabase() {
-        super("Start-Database");
-    }
+    private final String guild;
 
     /**
-     * Initializes/starts up the Redis database.
+     * Gets the identifier.
+     * @return The identifier.
      */
     @Override
-    public void doTask() {
-        DContainer.INSTANCE.connect();
+    protected String getUniqueIdentifier() {
+        return "punishments_" + guild;
     }
 
 }

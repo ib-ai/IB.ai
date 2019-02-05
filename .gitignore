@@ -24,6 +24,7 @@ bot/.idea/
 bot.iml
 bot/Config.toml
 bot/dependency-reduced-pom.xml
+bot/target/
 
 # Web python project
 # Testing Config-Web.toml ignored
