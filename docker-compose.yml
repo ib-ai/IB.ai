@@ -35,7 +35,7 @@ services:
   # Redis database
   # Running on port 6379, on a failure it will restart itself
   # Depends on __redis.conf__ for startup config.
-  # Connect via the URL 'db:{PORT}'
+  # Connect via the URL 'redis://db:6379'
   db:
     restart: always
     image: redis
