@@ -4,7 +4,6 @@ import com.ibdiscord.IBai;
 import com.ibdiscord.data.LocalConfig;
 import de.arraying.gravity.Gravity;
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import lombok.Getter;
@@ -50,13 +49,8 @@ public enum DContainer {
             return;
         }
 
-        //Generating a URI to be used to generate connection
-        RedisURI.Builder uri = RedisURI.Builder.redis(dbIP)
-                .withDatabase(mainDbNum)
-                .withPassword(mainDbPassword);
-
         //Connecting with the built URI object
-        RedisClient client = RedisClient.create(uri.build());
+        RedisClient client = RedisClient.create(String.format("redis://%s@%s/%d", mainDbPassword, dbIP, mainDbNum));
         connection = client.connect(); //Establishing the connection
 
         sync = connection.sync();
