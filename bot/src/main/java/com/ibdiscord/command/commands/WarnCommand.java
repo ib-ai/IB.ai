@@ -3,6 +3,10 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.punish.Punishment;
+import com.ibdiscord.punish.PunishmentHandler;
+import com.ibdiscord.punish.PunishmentType;
+import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.core.entities.Member;
@@ -57,7 +61,17 @@ public final class WarnCommand extends Command {
         }
         member.getUser().openPrivateChannel().queue(channel ->
                 channel.sendMessage(String.format("You have been warned on %s for: %s", context.getGuild().getName(), reason))
-                .queue(ignored -> context.reply("The user has been warned."),
+                .queue(ignored -> {
+                            context.reply("The user has been warned.");
+                            PunishmentHandler punishmentHandler = new PunishmentHandler(context.getGuild(), new Punishment(PunishmentType.WARN,
+                                    UFormatter.formatMember(member.getUser()),
+                                    member.getUser().getId(),
+                                    UFormatter.formatMember(context.getMember().getUser()),
+                                    context.getMember().getUser().getId(),
+                                    reason
+                            ));
+                            punishmentHandler.onPunish();
+                        },
                     errorSend -> {
                         context.reply("Could not send warning message, please attempt to do so manually.");
                         errorSend.printStackTrace();

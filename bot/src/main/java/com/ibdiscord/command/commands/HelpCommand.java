@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 
 import java.awt.*;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * Copyright 2019 Arraying, Ray Clark
@@ -44,25 +45,28 @@ public final class HelpCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        // TODO go over this and ensure it is accurate.
         String botPrefix = UDatabase.getPrefix(context.getGuild());
 
         EmbedBuilder ebHelpMenu = new EmbedBuilder();
         ebHelpMenu.setColor(Color.white);
         ebHelpMenu.setAuthor("IB.ai", "https://discord.me/pbh", null);
-        ebHelpMenu.setDescription("Hey! Welcome to the IBO Discord Server. I'm IB.ai version: `" + IBai.INSTANCE.getConfig().getBotVersion() + "`." +
-                "All command arguments in <> are required, [] are optional. Here's some of the things I can do:");
-        ebHelpMenu.addField("Getting Started:", "You can join subjects by typing `" + botPrefix + "join <subject name>`, which will grant you access " +
-                "to its subject-specific channels.\n\nWhich subjects are available? See that by typing: `" + botPrefix + "subjectlist`.\n\n" +
-                "If you want to leave a role you can type: `" + botPrefix + "leave <subject name>`.\n\n" +
-                "To get your final-exam-year, type `" + botPrefix + "join <month> <year>`. This'll also give you a fancy coloured name.", false);
-        ebHelpMenu.addField("IB Resources:", "You can go to the IB Resources website to get up-to-date download links for textbooks, past papers, exam guides and more! Type:\n\n" +
-                "`link the resources`", false);
-        ebHelpMenu.addField("Other Commands:", "- Server details, including member count: `" + botPrefix + "serverinfo`\n" +
-                "- Details of a user: `" + botPrefix + "userinfo [user]`\n" +
-                "- The bot's ping: `" + botPrefix + "ping`\n" +
-                "- See this help menu: `" + botPrefix + "help`", false);
-        ebHelpMenu.addField("Information:", "Developed with <3 by the [development team on GitHub](" + IBai.INSTANCE.getConfig().getGithubLink() +")", false);
+        ebHelpMenu.setDescription("Hey! Welcome to the IBO Discord Server. I'm IB.ai version: `" + IBai.INSTANCE.getConfig().getBotVersion() + "`. " +
+                "All command arguments in <> are required, [] are optional.");
+        ebHelpMenu.addField("Getting Started:", "Grab a year role by clicking the appropriate emote in <#517896170581000224>. " +
+                "You can also add yourself to certain subjects this way. Share your passions with others by joining the lounges of certain interests, also using " +
+                "reactions, in <#504452978699272192>.", false);
+        ebHelpMenu.addField("Some Things I Can Do:", "- To get a link to up-to-date downloads to textbooks, papers, guides and more, type `link the resources` in chat\n" +
+                "- Show user information about a specific user: `" + botPrefix + "userinfo [user]`\n" +
+                "- Show information about the server `" + botPrefix + "serverinfo`\n" +
+                "- Check if the bot is responding: `" + botPrefix + "ping`\n", false);
+        ebHelpMenu.addField("Development:", "IB.ai is a [FOSS](" + IBai.INSTANCE.getConfig().getGithubLink() + ") project developed the community.\n" +
+                "Credit to the following minions for developing me:\n" + IBai.INSTANCE.getConfig().getBotAuthors().stream()
+                        .map(it -> "- " + it)
+                        .collect(Collectors.joining("\n")) + "\n\n" +
+                "Please consider [donating](https://paypal.me/libreresources) if you appreciate their efforts. " +
+                "Donations go directly back into the bot and other server projects, paying for server fees", false
+        );
+        ebHelpMenu.setFooter("Developed with <3", null);
         context.reply(ebHelpMenu.build());
     }
 
