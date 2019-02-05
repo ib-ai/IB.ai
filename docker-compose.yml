@@ -12,25 +12,25 @@ services:
     container_name: bot
     volumes:
       - ./bot/docker/Config.toml:/opt/IB.ai/Config.toml
-    networks:
-      - bot-db-net
+    env_file:
+      - ./env/bot.env
     depends_on:
       - db
 
   # Experimental
   # Will always restart on crash.
   # All /web/ files are volumes in Docker container, including config.
-  web:
-    image: web
-    restart: always
-    build: ./web/docker
-    container_name: web
-    volumes:
-      - ./web:/usr/src/app
-    ports:
-      - 5001:80
-    depends_on:
-      - db
+  #web:
+  #  image: web
+  #  restart: always
+  #  build: ./web/docker
+  #  container_name: web
+  #  volumes:
+  #    - ./web:/usr/src/app
+  #  ports:
+  #    - 5001:80
+  #  depends_on:
+  #    - db
 
   # Redis database
   # Running on port 6379, on a failure it will restart itself
@@ -43,13 +43,5 @@ services:
     command: redis-server /opt/IB.ai/Redis.conf
     volumes:
       - ./db/Redis.conf:/opt/IB.ai/Redis.conf
-    networks:
-      - bot-db-net
     ports:
-      - "6379"
-    environment:
-      DB_URL: "http://db:6379"
-
-networks:
-  bot-db-net:
-    driver: bridge
+      - 6379:6379

@@ -12,6 +12,7 @@
 bot/docker/Config.toml
 /web/docker/Config-Web.toml
 /db/Redis.conf
+/env/bot.env
 
 # Java project files in bot
 # Testing config.toml ignored
