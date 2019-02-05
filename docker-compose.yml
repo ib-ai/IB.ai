@@ -10,8 +10,6 @@ services:
     restart: on-failure:3
     build: ./bot/docker
     container_name: bot
-    volumes:
-      - ./bot/docker/Config.toml:/opt/IB.ai/Config.toml
     env_file:
       - ./env/bot.env
     depends_on:
