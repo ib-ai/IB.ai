@@ -60,7 +60,7 @@ public final class ReasonCommand extends Command {
         }
         Guild guild = context.getGuild();
         String caseNumber = context.getArguments()[0];
-        String reason = UString.concat(context.getArguments(), "", 1);
+        String reason = UString.concat(context.getArguments(), " ", 1);
         Gravity gravity = DContainer.INSTANCE.getGravity();
         PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
         if(!punishmentList.contains(caseNumber)) {
