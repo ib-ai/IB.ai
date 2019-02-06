@@ -4,7 +4,7 @@ import com.ibdiscord.data.LocalConfig;
 import com.ibdiscord.startup.Startup;
 import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.UJavaVersion;
-import com.ibdiscord.utils.exceptions.JavaVersionException;
+import com.ibdiscord.exceptions.JavaVersionException;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

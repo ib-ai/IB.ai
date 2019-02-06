@@ -1,4 +1,4 @@
-package com.ibdiscord.utils.exceptions;
+package com.ibdiscord.exceptions;
 
 /**
  * Copyright 2019 Jarred Vardy

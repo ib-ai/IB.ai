@@ -1,4 +1,4 @@
-FROM openjdk:10
+FROM openjdk:11
 MAINTAINER Jarred Vardy <jarred.vardy@gmail.com>
 ENV ENV docker
 

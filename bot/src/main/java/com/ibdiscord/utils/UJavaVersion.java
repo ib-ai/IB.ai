@@ -1,6 +1,6 @@
 package com.ibdiscord.utils;
 
-import com.ibdiscord.utils.exceptions.JavaVersionException;
+import com.ibdiscord.exceptions.JavaVersionException;
 
 /**
  * Copyright 2019 Jarred Vardy
@@ -19,7 +19,7 @@ import com.ibdiscord.utils.exceptions.JavaVersionException;
  */
 public final class UJavaVersion {
 
-    private static final String errorMessage = "You need Java 10 or higher to run this app. Your version: ";
+    private static final String errorMessage = "You need Java 11 to run this app. Your version: ";
 
     /**
      * Checks the Java version.
@@ -28,7 +28,7 @@ public final class UJavaVersion {
     public static void checkVersion() throws JavaVersionException {
         double version = Double.parseDouble(System.getProperty("java.specification.version"));
 
-        if(version != 10) {
+        if(version != 11) {
             throwError(version);
             shutdown();
         }
