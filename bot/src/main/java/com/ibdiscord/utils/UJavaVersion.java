@@ -1,5 +1,6 @@
 package com.ibdiscord.utils;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.exceptions.JavaVersionException;
 
 /**
@@ -27,7 +28,7 @@ public final class UJavaVersion {
      */
     public static void checkVersion() throws JavaVersionException {
         double version = Double.parseDouble(System.getProperty("java.specification.version"));
-
+        IBai.INSTANCE.getLogger().info("Gathered version as \"{}\".", version);
         if(version != 11) {
             throwError(version);
             shutdown();
