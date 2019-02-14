@@ -1,5 +1,6 @@
 package com.ibdiscord.listeners;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DContainer;
@@ -10,6 +11,8 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Copyright 2019 Jarred Vardy, Arraying
@@ -43,9 +46,13 @@ public final class MessageListener extends ListenerAdapter {
         Gravity gravity = DContainer.INSTANCE.getGravity();
         TagData tags = gravity.load(new TagData(event.getGuild().getId()));
         for(String key : tags.getKeys()) {
-            if(message.matches(key)) {
-                event.getChannel().sendMessage(tags.get(key).asString()).queue();
-                return;
+            try {
+                if(message.matches(key)) {
+                    event.getChannel().sendMessage(tags.get(key).asString()).queue();
+                    return;
+                }
+            } catch(PatternSyntaxException exception) {
+                IBai.INSTANCE.getLogger().info("Tag \"{}\" failed in guild {}: {}", key, event.getGuild().getId(), exception.getMessage());
             }
         }
         String prefix = UDatabase.getPrefix(event.getGuild());

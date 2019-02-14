@@ -64,7 +64,7 @@ public final class UserInfoCommand extends Command {
                 .addField("ID", user.getId(), true)
                 .addField("Nickname", target.getEffectiveName(), true)
                 .addField("Status", target.getOnlineStatus().toString(), true)
-                .addField("Game", target.getGame().getName(), true)
+                .addField("Game", target.getGame() == null ? "N/A" : target.getGame().getName(), true)
                 .addField("Joined", target.getJoinDate().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
                 .addField("Join Position", String.valueOf(joinPosition), true)
                 .addField("Registered", user.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)

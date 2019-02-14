@@ -8,7 +8,7 @@
     <!-- Document properties -->
     <groupId>com.ibdiscord</groupId>
     <artifactId>IB.ai</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.2</version>
 
     <name>IB.ai</name>
     <url>http://www.ibdiscord.com</url>
@@ -157,7 +157,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>3.8.2_459</version>
+            <version>3.8.3_460</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

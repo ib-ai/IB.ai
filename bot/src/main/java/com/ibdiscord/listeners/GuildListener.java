@@ -1,25 +1,31 @@
 package com.ibdiscord.listeners;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.entries.RoleData;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentHandler;
 import com.ibdiscord.punish.PunishmentType;
 import com.ibdiscord.utils.UFormatter;
+import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.audit.AuditLogChange;
 import net.dv8tion.jda.core.audit.AuditLogEntry;
 import net.dv8tion.jda.core.audit.AuditLogKey;
 import net.dv8tion.jda.core.audit.TargetType;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.GuildUnbanEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Copyright 2019 Arraying
@@ -39,12 +45,43 @@ import java.util.Map;
 public final class GuildListener extends ListenerAdapter {
 
     /**
+     * When a member joins the server.
+     * @param event The event instance.
+     */
+    @Override
+    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+        Member member = event.getMember();
+        Gravity gravity = DContainer.INSTANCE.getGravity();
+        RoleData roleData = gravity.load(new RoleData(member.getGuild().getId(), member.getUser().getId()));
+        if(roleData == null) {
+            return;
+        }
+        Role highest = event.getGuild().getSelfMember().getRoles().stream()
+                .max(Comparator.comparing(Role::getPosition))
+                .orElse(null);
+        Collection<Role> roles = roleData.values().stream()
+                .map(it -> member.getGuild().getRoleById(it.defaulting(0L).asLong()))
+                .filter(Objects::nonNull)
+                .filter(it -> highest == null || it.getPosition() < highest.getPosition())
+                .collect(Collectors.toSet());
+        member.getGuild().getController().addRolesToMember(member, roles).queue();
+        roleData.delete();
+        gravity.save(roleData);
+    }
+
+    /**
      * When a member leaves a server.
      * @param event The event instance.
      */
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
         queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong());
+        Gravity gravity = DContainer.INSTANCE.getGravity();
+        RoleData roleData = gravity.load(new RoleData(event.getGuild().getId(), event.getMember().getUser().getId()));
+        for(Role role : event.getMember().getRoles()) {
+            roleData.add(role.getId());
+        }
+        gravity.save(roleData);
     }
 
     /**
@@ -84,7 +121,13 @@ public final class GuildListener extends ListenerAdapter {
             if(entries.isEmpty()) {
                 return;
             }
+            IBai.INSTANCE.getLogger().info("Hello audit log, grabbing first element.");
             AuditLogEntry latest = entries.get(0);
+            IBai.INSTANCE.getLogger().info("Latest audit log (): type '{}', target type '{}', target id '{}', user {}",
+                    latest.getType(),
+                    latest.getTargetType(),
+                    latest.getTargetId(),
+                    latest.getUser());
             if(latest.getTargetType() != TargetType.MEMBER
                     || latest.getTargetIdLong() != target) {
                 return;
@@ -138,6 +181,9 @@ public final class GuildListener extends ListenerAdapter {
                     handler.onRevocation();
                     break;
             }
+        }, error -> {
+            IBai.INSTANCE.getLogger().info("Blimey, there's been an error.");
+            error.printStackTrace();
         });
     }
 
