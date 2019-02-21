@@ -3,6 +3,8 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.GuildUserData;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.EmbedBuilder;
 
@@ -56,9 +58,14 @@ public final class UserInfoCommand extends Command {
         }
         var user = target.getUser();
         var joinPosition = context.getGuild().getMembers().stream()
-                .sorted(Comparator.comparingLong(a -> a.getUser().getIdLong()))
+                .map(it -> it.getUser().getIdLong())
+                .sorted(Comparator.comparingLong(a -> a))
                 .collect(Collectors.toList())
-                .indexOf(target) + 1;
+                .indexOf(target.getUser().getIdLong()) + 1;
+        String joinOverride = DContainer.INSTANCE.getGravity()
+                .load(new GuildUserData(context.getGuild().getId(), user.getId()))
+                .get("position")
+                    .asString();
         context.reply(new EmbedBuilder()
                 .setAuthor(user.getName() + "#" + user.getDiscriminator(), "https://discord.gg/ibo", user.getEffectiveAvatarUrl())
                 .addField("ID", user.getId(), true)
@@ -66,7 +73,7 @@ public final class UserInfoCommand extends Command {
                 .addField("Status", target.getOnlineStatus().toString(), true)
                 .addField("Game", target.getGame() == null ? "N/A" : target.getGame().getName(), true)
                 .addField("Joined", target.getJoinDate().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
-                .addField("Join Position", String.valueOf(joinPosition), true)
+                .addField("Join Position", joinOverride == null ? String.valueOf(joinPosition) : joinOverride, true)
                 .addField("Registered", user.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
                 .build()
         );

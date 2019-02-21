@@ -37,6 +37,7 @@ public final @Getter @AllArgsConstructor class Punishment {
     private final String staffDisplay;
     private final String staffId;
     @Setter private String reason;
+    private boolean redacted;
 
     /**
      * Gets a punishment wrapper from the database.
@@ -52,7 +53,8 @@ public final @Getter @AllArgsConstructor class Punishment {
                 data.get(USER_ID).asString(),
                 data.get(STAFF_DISPLAY).asString(),
                 data.get(STAFF_ID).asString(),
-                data.get(REASON).asString()
+                data.get(REASON).asString(),
+                data.get(REDACTED).defaulting(false).asBoolean()
         );
     }
 
@@ -71,6 +73,7 @@ public final @Getter @AllArgsConstructor class Punishment {
         punishment.set(STAFF_DISPLAY, staffDisplay);
         punishment.set(STAFF_ID, staffId);
         punishment.set(REASON, reason == null ? getDefaultReason(guild, caseNumber) : reason);
+        punishment.set(REDACTED, redacted);
         list.add(caseNumber);
         gravity.save(punishment);
         gravity.save(list);
@@ -85,8 +88,8 @@ public final @Getter @AllArgsConstructor class Punishment {
         String modLog = String.format("**Case: #%d | %s**\n**Offender: **%s (ID: %s)\n**Moderator: **%s (ID: %s)\n**Reason: **%s",
                 caseNumber,
                 type.getDisplayInitial(),
-                userDisplay,
-                userId,
+                getSensitiveField(userDisplay),
+                getSensitiveField(userId),
                 staffDisplay,
                 staffId,
                 reason == null ? getDefaultReason(guild, caseNumber) : reason);
@@ -107,6 +110,15 @@ public final @Getter @AllArgsConstructor class Punishment {
                 userId,
                 staffDisplay,
                 staffId);
+    }
+
+    /**
+     * Gets a sensitive field, that is formatted appropriately.
+     * @param field The field.
+     * @return A censored version, if applicable.
+     */
+    private String getSensitiveField(String field) {
+        return redacted ? "[REDACTED]" : field;
     }
 
     /**

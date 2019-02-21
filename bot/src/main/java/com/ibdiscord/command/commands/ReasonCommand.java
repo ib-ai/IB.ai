@@ -16,8 +16,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.ibdiscord.data.db.entries.punish.PunishmentData.MESSAGE;
-import static com.ibdiscord.data.db.entries.punish.PunishmentData.REASON;
+import static com.ibdiscord.data.db.entries.punish.PunishmentData.*;
 
 /**
  * Copyright 2019 Arraying
@@ -84,34 +83,20 @@ public final class ReasonCommand extends Command {
             context.reply("Logging is currently not enabled or set up incorrectly.");
             return;
         }
+        boolean redacted = context.getOptions().stream()
+                .anyMatch(it -> it.getName().equalsIgnoreCase("redacted"));
+        punishmentData.set(REDACTED, redacted);
         channel.editMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong(), punishment.getLogPunishment(guild, caseId)).queue(
                 outstandingMove -> {
                     punishmentData.set(REASON, reason);
                     context.reply("The reason has been updated.");
-                    gravity.save(punishmentData);
                 },
                 error -> {
                     context.reply("An error occurred, the reason could not be updated.");
                     error.printStackTrace();
                 }
         );
-//        PunishmentData punishmentData = gravity.load(new PunishmentData(context.getGuild().getId(), caseId));
-//        Punishment wrapper = Punishment.of(context.getGuild().getId(), caseId);
-//        wrapper.setReason(reason);
-//        PunishmentHandlerLegacy handler = new PunishmentHandlerLegacy(context.getGuild(), wrapper);
-//        TextChannel channel = handler.getModLogChannel();
-//        if(channel != null) {
-//            channel.editMessageById(punishmentData.get(MESSAGE).defaulting(0).asLong(), handler.getMogLogMessage(caseId)).queue(
-//                    outstandingMove -> {
-//                        context.reply("The reason has been updated.");
-//                        punishmentData.set(REASON, reason);
-//                    },
-//                    error -> context.reply("The reason could not be updated.")
-//            );
-//        } else {
-//            context.reply("Logging is currently not enabled; could not update the reason.");
-//        }
-//        gravity.save(punishmentData);
+        gravity.save(punishmentData);
     }
 
 }

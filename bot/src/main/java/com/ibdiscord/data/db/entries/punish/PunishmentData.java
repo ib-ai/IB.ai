@@ -51,6 +51,11 @@ public final @AllArgsConstructor class PunishmentData extends TypeMap {
     public static final String REASON = "reason";
 
     /**
+     * Present when user sensitive information is redacted.
+     */
+    public static final String REDACTED = "redacted";
+
+    /**
      * The message ID.
      */
     public static final String MESSAGE = "message_id";

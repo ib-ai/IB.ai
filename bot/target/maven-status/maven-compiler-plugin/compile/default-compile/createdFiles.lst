@@ -15,8 +15,10 @@ com\ibdiscord\punish\PunishmentExpiry.class
 com\ibdiscord\punish\PunishmentType.class
 com\ibdiscord\command\commands\PrefixCommand.class
 com\ibdiscord\command\commands\HelpCommand.class
+com\ibdiscord\command\commands\PurgeCommand.class
 com\ibdiscord\utils\UDatabase.class
 com\ibdiscord\startup\tasks\StartCommands.class
+com\ibdiscord\data\db\entries\RoleData.class
 com\ibdiscord\utils\objects\AbstractTask.class
 com\ibdiscord\command\commands\MuteRoleCommand.class
 com\ibdiscord\utils\UString.class
@@ -42,6 +44,7 @@ com\ibdiscord\punish\PunishmentHandler.class
 com\ibdiscord\command\commands\UserRolesCommand.class
 com\ibdiscord\command\Option.class
 com\ibdiscord\listeners\ReactionListener$1.class
+com\ibdiscord\utils\objects\GuildedCache.class
 com\ibdiscord\command\commands\ModLogCommand.class
 com\ibdiscord\data\db\entries\punish\PunishmentData.class
 com\ibdiscord\startup\Startup$1.class
@@ -58,3 +61,4 @@ com\ibdiscord\command\commands\tag\TagDeleteCommand.class
 com\ibdiscord\command\commands\UserInfoCommand.class
 com\ibdiscord\command\commands\EchoCommand.class
 com\ibdiscord\utils\objects\Comparator.class
+com\ibdiscord\data\db\entries\GuildUserData.class

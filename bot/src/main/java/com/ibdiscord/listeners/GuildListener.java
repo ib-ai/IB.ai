@@ -132,55 +132,57 @@ public final class GuildListener extends ListenerAdapter {
                     || latest.getTargetIdLong() != target) {
                 return;
             }
-            User user = guild.getJDA().retrieveUserById(latest.getTargetIdLong()).complete();
-            User staff = latest.getUser();
-            String reason = latest.getReason();
-            if(user == null
-                    || staff == null) {
-                throw new RuntimeException("user/staff nil");
-            }
-            Punishment punishment = new Punishment(null,
-                    UFormatter.formatMember(user),
-                    user.getId(),
-                    UFormatter.formatMember(staff),
-                    staff.getId(),
-                    reason
-            );
-            PunishmentHandler handler = new PunishmentHandler(guild, punishment);
-            switch(latest.getType()) {
-                case KICK:
-                    punishment.setType(PunishmentType.KICK);
-                    handler.onPunish();
-                    break;
-                case MEMBER_ROLE_UPDATE:
-                    AuditLogChange rolesAddedRaw = latest.getChangeByKey(AuditLogKey.MEMBER_ROLES_ADD);
-                    AuditLogChange rolesRemovedRaw = latest.getChangeByKey(AuditLogKey.MEMBER_ROLES_REMOVE);
-                    if(rolesAddedRaw != null) {
-                        List<Map<String, String>> roles = rolesAddedRaw.getNewValue();
-                        if(isNotMute(guild, roles)) {
-                            return;
-                        }
-                        punishment.setType(PunishmentType.MUTE);
+            guild.getJDA().retrieveUserById(latest.getTargetIdLong()).queue(user -> {
+                User staff = latest.getUser();
+                String reason = latest.getReason();
+                if(user == null
+                        || staff == null) {
+                    throw new RuntimeException("user/staff nil");
+                }
+                Punishment punishment = new Punishment(null,
+                        UFormatter.formatMember(user),
+                        user.getId(),
+                        UFormatter.formatMember(staff),
+                        staff.getId(),
+                        reason,
+                        false
+                );
+                PunishmentHandler handler = new PunishmentHandler(guild, punishment);
+                switch(latest.getType()) {
+                    case KICK:
+                        punishment.setType(PunishmentType.KICK);
                         handler.onPunish();
-                    }
-                    if(rolesRemovedRaw != null) {
-                        List<Map<String, String>> roles = rolesRemovedRaw.getNewValue();
-                        if(isNotMute(guild, roles)) {
-                            return;
+                        break;
+                    case MEMBER_ROLE_UPDATE:
+                        AuditLogChange rolesAddedRaw = latest.getChangeByKey(AuditLogKey.MEMBER_ROLES_ADD);
+                        AuditLogChange rolesRemovedRaw = latest.getChangeByKey(AuditLogKey.MEMBER_ROLES_REMOVE);
+                        if(rolesAddedRaw != null) {
+                            List<Map<String, String>> roles = rolesAddedRaw.getNewValue();
+                            if(isNotMute(guild, roles)) {
+                                return;
+                            }
+                            punishment.setType(PunishmentType.MUTE);
+                            handler.onPunish();
                         }
-                        punishment.setType(PunishmentType.MUTE);
+                        if(rolesRemovedRaw != null) {
+                            List<Map<String, String>> roles = rolesRemovedRaw.getNewValue();
+                            if(isNotMute(guild, roles)) {
+                                return;
+                            }
+                            punishment.setType(PunishmentType.MUTE);
+                            handler.onRevocation();
+                        }
+                        break;
+                    case BAN:
+                        punishment.setType(PunishmentType.BAN);
+                        handler.onPunish();
+                        break;
+                    case UNBAN:
+                        punishment.setType(PunishmentType.BAN);
                         handler.onRevocation();
-                    }
-                    break;
-                case BAN:
-                    punishment.setType(PunishmentType.BAN);
-                    handler.onPunish();
-                    break;
-                case UNBAN:
-                    punishment.setType(PunishmentType.BAN);
-                    handler.onRevocation();
-                    break;
-            }
+                        break;
+                }
+            });
         }, error -> {
             IBai.INSTANCE.getLogger().info("Blimey, there's been an error.");
             error.printStackTrace();

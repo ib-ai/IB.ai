@@ -45,18 +45,22 @@ public final class CommandPermission {
 
     /**
      * Creates a new role permission.
+     * @deprecated Hard coding is not the solution.
      * @param id The ID of the role.
      * @return A permission.
      */
+    @Deprecated
     public static CommandPermission roleId(long id) {
         return new CommandPermission(PermissionType.ROLE_ID, id);
     }
 
     /**
      * Creates a new role permission.
+     * @deprecated Hard coding is not the solution.
      * @param name The name of the role.
      * @return A permission.
      */
+    @Deprecated
     public static CommandPermission roleName(String name) {
         return new CommandPermission(PermissionType.ROLE_NAME, name);
     }

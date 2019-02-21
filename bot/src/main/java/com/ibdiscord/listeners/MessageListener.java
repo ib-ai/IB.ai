@@ -6,12 +6,14 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.utils.UDatabase;
+import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -31,6 +33,8 @@ import java.util.regex.PatternSyntaxException;
  */
 public final class MessageListener extends ListenerAdapter {
 
+    private final GuildedCache<String, Pattern> tagCache = new GuildedCache<>();
+
     /**
      * When an message is sent in a guild channel (because DMs are boring).
      * @param event The event instance.
@@ -47,7 +51,8 @@ public final class MessageListener extends ListenerAdapter {
         TagData tags = gravity.load(new TagData(event.getGuild().getId()));
         for(String key : tags.getKeys()) {
             try {
-                if(message.matches(key)) {
+                Pattern pattern = tagCache.compute(event.getGuild().getIdLong(), key, Pattern.compile(key));
+                if(pattern.matcher(message).find()) {
                     event.getChannel().sendMessage(tags.get(key).asString()).queue();
                     return;
                 }

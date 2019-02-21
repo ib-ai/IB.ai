@@ -23,9 +23,11 @@ E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\utils\UTime.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\CommandCollection.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\permissions\PermissionType.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\data\db\entries\TagData.java
+E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\data\db\entries\RoleData.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\utils\UInput.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\utils\UJavaVersion.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\data\db\entries\punish\PunishmentsData.java
+E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\data\db\entries\GuildUserData.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\startup\tasks\StartCommands.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\punish\PunishmentHandler.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\PrefixCommand.java
@@ -39,6 +41,7 @@ E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\tag\TagLi
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\utils\UFormatter.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\data\db\entries\punish\ExpiryData.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\punish\PunishmentExpiry.java
+E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\PurgeCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\tag\TagDeleteCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\EvalCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\ModLogCommand.java
@@ -49,6 +52,7 @@ E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\data\LocalConfig.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\tag\TagCreateCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\utils\objects\Comparator.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\punish\PunishmentType.java
+E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\utils\objects\GuildedCache.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\ReasonCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\WarnCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\listeners\MessageListener.java

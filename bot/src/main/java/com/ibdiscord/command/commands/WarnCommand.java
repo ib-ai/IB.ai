@@ -68,7 +68,8 @@ public final class WarnCommand extends Command {
                                     member.getUser().getId(),
                                     UFormatter.formatMember(context.getMember().getUser()),
                                     context.getMember().getUser().getId(),
-                                    reason
+                                    reason,
+                                    false
                             ));
                             punishmentHandler.onPunish();
                         },

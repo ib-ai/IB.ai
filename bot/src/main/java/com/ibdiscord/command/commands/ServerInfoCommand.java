@@ -52,7 +52,7 @@ public final class ServerInfoCommand extends Command {
                 .addField("Voice Region", guild.getRegion().getName(), true)
                 .addField("# of members", itos(guild.getMembers().size()), true)
                 .addField("# of Bots", ltos(guild.getMembers().stream()
-                    .filter(it -> !it.getUser().isBot())
+                    .filter(it -> it.getUser().isBot())
                     .count()), true)
                 .addField("Currently Online", ltos(guild.getMembers().stream()
                     .filter(it -> it.getOnlineStatus() != OnlineStatus.OFFLINE)
