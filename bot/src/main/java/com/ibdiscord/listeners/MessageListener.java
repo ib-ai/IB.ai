@@ -52,7 +52,7 @@ public final class MessageListener extends ListenerAdapter {
         for(String key : tags.getKeys()) {
             try {
                 Pattern pattern = tagCache.compute(event.getGuild().getIdLong(), key, Pattern.compile(key));
-                if(pattern.matcher(message).find()) {
+                if(pattern.matcher(message).matches()) {
                     event.getChannel().sendMessage(tags.get(key).asString()).queue();
                     return;
                 }
