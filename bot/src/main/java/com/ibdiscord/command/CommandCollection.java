@@ -1,6 +1,7 @@
 package com.ibdiscord.command;
 
 import com.ibdiscord.command.commands.*;
+import com.ibdiscord.command.commands.react.ReactionCommand;
 import com.ibdiscord.command.commands.tag.TagCommand;
 import lombok.Getter;
 
@@ -30,6 +31,7 @@ public enum CommandCollection {
     PING(new PingCommand()),
     PREFIX(new PrefixCommand()),
     PURGE(new PurgeCommand()),
+    REACTION(new ReactionCommand()),
     REASON(new ReasonCommand()),
     SERVER_INFO(new ServerInfoCommand()),
     TAG(new TagCommand()),

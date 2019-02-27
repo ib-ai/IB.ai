@@ -1,5 +1,10 @@
 package com.ibdiscord.listeners;
 
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.ReactionData;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -29,17 +34,7 @@ public final class ReactionListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
-        // Reaction added to message
-        switch(event.getChannelType()) {
-            case GROUP:
-            break;
-
-            case PRIVATE:
-            break;
-
-            case TEXT:
-            break;
-        }
+        react(event.getMember(), event.getMessageIdLong(), event.getReactionEmote().getId(), true);
     }
 
     /**
@@ -50,15 +45,31 @@ public final class ReactionListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-        switch(event.getChannelType()) {
-            case GROUP:
-                break;
+        react(event.getMember(), event.getMessageIdLong(), event.getReactionEmote().getId(), false);
+    }
 
-            case PRIVATE:
-                break;
-
-            case TEXT:
-                break;
+    /**
+     * Handles the reaction and adding/removing roles.
+     * @param member The member.
+     * @param message The message ID.
+     * @param emote The emoji ID.
+     * @param add True to add, false to remove.
+     */
+    private void react(Member member, long message, String emote, boolean add) {
+        Guild guild = member.getGuild();
+        ReactionData reactionData = DContainer.INSTANCE.getGravity().load(new ReactionData(guild.getId(), message));
+        String roleId = reactionData.get(emote).asString();
+        if(roleId == null) {
+            return;
+        }
+        Role role = guild.getRoleById(roleId);
+        if(role == null) {
+            return;
+        }
+        if(add) {
+            guild.getController().addSingleRoleToMember(member, role).queue(null, Throwable::printStackTrace);
+        } else {
+            guild.getController().removeSingleRoleFromMember(member, role).queue(null, Throwable::printStackTrace);
         }
     }
 
