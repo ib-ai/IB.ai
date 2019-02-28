@@ -22,8 +22,6 @@ import org.slf4j.Logger;
  */
 public final class UFormatter {
 
-    private static final String DEFAULT_REASON = "Use `%sReason [Case Number]` to append a reason.";
-
     /**
      * Prints a splash screen.
      */

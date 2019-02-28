@@ -4,6 +4,7 @@ import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.ReactionData;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.MessageReaction;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
@@ -34,7 +35,7 @@ public final class ReactionListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
-        react(event.getMember(), event.getMessageIdLong(), event.getReactionEmote().getId(), true);
+        react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), true);
     }
 
     /**
@@ -45,7 +46,7 @@ public final class ReactionListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-        react(event.getMember(), event.getMessageIdLong(), event.getReactionEmote().getId(), false);
+        react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), false);
     }
 
     /**
@@ -71,6 +72,17 @@ public final class ReactionListener extends ListenerAdapter {
         } else {
             guild.getController().removeSingleRoleFromMember(member, role).queue(null, Throwable::printStackTrace);
         }
+    }
+
+    /**
+     * Gets the emoji of the reaction.
+     * @param emote The emote object.
+     * @return An emoji.
+     */
+    private String getEmoji(MessageReaction.ReactionEmote emote) {
+        return emote.isEmote() ?
+                emote.getEmote().getAsMention() :
+                emote.getName();
     }
 
 }

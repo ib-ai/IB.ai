@@ -37,7 +37,7 @@ public final class ReactionCommand extends Command {
                 CommandPermission.discord(Permission.MANAGE_ROLES),
                 Set.of(new Add(), new Delete())
         );
-        this.correctUsage = "reaction <add/remove> <channel ID> <message ID> <emoji ID>";
+        this.correctUsage = "reaction <add/remove> <channel ID> <message ID> <emoji> <role ID>";
     }
 
     /**
@@ -65,8 +65,8 @@ public final class ReactionCommand extends Command {
          * @param role The role.
          */
         @Override
-        protected void modifyData(ReactionData data, Emote emote, Role role) {
-            data.set(emote.getId(), role.getId());
+        protected void modifyData(ReactionData data, String emote, Role role) {
+            data.set(emote, role.getId());
         }
 
         /**
@@ -75,8 +75,12 @@ public final class ReactionCommand extends Command {
          * @param emote The emote.
          */
         @Override
-        protected void modifyMessage(Message message, Emote emote) {
-            message.addReaction(emote).queue();
+        protected void modifyMessage(Message message, Object emote) {
+            if(emote instanceof Emote) {
+                message.addReaction((Emote) emote).queue();
+            } else {
+                message.addReaction(emote.toString()).queue();
+            }
         }
 
     }
@@ -97,19 +101,17 @@ public final class ReactionCommand extends Command {
          * @param role The role.
          */
         @Override
-        protected void modifyData(ReactionData data, Emote emote, Role role) {
-            data.unset(emote.getId());
+        protected void modifyData(ReactionData data, String emote, Role role) {
+            data.unset(emote);
         }
 
         /**
-         * Removes a reaction.
+         * Does absolutely nothing for now.
          * @param message The message.
          * @param emote The emote.
          */
         @Override
-        protected void modifyMessage(Message message, Emote emote) {
-            message.clearReactions().queue();
-        }
+        protected void modifyMessage(Message message, Object emote) {}
 
     }
 
