@@ -113,7 +113,7 @@ public final class CommandContext {
      * @param message A message embed.
      */
     public void reply(MessageEmbed message) {
-        channel.sendMessage(message).queue();
+        channel.sendMessage(message).queue(null, Throwable::printStackTrace);
     }
 
     /**

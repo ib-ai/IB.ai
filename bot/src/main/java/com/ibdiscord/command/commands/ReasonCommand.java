@@ -4,6 +4,7 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.PunishmentData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import com.ibdiscord.punish.Punishment;
@@ -41,7 +42,7 @@ public final class ReasonCommand extends Command {
     public ReasonCommand() {
         super("reason",
                 Set.of(),
-                CommandPermission.roleName("Moderator"),
+                CommandPermission.role(GuildData.MODERATOR),
                 new HashSet<>()
         );
         this.correctUsage = "reason <reason>";

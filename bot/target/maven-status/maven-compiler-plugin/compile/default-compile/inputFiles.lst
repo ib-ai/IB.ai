@@ -1,8 +1,10 @@
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\permissions\CommandPermission.java
+E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\react\ReactionCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\UserRolesCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\utils\UString.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\HelpCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\IBai.java
+E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\data\db\entries\ReactionData.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\startup\AbstractStartupTask.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\ServerInfoCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\PingCommand.java
@@ -14,6 +16,7 @@ E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\UserInfoC
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\startup\tasks\StartDatabase.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\utils\objects\Tuple.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\Option.java
+E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\react\ReactionManageCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\listeners\ReactionListener.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\command\commands\MuteRoleCommand.java
 E:\IdeaProjects\IB.ai\bot\src\main\java\com\ibdiscord\startup\tasks\StartBot.java

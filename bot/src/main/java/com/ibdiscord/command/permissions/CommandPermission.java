@@ -1,6 +1,8 @@
 package com.ibdiscord.command.permissions;
 
 import com.ibdiscord.IBai;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.GuildData;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Member;
@@ -44,25 +46,12 @@ public final class CommandPermission {
     }
 
     /**
-     * Creates a new role permission.
-     * @deprecated Hard coding is not the solution.
-     * @param id The ID of the role.
+     * Creates a new per-guild role permission.
+     * @param field The key which will get a value of a role ID or role name.
      * @return A permission.
      */
-    @Deprecated
-    public static CommandPermission roleId(long id) {
-        return new CommandPermission(PermissionType.ROLE_ID, id);
-    }
-
-    /**
-     * Creates a new role permission.
-     * @deprecated Hard coding is not the solution.
-     * @param name The name of the role.
-     * @return A permission.
-     */
-    @Deprecated
-    public static CommandPermission roleName(String name) {
-        return new CommandPermission(PermissionType.ROLE_NAME, name);
+    public static CommandPermission role(String field) {
+        return new CommandPermission(PermissionType.ROLE, field);
     }
 
     /**
@@ -94,10 +83,13 @@ public final class CommandPermission {
         switch(type) {
             case DISCORD:
                 return member.hasPermission(channel, (Permission) value);
-            case ROLE_ID:
-                return member.getRoles().stream().anyMatch(it -> it.getIdLong() == (long) value);
-            case ROLE_NAME:
-                return member.getRoles().stream().anyMatch(it -> it.getName().equals(value));
+            case ROLE: {
+                String data = DContainer.INSTANCE.getGravity().load(new GuildData(channel.getGuild().getId())).get(value.toString())
+                        .defaulting("")
+                        .asString();
+                return member.getRoles().stream()
+                        .anyMatch(it -> it.getName().toLowerCase().contains(data.toLowerCase()) || it.getId().equalsIgnoreCase(data));
+            }
             case DEVELOPER:
                 return IBai.INSTANCE.getConfig().getDevelopIDs().contains(member.getUser().getIdLong())
                         && (value == null || ((CommandPermission) value).hasPermission(member, channel));

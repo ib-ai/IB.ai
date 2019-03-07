@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Copyright 2019 Ray Clark, Arraying
+ * Copyright 2019 Arraying
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,19 +23,19 @@ import java.util.Set;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class ModLogCommand extends LoggingCommand {
+public final class LogCommand extends LoggingCommand {
 
     /**
      * Creates the command.
      */
-    public ModLogCommand() {
-        super("modlog",
-                Set.of("setmodlog"),
+    public LogCommand() {
+        super("log",
+                Set.of("setlog"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 new HashSet<>(),
-                GuildData.MODLOGS
+                GuildData.LOGS
         );
-        this.correctUsage = "modlog [new channel]";
+        this.correctUsage = "log [new channel]";
     }
 
 }

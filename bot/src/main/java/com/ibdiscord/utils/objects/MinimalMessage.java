@@ -1,4 +1,8 @@
-package com.ibdiscord.command.permissions;
+package com.ibdiscord.utils.objects;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Copyright 2019 Arraying
@@ -15,21 +19,9 @@ package com.ibdiscord.command.permissions;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public enum PermissionType {
+public final @AllArgsConstructor @Getter class MinimalMessage {
 
-    /**
-     * A permission provided by Discord.
-     */
-    DISCORD,
-
-    /**
-     * A role name or ID, and dependent on a guild basis.
-     */
-    ROLE,
-
-    /**
-     * A developer command.
-     */
-    DEVELOPER
+    private long author;
+    @Setter private String content;
 
 }

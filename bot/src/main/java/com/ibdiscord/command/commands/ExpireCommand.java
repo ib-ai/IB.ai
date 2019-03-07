@@ -4,6 +4,7 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.ExpiryData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import com.ibdiscord.punish.Punishment;
@@ -38,7 +39,7 @@ public final class ExpireCommand extends Command {
     public ExpireCommand() {
         super("expire",
                 Set.of("expiry"),
-                CommandPermission.roleName("Moderator"),
+                CommandPermission.role(GuildData.MODERATOR),
                 new HashSet<>()
         );
         this.correctUsage = "expire <case> <time>";

@@ -1,6 +1,5 @@
 package com.ibdiscord.punish;
 
-import com.ibdiscord.command.commands.ModLogCommand;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.PunishmentData;
@@ -67,7 +66,7 @@ public @AllArgsConstructor class PunishmentHandler {
     public TextChannel getLogChannel() {
         GuildData guildData = DContainer.INSTANCE.getGravity().load(new GuildData(guild.getId()));
         return guild.getTextChannelById(guildData.get(GuildData.MODLOGS)
-                .defaulting(ModLogCommand.DISABLED_MOD_LOG)
+                .defaulting(0L)
                 .asLong());
     }
 

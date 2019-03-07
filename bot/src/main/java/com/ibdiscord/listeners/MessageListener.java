@@ -4,15 +4,26 @@ import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.utils.UDatabase;
+import com.ibdiscord.utils.objects.ExpiringCache;
 import com.ibdiscord.utils.objects.GuildedCache;
+import com.ibdiscord.utils.objects.MinimalMessage;
 import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageUpdateEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -34,6 +45,7 @@ import java.util.regex.PatternSyntaxException;
 public final class MessageListener extends ListenerAdapter {
 
     private final GuildedCache<String, Pattern> tagCache = new GuildedCache<>();
+    private final ExpiringCache<Long, MinimalMessage> messageCache = new ExpiringCache<>(1, TimeUnit.HOURS);
 
     /**
      * When an message is sent in a guild channel (because DMs are boring).
@@ -53,7 +65,9 @@ public final class MessageListener extends ListenerAdapter {
             try {
                 Pattern pattern = tagCache.compute(event.getGuild().getIdLong(), key, Pattern.compile(key));
                 if(pattern.matcher(message.toLowerCase()).matches()) {
-                    event.getChannel().sendMessage(tags.get(key).asString()).queue();
+                    event.getChannel().sendMessage(tags.get(key).asString()).queue(null, oops ->
+                            event.getChannel().sendMessage("Oh dear. Something went wrong. Ping a dev with this: " + oops.getMessage()).queue()
+                    );
                     break;
                 }
             } catch(PatternSyntaxException exception) {
@@ -71,6 +85,45 @@ public final class MessageListener extends ListenerAdapter {
         if(command != null) {
             command.preprocess(CommandContext.construct(event.getMessage(), ArrayUtils.remove(arguments, 0)));
         }
+    }
+
+    /**
+     * When a message is updated.
+     * @param event The event.
+     */
+    @Override
+    public void onGuildMessageUpdate(GuildMessageUpdateEvent event) {
+        MinimalMessage message = messageCache.get(event.getMessageIdLong());
+        if(message != null) {
+            message.setContent(event.getMessage().getContentRaw());
+        }
+    }
+
+    /**
+     * When a message is deleted.
+     * @param event The event.
+     */
+    @Override
+    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
+        MinimalMessage message = messageCache.get(event.getMessageIdLong());
+        if(message == null) {
+            return;
+        }
+        Guild guild = event.getGuild();
+        Gravity gravity = DContainer.INSTANCE.getGravity();
+        TextChannel textChannel = guild.getTextChannelById(gravity.load(new GuildData(guild.getId()))
+                .get(GuildData.LOGS)
+                .defaulting(0L)
+                .asLong());
+        if(textChannel == null) {
+            return;
+        }
+        User author = guild.getJDA().getUserById(message.getAuthor());
+        MessageEmbed embed = new EmbedBuilder()
+                .setAuthor(author == null ? String.valueOf(message.getAuthor()) : author.getName() + "#" + author.getDiscriminator())
+                .setDescription(message.getContent())
+                .build();
+        textChannel.sendMessage(embed).queue();
     }
 
 }

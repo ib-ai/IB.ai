@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentHandler;
 import com.ibdiscord.punish.PunishmentType;
@@ -37,7 +38,7 @@ public final class WarnCommand extends Command {
     public WarnCommand() {
         super("warn",
                 Set.of(),
-                CommandPermission.roleName("Moderator"),
+                CommandPermission.role(GuildData.MODERATOR),
                 new HashSet<>()
         );
         this.correctUsage = "warn <user> <reason>";

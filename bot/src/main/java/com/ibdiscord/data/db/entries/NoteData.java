@@ -1,4 +1,7 @@
-package com.ibdiscord.command.permissions;
+package com.ibdiscord.data.db.entries;
+
+import de.arraying.gravity.data.types.TypeSet;
+import lombok.AllArgsConstructor;
 
 /**
  * Copyright 2019 Arraying
@@ -15,21 +18,18 @@ package com.ibdiscord.command.permissions;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public enum PermissionType {
+public final @AllArgsConstructor class NoteData extends TypeSet {
+
+    private final String guild;
+    private final String user;
 
     /**
-     * A permission provided by Discord.
+     * Gets the identifier.
+     * @return The identifier.
      */
-    DISCORD,
-
-    /**
-     * A role name or ID, and dependent on a guild basis.
-     */
-    ROLE,
-
-    /**
-     * A developer command.
-     */
-    DEVELOPER
+    @Override
+    protected String getUniqueIdentifier() {
+        return "notes_" + guild + "_" + user;
+    }
 
 }
