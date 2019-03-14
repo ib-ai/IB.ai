@@ -60,6 +60,7 @@ public final class NoteCommand extends Command {
         NoteData noteData = gravity.load(new NoteData(context.getGuild().getId(), member.getUser().getId()));
         if(context.getArguments().length == 1) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setDescription("Here are the notes for the user.");
             noteData.values().stream()
                     .map(it -> it.defaulting("N/A:N/A").toString())
                     .forEach(it -> {

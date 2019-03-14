@@ -30,6 +30,7 @@ public enum CommandCollection {
     MODERATOR(new ModeratorCommand()),
     MOD_LOG(new ModLogCommand()),
     MUTE_ROLE(new MuteRoleCommand()),
+    NOTES(new NoteCommand()),
     PING(new PingCommand()),
     PREFIX(new PrefixCommand()),
     PURGE(new PurgeCommand()),

@@ -85,9 +85,8 @@ public final class CommandPermission {
                 return member.hasPermission(channel, (Permission) value);
             case ROLE: {
                 String data = DContainer.INSTANCE.getGravity().load(new GuildData(channel.getGuild().getId())).get(value.toString())
-                        .defaulting("")
                         .asString();
-                return member.getRoles().stream()
+                return data != null && member.getRoles().stream()
                         .anyMatch(it -> it.getName().toLowerCase().contains(data.toLowerCase()) || it.getId().equalsIgnoreCase(data));
             }
             case DEVELOPER:

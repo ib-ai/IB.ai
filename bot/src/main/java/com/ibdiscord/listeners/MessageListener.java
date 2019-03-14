@@ -53,6 +53,7 @@ public final class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        messageCache.put(event.getMessageIdLong(), new MinimalMessage(event.getAuthor().getIdLong(), event.getMessage().getContentRaw()));
         if(event.getAuthor().isBot()
                 || event.getAuthor().isFake()
                 || !event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_WRITE)) {
