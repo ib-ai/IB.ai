@@ -8,7 +8,7 @@
     <!-- Document properties -->
     <groupId>com.ibdiscord</groupId>
     <artifactId>IB.ai</artifactId>
-    <version>3.0.7</version>
+    <version>3.0.8</version>
 
     <name>IB.ai</name>
     <url>http://www.ibdiscord.com</url>

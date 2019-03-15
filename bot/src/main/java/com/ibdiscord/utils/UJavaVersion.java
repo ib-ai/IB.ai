@@ -29,7 +29,7 @@ public final class UJavaVersion {
     public static void checkVersion() throws JavaVersionException {
         double version = Double.parseDouble(System.getProperty("java.specification.version"));
         IBai.INSTANCE.getLogger().info("Gathered version as \"{}\".", version);
-        if(version != 11) {
+        if(version != 10) {
             throwError(version);
             shutdown();
         }
