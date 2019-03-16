@@ -9,7 +9,6 @@ import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.EmbedBuilder;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,10 +57,13 @@ public final class UserInfoCommand extends Command {
         }
         var user = target.getUser();
         var joinPosition = context.getGuild().getMembers().stream()
-                .map(it -> it.getUser().getIdLong())
-                .sorted(Comparator.comparingLong(a -> a))
+                .sorted((o1, o2) -> {
+                    long a = o1.getJoinDate().toInstant().toEpochMilli();
+                    long b = o2.getJoinDate().toInstant().toEpochMilli();
+                    return Long.compare(a, b);
+                })
                 .collect(Collectors.toList())
-                .indexOf(target.getUser().getIdLong()) + 1;
+                .indexOf(target) + 1;
         String joinOverride = DContainer.INSTANCE.getGravity()
                 .load(new GuildUserData(context.getGuild().getId(), user.getId()))
                 .get("position")
