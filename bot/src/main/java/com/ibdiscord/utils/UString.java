@@ -47,6 +47,19 @@ public final class UString {
     }
 
     /**
+     * Turns a string into a long.
+     * @param input The string.
+     * @return Null if error, otherwise a long.
+     */
+    public static Long toLong(String input) {
+        try {
+            return Long.valueOf(input);
+        } catch(IllegalArgumentException exception) {
+            return null;
+        }
+    }
+
+    /**
      * Strips all mass mentions.
      * @param input The input.
      * @return Input with all the mass mentions stripped.

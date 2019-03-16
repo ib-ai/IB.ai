@@ -24,7 +24,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public @AllArgsConstructor class PunishmentHandler {
+public final @AllArgsConstructor class PunishmentHandler {
 
     private final Guild guild;
     private final Punishment punishment;

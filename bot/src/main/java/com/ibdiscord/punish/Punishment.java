@@ -80,6 +80,16 @@ public final @Getter @AllArgsConstructor class Punishment {
     }
 
     /**
+     * Sets the redacting value.
+     * @param value The value.
+     * @return The punishment.
+     */
+    public Punishment redacting(boolean value) {
+        this.redacted = value;
+        return this;
+    }
+
+    /**
      * Gets the punishment log message.
      * @param guild The guild.
      * @return The message.
@@ -103,6 +113,7 @@ public final @Getter @AllArgsConstructor class Punishment {
      * Gets the revocation log message.
      * @return The message.
      */
+    @SuppressWarnings("WeakerAccess")
     public String getLogRevocation() {
         return String.format("**%s**\n**Pardoned: **%s (ID: %s)\n**Moderator: **%s (ID: %s)",
                 type.getDisplayRevocation(),

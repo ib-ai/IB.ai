@@ -27,6 +27,7 @@ public enum CommandCollection {
     EXPIRE(new ExpireCommand()),
     HELP(new HelpCommand()),
     LOG(new LogCommand()),
+    LOOKUP(new LookupCommand()),
     MODERATOR(new ModeratorCommand()),
     MOD_LOG(new ModLogCommand()),
     MUTE_ROLE(new MuteRoleCommand()),

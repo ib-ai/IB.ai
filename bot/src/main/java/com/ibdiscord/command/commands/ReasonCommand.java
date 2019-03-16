@@ -1,5 +1,6 @@
 package com.ibdiscord.command.commands;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
@@ -67,12 +68,9 @@ public final class ReasonCommand extends Command {
             context.reply("That case does not exist!");
             return;
         }
-        long caseId;
-        try {
-            caseId = Long.valueOf(caseNumber);
-        } catch(NumberFormatException exception) {
-            exception.printStackTrace();
-            context.reply("Error with case number, report this to a developer.");
+        Long caseId = UString.toLong(caseNumber);
+        if(caseId == null) {
+            context.reply("Internal error converting to long.");
             return;
         }
         Punishment punishment = Punishment.of(context.getGuild(), caseId);
@@ -85,8 +83,11 @@ public final class ReasonCommand extends Command {
             return;
         }
         boolean redacted = context.getOptions().stream()
-                .anyMatch(it -> it.getName().equalsIgnoreCase("redacted"));
+                .anyMatch(it -> it.getName().equalsIgnoreCase("redacted") || it.getName().equalsIgnoreCase("redact"));
+        IBai.INSTANCE.getLogger().info("Redacting: " + redacted);
+        punishmentData.set(REASON, reason);
         punishmentData.set(REDACTED, redacted);
+        punishment.redacting(redacted);
         channel.editMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong(), punishment.getLogPunishment(guild, caseId)).queue(
                 outstandingMove -> {
                     punishmentData.set(REASON, reason);
@@ -97,7 +98,6 @@ public final class ReasonCommand extends Command {
                     error.printStackTrace();
                 }
         );
-        gravity.save(punishmentData);
     }
 
 }

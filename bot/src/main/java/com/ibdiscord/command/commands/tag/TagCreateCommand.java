@@ -6,7 +6,9 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.utils.UInput;
+import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.util.HashSet;
 import java.util.List;
@@ -55,7 +57,15 @@ public final class TagCreateCommand extends Command {
             return;
         }
         String trigger = data.get(0);
+        if(UString.escapeFormatting(trigger).length()> MessageEmbed.TITLE_MAX_LENGTH) {
+            context.reply("Tag name too long.");
+            return;
+        }
         String output = data.get(1);
+        if(UString.escapeFormatting(output).length() > 512) {
+            context.reply("Tag value too long.");
+            return;
+        }
         TagData tags = DContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
         tags.set(trigger, output);
         DContainer.INSTANCE.getGravity().save(tags);
