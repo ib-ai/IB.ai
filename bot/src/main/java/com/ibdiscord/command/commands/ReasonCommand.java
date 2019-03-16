@@ -88,6 +88,7 @@ public final class ReasonCommand extends Command {
         punishmentData.set(REASON, reason);
         punishmentData.set(REDACTED, redacted);
         punishment.redacting(redacted);
+        gravity.save(punishmentData);
         channel.editMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong(), punishment.getLogPunishment(guild, caseId)).queue(
                 outstandingMove -> {
                     punishmentData.set(REASON, reason);
