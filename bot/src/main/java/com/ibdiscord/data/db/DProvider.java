@@ -39,6 +39,8 @@ final class DProvider implements GravityProvider {
             value = sync.get(key).toString();
         } catch(RedisException re) {
             re.printStackTrace();
+        } catch(NullPointerException npe) {
+            return null;
         }
         return value;
     }

@@ -2,6 +2,7 @@ package com.ibdiscord.command;
 
 import com.ibdiscord.command.commands.*;
 import com.ibdiscord.command.commands.react.ReactionCommand;
+import com.ibdiscord.command.commands.reminder.ReminderCommand;
 import com.ibdiscord.command.commands.tag.TagCommand;
 import lombok.Getter;
 
@@ -37,6 +38,7 @@ public enum CommandCollection {
     PURGE(new PurgeCommand()),
     REACTION(new ReactionCommand()),
     REASON(new ReasonCommand()),
+    REMINDER(new ReminderCommand()),
     SERVER_INFO(new ServerInfoCommand()),
     TAG(new TagCommand()),
     USER_INFO(new UserInfoCommand()),

@@ -49,7 +49,7 @@ public final class Pagination<T> {
             return page(1);
         }
         if(number > total) {
-            return page(total);
+            number = this.total;
         }
         int start = entries.size() < perPage ? 0 : (number * perPage) - perPage;
         int end = start + perPage <= entries.size() ? start + perPage : entries.size();
