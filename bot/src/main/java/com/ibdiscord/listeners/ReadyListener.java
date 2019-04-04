@@ -10,11 +10,18 @@ import com.ibdiscord.punish.PunishmentExpiry;
 import com.ibdiscord.reminder.Reminder;
 import com.ibdiscord.reminder.ReminderHandler;
 import de.arraying.gravity.Gravity;
+import de.arraying.kotys.JSON;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
+
+import java.io.IOException;
 
 /**
  * Copyright 2019 Jarred Vardy, Arraying
@@ -32,6 +39,8 @@ import org.slf4j.Logger;
  * limitations under the License.
  */
 public final class ReadyListener extends ListenerAdapter {
+
+    private final OkHttpClient okHttpClient = new OkHttpClient();
 
     /**
      * When the bot is marked as ready.
@@ -75,6 +84,22 @@ public final class ReadyListener extends ListenerAdapter {
             error.printStackTrace();
             System.exit(1);
         });
+        long now = System.currentTimeMillis();
+        Request request = new Request.Builder()
+                .url(IBai.INSTANCE.getConfig().getApiBase() + "/ping")
+                .get()
+                .build();
+        try(Response response = okHttpClient.newCall(request).execute()) {
+            ResponseBody body = response.body();
+            if(body == null) {
+                return;
+            }
+            JSON json = new JSON(body.string());
+            long received = json.large("received");
+            IBai.INSTANCE.getLogger().info("API latency is at {} milliseconds.", (received - now));
+        } catch(IOException | NullPointerException exception) {
+            exception.printStackTrace();
+        }
     }
 
 }
