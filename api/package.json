@@ -2,9 +2,10 @@
   "name": "ibai-api",
   "version": "1.0.0",
   "description": "Internal API for the IB.ai Discord bot",
-  "main": "index.js",
+  "main": "./bin/www.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --harmony ./bin/www.js",
+    "test": ""
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,10 @@
   },
   "homepage": "https://github.com/vardy/IB.ai#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "mongoose": "^5.4.22",
+    "morgan": "^1.9.1"
   }
 }

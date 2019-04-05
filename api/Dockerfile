@@ -1,3 +1,9 @@
 FROM node
-COPY . .
-CMD ["node", "index.js"]
+MAINTAINER Arraying
+
+COPY . /app
+WORKDIR /app
+
+RUN npm install
+
+CMD ["node", "--harmony", "./bin/www"]
