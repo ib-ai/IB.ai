@@ -70,6 +70,11 @@ public final class LocalConfig {
      */
     @Getter private final String mainDatabasePassword;
 
+    /**
+     * API_BASE
+     */
+    @Getter private final String apiBase;
+
     public LocalConfig() {
         this.botAuthors = getEnvironment("AUTHORS", raw -> Arrays.asList(raw.split(";")), new ArrayList<>());
         this.developIDs = getEnvironment("DEVELOPERS", raw -> Arrays.stream(raw.split(";"))
@@ -83,6 +88,7 @@ public final class LocalConfig {
         this.dbIP = getEnvironment("DATA_HOST", "localhost");
         this.mainDatabaseNum = getEnvironment("DATA_INDEX", Long::valueOf, 0L);
         this.mainDatabasePassword = getEnvironment("DATA_AUTH", null);
+        this.apiBase = getEnvironment("API_BASE", "http://localhost:80");
     }
 
     /**

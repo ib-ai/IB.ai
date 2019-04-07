@@ -100,7 +100,6 @@ hs_err_pid*
 ### Eclipse ###
 
 .metadata
-bin/
 tmp/
 *.tmp
 *.bak
