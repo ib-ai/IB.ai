@@ -1,6 +1,9 @@
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
+import com.ibdiscord.api.APICaller;
+import com.ibdiscord.api.Route;
+import com.ibdiscord.api.result.BodyResultHandler;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.punish.ExpiryData;
 import com.ibdiscord.data.db.entries.reminder.ReminderData;
@@ -10,18 +13,11 @@ import com.ibdiscord.punish.PunishmentExpiry;
 import com.ibdiscord.reminder.Reminder;
 import com.ibdiscord.reminder.ReminderHandler;
 import de.arraying.gravity.Gravity;
-import de.arraying.kotys.JSON;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.slf4j.Logger;
-
-import java.io.IOException;
 
 /**
  * Copyright 2019 Jarred Vardy, Arraying
@@ -39,8 +35,6 @@ import java.io.IOException;
  * limitations under the License.
  */
 public final class ReadyListener extends ListenerAdapter {
-
-    private final OkHttpClient okHttpClient = new OkHttpClient();
 
     /**
      * When the bot is marked as ready.
@@ -85,20 +79,12 @@ public final class ReadyListener extends ListenerAdapter {
             System.exit(1);
         });
         long now = System.currentTimeMillis();
-        Request request = new Request.Builder()
-                .url(IBai.INSTANCE.getConfig().getApiBase() + "/ping")
-                .get()
-                .build();
-        try(Response response = okHttpClient.newCall(request).execute()) {
-            ResponseBody body = response.body();
-            if(body == null) {
-                return;
-            }
-            JSON json = new JSON(body.string());
-            long received = json.large("received");
-            IBai.INSTANCE.getLogger().info("API latency is at {} milliseconds.", (received - now));
-        } catch(IOException | NullPointerException exception) {
-            exception.printStackTrace();
+        boolean success = APICaller.INSTANCE.dispatch(Route.PING, new BodyResultHandler((status, json) -> {
+            long server = json.large("received");
+            IBai.INSTANCE.getLogger().info("API latency is at {} ms.", server - now);
+        }));
+        if(!success) {
+            IBai.INSTANCE.getLogger().info("API offline.");
         }
     }
 
