@@ -49,7 +49,7 @@ public final class UFormatter {
      * @return The user, formatted.
      */
     public static String formatMember(User user) {
-        return String.format("%s#%s", user.getName(), user.getDiscriminator());
+        return user.getAsTag();
     }
 
 }

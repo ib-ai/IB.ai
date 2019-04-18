@@ -121,7 +121,7 @@ public final class MessageListener extends ListenerAdapter {
         }
         User author = guild.getJDA().getUserById(message.getAuthor());
         MessageEmbed embed = new EmbedBuilder()
-                .setAuthor(author == null ? String.valueOf(message.getAuthor()) : author.getName() + "#" + author.getDiscriminator())
+                .setAuthor(author == null ? String.valueOf(message.getAuthor()) : author.getAsTag())
                 .setDescription(message.getContent())
                 .build();
         textChannel.sendMessage(embed).queue();

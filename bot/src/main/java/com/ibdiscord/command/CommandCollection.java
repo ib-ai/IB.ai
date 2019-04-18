@@ -1,6 +1,7 @@
 package com.ibdiscord.command;
 
 import com.ibdiscord.command.commands.*;
+import com.ibdiscord.command.commands.monitor.MonitorCommand;
 import com.ibdiscord.command.commands.react.ReactionCommand;
 import com.ibdiscord.command.commands.reminder.ReminderCommand;
 import com.ibdiscord.command.commands.tag.TagCommand;
@@ -31,6 +32,7 @@ public enum CommandCollection {
     LOOKUP(new LookupCommand()),
     MODERATOR(new ModeratorCommand()),
     MOD_LOG(new ModLogCommand()),
+    MONITOR(new MonitorCommand()),
     MUTE_ROLE(new MuteRoleCommand()),
     NOTES(new NoteCommand()),
     PING(new PingCommand()),

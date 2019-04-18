@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.entities.Member;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Copyright 2018 Arraying
@@ -90,6 +91,20 @@ public final class UInput {
             }
         }
         return output;
+    }
+
+    /**
+     * Tests a regular expression by compiling it, and seeing if it is valid.
+     * @param regex The regular expression as a string.
+     * @return True if it is, false otherwise.
+     */
+    public static boolean isValidRegex(String regex) {
+        try {
+            Pattern.compile(regex);
+            return true;
+        } catch(PatternSyntaxException exception) {
+            return false;
+        }
     }
 
 }

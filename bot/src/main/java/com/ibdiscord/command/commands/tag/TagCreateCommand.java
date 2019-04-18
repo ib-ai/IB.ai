@@ -61,6 +61,10 @@ public final class TagCreateCommand extends Command {
             context.reply("Tag name too long.");
             return;
         }
+        if(!UInput.isValidRegex(trigger)) {
+            context.reply("Trigger is not a valid regular expression.");
+            return;
+        }
         String output = data.get(1);
         if(UString.escapeFormatting(output).length() > 512) {
             context.reply("Tag value too long.");

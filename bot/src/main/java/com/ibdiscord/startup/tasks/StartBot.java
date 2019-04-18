@@ -2,10 +2,7 @@ package com.ibdiscord.startup.tasks;
 
 import com.ibdiscord.IBai;
 import com.ibdiscord.data.LocalConfig;
-import com.ibdiscord.listeners.GuildListener;
-import com.ibdiscord.listeners.MessageListener;
-import com.ibdiscord.listeners.ReactionListener;
-import com.ibdiscord.listeners.ReadyListener;
+import com.ibdiscord.listeners.*;
 import com.ibdiscord.startup.AbstractStartupTask;
 import lombok.Getter;
 import net.dv8tion.jda.core.AccountType;
@@ -53,7 +50,7 @@ public final class StartBot extends AbstractStartupTask {
                 .setToken(localConfig.getBotToken())
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
                 .setGame(Game.playing(String.format("v%s | %shelp", localConfig.getBotVersion(), localConfig.getStaticPrefix())))
-                .addEventListener(new GuildListener(), new MessageListener(), new ReactionListener(), new ReadyListener())
+                .addEventListener(new GuildListener(), new MessageListener(), new MonitorListener(), new ReactionListener(), new ReadyListener())
                 .build();
         jda.setAutoReconnect(true);
         jda.awaitReady();

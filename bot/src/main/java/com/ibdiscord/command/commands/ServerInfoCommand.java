@@ -47,7 +47,7 @@ public final class ServerInfoCommand extends Command {
         var guild = context.getGuild();
         context.reply(new EmbedBuilder()
                 .addField("ID", guild.getId(), true)
-                .addField("Owner", guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true)
+                .addField("Owner", guild.getOwner().getUser().getAsTag(), true)
                 .addField("Creation Date", guild.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
                 .addField("Voice Region", guild.getRegion().getName(), true)
                 .addField("# of members", itos(guild.getMembers().size()), true)
