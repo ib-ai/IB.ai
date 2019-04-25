@@ -3,7 +3,8 @@ package com.ibdiscord.command.commands.monitor;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.core.Permission;
+import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.utils.UString;
 
 import java.util.List;
 import java.util.Set;
@@ -31,7 +32,7 @@ public abstract class MonitorManageCommand extends Command {
     MonitorManageCommand(String name) {
         super(name,
                 Set.of(),
-                CommandPermission.discord(Permission.MANAGE_SERVER),
+                CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );
     }
@@ -79,7 +80,7 @@ public abstract class MonitorManageCommand extends Command {
             context.reply("Please provide the data.");
             return;
         }
-        String input = context.getArguments()[1];
+        String input = UString.concat(context.getArguments(), " ", 1);
         if(!isValidInput(context, input)) {
             context.reply("The data provided is invalid (e.g. not a proper user).");
             return;

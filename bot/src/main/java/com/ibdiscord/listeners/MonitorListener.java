@@ -91,7 +91,8 @@ public final class MonitorListener extends ListenerAdapter {
                 .setColor(Color.RED)
                 .setAuthor("Monitor Trigger")
                 .setTitle(message.getAuthor().getAsTag())
-                .setDescription(message.getContentRaw());
+                .setDescription(message.getContentRaw())
+                .addField("Utilities", "[21 Jump Street](" + message.getJumpUrl() + ")", false);
         textChannel.sendMessage(embedBuilder.build()).queue();
     }
 

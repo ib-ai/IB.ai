@@ -1,14 +1,14 @@
 package com.ibdiscord.command.commands.tag;
 
-import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.TagData;
+import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
 
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class TagListCommand extends Command {
+public final class TagListCommand extends PaginatedCommand<String> {
 
     /**
      * Creates the command.
@@ -37,35 +37,45 @@ public final class TagListCommand extends Command {
     TagListCommand() {
         super("list",
                 new HashSet<>(),
-                CommandPermission.discord(Permission.MANAGE_CHANNEL),
+                CommandPermission.discord(),
                 new HashSet<>());
     }
 
     /**
-     * Lists all tags.
+     * Gets the tags as a pagination.
      * @param context The command context.
+     * @return The pagination.
      */
     @Override
-    protected void execute(CommandContext context) {
+    protected Pagination<String> getPagination(CommandContext context) {
         TagData tagData = DContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
-        int page = 1;
-        if(context.getArguments().length > 0) {
-            try {
-                page = Integer.valueOf(context.getArguments()[0]);
-            } catch(IllegalArgumentException ignored) {}
-        }
         List<String> entries = tagData.getKeys().stream()
                 .sorted(String::compareToIgnoreCase)
                 .collect(Collectors.toList());
-        Pagination<String> pagination = new Pagination<>(entries, 10);
-        EmbedBuilder embedBuilder = new EmbedBuilder()
-                .setDescription("Here is a list of tags.")
-                .setFooter("Page " + page + "/" + pagination.total(), null);
-        pagination.page(page)
-                .forEach(entry -> {
-                    String value = tagData.get(entry.getValue()).asString();
-                    embedBuilder.addField(UString.escapeFormatting(entry.getValue()), value, false);
-                });
-        context.reply(embedBuilder.build());
+        return new Pagination<>(entries, 10);
     }
+
+    /**
+     * Handles the page.
+     * @param context The context.
+     * @param embedBuilder The embed builder.
+     * @param page The page.
+     */
+    @Override
+    protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
+        TagData tagData = DContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
+        String value = tagData.get(page.getValue()).asString();
+        embedBuilder.addField(UString.escapeFormatting(page.getValue()), value, false);
+    }
+
+    /**
+     * Adds a description.
+     * @param context The context.
+     * @param embedBuilder The embed builder.
+     */
+    @Override
+    protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
+        embedBuilder.setDescription("Here is a list of tags.");
+    }
+
 }

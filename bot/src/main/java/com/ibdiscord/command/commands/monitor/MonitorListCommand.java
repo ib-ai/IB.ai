@@ -1,11 +1,12 @@
 package com.ibdiscord.command.commands.monitor;
 
-import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorMessageData;
 import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
+import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class MonitorListCommand extends Command {
+public final class MonitorListCommand extends PaginatedCommand<String> {
 
     /**
      * Creates the command.
@@ -43,32 +44,42 @@ public final class MonitorListCommand extends Command {
     }
 
     /**
-     * Lists all monitor entries.
+     * Gets all the monitor thingies.
      * @param context The command context.
+     * @return The pagination.
      */
     @Override
-    protected void execute(CommandContext context) {
-        int page = 1;
-        if(context.getArguments().length != 0) {
-            try {
-                page = Integer.valueOf(context.getArguments()[0]);
-            } catch(NumberFormatException ignored) {}
-        }
+    protected Pagination<String> getPagination(CommandContext context) {
         Gravity gravity = DContainer.INSTANCE.getGravity();
-        List<String> users = gravity.load(new MonitorUserData(context.getGuild().getId())).values().stream()
+        List<String> a = gravity.load(new MonitorUserData(context.getGuild().getId())).values().stream()
                 .map(it -> "User: " + it)
                 .collect(Collectors.toList());
-        List<String> messages = gravity.load(new MonitorMessageData(context.getGuild().getId())).values().stream()
+        List<String> b = gravity.load(new MonitorMessageData(context.getGuild().getId())).values().stream()
                 .map(it -> "Regex: " + it)
                 .collect(Collectors.toList());
-        users.addAll(messages);
-        Pagination<String> pagination = new Pagination<>(users, 10);
-        EmbedBuilder embedBuilder = new EmbedBuilder()
-                .setDescription("Here is a list of entries.")
-                .setFooter("Page " + page + "/" + pagination.total(), null);
-        pagination.page(page)
-                .forEach(entry -> embedBuilder.addField("Entry #" + entry.getNumber(), entry.getValue(), false));
-        context.reply(embedBuilder.build());
+        a.addAll(b);
+        return new Pagination<>(a, 10);
+    }
+
+    /**
+     * Adds the monitored entity.
+     * @param context The context.
+     * @param embedBuilder The embed builder.
+     * @param page The page.
+     */
+    @Override
+    protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
+        embedBuilder.addField("Entry #" + page.getNumber(), page.getValue(), false);
+    }
+
+    /**
+     * Adds a description.
+     * @param context The context.
+     * @param embedBuilder The embed builder.
+     */
+    @Override
+    protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
+        embedBuilder.setDescription("Here is a list of entries.");
     }
 
 }

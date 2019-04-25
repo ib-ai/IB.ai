@@ -1,8 +1,9 @@
 package com.ibdiscord.command.commands.reminder;
 
-import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.reminder.Reminder;
 import com.ibdiscord.reminder.ReminderHandler;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class ReminderListCommand extends Command {
+public final class ReminderListCommand extends PaginatedCommand<Reminder> {
 
     /**
      * Creates the command.
@@ -43,37 +44,42 @@ public final class ReminderListCommand extends Command {
     }
 
     /**
-     * Lists all reminders.
+     * Gets the pagination of the reminders.
      * @param context The command context.
+     * @return The pagination.
      */
     @Override
-    protected void execute(CommandContext context) {
-        int page = 1;
-        if(context.getArguments().length > 0) {
-            try {
-                page = Integer.valueOf(context.getArguments()[0]);
-            } catch(IllegalArgumentException ignored) {}
-        }
+    protected Pagination<Reminder> getPagination(CommandContext context) {
         List<Reminder> reminders = ReminderHandler.INSTANCE.getFor(context.getMember().getUser()).stream()
                 .filter(it -> !it.isCompleted())
                 .collect(Collectors.toList());
-        if(reminders.isEmpty()) {
-            context.reply("You have no active reminders.");
-            return;
-        }
-        Pagination<Reminder> pagination = new Pagination<>(reminders, 10);
-        EmbedBuilder embedBuilder = new EmbedBuilder()
-                .setDescription("Here is a list of your active reminders.")
-                .setFooter("Page " + page + "/" + pagination.total(), null);
-        pagination.page(page).forEach(it -> {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy, HH:mm:ss z");
-            String title = String.format("%s (ID: %d)",
-                    simpleDateFormat.format(it.getValue().getDate()),
-                    it.getValue().getId()
-            );
-            embedBuilder.addField(title, it.getValue().getReminder(), false);
-        });
-        context.reply(embedBuilder.build());
+        return new Pagination<>(reminders, 10);
+    }
+
+    /**
+     * Formats the reminder into the embed.
+     * @param context The context.
+     * @param embedBuilder The embed builder.
+     * @param page The page.
+     */
+    @Override
+    protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<Reminder> page) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d, yyyy, HH:mm:ss z");
+        String title = String.format("%s (ID: %d)",
+                simpleDateFormat.format(page.getValue().getDate()),
+                page.getValue().getId()
+        );
+        embedBuilder.addField(title, page.getValue().getReminder(), false);
+    }
+
+    /**
+     * Adds a description.
+     * @param context The context.
+     * @param embedBuilder The embed builder.
+     */
+    @Override
+    protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
+        embedBuilder.setDescription("Here is a list of your active reminders.");
     }
 
 }

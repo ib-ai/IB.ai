@@ -121,15 +121,18 @@ public final class GuildListener extends ListenerAdapter {
             if(entries.isEmpty()) {
                 return;
             }
-            IBai.INSTANCE.getLogger().info("Hello audit log, grabbing first element.");
             AuditLogEntry latest = entries.get(0);
-            IBai.INSTANCE.getLogger().info("Latest audit log (): type '{}', target type '{}', target id '{}', user {}",
+            IBai.INSTANCE.getLogger().info("Latest audit log: type '{}', target type '{}', target id '{}', user {}, options {}",
                     latest.getType(),
                     latest.getTargetType(),
                     latest.getTargetId(),
-                    latest.getUser());
+                    latest.getUser(),
+                    latest.getOptions());
             if(latest.getTargetType() != TargetType.MEMBER
                     || latest.getTargetIdLong() != target) {
+                IBai.INSTANCE.getLogger().info("Test 1: {}, Test 2: {}",
+                        (latest.getTargetType() != TargetType.MEMBER),
+                        (latest.getTargetIdLong() != target));
                 return;
             }
             guild.getJDA().retrieveUserById(latest.getTargetIdLong()).queue(user -> {
