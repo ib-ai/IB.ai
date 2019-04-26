@@ -24,3 +24,22 @@ This license is copy-left and conducive to free, open-source software.
 
 Project license: https://github.com/vardy/IB.ai/blob/master/LICENSE.md    
 License details: https://choosealicense.com/licenses/gpl-3.0/#
+
+# Installation and Compilation
+
+Using `Maven` to compile the Java source:    
+```
+$ mvn clean install
+```
+Run in `/bot` directory.    
+Place produced .jar file into `/bot/docker` as `IB.ai.jar`.
+
+Configure files:
+ - /env/bot.env
+ - /db/Redis.conf
+
+Using `Docker` and `Docker-Compose` to build container images and run:    
+```
+$ docker-compose build
+$ docker-compose up
+```
