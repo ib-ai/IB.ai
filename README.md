@@ -17,6 +17,10 @@ kallak#4644 | @raynichc | Developer
 
 [Please read the contributions guidelines](https://github.com/vardy/IB.ai/wiki/Contributing).
 
-# Task Sheet
+# License
 
-[Click here for project Kanban.](https://github.com/vardy/IB.ai/projects/1) Includes information on what needs to be done, what's in progress, and what has been done already.
+This project is licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl.html).    
+This license is copy-left and conducive to free, open-source software.
+
+Project license: https://github.com/vardy/IB.ai/blob/master/LICENSE.md    
+License details: https://choosealicense.com/licenses/gpl-3.0/#
