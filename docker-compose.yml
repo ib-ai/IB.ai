@@ -9,7 +9,6 @@ services:
     image: ib.ai
     restart: on-failure:3
     build: ./bot/docker
-    container_name: bot
     env_file:
       - ./env/bot.env
     depends_on:
@@ -22,7 +21,10 @@ services:
   db:
     restart: always
     image: redis
-    container_name: db
     command: redis-server /opt/IB.ai/Redis.conf
     volumes:
       - ./db/Redis.conf:/opt/IB.ai/Redis.conf
+      - db-data:/data
+
+volumes:
+  db-data:
