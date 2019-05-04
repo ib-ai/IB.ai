@@ -1,0 +1,59 @@
+/**
+ * Copyright 2017-2019 Arraying
+ *
+ * This file is part of LoyalBot.
+ *
+ * LoyalBot is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LoyalBot is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with LoyalBot. If not, see http://www.gnu.org/licenses/.
+ */
+
+package dev.vardy.command.commands.monitor;
+
+import dev.vardy.command.Command;
+import dev.vardy.command.CommandContext;
+import dev.vardy.command.permissions.CommandPermission;
+import net.dv8tion.jda.core.Permission;
+
+import java.util.Set;
+
+public final class MonitorCommand extends Command {
+
+    /**
+     * Creates the command.
+     */
+    public MonitorCommand() {
+        super("monitor",
+                Set.of("nsa"),
+                CommandPermission.discord(Permission.MANAGE_SERVER),
+                Set.of(
+                        new MonitorToggleCommand(),
+                        new MonitorUserChannelCommand(),
+                        new MonitorUserCommand(),
+                        new MonitorMessageChannelCommand(),
+                        new MonitorMessageCommand(),
+                        new MonitorListCommand()
+                )
+        );
+        this.correctUsage = "monitor <toggle|userchannel|messagechannel|user|message|list> [channel]|create|delete [value]";
+    }
+
+    /**
+     * Sends the usage.
+     * @param context The command context.
+     */
+    @Override
+    protected void execute(CommandContext context) {
+        sendUsage(context);
+    }
+
+}
