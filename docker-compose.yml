@@ -6,7 +6,7 @@ services:
   # Will attempt to restart 3 times.
   # Depends on __Config.toml__ for startup config
   bot:
-    image: LoyalBot
+    image: ib.ai
     restart: on-failure:3
     build: ./bot/docker
     env_file:
@@ -21,9 +21,9 @@ services:
   db:
     restart: always
     image: redis
-    command: redis-server /opt/LoyalBot/Redis.conf
+    command: redis-server /opt/IB.ai/Redis.conf
     volumes:
-      - ./db/Redis.conf:/opt/LoyalBot/Redis.conf
+      - ./db/Redis.conf:/opt/IB.ai/Redis.conf
       - db-data:/data
 
 volumes:

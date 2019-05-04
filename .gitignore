@@ -16,11 +16,11 @@ bot/docker/Config.toml
 
 # Java project files in bot
 # Testing config.toml ignored
-/LoyalBot/.idea/
-/LoyalBot/LoyalBot.iml
-/LoyalBot/Config.toml
-/LoyalBot/Config-web.toml
-/LoyalBot/dependency-reduced-pom.xml
+/IB.ai/.idea/
+/IB.ai/IB.ai.iml
+/IB.ai/Config.toml
+/IB.ai/Config-web.toml
+/IB.ai/dependency-reduced-pom.xml
 bot/.idea/
 bot.iml
 bot/Config.toml

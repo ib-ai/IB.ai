@@ -1,7 +1,7 @@
 {
-  "name": "loyalbot-api",
+  "name": "ibai-api",
   "version": "1.0.0",
-  "description": "Internal API for the LoyalBot Discord bot",
+  "description": "Internal API for the IB.ai Discord bot",
   "main": "./bin/www.js",
   "scripts": {
     "start": "node --harmony ./bin/www.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vardy/LoyalBot.git"
+    "url": "git+https://github.com/vardy/IB.ai.git"
   },
   "author": "Arraying",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/vardy/LoyalBot/issues"
+    "url": "https://github.com/vardy/IB.ai/issues"
   },
-  "homepage": "https://github.com/vardy/LoyalBot#readme",
+  "homepage": "https://github.com/vardy/IB.ai#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",

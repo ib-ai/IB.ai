@@ -1,0 +1,140 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+      {% if title %}
+        <title>{{ title }} - IB.ai</title>
+      {% else %}
+        <title>Welcome to IB.ai Web Interface</title>
+      {% endif %}
+    <style>
+        :root {
+            --ib-blue: #45A6D9;
+            --old-blue: #26458F;
+        }
+
+        html {
+          font-family: Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+          margin: 0;
+          background-color: white;
+        }
+
+        .menubar {
+          color: white;
+          background-color: var(--ib-blue);
+          padding: 15px 20px;
+          box-shadow: 0px 1px 8px rgba(0,0,0,0.3);
+        }
+
+        .menubar a {
+          color: rgba(255,255,255,0.9);
+          padding: 15px;
+          text-decoration: none;
+        }
+
+        .menubar a:hover {
+          background-color: rgba(255,255,255,0.2);
+          color: white;
+        }
+
+        .menu {
+          max-width: 1000px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .content {
+          max-width: 700px;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 20px;
+        }
+        h1 {text-align:center;}
+        h2 {text-align:center;}
+        {# p {text-align:center;} #}
+        /* Dropdown Button */
+        .dropbtn {
+            background-color: var(--ib-blue);
+            color: white;
+            padding: 16px 16px 16px 0px;
+            font-size: 16px;
+            border: none;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            padding-left: 16px;
+        }
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {
+            background-color: var(--ib-blue);
+        }
+    </style>
+    </head>
+    <body>
+        <div class="menubar">
+{#            <div style="position: relative; top: 50%; transform: translateY(-50%);">#}
+{#            <div style="float: left; position: relative; top: -7px">#}
+{#            <img src="{{ url_for("static", filename="images/ib_world_school_logo_1_colour_rev.png") }}" width="32px"/>#}
+{#            </div>#}
+            <div class="menu">
+{#                <div style="text-align: left; float: left; position: relative; left: -100px">#}
+{#                </div>#}
+                IB.ai Web Interface
+                <a href="{{ url_for('index') }}">Home</a>
+                {% if "username" not in session %}
+                    <a href="{{ url_for('discord_login') }}">Login with discord</a>
+                {% else %}
+                    <a href="{{ url_for('me') }}">Your data</a>
+                    <a href="{{ url_for('view_db') }}">View Database</a>
+                    <a href="{{ url_for('discord_logout') }}">Logout</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="content">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
