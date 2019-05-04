@@ -2,7 +2,7 @@ FROM openjdk:10
 MAINTAINER Jarred Vardy <jarred.vardy@gmail.com>
 ENV ENV docker
 
-COPY IB.ai.jar /opt/IB.ai/IB.ai.jar
-WORKDIR /opt/IB.ai/
+COPY LoyalBot.jar /opt/LoyalBot/LoyalBot.jar
+WORKDIR /opt/LoyalBot/
 
-ENTRYPOINT ["java", "-jar", "IB.ai.jar"]
+ENTRYPOINT ["java", "-jar", "LoyalBot.jar"]

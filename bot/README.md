@@ -1,10 +1,10 @@
-# IB.ai
+# LoyalBot
 
-The new private build for the /r/IBO Discord server bot.
+A public Discord bot.
 
 # Contributing
 
-[Please read the contributions guidelines](https://github.com/vardy/IB.ai/wiki/Contributing).
+[Please read the contributions guidelines](https://github.com/vardy/LoyalBot/wiki/Contributing).
 
 # Dependencies
 
