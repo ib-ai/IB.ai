@@ -1,0 +1,69 @@
+package com.ibdiscord.input.embed;
+
+import com.ibdiscord.input.Input;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
+
+/**
+ * Copyright 2019 Arraying
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+public abstract class EmbedInput implements Input {
+
+    final EmbedBuilder builder;
+    Input successor;
+
+    /**
+     * Creates the embed input.
+     * @param builder The builder.
+     */
+    EmbedInput(EmbedBuilder builder) {
+        this.builder = builder;
+    }
+
+    /**
+     * Internally offers the input.
+     * @param input The input.
+     * @return True if the input is accepted, false if it is rejected.
+     */
+    protected abstract boolean internalOffer(Message input);
+
+    /**
+     * Gets the successor.
+     * @return The successor.
+     */
+    @Override
+    public final Input getSuccessor() {
+        return successor;
+    }
+
+    /**
+     * Handles the input.
+     * @param input The input.
+     * @return True if the input is accepted, false if it is rejected.
+     */
+    @Override
+    public final boolean offer(Message input) {
+        switch(input.getContentRaw().toLowerCase()) {
+            case "skip":
+                return true;
+            case "done":
+                successor = new EmbedChannelInput(builder);
+                return true;
+            default:
+                return internalOffer(input);
+        }
+    }
+
+}

@@ -28,6 +28,7 @@ import lombok.Getter;
 public enum CommandCollection {
 
     ECHO(new EchoCommand()),
+    EMBED(new EmbedCommand()),
     EVAL(new EvalCommand()),
     EXPIRE(new ExpireCommand()),
     HELP(new HelpCommand()),

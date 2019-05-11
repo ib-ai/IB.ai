@@ -42,6 +42,7 @@ public abstract class PaginatedCommand<T> extends Command {
      * @param permission The permission required to execute the command.
      * @param subCommands Any sub commands the command has.
      */
+    @SuppressWarnings("SameParameterValue")
     protected PaginatedCommand(String name, Set<String> aliases, CommandPermission permission, Set<Command> subCommands) {
         super(name, aliases, permission, subCommands);
     }

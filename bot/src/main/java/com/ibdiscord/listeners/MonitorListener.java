@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  */
 public final class MonitorListener extends ListenerAdapter {
 
-    private GuildedCache<String, Pattern> regexCache = new GuildedCache<>();
+    private final GuildedCache<String, Pattern> regexCache = new GuildedCache<>();
 
     /**
      * When a message is received.

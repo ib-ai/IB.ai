@@ -76,9 +76,8 @@ public enum ReminderHandler {
      * @param user The user.
      * @param time The time.
      * @param text The text.
-     * @return The reminder object.
      */
-    public synchronized Reminder create(User user, long time, String text) {
+    public synchronized void create(User user, long time, String text) {
         Gravity gravity = DContainer.INSTANCE.getGravity();
         ReminderData reminderData = gravity.load(new ReminderData());
         int newId = reminderData.get()
@@ -96,7 +95,6 @@ public enum ReminderHandler {
         gravity.save(reminderUserList);
         Reminder reminder = new Reminder(newId, time, text);
         schedule(reminder, user);
-        return reminder;
     }
 
     /**

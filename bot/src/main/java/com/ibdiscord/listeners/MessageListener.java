@@ -6,6 +6,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.TagData;
+import com.ibdiscord.input.InputHandler;
 import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.ExpiringCache;
 import com.ibdiscord.utils.objects.GuildedCache;
@@ -63,6 +64,9 @@ public final class MessageListener extends ListenerAdapter {
             return;
         }
         String message = event.getMessage().getContentRaw();
+        if(!InputHandler.INSTANCE.offer(event.getMember(), event.getMessage())) {
+            return;
+        }
         Gravity gravity = DContainer.INSTANCE.getGravity();
         TagData tags = gravity.load(new TagData(event.getGuild().getId()));
         for(String key : tags.getKeys()) {

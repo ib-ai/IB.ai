@@ -202,7 +202,7 @@ public final class GuildListener extends ListenerAdapter {
                     error.printStackTrace();
                 });
             }
-        }, 10, TimeUnit.SECONDS);
+        }, 1, TimeUnit.SECONDS);
     }
 
     /**
