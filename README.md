@@ -17,14 +17,14 @@ kallak#4644 | @raynichc | Developer
 
 # Contributing
 
-[Please read the contributions guidelines](https://github.com/vardy/IB.ai/wiki/Contributing).
+[Please read the contributions guidelines](https://github.com/ib-ai/IB.ai/wiki/Contributing).
 
 # License
 
 This project is licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl.html).    
 This license is copy-left and conducive to free, open-source software.
 
-Project license: https://github.com/vardy/IB.ai/blob/master/LICENSE.md    
+Project license: https://github.com/ib-ai/IB.ai/blob/master/LICENSE.md    
 License details: https://choosealicense.com/licenses/gpl-3.0/#
 
 # Installation and Compilation
