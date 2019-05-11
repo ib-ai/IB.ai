@@ -1,15 +1,13 @@
-package com.ibdiscord.command.commands;
+package com.ibdiscord.command.commands.monitor;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.GuildData;
-import com.ibdiscord.utils.UString;
+import com.ibdiscord.data.db.entries.monitor.MonitorData;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,39 +28,34 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-public final class ModeratorCommand extends Command {
+public final class MonitorUserChannelCommand extends Command {
 
     /**
      * Creates the command.
      */
-    public ModeratorCommand() {
-        super("moderator",
-                Set.of("mod"),
+    MonitorUserChannelCommand() {
+        super("userchannel",
+                Set.of(),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
-                new HashSet<>()
+                Set.of()
         );
-        this.correctUsage = "mod [new role]";
     }
 
     /**
-     * Sets the moderator permission.
+     * Sets the channel.
      * @param context The command context.
      */
     @Override
     protected void execute(CommandContext context) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
-        GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
-        if(context.getArguments().length == 0) {
-            String permission = guildData.get(GuildData.MODERATOR)
-                    .defaulting("not set")
-                    .asString();
-            context.reply("The moderator permission is currently: " + permission + ".");
+        if(context.getMessage().getMentionedChannels().isEmpty()) {
+            context.reply("Please mention a channel!");
             return;
         }
-        String newValue = UString.concat(context.getArguments(), " ", 0);
-        guildData.set(GuildData.MODERATOR, newValue);
-        gravity.save(guildData);
-        context.reply("The moderator permission has been updated.");
+        Gravity gravity = DContainer.INSTANCE.getGravity();
+        MonitorData monitorData = gravity.load(new MonitorData(context.getGuild().getId()));
+        monitorData.set(MonitorData.USER_CHANNEL, context.getMessage().getMentionedChannels().get(0).getId());
+        gravity.save(monitorData);
+        context.reply("Consider it done.");
     }
 
 }

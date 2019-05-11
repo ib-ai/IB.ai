@@ -25,13 +25,13 @@ import java.util.Set;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public final class MonitorChannelCommand extends Command {
+public class MonitorMessageChannelCommand extends Command {
 
     /**
      * Creates the command.
      */
-    MonitorChannelCommand() {
-        super("channel",
+    MonitorMessageChannelCommand() {
+        super("messagechannel",
                 Set.of(),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
@@ -50,7 +50,7 @@ public final class MonitorChannelCommand extends Command {
         }
         Gravity gravity = DContainer.INSTANCE.getGravity();
         MonitorData monitorData = gravity.load(new MonitorData(context.getGuild().getId()));
-        monitorData.set(MonitorData.CHANNEL, context.getMessage().getMentionedChannels().get(0).getId());
+        monitorData.set(MonitorData.MESSAGE_CHANNEL, context.getMessage().getMentionedChannels().get(0).getId());
         gravity.save(monitorData);
         context.reply("Consider it done.");
     }
