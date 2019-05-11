@@ -1,3 +1,5 @@
+**Notice: repo moved. All links referencing repo should now reference `ib-ai/IB.ai` instead of `vardy/IB.ai`**
+
 # IB.ai
 
 Private bot for the International Baccalaureate Discord server. This project is currently lead by `pants#0001`. 
