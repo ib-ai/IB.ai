@@ -7,9 +7,10 @@ import com.ibdiscord.data.db.DContainer;
 import com.ibdiscord.data.db.entries.GuildUserData;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public final class UserInfoCommand extends Command {
         super("userinfo",
                 Set.of("memberinfo", "ui"),
                 CommandPermission.discord(),
-                new HashSet<>()
+                Set.of()
         );
     }
 
@@ -50,7 +51,7 @@ public final class UserInfoCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        var target = context.getMember();
+        Member target = context.getMember();
         if(context.getArguments().length >= 1) {
             target = UInput.getMember(context.getGuild(), context.getArguments()[0]);
         }
@@ -58,8 +59,8 @@ public final class UserInfoCommand extends Command {
             context.reply("User not found!");
             return;
         }
-        var user = target.getUser();
-        var joinPosition = context.getGuild().getMembers().stream()
+        User user = target.getUser();
+        int joinPosition = context.getGuild().getMembers().stream()
                 .sorted((o1, o2) -> {
                     long a = o1.getJoinDate().toInstant().toEpochMilli();
                     long b = o2.getJoinDate().toInstant().toEpochMilli();

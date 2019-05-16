@@ -8,7 +8,6 @@ import com.ibdiscord.data.db.entries.GuildData;
 import net.dv8tion.jda.core.Permission;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -38,7 +37,7 @@ public final class PrefixCommand extends Command {
         super("prefix",
                 Set.of("setprefix"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "prefix <new prefix>";
     }

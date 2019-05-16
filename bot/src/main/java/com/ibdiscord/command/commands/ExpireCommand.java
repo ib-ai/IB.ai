@@ -12,7 +12,6 @@ import com.ibdiscord.punish.PunishmentExpiry;
 import com.ibdiscord.utils.UTime;
 import de.arraying.gravity.Gravity;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 
@@ -43,7 +42,7 @@ public final class ExpireCommand extends Command {
         super("expire",
                 Set.of("expiry"),
                 CommandPermission.role(GuildData.MODERATOR),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "expire <case> <time>";
     }

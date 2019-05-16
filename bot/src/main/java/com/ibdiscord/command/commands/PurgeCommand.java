@@ -6,7 +6,6 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -36,7 +35,7 @@ public final class PurgeCommand extends Command {
         super("purge",
                 Set.of("prune", "clear", "deletebrowserhistory"),
                 CommandPermission.discord(Permission.MESSAGE_MANAGE),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "purge <amount of messages>";
     }

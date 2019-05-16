@@ -9,7 +9,6 @@ import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -39,7 +38,7 @@ public final class ModeratorCommand extends Command {
         super("moderator",
                 Set.of("mod"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "mod [new role]";
     }

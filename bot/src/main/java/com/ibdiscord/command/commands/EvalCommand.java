@@ -8,7 +8,6 @@ import com.ibdiscord.utils.UString;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -40,7 +39,7 @@ public final class EvalCommand extends Command {
         super("eval",
                 Set.of("evaluate", "js", "justgeekythings"),
                 CommandPermission.developer(CommandPermission.discord()),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "eval <JS code>";
         try {
@@ -60,7 +59,7 @@ public final class EvalCommand extends Command {
             sendUsage(context);
             return;
         }
-        var code = UString.concat(context.getArguments(), " ", 0);
+        String code = UString.concat(context.getArguments(), " ", 0);
         engine.put("c", context);
         engine.put("ctx", context);
         engine.put("context", context);
@@ -72,7 +71,7 @@ public final class EvalCommand extends Command {
             exception.printStackTrace();
             return;
         }
-        var response = UString.stripMassMentions(out.toString());
+        String response = UString.stripMassMentions(out.toString());
         if(response.length() > 2000) {
             context.getChannel().sendFile(response.getBytes(), "output_past_threshold.txt")
                     .queue(null, error -> context.reply("Well, it seems as if the output can't be sent as a file."));

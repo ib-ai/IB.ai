@@ -5,7 +5,6 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.utils.UString;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -35,7 +34,7 @@ public final class EchoCommand extends Command {
         super("echo",
                 Set.of("copycat"),
                 CommandPermission.discord(),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "echo <message>";
     }

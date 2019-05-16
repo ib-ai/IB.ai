@@ -10,8 +10,8 @@ import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Copyright 2017-2019 Ray Clark, Arraying
@@ -38,9 +38,10 @@ public final class TagCreateCommand extends Command {
      */
     TagCreateCommand() {
         super("create",
-                new HashSet<>(),
+                Set.of(),
                 CommandPermission.discord(Permission.MANAGE_CHANNEL),
-                new HashSet<>());
+                Set.of()
+        );
         this.correctUsage = "tag create \"tag name\" \"tag value\"";
     }
 

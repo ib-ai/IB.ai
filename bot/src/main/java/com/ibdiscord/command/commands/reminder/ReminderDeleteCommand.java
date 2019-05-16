@@ -6,7 +6,6 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.reminder.Reminder;
 import com.ibdiscord.reminder.ReminderHandler;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public final class ReminderDeleteCommand extends Command {
         super("delete",
                 Set.of("d", "remove"),
                 CommandPermission.discord(),
-                new HashSet<>()
+                Set.of()
         );
     }
 

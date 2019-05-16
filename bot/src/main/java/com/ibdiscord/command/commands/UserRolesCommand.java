@@ -4,9 +4,9 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.utils.UInput;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,7 +37,7 @@ public final class UserRolesCommand extends Command {
         super("userroles",
                 Set.of("myroles", "showroles"),
                 CommandPermission.discord(),
-                new HashSet<>()
+                Set.of()
         );
     }
 
@@ -47,7 +47,7 @@ public final class UserRolesCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        var target = context.getMember();
+        Member target = context.getMember();
         if(context.getArguments().length >= 1) {
             target = UInput.getMember(context.getGuild(), context.getArguments()[0]);
         }

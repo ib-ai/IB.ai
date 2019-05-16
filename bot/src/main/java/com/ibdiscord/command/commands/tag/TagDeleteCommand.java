@@ -8,8 +8,8 @@ import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.Permission;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Copyright 2017-2019 Ray Clark, Arraying
@@ -36,9 +36,10 @@ public final class TagDeleteCommand extends Command {
      */
     TagDeleteCommand() {
         super("delete",
-                new HashSet<>(),
+                Set.of(),
                 CommandPermission.discord(Permission.MANAGE_CHANNEL),
-                new HashSet<>());
+                Set.of()
+        );
         this.correctUsage = "tag delete \"tag name\"";
     }
 

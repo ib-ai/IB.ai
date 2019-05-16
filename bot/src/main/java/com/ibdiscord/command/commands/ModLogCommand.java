@@ -5,7 +5,6 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.entries.GuildData;
 import net.dv8tion.jda.core.Permission;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -35,7 +34,7 @@ public final class ModLogCommand extends LoggingCommand {
         super("modlog",
                 Set.of("setmodlog"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
-                new HashSet<>(),
+                Set.of(),
                 GuildData.MODLOGS
         );
         this.correctUsage = "modlog [new channel]";

@@ -8,7 +8,7 @@ import com.ibdiscord.utils.UDatabase;
 import net.dv8tion.jda.core.EmbedBuilder;
 
 import java.awt.*;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -36,9 +36,9 @@ public final class HelpCommand extends Command {
      */
     public HelpCommand() {
         super("help",
-                new HashSet<>(),
+                Set.of(),
                 CommandPermission.discord(),
-                new HashSet<>()
+                Set.of()
         );
     }
 

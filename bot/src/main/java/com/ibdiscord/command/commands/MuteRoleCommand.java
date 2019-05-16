@@ -9,7 +9,6 @@ import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Role;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,7 +39,7 @@ public final class MuteRoleCommand extends Command {
         super("muterole",
                 Set.of("setmuterole"),
                 CommandPermission.discord(Permission.MANAGE_ROLES),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "muterole <role>";
     }

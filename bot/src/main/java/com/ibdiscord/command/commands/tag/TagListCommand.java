@@ -10,8 +10,8 @@ import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.core.EmbedBuilder;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -39,9 +39,10 @@ public final class TagListCommand extends PaginatedCommand<String> {
      */
     TagListCommand() {
         super("list",
-                new HashSet<>(),
+                Set.of(),
                 CommandPermission.discord(),
-                new HashSet<>());
+                Set.of()
+        );
     }
 
     /**

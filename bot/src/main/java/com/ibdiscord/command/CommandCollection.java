@@ -31,6 +31,7 @@ public enum CommandCollection {
     EMBED(new EmbedCommand()),
     EVAL(new EvalCommand()),
     EXPIRE(new ExpireCommand()),
+    FIND(new FindCommand()),
     HELP(new HelpCommand()),
     LOG(new LogCommand()),
     LOOKUP(new LookupCommand()),

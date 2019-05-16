@@ -11,7 +11,6 @@ import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.entities.Guild;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -41,7 +40,7 @@ public final class LookupCommand extends Command {
         super("lookup",
                 Set.of(),
                 CommandPermission.role(GuildData.MODERATOR),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "lookup <case ID>";
     }

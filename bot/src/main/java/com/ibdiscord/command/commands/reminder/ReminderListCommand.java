@@ -10,7 +10,6 @@ import com.ibdiscord.reminder.ReminderHandler;
 import net.dv8tion.jda.core.EmbedBuilder;
 
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,7 +41,7 @@ public final class ReminderListCommand extends PaginatedCommand<Reminder> {
         super("list",
                 Set.of("l"),
                 CommandPermission.discord(),
-                new HashSet<>()
+                Set.of()
         );
     }
 

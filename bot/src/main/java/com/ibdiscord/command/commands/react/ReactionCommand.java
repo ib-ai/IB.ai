@@ -38,7 +38,9 @@ public final class ReactionCommand extends Command {
         super("reaction",
                 Set.of("react", "reactionroles", "rr"),
                 CommandPermission.discord(Permission.MANAGE_ROLES),
-                Set.of(new Add(), new Delete())
+                Set.of(new Add(),
+                        new Delete()
+                )
         );
         this.correctUsage = "reaction <add/remove> <channel ID> <message ID> <emoji> <role ID>";
     }

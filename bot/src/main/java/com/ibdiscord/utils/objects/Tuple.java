@@ -23,7 +23,7 @@ import lombok.Data;
 @Data
 public final class Tuple<A, B> {
 
-    public final A a;
-    public final B b;
+    private final A a;
+    private final B b;
 
 }

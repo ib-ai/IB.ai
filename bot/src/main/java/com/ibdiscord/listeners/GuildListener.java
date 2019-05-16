@@ -153,13 +153,19 @@ public final class GuildListener extends ListenerAdapter {
                                 || staff == null) {
                             throw new RuntimeException("user/staff nil");
                         }
+                        boolean redacted = false;
+                        if(reason != null
+                                && (reason.toLowerCase().contains("-redacted")
+                                || reason.toLowerCase().contains("-redact"))) {
+                            redacted = true;
+                        }
                         Punishment punishment = new Punishment(null,
                                 UFormatter.formatMember(user),
                                 user.getId(),
                                 UFormatter.formatMember(staff),
                                 staff.getId(),
                                 reason,
-                                false
+                                redacted
                         );
                         PunishmentHandler handler = new PunishmentHandler(guild, punishment);
                         switch(latest.getType()) {
@@ -202,7 +208,7 @@ public final class GuildListener extends ListenerAdapter {
                     error.printStackTrace();
                 });
             }
-        }, 1, TimeUnit.SECONDS);
+        }, 3, TimeUnit.SECONDS);
     }
 
     /**

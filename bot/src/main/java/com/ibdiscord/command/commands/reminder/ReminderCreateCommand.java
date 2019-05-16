@@ -7,7 +7,6 @@ import com.ibdiscord.reminder.ReminderHandler;
 import com.ibdiscord.utils.UString;
 import com.ibdiscord.utils.UTime;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -37,7 +36,7 @@ public final class ReminderCreateCommand extends Command {
         super("create",
                 Set.of("c", "add", "new"),
                 CommandPermission.discord(),
-                new HashSet<>()
+                Set.of()
         );
     }
 

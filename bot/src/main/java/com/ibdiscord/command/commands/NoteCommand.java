@@ -13,7 +13,6 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -43,7 +42,7 @@ public final class NoteCommand extends Command {
         super("note",
                 Set.of("notes"),
                 CommandPermission.role(GuildData.MODERATOR),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "note <user> [new note]";
     }

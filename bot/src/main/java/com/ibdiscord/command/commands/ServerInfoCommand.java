@@ -5,9 +5,9 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Guild;
 
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -37,7 +37,7 @@ public final class ServerInfoCommand extends Command {
         super("serverinfo",
                 Set.of("guildinfo", "si"),
                 CommandPermission.discord(),
-                new HashSet<>()
+                Set.of()
         );
     }
 
@@ -47,7 +47,7 @@ public final class ServerInfoCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        var guild = context.getGuild();
+        Guild guild = context.getGuild();
         context.reply(new EmbedBuilder()
                 .addField("ID", guild.getId(), true)
                 .addField("Owner", guild.getOwner().getUser().getAsTag(), true)

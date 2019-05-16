@@ -12,7 +12,6 @@ import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.core.entities.Member;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -42,7 +41,7 @@ public final class WarnCommand extends Command {
         super("warn",
                 Set.of(),
                 CommandPermission.role(GuildData.MODERATOR),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "warn <user> <reason>";
     }

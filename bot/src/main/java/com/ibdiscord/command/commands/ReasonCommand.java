@@ -15,7 +15,6 @@ import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import static com.ibdiscord.data.db.entries.punish.PunishmentData.*;
@@ -47,7 +46,7 @@ public final class ReasonCommand extends Command {
         super("reason",
                 Set.of(),
                 CommandPermission.role(GuildData.MODERATOR),
-                new HashSet<>()
+                Set.of()
         );
         this.correctUsage = "reason <case ID> <reason>";
     }

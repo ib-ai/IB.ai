@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -42,7 +41,7 @@ public abstract class ReactionManageCommand extends Command {
         super(name,
                 aliases,
                 CommandPermission.discord(Permission.MANAGE_ROLES),
-                new HashSet<>()
+                Set.of()
         );
     }
 

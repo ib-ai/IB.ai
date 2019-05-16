@@ -37,12 +37,12 @@ public final class UString {
         if(delim == null) {
             delim = "";
         }
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         for(int i = start; i < input.length; i++) {
             builder.append(input[i])
                     .append(delim);
         }
-        var result = builder.toString();
+        String result = builder.toString();
         if(result.endsWith(delim)) {
             result = result.substring(0, result.length() - delim.length());
         }

@@ -34,8 +34,7 @@ public final class MonitorCommand extends Command {
         super("monitor",
                 Set.of("nsa"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
-                Set.of(
-                        new MonitorToggleCommand(),
+                Set.of(new MonitorToggleCommand(),
                         new MonitorUserChannelCommand(),
                         new MonitorUserCommand(),
                         new MonitorMessageChannelCommand(),

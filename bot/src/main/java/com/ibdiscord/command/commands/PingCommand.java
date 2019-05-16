@@ -4,7 +4,7 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 
-import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,7 +35,7 @@ public final class PingCommand extends Command {
         super("ping",
                 Stream.of("pong", "latency").collect(Collectors.toSet()),
                 CommandPermission.discord(),
-                new HashSet<>()
+                Set.of()
         );
     }
 
