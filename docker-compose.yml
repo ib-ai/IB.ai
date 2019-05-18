@@ -2,9 +2,8 @@ version: '3.4'
 
 services:
 
-  # The Java bot process -- uses Dockerfile in ./docker/docker-bot
+  # The Java bot process -- uses Dockerfile in ./docker/
   # Will attempt to restart 3 times.
-  # Depends on __Config.toml__ for startup config
   bot:
     image: ib.ai
     restart: on-failure:3
@@ -16,15 +15,13 @@ services:
 
   # Redis database
   # Running on port 6379, on a failure it will restart itself
-  # Depends on __redis.conf__ for startup config.
   # Connect via the URL 'redis://db:6379'
   db:
     restart: always
     image: redis
-    command: redis-server /opt/IB.ai/Redis.conf
     volumes:
-      - ./db/Redis.conf:/opt/IB.ai/Redis.conf
       - db-data:/data
 
 volumes:
+  # Database persistence
   db-data:
