@@ -27,6 +27,7 @@ import lombok.Getter;
  */
 public enum CommandCollection {
 
+    BLACKLIST(new BlacklistCommand()),
     ECHO(new EchoCommand()),
     EMBED(new EmbedCommand()),
     EVAL(new EvalCommand()),

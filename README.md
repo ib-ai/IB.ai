@@ -1,25 +1,28 @@
-**Notice: repo moved. All links referencing repo should now reference `ib-ai/IB.ai` instead of `vardy/IB.ai`**
-
 # IB.ai
 
-Private bot for the International Baccalaureate Discord server. This project is currently lead by `pants#0001`. 
+IB.ai is the bot developed for the r/ibo Discord server, by the community.
+It is a free and open source project.
 
-# Maintainers
+## Developers
 
-IB.ai is currently being maintained by the following volunteers:
+The project is currently being developed by the following developers:
 
 Discord Name | GitHub Name | Role
 --- | --- | ---
-Arraying#7363 | @Arraying | Project Lead /  Quality Assurance
-pants#3101 | @vardy | Developer
-redstone.tehnik#7139 | @LenartBucar | Developer
-kallak#4644 | @raynichc | Developer
+Arraying#7363 | [Arraying](https://github.com/Arraying) | Project Lead
+pants#3101 | [vardy](https://github.com/vardy) | Developer
+redstone.tehnik#7139 | [LenartBucar](https://github.com/LenartBucar) | Developer
+kallak#4644 | [raynichc](https://github.com/raynichc) | Developer
 
-# Contributing
+## Usage
 
-[Please read the contributions guidelines](https://github.com/ib-ai/IB.ai/wiki/Contributing).
+IB.ai has a large variety of functions. Each one of these should be documented in the [project wiki](https://github.com/ib-ai/IB.ai/wiki).
 
-# License
+## Contributing
+
+Please read the `CONTRIBUTING.md` file to find out more about contributing towards the project.
+
+## License
 
 This project is licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl.html).    
 This license is copy-left and conducive to free, open-source software.
@@ -27,7 +30,7 @@ This license is copy-left and conducive to free, open-source software.
 Project license: https://github.com/ib-ai/IB.ai/blob/master/LICENSE.md    
 License details: https://choosealicense.com/licenses/gpl-3.0/#
 
-# Installation and Compilation
+## Installation and Compilation
 
 Using `Maven` to compile the Java source:    
 ```
