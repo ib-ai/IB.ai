@@ -65,7 +65,7 @@ public final class EmbedColourInput extends EmbedInput {
      */
     @Override
     public void initialize(Message message) {
-        this.successor = new EmbedFieldInput(builder);
+        this.successor = new EmbedImageInput(builder);
         message.getChannel().sendMessage("Please provide the colour in hex format (e.g. `#123456`). Use `skip` to skip this.").queue();
     }
 

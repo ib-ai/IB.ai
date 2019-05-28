@@ -36,7 +36,8 @@ public final class TagCommand extends Command {
                 CommandPermission.discord(Permission.MANAGE_CHANNEL),
                 Set.of(new TagCreateCommand(),
                         new TagDeleteCommand(),
-                        new TagListCommand()
+                        new TagListCommand(),
+                        new TagFindCommand()
                 )
         );
         this.correctUsage = "tag <create/delete/list> \"tag name\" \"tag value\"";
