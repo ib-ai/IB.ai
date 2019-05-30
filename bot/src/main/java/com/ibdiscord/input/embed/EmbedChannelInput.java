@@ -28,14 +28,14 @@ import net.dv8tion.jda.core.entities.TextChannel;
 public final @AllArgsConstructor class EmbedChannelInput implements Input {
 
     private final EmbedBuilder builder;
-
+    private TextChannel channel;
 
     /**
      * @return null.
      */
     @Override
     public Input getSuccessor() {
-        return null;
+        return new EmbedMessageInput(builder, channel);
     }
 
     /**
@@ -71,10 +71,7 @@ public final @AllArgsConstructor class EmbedChannelInput implements Input {
             message.getChannel().sendMessage("You do not have access to that channel.").queue();
             return false;
         }
-        target.sendMessage(builder.build()).queue(success ->
-                        message.getChannel().sendMessage("Done.").queue(),
-                failure -> message.getChannel().sendMessage("Failed to send, are the required perms present?").queue()
-        );
+        channel = target;
         return true;
     }
 

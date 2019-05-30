@@ -62,7 +62,7 @@ public abstract class EmbedInput implements Input {
             case "skip":
                 return true;
             case "done":
-                successor = new EmbedChannelInput(builder);
+                successor = new EmbedChannelInput(builder, null);
                 return true;
             default:
                 return internalOffer(input);
