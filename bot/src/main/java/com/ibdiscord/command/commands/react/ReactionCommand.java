@@ -42,7 +42,7 @@ public final class ReactionCommand extends Command {
                         new Delete()
                 )
         );
-        this.correctUsage = "reaction <add/remove> <channel ID> <message ID> <emoji> <role ID>";
+        this.correctUsage = "reaction <create/delete> <channel ID> <message ID> <emoji> <role ID>";
     }
 
     /**
@@ -60,7 +60,7 @@ public final class ReactionCommand extends Command {
          * Creates the command.
          */
         private Add() {
-            super("add", Set.of("a", "create"));
+            super("add", Set.of("a", "create", "c"));
         }
 
         /**
@@ -96,7 +96,7 @@ public final class ReactionCommand extends Command {
          * Creates the command.
          */
         private Delete() {
-            super("delete", Set.of("d", "remove"));
+            super("delete", Set.of("d", "remove", "r"));
         }
 
         /**

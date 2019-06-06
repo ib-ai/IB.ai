@@ -48,6 +48,16 @@ public final @AllArgsConstructor class GuildData extends TypeMap {
      */
     public static final String MODERATOR = "moderator";
 
+    /**
+     * Whether or not filtering is enabled.
+     */
+    public static final String FILTERING = "filtering";
+
+    /**
+     * The filter removal message.
+     */
+    public static final String REMOVAL = "removal";
+
     private final String guild;
 
     /**

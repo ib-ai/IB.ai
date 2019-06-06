@@ -1,6 +1,5 @@
 package com.ibdiscord.listeners;
 
-import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DContainer;
@@ -26,7 +25,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 /**
  * Copyright 2017-2019 Jarred Vardy, Arraying
@@ -70,16 +68,12 @@ public final class MessageListener extends ListenerAdapter {
         Gravity gravity = DContainer.INSTANCE.getGravity();
         TagData tags = gravity.load(new TagData(event.getGuild().getId()));
         for(String key : tags.getKeys()) {
-            try {
-                Pattern pattern = tagCache.compute(event.getGuild().getIdLong(), key, Pattern.compile(key));
-                if(pattern.matcher(message.toLowerCase()).matches()) {
-                    event.getChannel().sendMessage(tags.get(key).asString()).queue(null, oops ->
-                            event.getChannel().sendMessage("Oh dear. Something went wrong. Ping a dev with this: " + oops.getMessage()).queue()
-                    );
-                    break;
-                }
-            } catch(PatternSyntaxException exception) {
-                IBai.INSTANCE.getLogger().info("Tag \"{}\" failed in guild {}: {}", key, event.getGuild().getId(), exception.getMessage());
+            Pattern pattern = tagCache.compute(event.getGuild().getIdLong(), key, Pattern.compile(key));
+            if(pattern.matcher(message.toLowerCase()).matches()) {
+                event.getChannel().sendMessage(tags.get(key).asString()).queue(null, oops ->
+                        event.getChannel().sendMessage("Oh dear. Something went wrong. Ping a dev with this: " + oops.getMessage()).queue()
+                );
+                break;
             }
         }
         String prefix = UDatabase.getPrefix(event.getGuild());

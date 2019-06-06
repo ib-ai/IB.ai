@@ -53,7 +53,7 @@ public final class StartBot extends AbstractStartupTask {
                 .setToken(localConfig.getBotToken())
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
                 .setGame(Game.playing(String.format("v%s | %shelp", localConfig.getBotVersion(), localConfig.getStaticPrefix())))
-                .addEventListener(new GuildListener(), new MessageListener(), new MonitorListener(), new ReactionListener(), new ReadyListener())
+                .addEventListener(new FilterListener(), new GuildListener(), new MessageListener(), new MonitorListener(), new ReactionListener(), new ReadyListener())
                 .build();
         jda.setAutoReconnect(true);
         jda.awaitReady();

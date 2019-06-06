@@ -1,6 +1,7 @@
 package com.ibdiscord.command;
 
 import com.ibdiscord.command.commands.*;
+import com.ibdiscord.command.commands.filter.FilterCommand;
 import com.ibdiscord.command.commands.monitor.MonitorCommand;
 import com.ibdiscord.command.commands.react.ReactionCommand;
 import com.ibdiscord.command.commands.reminder.ReminderCommand;
@@ -32,6 +33,7 @@ public enum CommandCollection {
     EMBED(new EmbedCommand()),
     EVAL(new EvalCommand()),
     EXPIRE(new ExpireCommand()),
+    FILTER(new FilterCommand()),
     FIND(new FindCommand()),
     GIVE_ROLE(new GiveRoleCommand()),
     HELP(new HelpCommand()),
