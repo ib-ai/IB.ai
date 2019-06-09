@@ -33,7 +33,10 @@ public enum Localiser {
     /**
      * Localiser. Used to find the correct localisation of a piece of text based off of
      * the inputted user's language preference.
-     *
+     * @param user The user object which is asking for the translation
+     * @param key The identifier for the text that is to be found < category.key >
+     * @throws LocaliserSyntaxException When the key is syntactically incorrect
+     * @return The localised text corresponding to the inputted key
      */
     public static String __(User user, String key) throws LocaliserSyntaxException {
 
