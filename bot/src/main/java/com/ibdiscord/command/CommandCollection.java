@@ -28,6 +28,8 @@ import lombok.Getter;
  */
 public enum CommandCollection {
 
+
+    AVATAR(new AvatarCommand()),
     BLACKLIST(new BlacklistCommand()),
     ECHO(new EchoCommand()),
     EMBED(new EmbedCommand()),
