@@ -39,6 +39,7 @@ public enum CommandCollection {
     FIND(new FindCommand()),
     GIVE_ROLE(new GiveRoleCommand()),
     HELP(new HelpCommand()),
+    LANG(new LangCommand()),
     LOG(new LogCommand()),
     LOOKUP(new LookupCommand()),
     MODERATOR(new ModeratorCommand()),
