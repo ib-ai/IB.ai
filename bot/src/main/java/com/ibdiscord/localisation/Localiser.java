@@ -1,27 +1,37 @@
-/* Copyright 2019 Jarred Vardy <jarredvardy@gmail.com>
+/**
+ * Copyright 2017-2019 Jarred Vardy <jarred.vardy@gmail.com>
  *
- * This file is part of CORAL.
+ * This file is part of IB.ai.
  *
- * CORAL is free software: you can redistribute it and/or modify it
+ * IB.ai is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CORAL is distributed in the hope that it will be useful, but
+ * IB.ai is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with CORAL. If not, see http://www.gnu.org/licenses/.
+ * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
 package com.ibdiscord.localisation;
 
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.LangData;
 import com.ibdiscord.exceptions.LocalisationException;
 import com.ibdiscord.exceptions.LocaliserSyntaxException;
 
-import net.dv8tion.jda.core.entities.User;
+import de.arraying.gravity.Gravity;
+import de.arraying.kotys.JSON;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Pattern;
 
 public enum Localiser {
 
@@ -33,40 +43,76 @@ public enum Localiser {
     /**
      * Localiser. Used to find the correct localisation of a piece of text based off of
      * the inputted user's language preference.
-     * @param user The user object which is asking for the translation
+     * @param commandContext The context of the command this method is called from
      * @param key The identifier for the text that is to be found < category.key >
      * @throws LocaliserSyntaxException When the key is syntactically incorrect
      * @return The localised text corresponding to the inputted key
      */
-    public static String __(User user, String key) throws LocaliserSyntaxException {
+    public static String __(CommandContext commandContext, String key) {
 
-        String[] splitKey = key.split(".");
+        String[] splitKey = key.split(Pattern.quote("."));
 
         if(splitKey.length != 2) {
-            throwSyntaxError(Integer.toString(splitKey.length));
+            try {
+                throwSyntaxError(Integer.toString(splitKey.length));
+            } catch (LocaliserSyntaxException ex) {
+                ex.printStackTrace();
+            }
         }
 
-        // Add Redis schema for users' language preferences. Generated (defaulted) or found  when user types any command.
-        // Set user language with command:
-        // &lang <language>
+        Gravity gravity = DContainer.INSTANCE.getGravity();
+        String userLang = gravity.load(new LangData())
+                .get(commandContext.getMember().getUser().getId())
+                .defaulting("en") // Defaults language used to be English
+                .asString();
 
-        // Enter directory based off of user's language preference (stored in Redis, default as English)
-        // Find JSON file from category (splitKey[0])
-        // Parse JSON and find key (splitKey[1]) in JSON as key
-        // {
-        //    "key":"value",
-        //    "key2":"value2"
-        // }
-        // Return value based on key.
-        // If category (JSON file) is not found, throw LocalisationException (__ parameter 'key' as parameter of throw)
-        // If key is not found, throw LocalisationException (__ parameter 'key' as parameter of throw)
+        /*
+        * File path relative to compiled jar location.
+        * Path accesses json file based off of user's prefered language and the first
+        * half of the 'key' parameter.
+        */
+        String pathToLanguageFile = String.format("bot/docker/lang/%s/%s.json", userLang, splitKey[0]);
+        StringBuilder jsonBuilder = new StringBuilder("");
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(pathToLanguageFile));
+            String line = reader.readLine();
+            while(line != null) {
+                jsonBuilder.append(line);
+                line = reader.readLine();
+            }
+            reader.close();
 
-        // Add localised command names to command instantiation
-        // Add Redis schemas for translation
-        // Add startup task that caches all english translations to Redis
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
 
-        String output = "";
-        return output;
+        String finalJSON = jsonBuilder.toString();
+        if(finalJSON.equals("")) {
+            try {
+                throwLocalisationError(key);
+            } catch (LocalisationException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        JSON languageFile = new JSON(finalJSON);
+        String translation = languageFile.string(splitKey[1]);
+
+        if(translation == null) {
+            try {
+                throwLocalisationError(key);
+            } catch (LocalisationException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return translation;
+
+        //TODO: Add startup task that caches all english translations to Redis
+    }
+
+    public static String[] getAllLangauges() {
+        return new String[]{"en", "es"};
     }
 
     /**
