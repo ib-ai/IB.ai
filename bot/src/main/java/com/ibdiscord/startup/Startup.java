@@ -3,6 +3,7 @@ package com.ibdiscord.startup;
 import com.ibdiscord.startup.tasks.StartBot;
 import com.ibdiscord.startup.tasks.StartCommands;
 import com.ibdiscord.startup.tasks.StartDatabase;
+import com.ibdiscord.startup.tasks.StartLocaliser;
 import com.ibdiscord.utils.objects.AbstractTask;
 
 import java.util.Arrays;
@@ -33,6 +34,7 @@ public final class Startup {
     private static final AbstractStartupTask[] STARTUP_TASKS = new AbstractStartupTask[] {
             new StartDatabase(),
             new StartCommands(),
+            new StartLocaliser()
     };
 
     /**
