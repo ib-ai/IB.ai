@@ -49,7 +49,7 @@ public final class LangCommand extends Command {
     protected void execute(CommandContext context) {
         if (context.getArguments().length == 0) {
             context.reply("Supported languages: " +
-                    Arrays.toString(Localiser.getAllLangauges())
+                    Arrays.toString(Localiser.getAllLanguages())
                         .replace("[", "")
                         .replace("]", "") +
                     ".");
@@ -63,7 +63,7 @@ public final class LangCommand extends Command {
 
         String language = context.getArguments()[0];
 
-        if (!Arrays.asList(Localiser.getAllLangauges()).contains(language)) {
+        if (!Arrays.asList(Localiser.getAllLanguages()).contains(language)) {
             context.reply(String.format("'%s' is not a supported language. Use %slang to see a list of supported languages.", language, UDatabase.getPrefix(context.getGuild())));
         } else {
             Gravity gravity = DContainer.INSTANCE.getGravity();

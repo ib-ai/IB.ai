@@ -25,8 +25,10 @@ import com.ibdiscord.data.db.entries.LangData;
 import com.ibdiscord.exceptions.LocalisationException;
 import com.ibdiscord.exceptions.LocaliserSyntaxException;
 
+import com.ibdiscord.utils.UJSON;
 import de.arraying.gravity.Gravity;
 import de.arraying.kotys.JSON;
+import de.arraying.kotys.JSONArray;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -39,6 +41,11 @@ public enum Localiser {
      *  Singleton instance of Localiser.
      */
     INSTANCE;
+
+    public void init() {
+        //TODO: Cache all english translations to Redis
+        TextVariableReplacer.generateVariableMap();
+    }
 
     /**
      * Localiser. Used to find the correct localisation of a piece of text based off of
@@ -72,30 +79,7 @@ public enum Localiser {
         * half of the 'key' parameter.
         */
         String pathToLanguageFile = String.format("bot/docker/lang/%s/%s.json", userLang, splitKey[0]);
-        StringBuilder jsonBuilder = new StringBuilder("");
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(pathToLanguageFile));
-            String line = reader.readLine();
-            while(line != null) {
-                jsonBuilder.append(line);
-                line = reader.readLine();
-            }
-            reader.close();
-
-        } catch(IOException ex) {
-            ex.printStackTrace();
-        }
-
-        String finalJSON = jsonBuilder.toString();
-        if(finalJSON.equals("")) {
-            try {
-                throwLocalisationError(key);
-            } catch (LocalisationException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        JSON languageFile = new JSON(finalJSON);
+        JSON languageFile = UJSON.retrieveJSONFromFile(pathToLanguageFile);
         String translation = languageFile.string(splitKey[1]);
 
         if(translation == null) {
@@ -106,13 +90,16 @@ public enum Localiser {
             }
         }
 
+        translation = TextVariableReplacer.replaceVariables(commandContext, translation);
         return translation;
-
-        //TODO: Add startup task that caches all english translations to Redis
     }
 
-    public static String[] getAllLangauges() {
-        return new String[]{"en", "es"};
+    public static String[] getAllLanguages() {
+        String pathToAvailableLanguages = "bot/docker/lang/available_languages.json";
+        JSON allLanguagesFile = UJSON.retrieveJSONFromFile(pathToAvailableLanguages);
+
+        JSONArray arrayOfLanguages = allLanguagesFile.array("languages");
+        return (String[]) arrayOfLanguages.toArray();
     }
 
     /**

@@ -20,32 +20,63 @@
 package com.ibdiscord.localisation;
 
 import com.ibdiscord.command.CommandContext;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class TextVariableReplacer {
 
-    public static String replaceVariables(String text) {
-        String[] variables = null;
-        //TODO: Get variables with regex from text
-        // For each variable, get corresponding Function from hashmap of variables
-        // Call function and pass in CommandContext and String.replace() the variables from the text.
+    @Getter
+    private static HashMap<String, Function<CommandContext, String>> variableMap = null;
 
-        //Funtion<CommandContext, String> replacerFunction = getVariableList().get()
-        return "";
+    private static final String variablesRegex = ":(\\w*)";
+
+    static String replaceVariables(CommandContext commandContext, String text) {
+
+        if(variableMap == null) {
+            generateVariableMap();
+        }
+
+        final Pattern pattern = Pattern.compile(variablesRegex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(text);
+
+        // matcher.group(0) -> entire variable and colon
+        // matcher.group(1) -> just the variable
+        while (matcher.find()) {
+            String variable = matcher.group(1);
+
+            if(variableMap.containsKey(variable)) {
+                String replacement = variableMap.get(variable).apply(commandContext);
+                text = text.replace(variable, replacement);
+            }
+        }
+
+        return text;
     }
 
-    public static HashMap<String, Function<CommandContext, String>> getVariableList() {
+    static void generateVariableMap() {
 
-        HashMap<String, Function<CommandContext, String>> variableHash = new HashMap<>();
+        if(variableMap != null) {
+            return;
+        }
+
+        variableMap = new HashMap<>();
+
+        /*
+         * Each 'variable' within a translated string (e.g: :userName) is a key
+         * in variableMap, called in order to retrieve the corresponding text
+         * which is different depending on the context of the user's command.
+         *
+         * Map of Strings to Function objects. Function objects accept CommandContext objects
+         * and return String objects.
+         */
 
         Function<CommandContext, String> userName = (context) -> context.getMember().getUser().getName();
-        variableHash.put("userName", userName);
+        variableMap.put("userName", userName);
 
-        //Function<CommandContext, String> name = (context) -> ;
-        //variableList.add(new Tuple<>("", name));
-
-        return variableHash;
+        //TODO: Add the rest of the variables found within strings in the project.
     }
 }
