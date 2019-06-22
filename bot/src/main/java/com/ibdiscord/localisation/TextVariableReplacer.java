@@ -50,7 +50,7 @@ public final class TextVariableReplacer {
 
             if(variableMap.containsKey(variable)) {
                 String replacement = variableMap.get(variable).apply(commandContext);
-                text = text.replace(variable, replacement);
+                text = text.replace(matcher.group(0), replacement);
             }
         }
 
