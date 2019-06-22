@@ -48,7 +48,6 @@ public final class StartBot extends AbstractStartupTask {
     public void doTask() throws Exception {
         LocalConfig localConfig = IBai.INSTANCE.getConfig();
 
-        // TODO: Move to proper bot instantiater
         jda = new JDABuilder(AccountType.BOT)
                 .setToken(localConfig.getBotToken())
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
