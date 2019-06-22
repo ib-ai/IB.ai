@@ -50,9 +50,8 @@ public final class LangCommand extends Command {
         if (context.getArguments().length == 0) {
             context.reply("Supported languages: " +
                     Arrays.toString(Localiser.getAllLanguages())
-                        .replace("[", "")
-                        .replace("]", "") +
-                    ".");
+                        .replaceAll("(\\[)|(\\])", "") +
+                        ".");
             return;
         }
 
