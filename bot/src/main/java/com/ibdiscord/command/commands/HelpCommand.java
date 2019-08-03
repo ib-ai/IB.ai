@@ -55,9 +55,9 @@ public final class HelpCommand extends Command {
         ebHelpMenu.setAuthor("IB.ai", "https://discord.me/pbh", null);
         ebHelpMenu.setDescription("Hey! Welcome to the IBO Discord Server. I'm IB.ai version: `" + IBai.INSTANCE.getConfig().getBotVersion() + "`. " +
                 "All command arguments in <> are required, [] are optional.");
-        ebHelpMenu.addField("Getting Started:", "Grab a year role by clicking the appropriate emote in <#517896170581000224>. " +
+        ebHelpMenu.addField("Getting Started:", "Grab a year role by clicking the appropriate emote in <#582911350179889153>. " +
                 "You can also add yourself to certain subjects this way. Share your passions with others by joining the lounges of certain interests, also using " +
-                "reactions, in <#504452978699272192>.", false);
+                "reactions, in <#582938891078729732>.", false);
         ebHelpMenu.addField("Some Things I Can Do:", "- To get a link to up-to-date downloads to textbooks, papers, guides and more, type `link the resources` in chat\n" +
                 "- Show user information about a specific user: `" + botPrefix + "userinfo [user]`\n" +
                 "- Show information about the server `" + botPrefix + "serverinfo`\n" +
