@@ -1,7 +1,7 @@
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorData;
 import com.ibdiscord.data.db.entries.monitor.MonitorMessageData;
 import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
@@ -52,7 +52,7 @@ public final class MonitorListener extends ListenerAdapter {
             return;
         }
         Message message = event.getMessage();
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         MonitorData monitorData = gravity.load(new MonitorData(message.getGuild().getId()));
         if(!monitorData.get(MonitorData.ENABLED).defaulting(false).asBoolean()) {
             return;

@@ -20,19 +20,15 @@
 package com.ibdiscord.localisation;
 
 import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.LangData;
 import com.ibdiscord.exceptions.LocalisationException;
 import com.ibdiscord.exceptions.LocaliserSyntaxException;
-
 import com.ibdiscord.utils.UJSON;
 import de.arraying.gravity.Gravity;
 import de.arraying.kotys.JSON;
 import de.arraying.kotys.JSONArray;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.regex.Pattern;
 
 public enum Localiser {
@@ -67,7 +63,7 @@ public enum Localiser {
             }
         }
 
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         String userLang = gravity.load(new LangData())
                 .get(commandContext.getMember().getUser().getId())
                 .defaulting("en") // Defaults language used to be English

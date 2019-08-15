@@ -27,17 +27,17 @@ public @AllArgsConstructor final class VoteLadderData extends TypeMap {
     /**
      * The ID of the channel where updates will be sent.
      */
-    public final String CHANNEL = "channel";
+    public static final String CHANNEL = "channel";
 
     /**
      * The threshold for a vote to pass or fail.
      */
-    public final String THRESHOLD = "threshold";
+    public static final String THRESHOLD = "threshold";
 
     /**
      * The timeout until the option with the highest number is selected when there is no pass or fail.
      */
-    public final String TIMEOUT = "timeout";
+    public static final String TIMEOUT = "timeout";
 
     private final String guild;
     private final String ladder;

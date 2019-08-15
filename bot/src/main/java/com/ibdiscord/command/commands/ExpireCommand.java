@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.ExpiryData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
@@ -57,7 +57,7 @@ public final class ExpireCommand extends Command {
             sendUsage(context);
             return;
         }
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         String guildId = context.getGuild().getId();
         String caseNumber = context.getArguments()[0];
         long expires = UTime.parseDuration(context.getArguments()[1]);

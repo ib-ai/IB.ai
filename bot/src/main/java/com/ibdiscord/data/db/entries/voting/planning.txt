@@ -16,3 +16,4 @@ vote_entry_gid_name_id = map
    yes
    no
    expiry
+   finished

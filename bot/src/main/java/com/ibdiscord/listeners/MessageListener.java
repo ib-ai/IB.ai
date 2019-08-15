@@ -2,7 +2,7 @@ package com.ibdiscord.listeners;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.input.InputHandler;
@@ -65,7 +65,7 @@ public final class MessageListener extends ListenerAdapter {
         if(!InputHandler.INSTANCE.offer(event.getMember(), event.getMessage())) {
             return;
         }
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         TagData tags = gravity.load(new TagData(event.getGuild().getId()));
         for(String key : tags.getKeys()) {
             Pattern pattern = tagCache.compute(event.getGuild().getIdLong(), key, Pattern.compile(key));
@@ -112,7 +112,7 @@ public final class MessageListener extends ListenerAdapter {
             return;
         }
         Guild guild = event.getGuild();
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         TextChannel textChannel = guild.getTextChannelById(gravity.load(new GuildData(guild.getId()))
                 .get(GuildData.LOGS)
                 .defaulting(0L)

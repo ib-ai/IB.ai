@@ -1,6 +1,6 @@
 package com.ibdiscord.listeners;
 
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.ReactionData;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -61,7 +61,7 @@ public final class ReactionListener extends ListenerAdapter {
      */
     private void react(Member member, long message, String emote, boolean add) {
         Guild guild = member.getGuild();
-        ReactionData reactionData = DContainer.INSTANCE.getGravity().load(new ReactionData(guild.getId(), message));
+        ReactionData reactionData = DataContainer.INSTANCE.getGravity().load(new ReactionData(guild.getId(), message));
         String roleId = reactionData.get(emote).asString();
         if(roleId == null) {
             return;

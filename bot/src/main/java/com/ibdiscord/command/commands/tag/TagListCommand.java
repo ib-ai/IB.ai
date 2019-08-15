@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.tag;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
@@ -52,7 +52,7 @@ public final class TagListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected Pagination<String> getPagination(CommandContext context) {
-        TagData tagData = DContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
+        TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
         List<String> entries = tagData.getKeys().stream()
                 .sorted(String::compareToIgnoreCase)
                 .collect(Collectors.toList());
@@ -67,7 +67,7 @@ public final class TagListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
-        TagData tagData = DContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
+        TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
         String value = tagData.get(page.getValue()).asString();
         embedBuilder.addField(UString.escapeFormatting(page.getValue()), value, false);
     }

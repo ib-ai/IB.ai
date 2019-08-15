@@ -25,9 +25,9 @@ import lombok.AllArgsConstructor;
 public @AllArgsConstructor final class VoteEntryData extends TypeMap {
 
     /**
-     * The ladder this vote belongs to.
+     * The actual voting text.
      */
-    public static final String LADDER = "ladder";
+    public static final String TEXT = "text";
 
     /**
      * The number of positive votes.
@@ -40,9 +40,19 @@ public @AllArgsConstructor final class VoteEntryData extends TypeMap {
      */
     public static final String NEGATIVE = "no";
 
+    /**
+     * The time in milliseconds when the vote expires.
+     */
+    public static final String EXPIRY = "expiry";
+
+    /**
+     * Whether or not the vote has been completed.
+     */
+    public static final String FINISHED = "finished";
+
     private final String guild;
     private final String ladder;
-    private final int id;
+    private final long id;
 
     /**
      * Gets the unique identifier.

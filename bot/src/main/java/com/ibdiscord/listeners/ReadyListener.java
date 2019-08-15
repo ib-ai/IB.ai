@@ -4,7 +4,7 @@ import com.ibdiscord.IBai;
 import com.ibdiscord.api.APICaller;
 import com.ibdiscord.api.Route;
 import com.ibdiscord.api.result.BodyResultHandler;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.punish.ExpiryData;
 import com.ibdiscord.data.db.entries.reminder.ReminderData;
 import com.ibdiscord.data.db.entries.reminder.ReminderUserData;
@@ -55,7 +55,7 @@ public final class ReadyListener extends ListenerAdapter {
             logger.info("Bot \"{}\" by \"{}\" is now connected.", botName, botOwner);
             logger.info("Currently serving {} guilds.", guildNum);
             logger.info("Described as \"{}\", {}.", botDescription, (isPublicBot ? "public" : "private"));
-            Gravity gravity = DContainer.INSTANCE.getGravity();
+            Gravity gravity = DataContainer.INSTANCE.getGravity();
             for(Guild guild : event.getJDA().getGuilds()) {
                 ExpiryData expiryData = gravity.load(new ExpiryData(guild.getId()));
                 for(String key : expiryData.getKeys()) {

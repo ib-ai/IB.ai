@@ -1,7 +1,7 @@
 package com.ibdiscord.utils;
 
 import com.ibdiscord.IBai;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.entities.Guild;
@@ -32,7 +32,7 @@ public final class UDatabase {
      * @return A never null prefix (fallbacks to config if required).
      */
     public static String getPrefix(Guild guild) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         return gravity.load(new GuildData(guild.getId()))
             .get(GuildData.PREFIX)
             .defaulting(IBai.INSTANCE.getConfig().getStaticPrefix())
