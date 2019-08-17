@@ -17,6 +17,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageUpdateEvent;
@@ -24,6 +25,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 /**
@@ -97,6 +99,15 @@ public final class MessageListener extends ListenerAdapter {
     public void onGuildMessageUpdate(GuildMessageUpdateEvent event) {
         MinimalMessage message = messageCache.get(event.getMessageIdLong());
         if(message != null) {
+            forLogChannel(channel -> {
+                User author = channel.getJDA().getUserById(message.getAuthor());
+                MessageEmbed embed = new EmbedBuilder()
+                        .setAuthor(author == null ? String.valueOf(message.getAuthor()) : author.getAsTag())
+                        .addField("From", message.getContent(), false)
+                        .addField("To", event.getMessage().getContentRaw(), false)
+                        .build();
+                channel.sendMessage(embed).queue();
+            }, event);
             message.setContent(event.getMessage().getContentRaw());
         }
     }
@@ -111,6 +122,22 @@ public final class MessageListener extends ListenerAdapter {
         if(message == null) {
             return;
         }
+        forLogChannel(channel -> {
+            User author = channel.getJDA().getUserById(message.getAuthor());
+            MessageEmbed embed = new EmbedBuilder()
+                    .setAuthor(author == null ? String.valueOf(message.getAuthor()) : author.getAsTag())
+                    .setDescription(message.getContent())
+                    .build();
+            channel.sendMessage(embed).queue();
+        }, event);
+    }
+
+    /**
+     * Gets the logging channel as an object for simplicity's sake.
+     * @param consumer The consumer.
+     * @param event A generic guild event.
+     */
+    private void forLogChannel(Consumer<TextChannel> consumer, GenericGuildEvent event) {
         Guild guild = event.getGuild();
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         TextChannel textChannel = guild.getTextChannelById(gravity.load(new GuildData(guild.getId()))
@@ -120,12 +147,7 @@ public final class MessageListener extends ListenerAdapter {
         if(textChannel == null) {
             return;
         }
-        User author = guild.getJDA().getUserById(message.getAuthor());
-        MessageEmbed embed = new EmbedBuilder()
-                .setAuthor(author == null ? String.valueOf(message.getAuthor()) : author.getAsTag())
-                .setDescription(message.getContent())
-                .build();
-        textChannel.sendMessage(embed).queue();
+        consumer.accept(textChannel);
     }
 
 }
