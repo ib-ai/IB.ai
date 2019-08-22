@@ -1,4 +1,4 @@
-package com.ibdiscord.data.db.entries;
+package com.ibdiscord.data.db.entries.react;
 
 import de.arraying.gravity.data.types.TypeMap;
 import lombok.AllArgsConstructor;

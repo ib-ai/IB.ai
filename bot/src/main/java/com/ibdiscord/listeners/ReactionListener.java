@@ -1,7 +1,9 @@
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.ReactionData;
+import com.ibdiscord.data.db.entries.react.EmoteData;
+import com.ibdiscord.data.db.entries.react.ReactionData;
+import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageReaction;
@@ -9,6 +11,12 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  * Copyright 2017-2019 Arraying
@@ -62,18 +70,15 @@ public final class ReactionListener extends ListenerAdapter {
     private void react(Member member, long message, String emote, boolean add) {
         Guild guild = member.getGuild();
         ReactionData reactionData = DContainer.INSTANCE.getGravity().load(new ReactionData(guild.getId(), message));
-        String roleId = reactionData.get(emote).asString();
-        if(roleId == null) {
-            return;
-        }
-        Role role = guild.getRoleById(roleId);
-        if(role == null) {
-            return;
-        }
+        EmoteData emoteData = DContainer.INSTANCE.getGravity().load(new EmoteData(reactionData.get(emote).asString()));
+        Collection<Role> roles = emoteData.contents().stream()
+                .map(prop -> member.getGuild().getRoleById(prop.defaulting(0L).asLong()))
+                .filter(Objects::isNull)
+                .collect(Collectors.toSet());
         if(add) {
-            guild.getController().addSingleRoleToMember(member, role).queue(null, Throwable::printStackTrace);
+            guild.getController().addRolesToMember(member, roles).queue(null, Throwable::printStackTrace);
         } else {
-            guild.getController().removeSingleRoleFromMember(member, role).queue(null, Throwable::printStackTrace);
+            guild.getController().removeRolesFromMember(member, roles).queue(null, Throwable::printStackTrace);;
         }
     }
 

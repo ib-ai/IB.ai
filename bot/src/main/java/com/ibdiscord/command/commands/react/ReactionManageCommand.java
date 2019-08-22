@@ -4,12 +4,13 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.ReactionData;
+import com.ibdiscord.data.db.entries.react.ReactionData;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -49,9 +50,9 @@ public abstract class ReactionManageCommand extends Command {
      * Modifies the data.
      * @param data The data.
      * @param emote The emote.
-     * @param role The role.
+     * @param roles The role.
      */
-    protected abstract void modifyData(ReactionData data, String emote, Role role);
+    protected abstract void modifyData(ReactionData data, String emote, ArrayList<Role> roles);
 
     /**
      * Modifies the message.
@@ -79,17 +80,19 @@ public abstract class ReactionManageCommand extends Command {
             return;
         }
         if(context.getArguments().length < 4) {
-            context.reply("Please provide the role ID.");
+            context.reply("Please provide one or more role IDs.");
             return;
         }
         long channelId;
         long messageId;
         String emoteRaw = context.getArguments()[2];
-        long roleId;
+        ArrayList<Long> roleIds = new ArrayList<>();
         try {
             channelId = Long.valueOf(context.getArguments()[0]);
             messageId = Long.valueOf(context.getArguments()[1]);
-            roleId = Long.valueOf(context.getArguments()[3]);
+            for(int i = 3; i < context.getArguments().length; i++) {
+                roleIds.add(Long.valueOf(context.getArguments()[i]));
+            }
         } catch(NumberFormatException exception) {
             context.reply("One of your IDs is not a number. Please make sure you only use numeric IDs, and not mentions.");
             return;
@@ -106,13 +109,14 @@ public abstract class ReactionManageCommand extends Command {
             context.reply("The message provided does not exist.");
             return;
         }
-        Role role = context.getGuild().getRoleById(roleId);
-        if(role == null) {
-            context.reply("The role provided does not exist.");
+        ArrayList<Role> roles = new ArrayList<>();
+        roleIds.forEach(id -> roles.add(context.getGuild().getRoleById(id)));
+        if(roles.isEmpty() || roles.contains(null)) {
+            context.reply("The role(s) provided does not exist.");
             return;
         }
         ReactionData data = DContainer.INSTANCE.getGravity().load(new ReactionData(context.getGuild().getId(), messageId));
-        modifyData(data, emoteRaw, role);
+        modifyData(data, emoteRaw, roles);
         modifyMessage(message, context.getMessage().getEmotes().isEmpty() ? emoteRaw : context.getMessage().getEmotes().get(0));
         DContainer.INSTANCE.getGravity().save(data);
         context.reply("Consider it done.");

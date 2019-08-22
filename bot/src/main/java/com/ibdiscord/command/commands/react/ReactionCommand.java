@@ -3,13 +3,17 @@ package com.ibdiscord.command.commands.react;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.entries.ReactionData;
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.react.EmoteData;
+import com.ibdiscord.data.db.entries.react.ReactionData;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Copyright 2017-2019 Arraying
@@ -70,8 +74,13 @@ public final class ReactionCommand extends Command {
          * @param role The role.
          */
         @Override
-        protected void modifyData(ReactionData data, String emote, Role role) {
-            data.set(emote, role.getId());
+        protected void modifyData(ReactionData data, String emote, ArrayList<Role> roles) {
+            String uniqueID = UUID.randomUUID().toString();
+            data.set(emote, uniqueID);
+
+            EmoteData emoteData = DContainer.INSTANCE.getGravity().load(new EmoteData(uniqueID));
+            roles.forEach(role -> emoteData.add(role.getId()));
+            DContainer.INSTANCE.getGravity().save(emoteData);
         }
 
         /**
@@ -106,7 +115,8 @@ public final class ReactionCommand extends Command {
          * @param role The role.
          */
         @Override
-        protected void modifyData(ReactionData data, String emote, Role role) {
+        protected void modifyData(ReactionData data, String emote, ArrayList<Role> roles) {
+            DContainer.INSTANCE.getGravity().load(new EmoteData(data.get(emote).asString())).delete();
             data.unset(emote);
         }
 
