@@ -1,25 +1,5 @@
-package com.ibdiscord.listeners;
-
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.react.EmoteData;
-import com.ibdiscord.data.db.entries.react.ReactionData;
-import de.arraying.gravity.data.property.Property;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.stream.Collectors;
-
 /**
- * Copyright 2017-2019 Arraying
+ * Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *
@@ -36,6 +16,24 @@ import java.util.stream.Collectors;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.listeners;
+
+import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.entries.react.EmoteData;
+import com.ibdiscord.data.db.entries.react.ReactionData;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.MessageReaction;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
+
+import java.util.Collection;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 public final class ReactionListener extends ListenerAdapter {
 
     /**
@@ -73,7 +71,7 @@ public final class ReactionListener extends ListenerAdapter {
         EmoteData emoteData = DContainer.INSTANCE.getGravity().load(new EmoteData(reactionData.get(emote).asString()));
         Collection<Role> roles = emoteData.contents().stream()
                 .map(prop -> member.getGuild().getRoleById(prop.defaulting(0L).asLong()))
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
         if(add) {
             guild.getController().addRolesToMember(member, roles).queue(null, Throwable::printStackTrace);
