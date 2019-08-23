@@ -25,9 +25,9 @@ import lombok.AllArgsConstructor;
 public @AllArgsConstructor final class VoteEntryData extends TypeMap {
 
     /**
-     * The actual voting text.
+     * The message ID.
      */
-    public static final String TEXT = "text";
+    public static final String MESSAGE = "message";
 
     /**
      * The number of positive votes.

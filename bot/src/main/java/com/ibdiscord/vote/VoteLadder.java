@@ -6,6 +6,7 @@ import com.ibdiscord.data.db.entries.voting.VoteLadderData;
 import com.ibdiscord.data.db.entries.voting.VoteListData;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.TextChannel;
 
 /**
  * Copyright 2017-2019 Arraying
@@ -65,13 +66,20 @@ public final class VoteLadder {
                 .defaulting(12 * 60 * 60 * 1000) // 12 hours
                 .asLong()
                 + System.currentTimeMillis();
+        TextChannel channel = guild.getTextChannelById(voteLadderData.get(VoteLadderData.CHANNEL).defaulting(0).asLong());
+        if(channel == null) {
+            return null;
+        }
+        long message = channel.sendMessage(newId + ") " + text).complete().getIdLong();
         VoteEntryData voteEntryData = gravity.load(new VoteEntryData(guild.getId(), name, newId));
         voteEntryData.set(VoteEntryData.EXPIRY, expiry);
-        voteEntryData.set(VoteEntryData.TEXT, text);
+        voteEntryData.set(VoteEntryData.MESSAGE, message);
         gravity.save(voteEntryData);
         voteListData.add(newId);
         gravity.save(voteListData);
-        return new VoteEntry(guild.getId(), name, newId);
+        VoteEntry entry = new VoteEntry(guild.getId(), name, newId);
+        VoteCache.INSTANCE.register(message, entry);
+        return entry;
     }
 
 }

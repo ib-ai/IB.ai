@@ -8,16 +8,24 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.punish.ExpiryData;
 import com.ibdiscord.data.db.entries.reminder.ReminderData;
 import com.ibdiscord.data.db.entries.reminder.ReminderUserData;
+import com.ibdiscord.data.db.entries.voting.VoteEntryData;
+import com.ibdiscord.data.db.entries.voting.VoteLaddersData;
+import com.ibdiscord.data.db.entries.voting.VoteListData;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentExpiry;
 import com.ibdiscord.reminder.Reminder;
 import com.ibdiscord.reminder.ReminderHandler;
+import com.ibdiscord.vote.VoteCache;
+import com.ibdiscord.vote.VoteEntry;
 import de.arraying.gravity.Gravity;
+import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
+
+import java.util.Objects;
 
 /**
  * Copyright 2017-2019 Jarred Vardy, Arraying
@@ -67,6 +75,24 @@ public final class ReadyListener extends ListenerAdapter {
                         PunishmentExpiry.INSTANCE.schedule(guild, key, expiry - System.currentTimeMillis(), punishment);
                     }
                 }
+                VoteLaddersData voteLaddersData = gravity.load(new VoteLaddersData(guild.getId()));
+                voteLaddersData.values().stream()
+                        .filter(Objects::nonNull)
+                        .map(Property::asString)
+                        .forEach(ladder -> {
+                            VoteListData voteListData = gravity.load(new VoteListData(guild.getId(), ladder));
+                            voteListData.values().stream()
+                                    .map(Property::asLong)
+                                    .forEach(id -> {
+                                        VoteEntryData entry = gravity.load(new VoteEntryData(guild.getId(), ladder, id));
+                                        if(!entry.get(VoteEntryData.FINISHED).defaulting(false).asBoolean()) {
+                                            long message = entry.get(VoteEntryData.MESSAGE).defaulting(0).asLong();
+                                            VoteEntry voteEntry = new VoteEntry(guild.getId(), ladder, id);
+                                            voteEntry.load();
+                                            VoteCache.INSTANCE.register(message, voteEntry);
+                                        }
+                                    });
+                        });
             }
             ReminderData reminderData = gravity.load(new ReminderData());
             for(int i = 1; i <= reminderData.get().defaulting(0).asInt(); i++) {

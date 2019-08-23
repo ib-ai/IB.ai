@@ -3,8 +3,11 @@ package com.ibdiscord.vote;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.DataProvider;
 import com.ibdiscord.data.db.entries.voting.VoteEntryData;
+import com.ibdiscord.data.db.entries.voting.VoteLadderData;
+import com.ibdiscord.startup.tasks.StartBot;
 import de.arraying.gravity.Gravity;
 import lombok.RequiredArgsConstructor;
+import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.function.Consumer;
 
@@ -72,6 +75,7 @@ public final @RequiredArgsConstructor class VoteEntry {
      */
     public void voteYes() {
         withData(entry -> entry.offsetYes(new DataProvider(), 1));
+        meetsFinalCriteria();
     }
 
     /**
@@ -79,6 +83,7 @@ public final @RequiredArgsConstructor class VoteEntry {
      */
     public void unvoteYes() {
         withData(entry -> entry.offsetYes(new DataProvider(), -1));
+        meetsFinalCriteria();
     }
 
     /**
@@ -86,6 +91,7 @@ public final @RequiredArgsConstructor class VoteEntry {
      */
     public void voteNo() {
         withData(entry -> entry.offsetNo(new DataProvider(), 1));
+        meetsFinalCriteria();
     }
 
     /**
@@ -93,15 +99,35 @@ public final @RequiredArgsConstructor class VoteEntry {
      */
     public void unvoteNo() {
         withData(entry -> entry.offsetNo(new DataProvider(), -1));
+        meetsFinalCriteria();
     }
 
     /**
-     * Completes the vote. Executes all tasks and then finishes.
+     * Checks whether or no the final criteria is met.
      */
-    public void finish() {
+    private synchronized void meetsFinalCriteria() {
+        VoteLadderData ladderData = DataContainer.INSTANCE.getGravity().load(new VoteLadderData(guild, ladder));
         withData(entry -> {
-            // TODO tasks here
-            entry.save(new DataProvider());
+            if(entry.get(VoteEntryData.FINISHED).defaulting(false).asBoolean()) {
+                return;
+            }
+            int yes = entry.get(VoteEntryData.POSITIVE)
+                    .defaulting(0)
+                    .asInt();
+            int no = entry.get(VoteEntryData.NEGATIVE)
+                    .defaulting(0)
+                    .asInt();
+            int threshold = ladderData.get(VoteLadderData.THRESHOLD)
+                    .asInt();
+            if(yes >= threshold || no >= threshold || System.currentTimeMillis() > expiry) {
+                long channel = ladderData.get(VoteLadderData.CHANNEL)
+                        .defaulting(0)
+                        .asLong();
+                TextChannel textChannel = StartBot.getJda().getTextChannelById(channel);
+                textChannel.sendMessage("Update on vote `"  + ladder + "/" + id + "`: " + (yes > no ? "passed" : "failed") + ".").queue();
+                entry.set(VoteEntryData.FINISHED, true);
+                entry.save(new DataProvider());
+            }
         });
     }
 
