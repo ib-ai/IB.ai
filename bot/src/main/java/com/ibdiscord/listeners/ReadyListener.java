@@ -89,6 +89,7 @@ public final class ReadyListener extends ListenerAdapter {
                                             long message = entry.get(VoteEntryData.MESSAGE).defaulting(0).asLong();
                                             VoteEntry voteEntry = new VoteEntry(guild.getId(), ladder, id);
                                             voteEntry.load();
+                                            voteEntry.scheduleStart();
                                             VoteCache.INSTANCE.register(message, voteEntry);
                                         }
                                     });

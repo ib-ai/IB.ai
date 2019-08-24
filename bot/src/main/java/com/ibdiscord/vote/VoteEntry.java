@@ -9,6 +9,10 @@ import de.arraying.gravity.Gravity;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.core.entities.TextChannel;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -31,11 +35,14 @@ import java.util.function.Consumer;
  */
 public final @RequiredArgsConstructor class VoteEntry {
 
+    private static ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+
     private final String guild;
     private final String ladder;
     private final long id;
     private long expiry;
     private boolean finished;
+    private ScheduledFuture<?> future;
 
     /**
      * Loads the data from the database.
@@ -63,11 +70,29 @@ public final @RequiredArgsConstructor class VoteEntry {
     }
 
     /**
-     * Gets the expiry of the vote.
-     * @return The expiry time.
+     * Starts the expiration scheduler.
      */
-    public long getExpiry() {
-        return expiry;
+    public void scheduleStart() {
+        long difference = expiry - System.currentTimeMillis();
+        difference = difference < 0 ? 0 : difference; // So that if the bot is offline there won't be any tasks missed.
+        future = scheduledExecutorService.schedule(this::meetsFinalCriteria, difference, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Cancels the expiration scheduler.
+     */
+    private void scheduleStop() {
+        if(future != null) {
+            future.cancel(true);
+        }
+    }
+
+    /**
+     * Gets the ID.
+     * @return The ID.
+     */
+    public long getId() {
+        return id;
     }
 
     /**
@@ -124,9 +149,18 @@ public final @RequiredArgsConstructor class VoteEntry {
                         .defaulting(0)
                         .asLong();
                 TextChannel textChannel = StartBot.getJda().getTextChannelById(channel);
-                textChannel.sendMessage("Update on vote `"  + ladder + "/" + id + "`: " + (yes > no ? "passed" : "failed") + ".").queue();
+                String text;
+                if(yes > no) {
+                    text = "passed";
+                } else if (no > yes) {
+                    text = "failed";
+                } else {
+                    text = "drew";
+                }
+                textChannel.sendMessage("Update on vote `"  + ladder + "/" + id + "`: " + text + ".").queue();
                 entry.set(VoteEntryData.FINISHED, true);
                 entry.save(new DataProvider());
+                scheduleStop();
             }
         });
     }

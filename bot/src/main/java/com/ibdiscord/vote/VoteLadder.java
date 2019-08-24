@@ -6,6 +6,7 @@ import com.ibdiscord.data.db.entries.voting.VoteLadderData;
 import com.ibdiscord.data.db.entries.voting.VoteListData;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 /**
@@ -42,17 +43,6 @@ public final class VoteLadder {
     }
 
     /**
-     * Gets a vote from that ladder.
-     * @param id The ID of the vote.
-     * @return The vote entry, or null if the ID is invalid.
-     */
-    public VoteEntry get(int id) {
-        VoteEntry voteEntry = new VoteEntry(guild.getId(), name, id);
-        voteEntry.load();
-        return voteEntry;
-    }
-
-    /**
      * Creates a new vote for that ladder.
      * @param text The text.
      * @return The vote entry as an object.
@@ -62,15 +52,18 @@ public final class VoteLadder {
         VoteListData voteListData = gravity.load(new VoteListData(guild.getId(), name));
         long newId = voteListData.size() + 1;
         VoteLadderData voteLadderData = gravity.load(new VoteLadderData(guild.getId(), name));
-        long expiry = voteLadderData.get(VoteLadderData.TIMEOUT)
+        long expiry = (voteLadderData.get(VoteLadderData.TIMEOUT)
                 .defaulting(12 * 60 * 60 * 1000) // 12 hours
-                .asLong()
+                .asLong())
                 + System.currentTimeMillis();
         TextChannel channel = guild.getTextChannelById(voteLadderData.get(VoteLadderData.CHANNEL).defaulting(0).asLong());
         if(channel == null) {
             return null;
         }
-        long message = channel.sendMessage(newId + ") " + text).complete().getIdLong();
+        Message messageObject = channel.sendMessage(newId + ") " + text).complete();
+        long message = messageObject.getIdLong();
+        messageObject.addReaction("\uD83D\uDC4D").queue();
+        messageObject.addReaction("\uD83D\uDC4E").queue();
         VoteEntryData voteEntryData = gravity.load(new VoteEntryData(guild.getId(), name, newId));
         voteEntryData.set(VoteEntryData.EXPIRY, expiry);
         voteEntryData.set(VoteEntryData.MESSAGE, message);
@@ -78,6 +71,8 @@ public final class VoteLadder {
         voteListData.add(newId);
         gravity.save(voteListData);
         VoteEntry entry = new VoteEntry(guild.getId(), name, newId);
+        entry.load();
+        entry.scheduleStart();
         VoteCache.INSTANCE.register(message, entry);
         return entry;
     }

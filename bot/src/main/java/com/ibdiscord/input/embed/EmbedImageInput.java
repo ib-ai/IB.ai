@@ -3,10 +3,8 @@ package com.ibdiscord.input.embed;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
 
 /**
  * Copyright 2017-2019 Arraying

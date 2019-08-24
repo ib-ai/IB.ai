@@ -41,6 +41,9 @@ public final class ReactionListener extends ListenerAdapter {
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
         react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), true);
+        if(event.getMember().getUser().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
+            return;
+        }
         switch(event.getReactionEmote().getName()) {
             case "\uD83D\uDC4D": // thumbs up
                 react(event.getMessageIdLong(), (short) 0);
@@ -60,6 +63,9 @@ public final class ReactionListener extends ListenerAdapter {
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
         react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), false);
+        if(event.getMember().getUser().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
+            return;
+        }
         switch(event.getReactionEmote().getName()) {
             case "\uD83D\uDC4D": // thumbs up
                 react(event.getMessageIdLong(), (short) 1);
