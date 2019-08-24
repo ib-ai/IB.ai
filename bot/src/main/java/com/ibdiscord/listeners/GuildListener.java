@@ -1,7 +1,7 @@
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.RoleData;
 import com.ibdiscord.punish.Punishment;
@@ -60,7 +60,7 @@ public final class GuildListener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         Member member = event.getMember();
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         RoleData roleData = gravity.load(new RoleData(member.getGuild().getId(), member.getUser().getId()));
         if(roleData == null) {
             return;
@@ -85,7 +85,7 @@ public final class GuildListener extends ListenerAdapter {
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
         queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong());
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         RoleData roleData = gravity.load(new RoleData(event.getGuild().getId(), event.getMember().getUser().getId()));
         for(Role role : event.getMember().getRoles()) {
             roleData.add(role.getId());
@@ -218,7 +218,7 @@ public final class GuildListener extends ListenerAdapter {
      * @return True if it does, false otherwise.
      */
     private boolean isNotMute(Guild guild, List<Map<String, String>> roles) {
-        String id = DContainer.INSTANCE.getGravity().load(new GuildData(guild.getId())).get(GuildData.MUTE)
+        String id = DataContainer.INSTANCE.getGravity().load(new GuildData(guild.getId())).get(GuildData.MUTE)
                 .defaulting("")
                 .asString();
         for(Map<String, String> entry : roles) {

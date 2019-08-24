@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildUserData;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -68,7 +68,7 @@ public final class UserInfoCommand extends Command {
                 })
                 .collect(Collectors.toList())
                 .indexOf(target) + 1;
-        String joinOverride = DContainer.INSTANCE.getGravity()
+        String joinOverride = DataContainer.INSTANCE.getGravity()
                 .load(new GuildUserData(context.getGuild().getId(), user.getId()))
                 .get("position")
                     .asString();

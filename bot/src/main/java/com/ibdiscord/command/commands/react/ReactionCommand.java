@@ -22,7 +22,7 @@ package com.ibdiscord.command.commands.react;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.react.EmoteData;
 import com.ibdiscord.data.db.entries.react.ReactionData;
 import net.dv8tion.jda.core.Permission;
@@ -79,9 +79,9 @@ public final class ReactionCommand extends Command {
             String uniqueID = UUID.randomUUID().toString();
             data.set(emote, uniqueID);
 
-            EmoteData emoteData = DContainer.INSTANCE.getGravity().load(new EmoteData(uniqueID));
+            EmoteData emoteData = DataContainer.INSTANCE.getGravity().load(new EmoteData(uniqueID));
             roles.forEach(role -> emoteData.add(role.getId()));
-            DContainer.INSTANCE.getGravity().save(emoteData);
+            DataContainer.INSTANCE.getGravity().save(emoteData);
         }
 
         /**
@@ -117,7 +117,7 @@ public final class ReactionCommand extends Command {
          */
         @Override
         protected void modifyData(ReactionData data, String emote, ArrayList<Role> roles) {
-            DContainer.INSTANCE.getGravity().load(new EmoteData(data.get(emote).asString())).delete();
+            DataContainer.INSTANCE.getGravity().load(new EmoteData(data.get(emote).asString())).delete();
             data.unset(emote);
         }
 

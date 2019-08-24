@@ -19,9 +19,11 @@
 
 package com.ibdiscord.listeners;
 
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.react.EmoteData;
 import com.ibdiscord.data.db.entries.react.ReactionData;
+import com.ibdiscord.vote.VoteCache;
+import com.ibdiscord.vote.VoteEntry;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageReaction;
@@ -45,6 +47,17 @@ public final class ReactionListener extends ListenerAdapter {
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
         react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), true);
+        if(event.getMember().getUser().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
+            return;
+        }
+        switch(event.getReactionEmote().getName()) {
+            case "\uD83D\uDC4D": // thumbs up
+                react(event.getMessageIdLong(), (short) 0);
+                break;
+            case "\uD83D\uDC4E": // thumbs down
+                react(event.getMessageIdLong(), (short) 2);
+                break;
+        }
     }
 
     /**
@@ -56,6 +69,17 @@ public final class ReactionListener extends ListenerAdapter {
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
         react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), false);
+        if(event.getMember().getUser().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
+            return;
+        }
+        switch(event.getReactionEmote().getName()) {
+            case "\uD83D\uDC4D": // thumbs up
+                react(event.getMessageIdLong(), (short) 1);
+                break;
+            case "\uD83D\uDC4E": // thumbs down
+                react(event.getMessageIdLong(), (short) 3);
+                break;
+        }
     }
 
     /**
@@ -67,8 +91,8 @@ public final class ReactionListener extends ListenerAdapter {
      */
     private void react(Member member, long message, String emote, boolean add) {
         Guild guild = member.getGuild();
-        ReactionData reactionData = DContainer.INSTANCE.getGravity().load(new ReactionData(guild.getId(), message));
-        EmoteData emoteData = DContainer.INSTANCE.getGravity().load(new EmoteData(reactionData.get(emote).asString()));
+        ReactionData reactionData = DataContainer.INSTANCE.getGravity().load(new ReactionData(guild.getId(), message));
+        EmoteData emoteData = DataContainer.INSTANCE.getGravity().load(new EmoteData(reactionData.get(emote).asString()));
         Collection<Role> roles = emoteData.contents().stream()
                 .map(prop -> member.getGuild().getRoleById(prop.defaulting(0L).asLong()))
                 .filter(Objects::nonNull)
@@ -77,6 +101,31 @@ public final class ReactionListener extends ListenerAdapter {
             guild.getController().addRolesToMember(member, roles).queue(null, Throwable::printStackTrace);
         } else {
             guild.getController().removeRolesFromMember(member, roles).queue(null, Throwable::printStackTrace);
+        }
+    }
+
+    /**
+     * Handles the reaction for votes.
+     * @param message The message ID.
+     * @param action The action.
+     */
+    private void react(long message, short action) {
+        VoteEntry entry = VoteCache.INSTANCE.get(message);
+        if(entry != null) {
+            switch(action) {
+                case 0:
+                    entry.voteYes();
+                    break;
+                case 1:
+                    entry.unvoteYes();
+                    break;
+                case 2:
+                    entry.voteNo();
+                    break;
+                case 3:
+                    entry.unvoteNo();
+                    break;
+            }
         }
     }
 

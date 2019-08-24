@@ -1,6 +1,6 @@
 package com.ibdiscord.listeners;
 
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.FilterData;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.utils.objects.GuildedCache;
@@ -42,7 +42,7 @@ public final class FilterListener extends ListenerAdapter {
             return;
         }
         String message = event.getMessage().getContentRaw();
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         GuildData guildData = gravity.load(new GuildData(event.getGuild().getId()));
         FilterData filterData = gravity.load(new FilterData(event.getGuild().getId()));
         if(!guildData.get(GuildData.FILTERING).defaulting(false).asBoolean()) {

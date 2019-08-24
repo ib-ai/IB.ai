@@ -28,7 +28,7 @@ import static java.lang.Math.toIntExact;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-public enum DContainer {
+public enum DataContainer {
 
     /**
      * <p> Singleton instance of container.</p>
@@ -57,7 +57,7 @@ public enum DContainer {
         connection = client.connect(); //Establishing the connection
 
         sync = connection.sync();
-        gravity = new Gravity(new DProvider());
+        gravity = new Gravity(new DataProvider());
     }
 
 }

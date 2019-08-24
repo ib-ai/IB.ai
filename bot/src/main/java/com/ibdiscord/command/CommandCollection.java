@@ -6,6 +6,8 @@ import com.ibdiscord.command.commands.monitor.MonitorCommand;
 import com.ibdiscord.command.commands.react.ReactionCommand;
 import com.ibdiscord.command.commands.reminder.ReminderCommand;
 import com.ibdiscord.command.commands.tag.TagCommand;
+import com.ibdiscord.command.commands.voting.ladder.VoteLadderCommand;
+import com.ibdiscord.command.commands.voting.vote.VoteCommand;
 import lombok.Getter;
 
 /**
@@ -58,6 +60,8 @@ public enum CommandCollection {
     TAG(new TagCommand()),
     USER_INFO(new UserInfoCommand()),
     USER_ROLES(new UserRolesCommand()),
+    VOTE(new VoteCommand()),
+    VOTE_LADDER(new VoteLadderCommand()),
     WARN(new WarnCommand());
 
     @Getter private final Command command;

@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.tag;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
@@ -74,9 +74,9 @@ public final class TagCreateCommand extends Command {
             context.reply("Tag value too long.");
             return;
         }
-        TagData tags = DContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
+        TagData tags = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
         tags.set(trigger, output);
-        DContainer.INSTANCE.getGravity().save(tags);
+        DataContainer.INSTANCE.getGravity().save(tags);
         context.reply("Consider it done: `%s` -> `%s`.", trigger, output);
     }
 

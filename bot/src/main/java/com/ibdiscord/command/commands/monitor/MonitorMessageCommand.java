@@ -1,7 +1,7 @@
 package com.ibdiscord.command.commands.monitor;
 
 import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorMessageData;
 import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
@@ -55,7 +55,7 @@ public final class MonitorMessageCommand extends MonitorManageCommand {
      */
     @Override
     protected void add(CommandContext context, String input) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         MonitorMessageData messageData = gravity.load(new MonitorMessageData(context.getGuild().getId()));
         messageData.add(input);
         gravity.save(messageData);
@@ -68,7 +68,7 @@ public final class MonitorMessageCommand extends MonitorManageCommand {
      */
     @Override
     protected void remove(CommandContext context, String input) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         MonitorMessageData messageData = gravity.load(new MonitorMessageData(context.getGuild().getId()));
         messageData.remove(input);
         gravity.save(messageData);
@@ -81,7 +81,7 @@ public final class MonitorMessageCommand extends MonitorManageCommand {
      */
     @Override
     protected List<String> list(CommandContext context) {
-        return DContainer.INSTANCE.getGravity().load(new MonitorMessageData(context.getGuild().getId())).values().stream()
+        return DataContainer.INSTANCE.getGravity().load(new MonitorMessageData(context.getGuild().getId())).values().stream()
                 .map(Property::asString)
                 .collect(Collectors.toList());
     }

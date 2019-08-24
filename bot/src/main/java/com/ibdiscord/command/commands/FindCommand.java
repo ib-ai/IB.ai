@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import com.ibdiscord.pagination.Pagination;
@@ -60,7 +60,7 @@ public final class FindCommand extends Command {
         }
         String guild = context.getGuild().getId();
         String compare = context.getArguments()[0];
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         List<Tuple<Punishment, Long>> punishments = new ArrayList<>();
         long max = gravity.load(new PunishmentsData(guild)).size();
         for(long i = 1; i <= max; i++) {

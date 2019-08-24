@@ -22,7 +22,7 @@ package com.ibdiscord.command.commands.react;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.react.ReactionData;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
@@ -116,10 +116,10 @@ public abstract class ReactionManageCommand extends Command {
             context.reply("The role(s) provided does not exist.");
             return;
         }
-        ReactionData data = DContainer.INSTANCE.getGravity().load(new ReactionData(context.getGuild().getId(), messageId));
+        ReactionData data = DataContainer.INSTANCE.getGravity().load(new ReactionData(context.getGuild().getId(), messageId));
         modifyData(data, emoteRaw, roles);
         modifyMessage(message, context.getMessage().getEmotes().isEmpty() ? emoteRaw : context.getMessage().getEmotes().get(0));
-        DContainer.INSTANCE.getGravity().save(data);
+        DataContainer.INSTANCE.getGravity().save(data);
         context.reply("Consider it done.");
     }
 

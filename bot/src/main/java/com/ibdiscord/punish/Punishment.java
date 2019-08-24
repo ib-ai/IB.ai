@@ -1,6 +1,6 @@
 package com.ibdiscord.punish;
 
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.punish.PunishmentData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import com.ibdiscord.utils.UDatabase;
@@ -49,7 +49,7 @@ public final @Getter @AllArgsConstructor class Punishment {
      * @return A valid punishment wrapper.
      */
     public static Punishment of(Guild guild, Object caseNumber) {
-        PunishmentData data = DContainer.INSTANCE.getGravity().load(new PunishmentData(guild.getId(), caseNumber));
+        PunishmentData data = DataContainer.INSTANCE.getGravity().load(new PunishmentData(guild.getId(), caseNumber));
         return new Punishment(
                 PunishmentType.valueOf(data.get(TYPE).asString()),
                 data.get(USER_DISPLAY).asString(),
@@ -67,7 +67,7 @@ public final @Getter @AllArgsConstructor class Punishment {
      * @param caseNumber The case number.
      */
     void dump(Guild guild, long caseNumber) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         PunishmentsData list = gravity.load(new PunishmentsData(guild.getId()));
         PunishmentData punishment = gravity.load(new PunishmentData(guild.getId(), caseNumber));
         punishment.set(TYPE, type.toString());
