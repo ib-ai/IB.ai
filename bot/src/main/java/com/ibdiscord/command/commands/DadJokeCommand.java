@@ -29,7 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Set;
 
-public class DadJokeCommand extends Command {
+public final class DadJokeCommand extends Command {
 
     /**
      * Creates a new dad joke command.
