@@ -29,7 +29,6 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -47,7 +46,7 @@ public final class ReactionCommand extends Command {
                         new Delete()
                 )
         );
-        this.correctUsage = "reaction <create/delete> <channel ID> <message ID> <emoji> <role ID>";
+        this.correctUsage = "reaction <create/delete> <channel ID> <message ID> <emoji> <role IDs... (1+)>";
     }
 
     /**

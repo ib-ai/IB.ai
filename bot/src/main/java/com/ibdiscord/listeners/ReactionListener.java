@@ -20,19 +20,21 @@
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
+import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
 import com.ibdiscord.data.db.entries.react.EmoteData;
 import com.ibdiscord.data.db.entries.react.ReactionData;
 import com.ibdiscord.vote.VoteCache;
 import com.ibdiscord.vote.VoteEntry;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.entities.Role;
+import de.arraying.gravity.data.property.Property;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -114,14 +116,48 @@ public final class ReactionListener extends ListenerAdapter {
         Collection<Role> rolesToRemove = add ? negativeRoles: positiveRoles;
 
         // Check to stop Pre-IB students from getting the NSFW role.
-        Role preIBRole = guild.getRolesByName("Pre-IB", true).get(0);
-        Role nsfwRole = guild.getRolesByName("NSFW", true).get(0);
-        if(rolesToAdd.contains(nsfwRole) && member.getRoles().contains(preIBRole)) {
-            return;
+        List<Role> userRoles = member.getRoles();
+        boolean hasPreIB = userRoles.stream()
+                .anyMatch(role -> role.getName().equals("Pre-IB"));
+        List<Role> guildRoles = member.getRoles();
+        boolean guildHasNSFW = guildRoles.stream()
+                .anyMatch(role -> role.getName().equals("NSFW"));
+        if(guildHasNSFW) {
+            Role nsfwRole = guild.getRolesByName("NSFW", true).get(0);
+            if(rolesToAdd.contains(nsfwRole) && hasPreIB) {
+                return;
+            }
+        }
+
+        CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData());
+        for(Property cassowariesProp : cassowariesData.contents() ) {
+
+            CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(cassowariesProp.asString()));
+            boolean containsRoleToAdd = !Collections.disjoint(cassowaryData.contents().stream()
+                    .map(Property::asString)
+                            .collect(Collectors.toSet()),
+                    rolesToAdd.stream()
+                            .map(ISnowflake::getId)
+                            .collect(Collectors.toSet()));
+
+            // if a role that is about to be added to the user is a member of the cassowary
+            if(containsRoleToAdd) {
+                // for each role ID inside the cassowary,
+                for(Property cassowaryProp : cassowaryData.contents()) {
+                    // for each role the user has
+                    for(Role userRole : member.getRoles()) {
+                        if(cassowaryProp.asString().equals(userRole.getId())) {
+                            // add user's role to rolesToRemove
+                            rolesToRemove.add(userRole);
+                        }
+                    }
+                }
+            }
         }
 
         // Second function in sequence used in consuming lambda in order to ensure first function has finished
         // without blocking the thread.
+        // ROLES MUST BE REMOVED BEFORE THEY ARE ADDED. DONT ASK WHY.
         guild.getController().removeRolesFromMember(member, rolesToRemove).queue(success ->
                     guild.getController().addRolesToMember(member, rolesToAdd).queue(null, Throwable::printStackTrace),
                     Throwable::printStackTrace);
