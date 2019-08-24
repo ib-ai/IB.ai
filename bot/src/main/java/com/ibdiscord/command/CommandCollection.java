@@ -1,6 +1,7 @@
 package com.ibdiscord.command;
 
 import com.ibdiscord.command.commands.*;
+import com.ibdiscord.command.commands.cassowary.CassowaryCommand;
 import com.ibdiscord.command.commands.filter.FilterCommand;
 import com.ibdiscord.command.commands.monitor.MonitorCommand;
 import com.ibdiscord.command.commands.react.ReactionCommand;
@@ -33,6 +34,7 @@ public enum CommandCollection {
 
     AVATAR(new AvatarCommand()),
     BLACKLIST(new BlacklistCommand()),
+    CASSOWARY(new CassowaryCommand()),
     ECHO(new EchoCommand()),
     EMBED(new EmbedCommand()),
     EVAL(new EvalCommand()),

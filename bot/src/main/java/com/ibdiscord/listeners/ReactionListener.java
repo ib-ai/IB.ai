@@ -1,19 +1,5 @@
-package com.ibdiscord.listeners;
-
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.ReactionData;
-import com.ibdiscord.vote.VoteCache;
-import com.ibdiscord.vote.VoteEntry;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
-
 /**
- * Copyright 2017-2019 Arraying
+ * Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *
@@ -30,6 +16,28 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.listeners;
+
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
+import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
+import com.ibdiscord.data.db.entries.react.EmoteData;
+import com.ibdiscord.data.db.entries.react.ReactionData;
+import com.ibdiscord.vote.VoteCache;
+import com.ibdiscord.vote.VoteEntry;
+import de.arraying.gravity.data.property.Property;
+import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 public final class ReactionListener extends ListenerAdapter {
 
     /**
@@ -86,19 +94,78 @@ public final class ReactionListener extends ListenerAdapter {
     private void react(Member member, long message, String emote, boolean add) {
         Guild guild = member.getGuild();
         ReactionData reactionData = DataContainer.INSTANCE.getGravity().load(new ReactionData(guild.getId(), message));
-        String roleId = reactionData.get(emote).asString();
-        if(roleId == null) {
-            return;
+        EmoteData emoteData = DataContainer.INSTANCE.getGravity().load(new EmoteData(reactionData.get(emote).asString()));
+
+        Collection<Role> positiveRoles = emoteData.contents().stream()
+                .filter(prop -> !prop.asString().startsWith("!"))
+                .map(prop -> member.getGuild().getRoleById(prop.defaulting(0L).asLong()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        Collection<Role> negativeRoles = emoteData.contents().stream()
+                .filter(prop -> prop.asString().startsWith("!"))
+                .map(prop -> prop.asString().replace("!", ""))
+                .map(prop -> member.getGuild().getRoleById(prop))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        // Tried to incorporate the 'add' bool into the collection of
+        // the positive and negative roles instead of doing this conditional but
+        // got some weird behaviour. Perhaps make less verbose in future.
+        Collection<Role> rolesToAdd = add ? positiveRoles: negativeRoles;
+        Collection<Role> rolesToRemove = add ? negativeRoles: positiveRoles;
+
+        // Check to stop Pre-IB students from getting the NSFW role.
+        // This is basically a HARDXXX CASSOWARY
+        try {
+            Role nsfwRole = guild.getRolesByName("NSFW", true).get(0);
+            Role preIBRole = guild.getRolesByName("Pre-IB", true).get(0);
+
+            List<Role> userRoles = member.getRoles();
+            if(rolesToAdd.contains(nsfwRole) && userRoles.stream()
+                    .anyMatch(role -> role.getName().equals("Pre-IB"))) {
+                return;
+            }
+            if(rolesToAdd.contains(preIBRole) && userRoles.stream()
+                    .anyMatch(role -> role.getName().equals("NSFW"))) {
+                return;
+            }
+        } catch(Exception ex) {
+            // ignored
         }
-        Role role = guild.getRoleById(roleId);
-        if(role == null) {
-            return;
+
+        CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData());
+        for(Property cassowariesProp : cassowariesData.contents() ) {
+
+            CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(cassowariesProp.asString()));
+            boolean containsRoleToAdd = !Collections.disjoint(cassowaryData.contents().stream()
+                    .map(Property::asString)
+                            .collect(Collectors.toSet()),
+                    rolesToAdd.stream()
+                            .map(ISnowflake::getId)
+                            .collect(Collectors.toSet()));
+
+            // if a role that is about to be added to the user is a member of the cassowary
+            if(containsRoleToAdd) {
+                // for each role ID inside the cassowary,
+                for(Property cassowaryProp : cassowaryData.contents()) {
+                    // for each role the user has
+                    for(Role userRole : member.getRoles()) {
+                        if(cassowaryProp.asString().equals(userRole.getId())) {
+                            // add user's role to rolesToRemove
+                            rolesToRemove.add(userRole);
+                        }
+                    }
+                }
+            }
         }
-        if(add) {
-            guild.getController().addSingleRoleToMember(member, role).queue(null, Throwable::printStackTrace);
-        } else {
-            guild.getController().removeSingleRoleFromMember(member, role).queue(null, Throwable::printStackTrace);
-        }
+
+        // Second function in sequence used in consuming lambda in order to ensure first function has finished
+        // without blocking the thread.
+        // ROLES MUST BE REMOVED BEFORE THEY ARE ADDED. DONT ASK WHY.
+        guild.getController().removeRolesFromMember(member, rolesToRemove).queue(success ->
+                    guild.getController().addRolesToMember(member, rolesToAdd).queue(null, Throwable::printStackTrace),
+                    Throwable::printStackTrace);
     }
 
     /**

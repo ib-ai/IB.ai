@@ -1,18 +1,5 @@
-package com.ibdiscord.command.commands.react;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.entries.ReactionData;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Emote;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
-
-import java.util.Set;
-
 /**
- * Copyright 2017-2019 Arraying
+ * Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *
@@ -29,6 +16,23 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands.react;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.react.EmoteData;
+import com.ibdiscord.data.db.entries.react.ReactionData;
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Emote;
+import net.dv8tion.jda.core.entities.Message;
+
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 public final class ReactionCommand extends Command {
 
     /**
@@ -42,7 +46,7 @@ public final class ReactionCommand extends Command {
                         new Delete()
                 )
         );
-        this.correctUsage = "reaction <create/delete> <channel ID> <message ID> <emoji> <role ID>";
+        this.correctUsage = "reaction <create/delete> <channel ID> <message ID> <emoji> <role IDs... (1+)>";
     }
 
     /**
@@ -67,11 +71,16 @@ public final class ReactionCommand extends Command {
          * Adds to the data.
          * @param data The data.
          * @param emote The emote.
-         * @param role The role.
+         * @param roleIDs List of roleIDs.
          */
         @Override
-        protected void modifyData(ReactionData data, String emote, Role role) {
-            data.set(emote, role.getId());
+        protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
+            String uniqueID = UUID.randomUUID().toString();
+            data.set(emote, uniqueID);
+
+            EmoteData emoteData = DataContainer.INSTANCE.getGravity().load(new EmoteData(uniqueID));
+            roleIDs.forEach(emoteData::add);
+            DataContainer.INSTANCE.getGravity().save(emoteData);
         }
 
         /**
@@ -103,10 +112,11 @@ public final class ReactionCommand extends Command {
          * Removes from the data.
          * @param data The data.
          * @param emote The emote.
-         * @param role The role.
+         * @param roleIDs List of roleIDs.
          */
         @Override
-        protected void modifyData(ReactionData data, String emote, Role role) {
+        protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
+            DataContainer.INSTANCE.getGravity().load(new EmoteData(data.get(emote).asString())).delete();
             data.unset(emote);
         }
 

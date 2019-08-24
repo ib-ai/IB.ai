@@ -1,19 +1,5 @@
-package com.ibdiscord.command.commands.react;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.ReactionData;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-
-import java.util.Set;
-
 /**
- * Copyright 2017-2019 Arraying
+ * Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *
@@ -30,6 +16,25 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands.react;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.react.ReactionData;
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.TextChannel;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public abstract class ReactionManageCommand extends Command {
 
     /**
@@ -49,9 +54,9 @@ public abstract class ReactionManageCommand extends Command {
      * Modifies the data.
      * @param data The data.
      * @param emote The emote.
-     * @param role The role.
+     * @param roleIDs The role.
      */
-    protected abstract void modifyData(ReactionData data, String emote, Role role);
+    protected abstract void modifyData(ReactionData data, String emote, List<String> roleIDs);
 
     /**
      * Modifies the message.
@@ -79,17 +84,17 @@ public abstract class ReactionManageCommand extends Command {
             return;
         }
         if(context.getArguments().length < 4) {
-            context.reply("Please provide the role ID.");
+            context.reply("Please provide one or more role IDs.");
             return;
         }
         long channelId;
         long messageId;
         String emoteRaw = context.getArguments()[2];
-        long roleId;
+        ArrayList<String> roleArgs;
         try {
             channelId = Long.valueOf(context.getArguments()[0]);
             messageId = Long.valueOf(context.getArguments()[1]);
-            roleId = Long.valueOf(context.getArguments()[3]);
+            roleArgs = new ArrayList<>(Arrays.asList(context.getArguments()).subList(3, context.getArguments().length));
         } catch(NumberFormatException exception) {
             context.reply("One of your IDs is not a number. Please make sure you only use numeric IDs, and not mentions.");
             return;
@@ -106,13 +111,19 @@ public abstract class ReactionManageCommand extends Command {
             context.reply("The message provided does not exist.");
             return;
         }
-        Role role = context.getGuild().getRoleById(roleId);
-        if(role == null) {
-            context.reply("The role provided does not exist.");
+
+        // Checking that all roleIDs are valid
+        ArrayList<String> roleIDData = new ArrayList<>(roleArgs);
+        ArrayList<Role> roles = new ArrayList<>();
+        roleArgs.stream()
+                .map(arg -> arg.replace("!", ""))
+                .forEach(id -> roles.add(context.getGuild().getRoleById(id)));
+        if(roles.isEmpty() || roles.contains(null)) {
+            context.reply("The role(s) provided were invalid.");
             return;
         }
         ReactionData data = DataContainer.INSTANCE.getGravity().load(new ReactionData(context.getGuild().getId(), messageId));
-        modifyData(data, emoteRaw, role);
+        modifyData(data, emoteRaw, roleIDData);
         modifyMessage(message, context.getMessage().getEmotes().isEmpty() ? emoteRaw : context.getMessage().getEmotes().get(0));
         DataContainer.INSTANCE.getGravity().save(data);
         context.reply("Consider it done.");
