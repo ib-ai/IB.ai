@@ -22,7 +22,7 @@ package com.ibdiscord.data.db.entries.react;
 import de.arraying.gravity.data.types.TypeList;
 import lombok.AllArgsConstructor;
 
-public @AllArgsConstructor class EmoteData extends TypeList {
+public @AllArgsConstructor final class EmoteData extends TypeList {
 
     private final String emoteUUID;
 
