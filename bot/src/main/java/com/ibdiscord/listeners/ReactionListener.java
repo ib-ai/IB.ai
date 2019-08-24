@@ -76,7 +76,7 @@ public final class ReactionListener extends ListenerAdapter {
         if(add) {
             guild.getController().addRolesToMember(member, roles).queue(null, Throwable::printStackTrace);
         } else {
-            guild.getController().removeRolesFromMember(member, roles).queue(null, Throwable::printStackTrace);;
+            guild.getController().removeRolesFromMember(member, roles).queue(null, Throwable::printStackTrace);
         }
     }
 
