@@ -29,6 +29,7 @@ import de.arraying.gravity.Gravity;
 import de.arraying.kotys.JSON;
 import de.arraying.kotys.JSONArray;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum Localiser {
@@ -38,9 +39,10 @@ public enum Localiser {
      */
     INSTANCE;
 
+    private static final String variablesRegex = "\\{(\\d+)}";
+
     public void init() {
         //TODO: Cache all english translations to Redis
-        TextVariableReplacer.generateVariableMap();
     }
 
     /**
@@ -51,7 +53,7 @@ public enum Localiser {
      * @throws LocaliserSyntaxException When the key is syntactically incorrect
      * @return The localised text corresponding to the inputted key
      */
-    public static String __(CommandContext commandContext, String key) {
+    public static String __(CommandContext commandContext, String key, String... variables) {
 
         String[] splitKey = key.split(Pattern.quote("."));
 
@@ -70,11 +72,11 @@ public enum Localiser {
                 .asString();
 
         /*
-        * File path relative to compiled jar location.
-        * Path accesses json file based off of user's prefered language and the first
-        * half of the 'key' parameter.
-        */
-        String pathToLanguageFile = String.format("bot/docker/lang/%s/%s.json", userLang, splitKey[0]);
+         * Absolute file path relative to lang directory.
+         * Path accesses json file based off of user's preferred language and the first
+         * half of the 'key' parameter.
+         */
+        String pathToLanguageFile = String.format("/opt/IB.ai/bot/docker/lang/%s/%s.json", userLang, splitKey[0]);
         JSON languageFile = UJSON.retrieveJSONFromFile(pathToLanguageFile);
         String translation = languageFile.string(splitKey[1]);
 
@@ -86,8 +88,25 @@ public enum Localiser {
             }
         }
 
-        translation = TextVariableReplacer.replaceVariables(commandContext, translation);
-        return translation;
+        // Replace variables within translation before returning final translation.
+        return replaceVariables(translation, variables);
+    }
+
+    private static String replaceVariables(String text, String[] vars) {
+        final Pattern pattern = Pattern.compile(variablesRegex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(text);
+
+        /* group(0) --> entire var, {12}
+         * group(1) --> just num  , 12
+         */
+        while(matcher.find()) {
+            String toReplace = matcher.group(0);
+            String replaceNum = matcher.group(1);
+
+            text = text.replace(toReplace, vars[Integer.parseInt(replaceNum)]);
+        }
+
+        return text;
     }
 
     public static String[] getAllLanguages() {
