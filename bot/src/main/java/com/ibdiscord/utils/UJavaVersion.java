@@ -23,7 +23,7 @@ import com.ibdiscord.exceptions.JavaVersionException;
  */
 public final class UJavaVersion {
 
-    private static final String errorMessage = "You need Java 11 to run this app. Your version: ";
+    private static final String ERROR_MESSAGE = "You need Java 10 to run this app. Your version: ";
 
     /**
      * Checks the Java version.
@@ -34,15 +34,8 @@ public final class UJavaVersion {
         IBai.INSTANCE.getLogger().info("Gathered version as \"{}\".", version);
         if(version != 10) {
             throwError(version);
-            shutdown();
+            System.exit(1);
         }
-    }
-
-    /**
-     * Shuts down the process.
-     */
-    private static void shutdown() {
-        System.exit(1);
     }
 
     /**
@@ -51,7 +44,7 @@ public final class UJavaVersion {
      * @throws JavaVersionException An exception.
      */
     private static void throwError(double version) throws JavaVersionException {
-        throw new JavaVersionException(errorMessage + version);
+        throw new JavaVersionException(ERROR_MESSAGE + version);
     }
 
 }
