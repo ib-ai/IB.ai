@@ -113,6 +113,13 @@ public final class ReactionListener extends ListenerAdapter {
         Collection<Role> rolesToAdd = add ? positiveRoles: negativeRoles;
         Collection<Role> rolesToRemove = add ? negativeRoles: positiveRoles;
 
+        // Check to stop Pre-IB students from getting the NSFW role.
+        Role preIBRole = guild.getRolesByName("Pre-IB", true).get(0);
+        Role nsfwRole = guild.getRolesByName("NSFW", true).get(0);
+        if(rolesToAdd.contains(nsfwRole) && member.getRoles().contains(preIBRole)) {
+            return;
+        }
+
         // Second function in sequence used in consuming lambda in order to ensure first function has finished
         // without blocking the thread.
         guild.getController().removeRolesFromMember(member, rolesToRemove).queue(success ->
