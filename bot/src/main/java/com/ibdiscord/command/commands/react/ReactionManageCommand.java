@@ -30,7 +30,10 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class ReactionManageCommand extends Command {
 
@@ -51,9 +54,9 @@ public abstract class ReactionManageCommand extends Command {
      * Modifies the data.
      * @param data The data.
      * @param emote The emote.
-     * @param roles The role.
+     * @param roleIDs The role.
      */
-    protected abstract void modifyData(ReactionData data, String emote, ArrayList<Role> roles);
+    protected abstract void modifyData(ReactionData data, String emote, List<String> roleIDs);
 
     /**
      * Modifies the message.
@@ -87,13 +90,11 @@ public abstract class ReactionManageCommand extends Command {
         long channelId;
         long messageId;
         String emoteRaw = context.getArguments()[2];
-        ArrayList<Long> roleIds = new ArrayList<>();
+        ArrayList<String> roleArgs;
         try {
             channelId = Long.valueOf(context.getArguments()[0]);
             messageId = Long.valueOf(context.getArguments()[1]);
-            for(int i = 3; i < context.getArguments().length; i++) {
-                roleIds.add(Long.valueOf(context.getArguments()[i]));
-            }
+            roleArgs = new ArrayList<>(Arrays.asList(context.getArguments()).subList(3, context.getArguments().length));
         } catch(NumberFormatException exception) {
             context.reply("One of your IDs is not a number. Please make sure you only use numeric IDs, and not mentions.");
             return;
@@ -110,14 +111,19 @@ public abstract class ReactionManageCommand extends Command {
             context.reply("The message provided does not exist.");
             return;
         }
+
+        // Checking that all roleIDs are valid
+        ArrayList<String> roleIDData = new ArrayList<>(roleArgs);
         ArrayList<Role> roles = new ArrayList<>();
-        roleIds.forEach(id -> roles.add(context.getGuild().getRoleById(id)));
+        roleArgs.stream()
+                .map(arg -> arg.replace("!", ""))
+                .forEach(id -> roles.add(context.getGuild().getRoleById(id)));
         if(roles.isEmpty() || roles.contains(null)) {
-            context.reply("The role(s) provided does not exist.");
+            context.reply("The role(s) provided were invalid.");
             return;
         }
         ReactionData data = DataContainer.INSTANCE.getGravity().load(new ReactionData(context.getGuild().getId(), messageId));
-        modifyData(data, emoteRaw, roles);
+        modifyData(data, emoteRaw, roleIDData);
         modifyMessage(message, context.getMessage().getEmotes().isEmpty() ? emoteRaw : context.getMessage().getEmotes().get(0));
         DataContainer.INSTANCE.getGravity().save(data);
         context.reply("Consider it done.");

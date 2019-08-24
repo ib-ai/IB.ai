@@ -93,15 +93,31 @@ public final class ReactionListener extends ListenerAdapter {
         Guild guild = member.getGuild();
         ReactionData reactionData = DataContainer.INSTANCE.getGravity().load(new ReactionData(guild.getId(), message));
         EmoteData emoteData = DataContainer.INSTANCE.getGravity().load(new EmoteData(reactionData.get(emote).asString()));
-        Collection<Role> roles = emoteData.contents().stream()
+
+        Collection<Role> positiveRoles = emoteData.contents().stream()
+                .filter(prop -> !prop.asString().startsWith("!"))
                 .map(prop -> member.getGuild().getRoleById(prop.defaulting(0L).asLong()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
-        if(add) {
-            guild.getController().addRolesToMember(member, roles).queue(null, Throwable::printStackTrace);
-        } else {
-            guild.getController().removeRolesFromMember(member, roles).queue(null, Throwable::printStackTrace);
-        }
+
+        Collection<Role> negativeRoles = emoteData.contents().stream()
+                .filter(prop -> prop.asString().startsWith("!"))
+                .map(prop -> prop.asString().replace("!", ""))
+                .map(prop -> member.getGuild().getRoleById(prop))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        // Tried to incorporate the 'add' bool into the collection of
+        // the positive and negative roles instead of doing this conditional but
+        // got some weird behaviour. Perhaps make less verbose in future.
+        Collection<Role> rolesToAdd = add ? positiveRoles: negativeRoles;
+        Collection<Role> rolesToRemove = add ? negativeRoles: positiveRoles;
+
+        // Second function in sequence used in consuming lambda in order to ensure first function has finished
+        // without blocking the thread.
+        guild.getController().removeRolesFromMember(member, rolesToRemove).queue(success ->
+                    guild.getController().addRolesToMember(member, rolesToAdd).queue(null, Throwable::printStackTrace),
+                    Throwable::printStackTrace);
     }
 
     /**

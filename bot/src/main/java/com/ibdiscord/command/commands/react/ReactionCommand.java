@@ -28,9 +28,9 @@ import com.ibdiscord.data.db.entries.react.ReactionData;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -72,15 +72,15 @@ public final class ReactionCommand extends Command {
          * Adds to the data.
          * @param data The data.
          * @param emote The emote.
-         * @param role The role.
+         * @param roleIDs List of roleIDs.
          */
         @Override
-        protected void modifyData(ReactionData data, String emote, ArrayList<Role> roles) {
+        protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
             String uniqueID = UUID.randomUUID().toString();
             data.set(emote, uniqueID);
 
             EmoteData emoteData = DataContainer.INSTANCE.getGravity().load(new EmoteData(uniqueID));
-            roles.forEach(role -> emoteData.add(role.getId()));
+            roleIDs.forEach(emoteData::add);
             DataContainer.INSTANCE.getGravity().save(emoteData);
         }
 
@@ -113,10 +113,10 @@ public final class ReactionCommand extends Command {
          * Removes from the data.
          * @param data The data.
          * @param emote The emote.
-         * @param role The role.
+         * @param roleIDs List of roleIDs.
          */
         @Override
-        protected void modifyData(ReactionData data, String emote, ArrayList<Role> roles) {
+        protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
             DataContainer.INSTANCE.getGravity().load(new EmoteData(data.get(emote).asString())).delete();
             data.unset(emote);
         }
