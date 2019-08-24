@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import net.dv8tion.jda.core.Permission;
 
@@ -59,9 +59,9 @@ public final class PrefixCommand extends Command {
             return;
         }
 
-        GuildData guildData = DContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
+        GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
         guildData.set(GuildData.PREFIX, prefixNew);
-        DContainer.INSTANCE.getGravity().save(guildData);
+        DataContainer.INSTANCE.getGravity().save(guildData);
         context.reply("The prefix has been updated to (" + prefixNew + ").");
     }
 

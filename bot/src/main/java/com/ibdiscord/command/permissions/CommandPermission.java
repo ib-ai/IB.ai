@@ -1,7 +1,7 @@
 package com.ibdiscord.command.permissions;
 
 import com.ibdiscord.IBai;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Channel;
@@ -87,7 +87,7 @@ public final class CommandPermission {
             case DISCORD:
                 return member.hasPermission(channel, (Permission) value);
             case ROLE: {
-                String data = DContainer.INSTANCE.getGravity().load(new GuildData(channel.getGuild().getId())).get(value.toString())
+                String data = DataContainer.INSTANCE.getGravity().load(new GuildData(channel.getGuild().getId())).get(value.toString())
                         .asString();
                 return data != null && member.getRoles().stream()
                         .anyMatch(it -> it.getName().toLowerCase().contains(data.toLowerCase()) || it.getId().equalsIgnoreCase(data));

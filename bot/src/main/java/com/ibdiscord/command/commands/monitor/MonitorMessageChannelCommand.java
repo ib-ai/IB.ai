@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.monitor;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorData;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
@@ -51,7 +51,7 @@ public class MonitorMessageChannelCommand extends Command {
             context.reply("Please mention a channel!");
             return;
         }
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         MonitorData monitorData = gravity.load(new MonitorData(context.getGuild().getId()));
         monitorData.set(MonitorData.MESSAGE_CHANNEL, context.getMessage().getMentionedChannels().get(0).getId());
         gravity.save(monitorData);

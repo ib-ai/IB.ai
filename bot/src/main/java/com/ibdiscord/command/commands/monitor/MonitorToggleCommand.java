@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.monitor;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorData;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
@@ -47,7 +47,7 @@ public final class MonitorToggleCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         MonitorData monitorData = gravity.load(new MonitorData(context.getGuild().getId()));
         boolean current = monitorData.get(MonitorData.ENABLED)
                 .defaulting(false)

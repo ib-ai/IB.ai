@@ -6,8 +6,10 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.utils.UDatabase;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,15 +51,18 @@ public final class HelpCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         String botPrefix = UDatabase.getPrefix(context.getGuild());
-
+        List<TextChannel> channelsGetRoles = context.getGuild().getTextChannelsByName("get-roles", true);
+        String getRoles = channelsGetRoles.isEmpty() ? "#get-roles" : channelsGetRoles.get(0).getAsMention();
+        List<TextChannel> channelsJoinLounge = context.getGuild().getTextChannelsByName("join-lounge", true);
+        String joinLounge = channelsJoinLounge.isEmpty() ? "#join-lounge" : channelsJoinLounge.get(0).getAsMention();
         EmbedBuilder ebHelpMenu = new EmbedBuilder();
         ebHelpMenu.setColor(Color.white);
         ebHelpMenu.setAuthor("IB.ai", "https://discord.me/pbh", null);
         ebHelpMenu.setDescription("Hey! Welcome to the IBO Discord Server. I'm IB.ai version: `" + IBai.INSTANCE.getConfig().getBotVersion() + "`. " +
                 "All command arguments in <> are required, [] are optional.");
-        ebHelpMenu.addField("Getting Started:", "Grab a year role by clicking the appropriate emote in <#582911350179889153>. " +
+        ebHelpMenu.addField("Getting Started:", "Grab a year role by clicking the appropriate emote in " + getRoles + ". " +
                 "You can also add yourself to certain subjects this way. Share your passions with others by joining the lounges of certain interests, also using " +
-                "reactions, in <#582938891078729732>.", false);
+                "reactions, in " + joinLounge + ".", false);
         ebHelpMenu.addField("Some Things I Can Do:", "- To get a link to up-to-date downloads to textbooks, papers, guides and more, type `link the resources` in chat\n" +
                 "- Show user information about a specific user: `" + botPrefix + "userinfo [user]`\n" +
                 "- Show information about the server `" + botPrefix + "serverinfo`\n" +

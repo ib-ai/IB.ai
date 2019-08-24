@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.monitor;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorMessageData;
 import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
 import com.ibdiscord.pagination.Page;
@@ -53,7 +53,7 @@ public final class MonitorListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected Pagination<String> getPagination(CommandContext context) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         List<String> a = gravity.load(new MonitorUserData(context.getGuild().getId())).values().stream()
                 .map(it -> "User: " + it)
                 .collect(Collectors.toList());

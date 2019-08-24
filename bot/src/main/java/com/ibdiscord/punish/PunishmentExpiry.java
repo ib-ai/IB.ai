@@ -1,6 +1,6 @@
 package com.ibdiscord.punish;
 
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.ExpiryData;
 import de.arraying.gravity.Gravity;
@@ -58,7 +58,7 @@ public enum PunishmentExpiry {
      * @param punishment The punishment.
      */
     public void expire(Guild guild, String caseNumber, Punishment punishment) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         ExpiryData expiryData = gravity.load(new ExpiryData(guild.getId()));
         expiryData.unset(caseNumber);
         gravity.save(expiryData);
@@ -68,7 +68,7 @@ public enum PunishmentExpiry {
                 if(member == null) {
                     return;
                 }
-                GuildData guildData = DContainer.INSTANCE.getGravity().load(new GuildData(guild.getId()));
+                GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(guild.getId()));
                 Role role = guild.getRoleById(guildData.get(GuildData.MUTE).defaulting(0L).asLong());
                 if(role == null) {
                     return;

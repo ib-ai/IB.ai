@@ -1,6 +1,6 @@
 package com.ibdiscord.punish;
 
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.PunishmentData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
@@ -36,7 +36,7 @@ public final @AllArgsConstructor class PunishmentHandler {
      * Executes the punishment and sends the message.
      */
     public void onPunish() {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         long caseNumber = gravity.load(new PunishmentsData(guild.getId())).size() + 1;
         punishment.dump(guild, caseNumber);
         TextChannel channel = getLogChannel();
@@ -67,7 +67,7 @@ public final @AllArgsConstructor class PunishmentHandler {
      * @return The possibly null log channel.
      */
     public TextChannel getLogChannel() {
-        GuildData guildData = DContainer.INSTANCE.getGravity().load(new GuildData(guild.getId()));
+        GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(guild.getId()));
         return guild.getTextChannelById(guildData.get(GuildData.MODLOGS)
                 .defaulting(0L)
                 .asLong());

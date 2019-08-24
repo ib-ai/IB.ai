@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
@@ -55,7 +55,7 @@ public final class MuteRoleCommand extends Command {
             context.reply("Please mention the role that you would like to act as a muted role. It is recommended to do this in a private channel.");
             return;
         }
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
         guildData.set(GuildData.MUTE, roles.get(0).getId());
         gravity.save(guildData);

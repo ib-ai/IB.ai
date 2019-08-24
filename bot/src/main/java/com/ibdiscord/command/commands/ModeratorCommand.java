@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
@@ -49,7 +49,7 @@ public final class ModeratorCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
         if(context.getArguments().length == 0) {
             String permission = guildData.get(GuildData.MODERATOR)

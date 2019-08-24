@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.filter;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.FilterData;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
@@ -54,7 +54,7 @@ public final class FilterListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected Pagination<String> getPagination(CommandContext context) {
-        List<String> values = DContainer.INSTANCE.getGravity().load(new FilterData(context.getGuild().getId())).values().stream()
+        List<String> values = DataContainer.INSTANCE.getGravity().load(new FilterData(context.getGuild().getId())).values().stream()
                 .map(Property::asString)
                 .collect(Collectors.toList());
         return new Pagination<>(values, 15);

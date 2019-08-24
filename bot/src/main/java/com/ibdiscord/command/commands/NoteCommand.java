@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.NoteData;
 import com.ibdiscord.utils.UInput;
@@ -58,7 +58,7 @@ public final class NoteCommand extends Command {
             context.reply("Invalid member.");
             return;
         }
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         NoteData noteData = gravity.load(new NoteData(context.getGuild().getId(), member.getUser().getId()));
         if(context.getArguments().length == 1) {
             EmbedBuilder embedBuilder = new EmbedBuilder();

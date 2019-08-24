@@ -1,6 +1,6 @@
 package com.ibdiscord.reminder;
 
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.reminder.ReminderUserData;
 import de.arraying.gravity.Gravity;
 import lombok.AllArgsConstructor;
@@ -44,7 +44,7 @@ public @AllArgsConstructor final class Reminder {
      * @return True if it is, false otherwise.
      */
     public boolean isCompleted() {
-        return DContainer.INSTANCE.getGravity().load(new ReminderUserData(id)).get(ReminderUserData.COMPLETED)
+        return DataContainer.INSTANCE.getGravity().load(new ReminderUserData(id)).get(ReminderUserData.COMPLETED)
                 .defaulting(false)
                 .asBoolean();
     }
@@ -54,7 +54,7 @@ public @AllArgsConstructor final class Reminder {
      * @param completed True if it is, false otherwise.
      */
     public void setCompleted(boolean completed) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         ReminderUserData userData = gravity.load(new ReminderUserData(id));
         userData.set(ReminderUserData.COMPLETED, completed);
         gravity.save(userData);

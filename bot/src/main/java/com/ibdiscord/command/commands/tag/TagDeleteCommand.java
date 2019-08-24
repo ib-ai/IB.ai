@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.tag;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.Permission;
@@ -57,9 +57,9 @@ public final class TagDeleteCommand extends Command {
                 context.reply("Invalid name, please provide it in quotation marks.");
                 return;
             }
-            TagData tagData = DContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
+            TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
             tagData.unset(names.get(0));
-            DContainer.INSTANCE.getGravity().save(tagData);
+            DataContainer.INSTANCE.getGravity().save(tagData);
             context.reply("The tag has been removed.");
         }
 

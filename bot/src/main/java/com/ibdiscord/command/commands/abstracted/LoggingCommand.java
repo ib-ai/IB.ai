@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.abstracted;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -61,9 +61,9 @@ public abstract class LoggingCommand extends Command {
         } else {
             channel = context.getMessage().getMentionedChannels().get(0);
         }
-        GuildData guildData = DContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
+        GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
         guildData.set(key, channel == null ? DISABLED : channel.getId());
-        DContainer.INSTANCE.getGravity().save(guildData);
+        DataContainer.INSTANCE.getGravity().save(guildData);
         context.reply("The channel has been set to: " + (channel == null ? "nothing" : channel.getAsMention()) + ".");
     }
 

@@ -3,14 +3,10 @@ package com.ibdiscord.command.commands.tag;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
-import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.TagData;
-import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import com.ibdiscord.pagination.Pagination;
-import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.utils.UInput;
-import com.ibdiscord.utils.objects.Tuple;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.EmbedBuilder;
 
@@ -63,7 +59,7 @@ public final class TagFindCommand extends Command {
         }
         String guild = context.getGuild().getId();
         String compare = UInput.extractQuotedStrings(context.getArguments()).get(0);
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         List<String> matches = new ArrayList<>();
         Set<String> tagKeys = gravity.load(new TagData(guild)).getKeys();
         Pattern pattern = Pattern.compile(compare);
