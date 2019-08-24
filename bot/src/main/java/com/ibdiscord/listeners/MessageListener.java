@@ -102,9 +102,10 @@ public final class MessageListener extends ListenerAdapter {
             forLogChannel(channel -> {
                 User author = channel.getJDA().getUserById(message.getAuthor());
                 MessageEmbed embed = new EmbedBuilder()
-                        .setAuthor(author == null ? String.valueOf(message.getAuthor()) : author.getAsTag())
+                        .setAuthor((author == null ? String.valueOf(message.getAuthor()) : author.getAsTag()) + " edited in #" + channel.getName())
                         .addField("From", message.getContent(), false)
                         .addField("To", event.getMessage().getContentRaw(), false)
+                        .addField("\u200B", "[Click me to jump](" + event.getMessage().getJumpUrl() + ")", false)
                         .build();
                 channel.sendMessage(embed).queue();
             }, event);
@@ -125,7 +126,7 @@ public final class MessageListener extends ListenerAdapter {
         forLogChannel(channel -> {
             User author = channel.getJDA().getUserById(message.getAuthor());
             MessageEmbed embed = new EmbedBuilder()
-                    .setAuthor(author == null ? String.valueOf(message.getAuthor()) : author.getAsTag())
+                    .setAuthor((author == null ? String.valueOf(message.getAuthor()) : author.getAsTag()) + " deleted in #" + channel.getName())
                     .setDescription(message.getContent())
                     .build();
             channel.sendMessage(embed).queue();
