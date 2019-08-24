@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.filter;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.FilterData;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
@@ -58,7 +58,7 @@ public final class FilterCreateCommand extends Command {
             context.reply("The filter you provided is an invalid regular expression. Did you forget to escape any special characters?");
             return;
         }
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         FilterData filterData = gravity.load(new FilterData(context.getGuild().getId()));
         filterData.add(input);
         gravity.save(filterData);

@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import com.ibdiscord.punish.Punishment;
@@ -57,7 +57,7 @@ public final class LookupCommand extends Command {
         }
         Guild guild = context.getGuild();
         String caseNumber = context.getArguments()[0];
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
         if(!punishmentList.contains(caseNumber)) {
             context.reply("That case does not exist!");

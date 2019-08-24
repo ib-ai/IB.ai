@@ -22,7 +22,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.LangData;
 import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UDatabase;
@@ -65,7 +65,7 @@ public final class LangCommand extends Command {
         if (!Arrays.asList(Localiser.getAllLanguages()).contains(language)) {
             context.reply(String.format("'%s' is not a supported language. Use %slang to see a list of supported languages.", language, UDatabase.getPrefix(context.getGuild())));
         } else {
-            Gravity gravity = DContainer.INSTANCE.getGravity();
+            Gravity gravity = DataContainer.INSTANCE.getGravity();
             LangData langData = gravity.load(new LangData());
             langData.set(context.getMember().getUser().getId(), language);
             gravity.save(langData);

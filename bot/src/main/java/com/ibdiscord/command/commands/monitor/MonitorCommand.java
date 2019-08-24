@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.monitor;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.core.Permission;
+import com.ibdiscord.data.db.entries.GuildData;
 
 import java.util.Set;
 
@@ -33,7 +33,7 @@ public final class MonitorCommand extends Command {
     public MonitorCommand() {
         super("monitor",
                 Set.of("nsa"),
-                CommandPermission.discord(Permission.MANAGE_SERVER),
+                CommandPermission.role(GuildData.MODERATOR),
                 Set.of(new MonitorToggleCommand(),
                         new MonitorUserChannelCommand(),
                         new MonitorUserCommand(),

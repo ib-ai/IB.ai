@@ -4,8 +4,8 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
 
 import java.util.List;
 import java.util.Set;

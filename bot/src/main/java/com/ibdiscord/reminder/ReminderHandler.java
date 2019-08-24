@@ -1,7 +1,7 @@
 package com.ibdiscord.reminder;
 
 import com.ibdiscord.IBai;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.reminder.ReminderData;
 import com.ibdiscord.data.db.entries.reminder.ReminderUserData;
 import com.ibdiscord.data.db.entries.reminder.ReminderUserList;
@@ -48,7 +48,7 @@ public enum ReminderHandler {
      * @return A list of reminders, can be empty.
      */
     public List<Reminder> getFor(User user) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         ReminderUserList userList = gravity.load(new ReminderUserList(user.getId()));
         List<Reminder> list = new ArrayList<>();
         userList.values().stream()
@@ -78,7 +78,7 @@ public enum ReminderHandler {
      * @param text The text.
      */
     public synchronized void create(User user, long time, String text) {
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         ReminderData reminderData = gravity.load(new ReminderData());
         int newId = reminderData.get()
                 .defaulting(0)

@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.filter;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.FilterData;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
@@ -53,7 +53,7 @@ public final class FilterDeleteCommand extends Command {
             return;
         }
         String input = UString.concat(context.getArguments(), " ", 0);
-        Gravity gravity = DContainer.INSTANCE.getGravity();
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
         FilterData filterData = gravity.load(new FilterData(context.getGuild().getId()));
         filterData.remove(input);
         gravity.save(filterData);

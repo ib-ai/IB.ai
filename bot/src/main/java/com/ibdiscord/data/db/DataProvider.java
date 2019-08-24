@@ -28,11 +28,11 @@ import java.util.Set;
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 @SuppressWarnings("unchecked")
-final class DProvider implements GravityProvider {
+public final class DataProvider implements GravityProvider {
     private final RedisCommands sync;
 
-    DProvider() {
-        sync = DContainer.INSTANCE.getSync();
+    public DataProvider() {
+        sync = DataContainer.INSTANCE.getSync();
     }
 
     @Override

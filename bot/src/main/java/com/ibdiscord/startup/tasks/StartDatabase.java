@@ -1,6 +1,6 @@
 package com.ibdiscord.startup.tasks;
 
-import com.ibdiscord.data.db.DContainer;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.startup.AbstractStartupTask;
 
 /**
@@ -32,7 +32,7 @@ public final class StartDatabase extends AbstractStartupTask {
      */
     @Override
     public void doTask() {
-        DContainer.INSTANCE.connect();
+        DataContainer.INSTANCE.connect();
     }
 
 }
