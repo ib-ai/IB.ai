@@ -116,17 +116,22 @@ public final class ReactionListener extends ListenerAdapter {
         Collection<Role> rolesToRemove = add ? negativeRoles: positiveRoles;
 
         // Check to stop Pre-IB students from getting the NSFW role.
-        List<Role> userRoles = member.getRoles();
-        boolean hasPreIB = userRoles.stream()
-                .anyMatch(role -> role.getName().equals("Pre-IB"));
-        List<Role> guildRoles = member.getRoles();
-        boolean guildHasNSFW = guildRoles.stream()
-                .anyMatch(role -> role.getName().equals("NSFW"));
-        if(guildHasNSFW) {
+        // This is basically a HARDXXX CASSOWARY
+        try {
             Role nsfwRole = guild.getRolesByName("NSFW", true).get(0);
-            if(rolesToAdd.contains(nsfwRole) && hasPreIB) {
+            Role preIBRole = guild.getRolesByName("Pre-IB", true).get(0);
+
+            List<Role> userRoles = member.getRoles();
+            if(rolesToAdd.contains(nsfwRole) && userRoles.stream()
+                    .anyMatch(role -> role.getName().equals("Pre-IB"))) {
                 return;
             }
+            if(rolesToAdd.contains(preIBRole) && userRoles.stream()
+                    .anyMatch(role -> role.getName().equals("NSFW"))) {
+                return;
+            }
+        } catch(Exception ex) {
+            // ignored
         }
 
         CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData());
