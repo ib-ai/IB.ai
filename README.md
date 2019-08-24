@@ -11,8 +11,8 @@ Discord Name | GitHub Name | Role
 --- | --- | ---
 Arraying#7363 | [Arraying](https://github.com/Arraying) | Project Lead, API + Bot Developer
 pants#3101 | [vardy](https://github.com/vardy) | API + Bot Developer
-redstone.tehnik#7139 | [LenartBucar](https://github.com/LenartBucar) | API + Bot Developer
-kallak#4644 | [raynichc](https://github.com/raynichc) | Web Developer
+kallak#4644 | [raynichc](https://github.com/raynichc) | Bot Developer
+redstone.tehnik#7139 | [LenartBucar](https://github.com/LenartBucar) | Web Developer
 
 ## Usage
 
