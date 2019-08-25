@@ -21,6 +21,17 @@ services:
     image: redis
     volumes:
       - db-data:/data
+  
+  # Automated backup of Redis image to S3 object storage
+  backup:
+    image: pants1/docker-volume-backup:latest
+    restart: on-failure
+    env_file:
+     - ./env/backup.env
+    volumes:
+     - /var/lib/docker/volumes/:/HostVolumeData
+    depends_on:
+     - db
 
 volumes:
   # Database persistence
