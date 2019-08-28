@@ -4,7 +4,7 @@
 
 # Secrets
 env/bot.env
-
+env/backup.env
 
 # Java project files and compiled jars
 .idea/
