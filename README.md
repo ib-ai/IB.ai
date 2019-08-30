@@ -32,16 +32,9 @@ License details: https://choosealicense.com/licenses/gpl-3.0/#
 
 ## Installation and Compilation
 
-Using `Maven` to compile the Java source:    
-```
-$ mvn clean install
-```
-Run in `/bot` directory.    
-Place produced .jar file into `/bot/docker` as `IB.ai.jar`.
-
 Configure files:
- - /env/bot.env
- - /db/Redis.conf
+ - bot.env
+ - backup.env
 
 Using `Docker` and `Docker-Compose` to build container images and run:    
 ```
