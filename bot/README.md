@@ -14,7 +14,3 @@ Run-time:
  
  Compile-time:
  - Maven
- - Lombok Plugin for IDE
- 
-Run-time will require a properly formatted local `.toml` config 
-file for the bot and a valid connection to the Discord web API.
