@@ -1,4 +1,0 @@
-requests_oauthlib==1.0.0
-redis==2.10.6
-Flask==1.0.2
-toml==0.10.0
