@@ -3,8 +3,8 @@
 #
 
 # Secrets
-env/bot.env
-env/backup.env
+bot.env
+backup.env
 
 # Java project files and compiled jars
 .idea/

@@ -76,7 +76,7 @@ public enum Localiser {
          * Path accesses json file based off of user's preferred language and the first
          * half of the 'key' parameter.
          */
-        String pathToLanguageFile = String.format("/opt/IB.ai/bot/docker/lang/%s/%s.json", userLang, splitKey[0]);
+        String pathToLanguageFile = String.format("/IB.ai/lang/%s/%s.json", userLang, splitKey[0]);
         JSON languageFile = UJSON.retrieveJSONFromFile(pathToLanguageFile);
         String translation = languageFile.string(splitKey[1]);
 
@@ -110,7 +110,7 @@ public enum Localiser {
     }
 
     public static String[] getAllLanguages() {
-        String pathToAvailableLanguages = "bot/docker/lang/available_languages.json";
+        String pathToAvailableLanguages = "/IB.ai/lang/available_languages.json";
         JSON allLanguagesFile = UJSON.retrieveJSONFromFile(pathToAvailableLanguages);
 
         JSONArray arrayOfLanguages = allLanguagesFile.array("languages");
