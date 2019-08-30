@@ -1,3 +1,17 @@
+package com.ibdiscord.command.commands;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.LangData;
+import com.ibdiscord.localisation.Localiser;
+import com.ibdiscord.utils.UDatabase;
+import de.arraying.gravity.Gravity;
+
+import java.util.Arrays;
+import java.util.Set;
+
 /**
  * Copyright 2017-2019 Jarred Vardy <jarred.vardy@gmail.com>
  * <p>
@@ -16,21 +30,6 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-
-package com.ibdiscord.command.commands;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.LangData;
-import com.ibdiscord.localisation.Localiser;
-import com.ibdiscord.utils.UDatabase;
-import de.arraying.gravity.Gravity;
-
-import java.util.Arrays;
-import java.util.Set;
-
 public final class LangCommand extends Command {
 
     /**
@@ -50,7 +49,7 @@ public final class LangCommand extends Command {
         if (context.getArguments().length == 0) {
             context.reply("Supported languages: " +
                     Arrays.toString(Localiser.getAllLanguages())
-                        .replaceAll("(\\[)|(\\])", "") +
+                        .replaceAll("(\\[)|(])", "") +
                         ".");
             return;
         }

@@ -8,11 +8,11 @@ import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
 import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
 import java.util.List;

@@ -5,7 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
-import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.Set;
 

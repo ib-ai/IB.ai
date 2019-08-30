@@ -10,7 +10,7 @@ import com.ibdiscord.punish.PunishmentType;
 import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Member;
 
 import java.util.Set;
 

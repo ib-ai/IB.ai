@@ -2,10 +2,12 @@ package com.ibdiscord.input.embed;
 
 import com.ibdiscord.input.Input;
 import lombok.AllArgsConstructor;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.util.Objects;
 
 /**
  * Copyright 2017-2019 Arraying
@@ -67,7 +69,7 @@ public final @AllArgsConstructor class EmbedChannelInput implements Input {
             return false;
         }
         TextChannel target = message.getMentionedChannels().get(0);
-        if(!message.getMember().hasPermission(target, Permission.MESSAGE_WRITE, Permission.MESSAGE_EMBED_LINKS)) {
+        if(!Objects.requireNonNull(message.getMember()).hasPermission(target, Permission.MESSAGE_WRITE, Permission.MESSAGE_EMBED_LINKS)) {
             message.getChannel().sendMessage("You do not have access to that channel.").queue();
             return false;
         }

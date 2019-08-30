@@ -6,8 +6,8 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Role;
 
 import java.util.List;
 import java.util.Set;

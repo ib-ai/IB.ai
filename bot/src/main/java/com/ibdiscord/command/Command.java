@@ -6,7 +6,7 @@ import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.Comparator;
 import lombok.Getter;
 import lombok.Setter;
-import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.api.entities.GuildChannel;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Set;
@@ -98,7 +98,7 @@ public abstract class Command {
             context.reply("Unfortunately this command is momentarily disabled.");
             return;
         }
-        if(!permission.hasPermission(context.getMember(), (Channel) context.getChannel())) {
+        if(!permission.hasPermission(context.getMember(), (GuildChannel) context.getChannel())) {
             context.reply("You do not have permission to execute the command.");
             return;
         }

@@ -19,10 +19,10 @@ import com.ibdiscord.vote.VoteCache;
 import com.ibdiscord.vote.VoteEntry;
 import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 
 import java.util.Objects;
@@ -53,7 +53,7 @@ public final class ReadyListener extends ListenerAdapter {
      */
     @Override
     public void onReady(ReadyEvent event) {
-        event.getJDA().asBot().getApplicationInfo().queue(appInfo -> {
+        event.getJDA().retrieveApplicationInfo().queue(appInfo -> {
             String botName = appInfo.getName();
             String botOwner = appInfo.getOwner().getName();
             String botDescription = appInfo.getDescription();

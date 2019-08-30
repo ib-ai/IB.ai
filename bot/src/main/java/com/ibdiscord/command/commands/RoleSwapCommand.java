@@ -3,9 +3,9 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 
 import java.util.List;
 import java.util.Set;
@@ -59,7 +59,7 @@ public final class RoleSwapCommand extends Command {
 
         List<Member> members = context.getGuild().getMembersWithRoles(roles.get(0));
         for (Member member : members) {
-            context.getGuild().getController().modifyMemberRoles(member, roles.subList(1,2), roles.subList(0,1)).queue();
+            context.getGuild().modifyMemberRoles(member, roles.subList(1,2), roles.subList(0,1)).queue();
         }
 
         context.reply("The roles have been swapped for " + members.size() + " users.");

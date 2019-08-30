@@ -7,7 +7,7 @@ import com.ibdiscord.data.db.entries.reminder.ReminderUserData;
 import com.ibdiscord.data.db.entries.reminder.ReminderUserList;
 import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;

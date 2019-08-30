@@ -7,7 +7,7 @@ import com.ibdiscord.data.db.entries.voting.VoteLadderData;
 import com.ibdiscord.startup.tasks.StartBot;
 import de.arraying.gravity.Gravity;
 import lombok.RequiredArgsConstructor;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -157,7 +157,9 @@ public final @RequiredArgsConstructor class VoteEntry {
                 } else {
                     text = "drew";
                 }
-                textChannel.sendMessage("Update on vote `"  + ladder + "/" + id + "`: " + text + ".").queue();
+                if(textChannel != null) {
+                    textChannel.sendMessage("Update on vote `"  + ladder + "/" + id + "`: " + text + ".").queue();
+                }
                 entry.set(VoteEntryData.FINISHED, true);
                 entry.save(new DataProvider());
                 scheduleStop();

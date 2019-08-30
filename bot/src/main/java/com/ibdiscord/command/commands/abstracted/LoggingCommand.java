@@ -5,7 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.Set;
 

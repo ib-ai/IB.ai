@@ -1,3 +1,21 @@
+package com.ibdiscord.command.commands.react;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.react.ReactionData;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
+
 /**
  * Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
  *
@@ -16,25 +34,6 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-
-package com.ibdiscord.command.commands.react;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.react.ReactionData;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 public abstract class ReactionManageCommand extends Command {
 
     /**
@@ -106,7 +105,7 @@ public abstract class ReactionManageCommand extends Command {
         }
         Message message;
         try {
-            message = channel.getMessageById(messageId).complete();
+            message = channel.retrieveMessageById(messageId).complete();
         } catch(IllegalArgumentException exception) {
             context.reply("The message provided does not exist.");
             return;

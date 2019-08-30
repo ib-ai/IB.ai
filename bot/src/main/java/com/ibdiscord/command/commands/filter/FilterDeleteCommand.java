@@ -7,7 +7,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.FilterData;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 import java.util.Set;
 

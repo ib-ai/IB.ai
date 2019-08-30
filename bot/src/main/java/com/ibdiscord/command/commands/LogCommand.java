@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.commands.abstracted.LoggingCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.entries.GuildData;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 import java.util.Set;
 

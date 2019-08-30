@@ -5,9 +5,9 @@ import com.ibdiscord.data.db.entries.voting.VoteEntryData;
 import com.ibdiscord.data.db.entries.voting.VoteLadderData;
 import com.ibdiscord.data.db.entries.voting.VoteListData;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 /**
  * Copyright 2017-2019 Arraying

@@ -1,6 +1,6 @@
 package com.ibdiscord.input;
 
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * Copyright 2017-2019 Arraying

@@ -10,7 +10,7 @@ import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.utils.objects.Tuple;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

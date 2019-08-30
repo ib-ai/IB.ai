@@ -9,9 +9,9 @@ import com.ibdiscord.data.db.entries.NoteData;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.util.Set;
 

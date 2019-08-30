@@ -1,3 +1,8 @@
+package com.ibdiscord.data.db.entries.cassowary;
+
+import de.arraying.gravity.data.types.TypeList;
+import lombok.AllArgsConstructor;
+
 /**
  * Copyright 2017-2019 Jarred Vardy
  * <p>
@@ -16,12 +21,6 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-
-package com.ibdiscord.data.db.entries.cassowary;
-
-import de.arraying.gravity.data.types.TypeList;
-import lombok.AllArgsConstructor;
-
 public @AllArgsConstructor final class CassowaryData extends TypeList {
 
     private final String label;
@@ -30,4 +29,5 @@ public @AllArgsConstructor final class CassowaryData extends TypeList {
     protected String getUniqueIdentifier() {
         return "cassowary_" + label;
     }
+
 }

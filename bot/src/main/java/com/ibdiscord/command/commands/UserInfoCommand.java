@@ -6,9 +6,10 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildUserData;
 import com.ibdiscord.utils.UInput;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -62,8 +63,8 @@ public final class UserInfoCommand extends Command {
         User user = target.getUser();
         int joinPosition = context.getGuild().getMembers().stream()
                 .sorted((o1, o2) -> {
-                    long a = o1.getJoinDate().toInstant().toEpochMilli();
-                    long b = o2.getJoinDate().toInstant().toEpochMilli();
+                    long a = o1.getTimeJoined().toInstant().toEpochMilli();
+                    long b = o2.getTimeJoined().toInstant().toEpochMilli();
                     return Long.compare(a, b);
                 })
                 .collect(Collectors.toList())
@@ -72,15 +73,16 @@ public final class UserInfoCommand extends Command {
                 .load(new GuildUserData(context.getGuild().getId(), user.getId()))
                 .get("position")
                     .asString();
+        Activity activity = target.getActivities().size() == 0 ? null : target.getActivities().get(0);
         context.reply(new EmbedBuilder()
                 .setAuthor(user.getName() + "#" + user.getDiscriminator(), "https://discord.gg/ibo", user.getEffectiveAvatarUrl())
                 .addField("ID", user.getId(), true)
                 .addField("Nickname", target.getEffectiveName(), true)
                 .addField("Status", target.getOnlineStatus().toString(), true)
-                .addField("Game", target.getGame() == null ? "N/A" : target.getGame().getName(), true)
-                .addField("Joined", target.getJoinDate().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
+                .addField("Game", activity == null ? "N/A" : activity.getName(), true)
+                .addField("Joined", target.getTimeJoined().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
                 .addField("Join Position", joinOverride == null ? String.valueOf(joinPosition) : joinOverride, true)
-                .addField("Registered", user.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
+                .addField("Registered", user.getTimeCreated().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
                 .build()
         );
     }

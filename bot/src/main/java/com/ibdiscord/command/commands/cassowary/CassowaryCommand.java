@@ -1,3 +1,12 @@
+package com.ibdiscord.command.commands.cassowary;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import net.dv8tion.jda.api.Permission;
+
+import java.util.Set;
+
 /**
  * Copyright 2017-2019 Jarred Vardy
  *
@@ -16,17 +25,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-
-package com.ibdiscord.command.commands.cassowary;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.core.Permission;
-
-import java.util.Set;
-
-public class CassowaryCommand extends Command {
+public final class CassowaryCommand extends Command {
 
     /**
      * Creates a new Cassowary command.

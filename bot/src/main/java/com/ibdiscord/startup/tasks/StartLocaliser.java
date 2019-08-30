@@ -1,3 +1,8 @@
+package com.ibdiscord.startup.tasks;
+
+import com.ibdiscord.localisation.Localiser;
+import com.ibdiscord.startup.AbstractStartupTask;
+
 /**
  * Copyright 2017-2019 Jarred Vardy <jarred.vardy@gmail.com>
  * <p>
@@ -16,12 +21,6 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-
-package com.ibdiscord.startup.tasks;
-
-import com.ibdiscord.localisation.Localiser;
-import com.ibdiscord.startup.AbstractStartupTask;
-
 public class StartLocaliser extends AbstractStartupTask {
 
 
@@ -33,7 +32,7 @@ public class StartLocaliser extends AbstractStartupTask {
     }
 
     @Override
-    protected void doTask() throws Exception {
+    protected void doTask() {
         Localiser.INSTANCE.init();
     }
 }

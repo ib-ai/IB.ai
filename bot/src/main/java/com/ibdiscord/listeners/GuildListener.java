@@ -9,22 +9,25 @@ import com.ibdiscord.punish.PunishmentHandler;
 import com.ibdiscord.punish.PunishmentType;
 import com.ibdiscord.utils.UFormatter;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.audit.AuditLogChange;
-import net.dv8tion.jda.core.audit.AuditLogEntry;
-import net.dv8tion.jda.core.audit.AuditLogKey;
-import net.dv8tion.jda.core.audit.TargetType;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.guild.GuildUnbanEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberRoleAddEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberRoleRemoveEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.audit.AuditLogChange;
+import net.dv8tion.jda.api.audit.AuditLogEntry;
+import net.dv8tion.jda.api.audit.AuditLogKey;
+import net.dv8tion.jda.api.audit.TargetType;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.guild.GuildUnbanEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -68,12 +71,13 @@ public final class GuildListener extends ListenerAdapter {
         Role highest = event.getGuild().getSelfMember().getRoles().stream()
                 .max(Comparator.comparing(Role::getPosition))
                 .orElse(null);
-        Collection<Role> roles = roleData.values().stream()
+        List<Role> roles = roleData.values().stream()
                 .map(it -> member.getGuild().getRoleById(it.defaulting(0L).asLong()))
                 .filter(Objects::nonNull)
                 .filter(it -> highest == null || it.getPosition() < highest.getPosition())
-                .collect(Collectors.toSet());
-        member.getGuild().getController().addRolesToMember(member, roles).queue();
+                .collect(Collectors.toList());
+        roles.addAll(member.getRoles());
+        member.getGuild().modifyMemberRoles(member, roles).queue();
         roleData.delete();
         gravity.save(roleData);
     }
@@ -128,7 +132,7 @@ public final class GuildListener extends ListenerAdapter {
     private void queryAuditLog(Guild guild, long target) {
         executorService.schedule(() -> {
             synchronized(mutex) {
-                guild.getAuditLogs().queue(entries -> {
+                guild.retrieveAuditLogs().queue(entries -> {
                     if(entries.isEmpty()) {
                         return;
                     }
@@ -218,6 +222,9 @@ public final class GuildListener extends ListenerAdapter {
      * @return True if it does, false otherwise.
      */
     private boolean isNotMute(Guild guild, List<Map<String, String>> roles) {
+        if(roles == null) {
+            return false;
+        }
         String id = DataContainer.INSTANCE.getGravity().load(new GuildData(guild.getId())).get(GuildData.MUTE)
                 .defaulting("")
                 .asString();

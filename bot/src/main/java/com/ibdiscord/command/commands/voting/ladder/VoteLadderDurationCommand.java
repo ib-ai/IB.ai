@@ -4,7 +4,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.entries.voting.VoteLadderData;
 import com.ibdiscord.utils.UTime;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 import java.util.Set;
 
@@ -32,7 +32,11 @@ public final class VoteLadderDurationCommand extends VoteLadderDataCommand {
      * Creates the command.
      */
     VoteLadderDurationCommand() {
-        super("duration", Set.of("timeout"), CommandPermission.discord(Permission.MANAGE_SERVER), Set.of());
+        super("duration",
+                Set.of("timeout"),
+                CommandPermission.discord(Permission.MANAGE_SERVER),
+                Set.of()
+        );
     }
 
     /**

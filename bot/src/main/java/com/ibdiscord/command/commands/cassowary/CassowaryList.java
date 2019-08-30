@@ -1,3 +1,23 @@
+package com.ibdiscord.command.commands.cassowary;
+
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
+import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
+import com.ibdiscord.pagination.Page;
+import com.ibdiscord.pagination.Pagination;
+import com.ibdiscord.utils.UString;
+import de.arraying.gravity.data.property.Property;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * Copyright 2017-2019 Jarred Vardy
  * <p>
@@ -16,27 +36,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-
-package com.ibdiscord.command.commands.cassowary;
-
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
-import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
-import com.ibdiscord.pagination.Page;
-import com.ibdiscord.pagination.Pagination;
-import com.ibdiscord.utils.UString;
-import de.arraying.gravity.data.property.Property;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-public class CassowaryList extends PaginatedCommand<String> {
+public final class CassowaryList extends PaginatedCommand<String> {
 
     /**
      * Creates a new CassowaryList command.
@@ -55,7 +55,7 @@ public class CassowaryList extends PaginatedCommand<String> {
                 .map(Property::asString)
                 .map(cas -> cas + " " + DataContainer.INSTANCE.getGravity().load(new CassowaryData(cas)).contents().stream()
                         // lol
-                        .map(id -> id + "(" + context.getGuild().getRoleById(id.asString()).getName() + ")")
+                        .map(id -> id + "(" + Objects.requireNonNull(context.getGuild().getRoleById(id.asString())).getName() + ")")
                         .collect(Collectors.toSet())
                         .toString())
                 .collect(Collectors.toList());
