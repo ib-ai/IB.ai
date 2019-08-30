@@ -7,12 +7,12 @@ github_link = "https://example.com"
 
 [bot]
 bot_token = "bot-token-here"
-bot_token_beta = "MjE2ODU5ODk1MTY3ODQ0MzU0.Dznn1Q.rXh_kvVGql0f5Amwr1u7xK6xbwU"
+bot_token_beta = "oopsie doopsie doo"
 beta_mode = true
 bot_version = "x.y.z"
 static_prefix = "."
 
 [database]
-db_ip = "n1.thenova.net" # Name of database container
+db_ip = "localhost" # Name of database container
 main_db = 12 # Integer 0-15 for Redis
-main_password = "sexybeast"
+main_password = ""
