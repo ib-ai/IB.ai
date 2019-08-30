@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vardy/IB.ai.git"
+    "url": "git+https://github.com/ib-ai/IB.ai.git"
   },
   "author": "Arraying",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/vardy/IB.ai/issues"
+    "url": "https://github.com/ib-ai/IB.ai/issues"
   },
-  "homepage": "https://github.com/vardy/IB.ai#readme",
+  "homepage": "https://github.com/ib-ai/IB.ai#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",

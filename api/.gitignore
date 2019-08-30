@@ -1,6 +1,6 @@
 # Project meta-directories
-.idea
-node_modules
+.idea/
+node_modules/
 
 # Environment variables
 .env
