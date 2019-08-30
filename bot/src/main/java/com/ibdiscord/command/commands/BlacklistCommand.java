@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 import java.util.Set;
 
@@ -62,7 +62,7 @@ public final class BlacklistCommand extends Command {
                     "please ban them manually.");
             return;
         }
-        context.getGuild().getController().ban(idRaw, 0, "Blacklisted.").queue(
+        context.getGuild().ban(idRaw, 0).reason("Blacklisted.").queue(
                 success -> context.reply("Blacklisted successfully."),
                 fail -> context.reply("Blacklist failed. Is the ID correct and valid?")
         );

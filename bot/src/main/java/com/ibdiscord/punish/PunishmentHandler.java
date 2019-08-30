@@ -6,8 +6,8 @@ import com.ibdiscord.data.db.entries.punish.PunishmentData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import de.arraying.gravity.Gravity;
 import lombok.AllArgsConstructor;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 /**
  * Copyright 2017-2019 Arraying

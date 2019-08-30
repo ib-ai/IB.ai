@@ -12,8 +12,8 @@ import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentHandler;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.Set;
 

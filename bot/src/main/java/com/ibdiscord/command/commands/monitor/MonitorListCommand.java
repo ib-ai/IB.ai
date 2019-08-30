@@ -9,7 +9,7 @@ import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.List;
 import java.util.Set;

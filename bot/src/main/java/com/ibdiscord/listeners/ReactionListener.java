@@ -1,3 +1,21 @@
+package com.ibdiscord.listeners;
+
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
+import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
+import com.ibdiscord.data.db.entries.react.EmoteData;
+import com.ibdiscord.data.db.entries.react.ReactionData;
+import com.ibdiscord.vote.VoteCache;
+import com.ibdiscord.vote.VoteEntry;
+import de.arraying.gravity.data.property.Property;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
  *
@@ -16,28 +34,6 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-
-package com.ibdiscord.listeners;
-
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
-import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
-import com.ibdiscord.data.db.entries.react.EmoteData;
-import com.ibdiscord.data.db.entries.react.ReactionData;
-import com.ibdiscord.vote.VoteCache;
-import com.ibdiscord.vote.VoteEntry;
-import de.arraying.gravity.data.property.Property;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 public final class ReactionListener extends ListenerAdapter {
 
     /**
@@ -48,6 +44,9 @@ public final class ReactionListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
+        if(event.getMember() == null) {
+            return;
+        }
         react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), true);
         if(event.getMember().getUser().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
             return;
@@ -70,6 +69,9 @@ public final class ReactionListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
+        if(event.getMember() == null) {
+            return;
+        }
         react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), false);
         if(event.getMember().getUser().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
             return;
@@ -160,12 +162,10 @@ public final class ReactionListener extends ListenerAdapter {
             }
         }
 
-        // Second function in sequence used in consuming lambda in order to ensure first function has finished
-        // without blocking the thread.
-        // ROLES MUST BE REMOVED BEFORE THEY ARE ADDED. DONT ASK WHY.
-        guild.getController().removeRolesFromMember(member, rolesToRemove).queue(success ->
-                    guild.getController().addRolesToMember(member, rolesToAdd).queue(null, Throwable::printStackTrace),
-                    Throwable::printStackTrace);
+        List<Role> roles = new ArrayList<>(member.getRoles());
+        roles.removeAll(rolesToRemove);
+        roles.addAll(rolesToAdd);
+        guild.modifyMemberRoles(member, roles).queue();
     }
 
     /**

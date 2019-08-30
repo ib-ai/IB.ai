@@ -9,7 +9,7 @@ import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.Set;
 

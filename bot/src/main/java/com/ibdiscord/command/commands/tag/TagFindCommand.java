@@ -8,7 +8,7 @@ import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public final class TagFindCommand extends Command {
     /**
      * Creates the command.
      */
-    public TagFindCommand() {
+    TagFindCommand() {
         super("find",
                 Set.of("lookup"),
                 CommandPermission.discord(),
@@ -77,9 +77,7 @@ public final class TagFindCommand extends Command {
             } catch (NumberFormatException ignored) {
             }
         }
-        pagination.page(page).forEach(entry -> {
-            tags.append(entry.getValue()).append(", ");
-        });
+        pagination.page(page).forEach(entry -> tags.append(entry.getValue()).append(", "));
         if (tags.length() == 0) {
             embedBuilder.addField("No tags found.", "", false);
         } else {

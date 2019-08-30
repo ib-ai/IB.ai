@@ -1,3 +1,20 @@
+package com.ibdiscord.command.commands.cassowary;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
+import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
+import com.ibdiscord.utils.UInput;
+import com.ibdiscord.utils.UString;
+import net.dv8tion.jda.api.Permission;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Copyright 2017-2019 Jarred Vardy
  * <p>
@@ -17,21 +34,7 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.command.commands.cassowary;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
-import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
-import com.ibdiscord.utils.UInput;
-import com.ibdiscord.utils.UString;
-import net.dv8tion.jda.core.Permission;
-
-import java.util.*;
-
-public class CassowaryCreate extends Command {
+public final class CassowaryCreate extends Command {
 
     /**
      * Creates a new CassowaryCreate command.

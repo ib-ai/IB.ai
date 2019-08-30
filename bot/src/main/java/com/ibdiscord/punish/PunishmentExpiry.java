@@ -4,9 +4,9 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.ExpiryData;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 
 import java.util.Map;
 import java.util.concurrent.*;
@@ -73,9 +73,9 @@ public enum PunishmentExpiry {
                 if(role == null) {
                     return;
                 }
-                guild.getController().removeSingleRoleFromMember(member, role).queue();
+                guild.removeRoleFromMember(member, role).queue();
             case BAN:
-                guild.getController().unban(punishment.getUserId()).queue();
+                guild.unban(punishment.getUserId()).queue();
         }
     }
 

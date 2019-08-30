@@ -1,4 +1,6 @@
-/* Copyright 2019 Jarred Vardy <jarredvardy@gmail.com>
+package com.ibdiscord.exceptions;
+
+/** Copyright 2019 Jarred Vardy <jarredvardy@gmail.com>
  *
  * This file is part of CORAL.
  *
@@ -15,9 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with CORAL. If not, see http://www.gnu.org/licenses/.
  */
-
-package com.ibdiscord.exceptions;
-
 public class LocalisationException extends Exception {
 
     private static final String errorMessage = "There was an error in fetching the localised text for input: ";

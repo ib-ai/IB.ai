@@ -1,8 +1,8 @@
 package com.ibdiscord.input.embed;
 
 import com.ibdiscord.input.Input;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * Copyright 2017-2019 Arraying

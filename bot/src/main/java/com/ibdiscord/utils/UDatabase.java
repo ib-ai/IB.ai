@@ -4,7 +4,7 @@ import com.ibdiscord.IBai;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 /**
  * Copyright 2017-2019 Arraying

@@ -1,5 +1,5 @@
 FROM node
-MAINTAINER Arraying
+LABEL maintainer=Arraying
 
 COPY . /app
 WORKDIR /app

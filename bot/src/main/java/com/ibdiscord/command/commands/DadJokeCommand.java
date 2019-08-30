@@ -1,3 +1,16 @@
+package com.ibdiscord.command.commands;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Set;
+
 /**
  * Copyright 2017-2019 Jarred Vardy
  * <p>
@@ -16,19 +29,6 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-
-package com.ibdiscord.command.commands;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Set;
-
 public final class DadJokeCommand extends Command {
 
     /**
@@ -38,7 +38,8 @@ public final class DadJokeCommand extends Command {
         super("dadjoke",
                 Set.of("dad"),
                 CommandPermission.discord(),
-                Set.of());
+                Set.of()
+        );
     }
 
     @Override
@@ -65,7 +66,7 @@ public final class DadJokeCommand extends Command {
                 context.reply(response);
             }
 
-        } catch(Exception ex) {
+        } catch(IOException ex) {
             context.reply("Something went wrong...");
             ex.printStackTrace();
         }

@@ -3,9 +3,9 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Guild;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -50,8 +50,8 @@ public final class ServerInfoCommand extends Command {
         Guild guild = context.getGuild();
         context.reply(new EmbedBuilder()
                 .addField("ID", guild.getId(), true)
-                .addField("Owner", guild.getOwner().getUser().getAsTag(), true)
-                .addField("Creation Date", guild.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
+                .addField("Owner", guild.getOwner() == null ? "Nobody." : guild.getOwner().getUser().getAsTag(), true)
+                .addField("Creation Date", guild.getTimeCreated().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
                 .addField("Voice Region", guild.getRegion().getName(), true)
                 .addField("# of members", itos(guild.getMembers().size()), true)
                 .addField("# of Bots", ltos(guild.getMembers().stream()

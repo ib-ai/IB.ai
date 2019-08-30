@@ -2,7 +2,7 @@ package com.ibdiscord.utils;
 
 import com.ibdiscord.IBai;
 import com.ibdiscord.data.LocalConfig;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 
 /**

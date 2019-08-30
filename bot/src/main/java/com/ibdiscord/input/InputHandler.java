@@ -1,8 +1,8 @@
 package com.ibdiscord.input;
 
 import com.ibdiscord.utils.objects.Tuple;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.util.Map;
 import java.util.concurrent.*;

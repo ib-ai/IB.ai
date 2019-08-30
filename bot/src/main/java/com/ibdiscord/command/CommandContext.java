@@ -1,7 +1,7 @@
 package com.ibdiscord.command;
 
 import lombok.Getter;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.HashSet;

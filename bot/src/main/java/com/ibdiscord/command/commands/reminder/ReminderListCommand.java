@@ -7,7 +7,7 @@ import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.reminder.Reminder;
 import com.ibdiscord.reminder.ReminderHandler;
-import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.List;

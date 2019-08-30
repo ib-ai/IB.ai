@@ -8,7 +8,7 @@ import de.arraying.gravity.Gravity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 import static com.ibdiscord.data.db.entries.punish.PunishmentData.*;
 

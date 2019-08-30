@@ -3,7 +3,7 @@ package com.ibdiscord.command.commands.voting.ladder;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.entries.voting.VoteLadderData;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 import java.util.Set;
 

@@ -5,11 +5,10 @@ import com.ibdiscord.data.LocalConfig;
 import com.ibdiscord.listeners.*;
 import com.ibdiscord.startup.AbstractStartupTask;
 import lombok.Getter;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
 
 /**
  * Copyright 2017-2019 Jarred Vardy
@@ -48,11 +47,11 @@ public final class StartBot extends AbstractStartupTask {
     public void doTask() throws Exception {
         LocalConfig localConfig = IBai.INSTANCE.getConfig();
 
-        jda = new JDABuilder(AccountType.BOT)
+        jda = new JDABuilder()
                 .setToken(localConfig.getBotToken())
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                .setGame(Game.playing(String.format("v%s | %shelp", localConfig.getBotVersion(), localConfig.getStaticPrefix())))
-                .addEventListener(new FilterListener(), new GuildListener(), new MessageListener(), new MonitorListener(), new ReactionListener(), new ReadyListener())
+                .setActivity(Activity.playing(String.format("v%s | %shelp", localConfig.getBotVersion(), localConfig.getStaticPrefix())))
+                .addEventListeners(new FilterListener(), new GuildListener(), new MessageListener(), new MonitorListener(), new ReactionListener(), new ReadyListener())
                 .build();
         jda.setAutoReconnect(true);
         jda.awaitReady();
