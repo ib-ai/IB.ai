@@ -1,5 +1,7 @@
 # IB.ai
 
+[![Discord](https://discordapp.com/api/guilds/230296179991248896/widget.png?style=shield)](https://discord.gg/IBO) [![GitHub Stars](https://img.shields.io/github/stars/ib-ai/IB.ai?style=flat-square)](https://github.com/ib-ai/IB.ai/) [![Current Version](https://img.shields.io/badge/version-3.1.0-blue?style=flat-square)](https://github.com/ib-ai/IB.ai) [![Repo License](https://img.shields.io/github/license/ib-ai/IB.ai?style=flat-square)](https://github.com/ib-ai/IB.ai/blob/master/LICENSE.md)
+
 IB.ai is the bot developed for the r/ibo Discord server, by the community.
 It is a free and open source project. We provide a wide domain of functionality. 
 Each function should be documented in the [project wiki](https://github.com/ib-ai/IB.ai/wiki).
