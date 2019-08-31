@@ -1,7 +1,11 @@
-.dockerignore
-.git
+.idea/
+target/
+.git/
+
+README.md
+LICENSE.md
+
 .gitignore
 docker-compose.yml
 docker-compose.*.yml
 *.iml
-/.idea/
