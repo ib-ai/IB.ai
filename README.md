@@ -18,14 +18,6 @@ IB.ai has a large variety of functions. Each one of these should be documented i
 
 Please read the `CONTRIBUTING.md` file to find out more about contributing towards the project.
 
-## License
-
-This project is licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl.html).    
-This license is copy-left and conducive to free, open-source software.
-
-Project license: https://github.com/ib-ai/IB.ai/blob/master/LICENSE.md    
-License details: https://choosealicense.com/licenses/gpl-3.0/#
-
 ## Installation and Compilation
 
 ### Dependencies
@@ -44,3 +36,11 @@ Using `Docker` and `Docker-Compose` to build container images and run:
 $ docker-compose build
 $ docker-compose up
 ```
+
+## License
+
+This project is licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl.html).    
+This license is copy-left and conducive to free, open-source software.
+
+Project license: https://github.com/ib-ai/IB.ai/blob/master/LICENSE.md    
+License details: https://choosealicense.com/licenses/gpl-3.0/#
