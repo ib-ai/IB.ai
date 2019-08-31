@@ -5,10 +5,10 @@ It is a free and open source project.
 
 ## Maintainers
 
-<!-- ALL-CONTRIBUTORS-LIST -->
+<!-- ALL-MAINTAINERS-LIST -->
 | [<img src="https://avatars1.githubusercontent.com/u/16021050?s=460&v=4" width="100px;"/><br /><sub><b>Arraying</b></sub>](https://arraying.de/ "Arraying#7363")<br />[💻](https://github.com/ib-ai/IB.ai/commits?author=Arraying "Code") | [<img src="https://avatars3.githubusercontent.com/u/31592255?s=460&v=4" width="100px;"/><br /><sub><b>Jarred Vardy</b></sub>](https://vardy.dev/ "pants#0422")<br />[💻](https://github.com/ib-ai/IB.ai/commits?author=vardy "Code") | [<img src="https://cdn.discordapp.com/avatars/194811522793340929/882de32ae697c8ac7f6f51e666684338.png?size=1024" width="100px;"/><br /><sub><b>Ray Clark</b></sub>](https://github.com/raynichc "kallak#4644")<br />[💻](https://github.com/ib-ai/IB.ai/commits?author=raynichc "Code") |
 | :---: | :---: | :---: |
-<!-- /ALL-CONTRIBUTORS-LIST:END -->
+<!-- END ALL-MAINTAINERS-LIST -->
 
 ## Usage
 
