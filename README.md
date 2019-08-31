@@ -3,16 +3,12 @@
 IB.ai is the bot developed for the r/ibo Discord server, by the community.
 It is a free and open source project.
 
-## Developers
+## Maintainers
 
-The project is currently being developed by the following developers:
-
-Discord Name | GitHub Name | Role
---- | --- | ---
-Arraying#7363 | [Arraying](https://github.com/Arraying) | Project Lead, API + Bot Developer
-pants#3101 | [vardy](https://github.com/vardy) | API + Bot Developer
-kallak#4644 | [raynichc](https://github.com/raynichc) | Bot Developer
-redstone.tehnik#7139 | [LenartBucar](https://github.com/LenartBucar) | Web Developer
+<!-- ALL-CONTRIBUTORS-LIST -->
+| [<img src="https://avatars1.githubusercontent.com/u/16021050?s=460&v=4" width="100px;"/><br /><sub><b>Arraying</b></sub>](https://arraying.de/ "Arraying#7363")<br />[💻](https://github.com/ib-ai/IB.ai/commits?author=Arraying "Code") | [<img src="https://avatars3.githubusercontent.com/u/31592255?s=460&v=4" width="100px;"/><br /><sub><b>Jarred Vardy</b></sub>](https://vardy.dev/ "pants#0422")<br />[💻](https://github.com/ib-ai/IB.ai/commits?author=vardy "Code") | [<img src="https://cdn.discordapp.com/avatars/194811522793340929/882de32ae697c8ac7f6f51e666684338.png?size=1024" width="100px;"/><br /><sub><b>Ray Clark</b></sub>](https://github.com/raynichc "kallak#4644")<br />[💻](https://github.com/ib-ai/IB.ai/commits?author=raynichc "Code") |
+| :---: | :---: | :---: |
+<!-- /ALL-CONTRIBUTORS-LIST:END -->
 
 ## Usage
 
@@ -34,14 +30,10 @@ License details: https://choosealicense.com/licenses/gpl-3.0/#
 
 ### Dependencies
 
-Run-time:
  - Docker
  - Docker-Compose
- 
- Compile-time:
- - Maven
 
-### Doing it
+### Run-time, baby!
 
 Configure files:
  - bot.env
