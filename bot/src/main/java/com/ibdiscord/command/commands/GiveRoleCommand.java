@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -50,10 +51,10 @@ public final class GiveRoleCommand extends Command {
     protected void execute(CommandContext context) {
         List<Role> roles = context.getMessage().getMentionedRoles();
         if(roles.isEmpty()) {
-            context.reply("Please mention a role you want to target and the role you want to give.");
+            context.reply(Localiser.__(context, "error.role_empty"));
             return;
         } else if (roles.size() == 1) {
-            context.reply("Please mention a new role to give.");
+            context.reply(Localiser.__(context, "error.role_missing"));
             return;
         }
 
@@ -62,7 +63,7 @@ public final class GiveRoleCommand extends Command {
             context.getGuild().getController().addSingleRoleToMember(member, roles.get(1)).queue();
         }
 
-        context.reply("The role have been added to " + members.size() + " users.");
+        context.reply(Localiser.__(context, "success.give_role", String.valueOf(members.size())));
     }
 
 }

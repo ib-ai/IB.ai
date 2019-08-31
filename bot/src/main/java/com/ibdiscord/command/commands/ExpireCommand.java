@@ -7,6 +7,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.ExpiryData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentExpiry;
 import com.ibdiscord.utils.UTime;
@@ -62,17 +63,17 @@ public final class ExpireCommand extends Command {
         String caseNumber = context.getArguments()[0];
         long expires = UTime.parseDuration(context.getArguments()[1]);
         if(expires == -1) {
-            context.reply("The duration provided is invalid.");
+            context.reply(Localiser.__(context, "error.expire_duration"));
             return;
         }
         long delay = expires - System.currentTimeMillis();
         if(delay <= 0) {
-            context.reply("That time has already passed.");
+            context.reply(Localiser.__(context, "error.expire_expired"));
             return;
         }
         PunishmentsData list = gravity.load(new PunishmentsData(guildId));
         if(!list.contains(caseNumber)) {
-            context.reply("The case provided is invalid.");
+            context.reply(Localiser.__(context, "error.expire_case"));
             return;
         }
         ExpiryData expiryData = gravity.load(new ExpiryData(guildId));
@@ -84,7 +85,7 @@ public final class ExpireCommand extends Command {
         PunishmentExpiry.INSTANCE.schedule(context.getGuild(), caseNumber, delay, punishment);
         expiryData.set(caseNumber, expires);
         gravity.save(expiryData);
-        context.reply("The expiration has been scheduled.");
+        context.reply(Localiser.__(context, "success.expire"));
     }
 
 }

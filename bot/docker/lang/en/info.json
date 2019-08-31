@@ -1,0 +1,10 @@
+{
+  "supported_langs": "Supported languages: {0}.",
+  "mod_permission": "The moderator permission is currently: {0}.",
+  "mute_role": "The new role has been set.",
+  "note": "Here are the notes for the user.",
+  "latency": "Pong! WebSocket latency is currently {0}.",
+  "user_roles": "This user has the following roles: `{0}`.",
+  "warned_you": "You have been warned on {0} for: {1}",
+  "warned_they": "The user has been warned."
+}

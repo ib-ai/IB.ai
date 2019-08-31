@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildUserData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -56,7 +57,7 @@ public final class UserInfoCommand extends Command {
             target = UInput.getMember(context.getGuild(), context.getArguments()[0]);
         }
         if(target == null) {
-            context.reply("User not found!");
+            context.reply(Localiser.__(context, "error.user_404"));
             return;
         }
         User user = target.getUser();

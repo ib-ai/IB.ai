@@ -8,6 +8,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.PunishmentData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentHandler;
 import com.ibdiscord.utils.UString;
@@ -67,12 +68,12 @@ public final class ReasonCommand extends Command {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
         if(!punishmentList.contains(caseNumber)) {
-            context.reply("That case does not exist!");
+            context.reply(Localiser.__(context, "error.lookup_noexist"));
             return;
         }
         Long caseId = UString.toLong(caseNumber);
         if(caseId == null) {
-            context.reply("Internal error converting to long.");
+            context.reply(Localiser.__(context, "error.lookup_convert"));
             return;
         }
         Punishment punishment = Punishment.of(context.getGuild(), caseId);
@@ -81,7 +82,7 @@ public final class ReasonCommand extends Command {
         PunishmentHandler punishmentHandler = new PunishmentHandler(guild, punishment);
         TextChannel channel = punishmentHandler.getLogChannel();
         if(channel == null) {
-            context.reply("Logging is currently not enabled or set up incorrectly.");
+            context.reply(Localiser.__(context, "error.reason_logging"));
             return;
         }
         boolean redacted = context.getOptions().stream()
@@ -94,10 +95,10 @@ public final class ReasonCommand extends Command {
         channel.editMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong(), punishment.getLogPunishment(guild, caseId)).queue(
                 outstandingMove -> {
                     punishmentData.set(REASON, reason);
-                    context.reply("The reason has been updated.");
+                    context.reply(Localiser.__(context, "success.reason"));
                 },
                 error -> {
-                    context.reply("An error occurred, the reason could not be updated.");
+                    context.reply(Localiser.__(context, "error.reason"));
                     error.printStackTrace();
                 }
         );

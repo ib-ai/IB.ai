@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public final class PingCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        context.reply("Pong! WebSocket latency is currently %d.", context.getGuild().getJDA().getPing());
+        context.reply(Localiser.__(context, "info.latency", String.valueOf(context.getGuild().getJDA().getPing())));
     }
 
 }

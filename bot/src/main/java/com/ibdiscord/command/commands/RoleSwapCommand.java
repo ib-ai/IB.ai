@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -50,10 +51,10 @@ public final class RoleSwapCommand extends Command {
     protected void execute(CommandContext context) {
         List<Role> roles = context.getMessage().getMentionedRoles();
         if(roles.isEmpty()) {
-            context.reply("Please mention the roles that you want to swap.");
+            context.reply(Localiser.__(context, "error.swap_empty"));
             return;
         } else if (roles.size() == 1) {
-            context.reply("Please mention a new role to swap to.");
+            context.reply(Localiser.__(context, "error.swap_missing"));
             return;
         }
 
@@ -62,7 +63,7 @@ public final class RoleSwapCommand extends Command {
             context.getGuild().getController().modifyMemberRoles(member, roles.subList(1,2), roles.subList(0,1)).queue();
         }
 
-        context.reply("The roles have been swapped for " + members.size() + " users.");
+        context.reply(Localiser.__(context, "success.swap_role", String.valueOf(members.size())));
     }
 
 }

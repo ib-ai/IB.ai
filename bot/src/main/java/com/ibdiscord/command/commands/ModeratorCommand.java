@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
@@ -55,13 +56,13 @@ public final class ModeratorCommand extends Command {
             String permission = guildData.get(GuildData.MODERATOR)
                     .defaulting("not set")
                     .asString();
-            context.reply("The moderator permission is currently: " + permission + ".");
+            context.reply(Localiser.__(context, "info.mod_permission", permission));
             return;
         }
         String newValue = UString.concat(context.getArguments(), " ", 0);
         guildData.set(GuildData.MODERATOR, newValue);
         gravity.save(guildData);
-        context.reply("The moderator permission has been updated.");
+        context.reply(Localiser.__(context, "success.mod_permission"));
     }
 
 }

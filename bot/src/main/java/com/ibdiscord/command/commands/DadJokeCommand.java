@@ -22,6 +22,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -66,7 +67,7 @@ public final class DadJokeCommand extends Command {
             }
 
         } catch(Exception ex) {
-            context.reply("Something went wrong...");
+            context.reply(Localiser.__(context, "error.exception"));
             ex.printStackTrace();
         }
     }

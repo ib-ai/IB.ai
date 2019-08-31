@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -52,12 +53,12 @@ public final class UserRolesCommand extends Command {
             target = UInput.getMember(context.getGuild(), context.getArguments()[0]);
         }
         if(target == null) {
-            context.reply("User not found!");
+            context.reply(Localiser.__(context, "error.user_404"));
             return;
         }
-        context.reply("This user has the following roles: `%s`.", target.getRoles().stream()
+        context.reply(Localiser.__(context, "info.user_roles", target.getRoles().stream()
                 .map(Role::getName)
-                .collect(Collectors.joining(", "))
+                .collect(Collectors.joining(", ")))
         );
     }
 
