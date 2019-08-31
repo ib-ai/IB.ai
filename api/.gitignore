@@ -1,7 +1,15 @@
-# Project meta-directories
-.idea/
-node_modules/
+#
+#
+#
+#
+# # # # # # # # # # # # # #
+#         Secrets         #
+# # # # # # # # # # # # # #
+#
+#
+#
+#
 
-# Environment variables
-.env
+
 mongo.env
+api.env
