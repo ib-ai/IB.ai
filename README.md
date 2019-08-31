@@ -32,6 +32,17 @@ License details: https://choosealicense.com/licenses/gpl-3.0/#
 
 ## Installation and Compilation
 
+### Dependencies
+
+Run-time:
+ - Docker
+ - Docker-Compose
+ 
+ Compile-time:
+ - Maven
+
+### Doing it
+
 Configure files:
  - bot.env
  - backup.env
