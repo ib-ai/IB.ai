@@ -30,6 +30,10 @@ backup.env
 
 # IDE files
 .idea/
+.vsc/
+.vs/
+
+# Logging
 logs/
 
 ### Windows ###
@@ -38,10 +42,8 @@ logs/
 Thumbs.db
 ehthumbs.db
 
-# Folder config file
+# Windows metafiles
 Desktop.ini
-
-# Recycle Bin used on file shares
 $RECYCLE.BIN/
 
 # Windows Installer files
@@ -91,9 +93,6 @@ hs_err_pid*
 # Maven artifact output
 target/
 dependency-reduced-pom.xml
-
-# NodeJS dependencies
-node_modules/
 
 ### Eclipse ###
 
