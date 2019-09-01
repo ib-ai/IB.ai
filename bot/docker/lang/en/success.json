@@ -9,5 +9,6 @@
   "prefix": "The prefix has been updated to ({0}).",
   "done": "Consider it done.",
   "reason": "The reason has been updated.",
-  "swap_role": "The roles have been swapped for {0} users."
+  "swap_role": "The roles have been swapped for {0} users.",
+  "eval": "**Output:**``` {0} ```"
 }

@@ -78,7 +78,7 @@ public final class EvalCommand extends Command {
                     .queue(null, error -> context.reply(Localiser.__(context, "error.eval_file")));
             return;
         }
-        context.reply("**Output:**```" + response + "```");
+        context.reply(Localiser.__(context, "success.eval", response));
     }
 
 }
