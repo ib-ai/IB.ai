@@ -5,6 +5,7 @@ import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.TagData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UString;
@@ -79,7 +80,7 @@ public final class TagListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("Here is a list of tags.");
+        embedBuilder.setDescription(Localiser.__(context, "info.tag_list"));
     }
 
 }

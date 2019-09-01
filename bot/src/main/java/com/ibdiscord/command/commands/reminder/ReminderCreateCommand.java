@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands.reminder;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.reminder.ReminderHandler;
 import com.ibdiscord.utils.UString;
 import com.ibdiscord.utils.UTime;
@@ -47,21 +48,21 @@ public final class ReminderCreateCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length < 1) {
-            context.reply("Please provide the duration until you want to be reminded.");
+            context.reply(Localiser.__(context, "error.reminder_duration"));
             return;
         }
         if(context.getArguments().length < 2) {
-            context.reply("Please provide the reminder.");
+            context.reply(Localiser.__(context, "error.reminder_content"));
             return;
         }
         long duration = UTime.parseDuration(context.getArguments()[0]);
         if(duration == -1) {
-            context.reply("Your duration is invalid. For example, a reminder in 3 hours and 15 minutes would be `3h15`.");
+            context.reply(Localiser.__(context, "error.reminder_format"));
             return;
         }
         String reminder = UString.concat(context.getArguments(), " ", 1);
         ReminderHandler.INSTANCE.create(context.getMember().getUser(), duration, reminder);
-        context.reply("The reminder has been scheduled!");
+        context.reply(Localiser.__(context, "success.reminder_schedule"));
     }
 
 }

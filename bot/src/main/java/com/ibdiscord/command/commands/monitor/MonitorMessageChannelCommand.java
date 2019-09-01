@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorData;
+import com.ibdiscord.localisation.Localiser;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
 
@@ -48,14 +49,14 @@ public class MonitorMessageChannelCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getMessage().getMentionedChannels().isEmpty()) {
-            context.reply("Please mention a channel!");
+            context.reply(Localiser.__(context, "error.missing_channel"));
             return;
         }
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         MonitorData monitorData = gravity.load(new MonitorData(context.getGuild().getId()));
         monitorData.set(MonitorData.MESSAGE_CHANNEL, context.getMessage().getMentionedChannels().get(0).getId());
         gravity.save(monitorData);
-        context.reply("Consider it done.");
+        context.reply(Localiser.__(context, "success.done"));
     }
 
 }

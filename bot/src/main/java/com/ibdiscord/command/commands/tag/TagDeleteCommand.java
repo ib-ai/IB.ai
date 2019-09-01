@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.TagData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.Permission;
 
@@ -54,13 +55,13 @@ public final class TagDeleteCommand extends Command {
         } else {
             List<String> names = UInput.extractQuotedStrings(context.getArguments());
             if(names.isEmpty()) {
-                context.reply("Invalid name, please provide it in quotation marks.");
+                context.reply(Localiser.__(context, "error.tag_quotation"));
                 return;
             }
             TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
             tagData.unset(names.get(0));
             DataContainer.INSTANCE.getGravity().save(tagData);
-            context.reply("The tag has been removed.");
+            context.reply(Localiser.__(context, "success.tag_remove"));
         }
 
     }

@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands.voting.ladder;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.entries.voting.VoteLadderData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UTime;
 import net.dv8tion.jda.core.Permission;
 
@@ -45,11 +46,11 @@ public final class VoteLadderDurationCommand extends VoteLadderDataCommand {
         String duration = context.getArguments()[1];
         long time = UTime.parseDuration(duration) - System.currentTimeMillis(); // Adjusts for the current time
         if(time < 0) {
-            context.reply("Invalid or too short time format specified (e.g. use 3d for 3 days).");
+            context.reply(Localiser.__(context, "error.ladder_format"));
             return;
         }
         ladderData.set(VoteLadderData.TIMEOUT, time);
-        context.reply("The duration has been specified.");
+        context.reply(Localiser.__(context, "success.ladder_specify"));
     }
 
 }

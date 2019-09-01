@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorData;
+import com.ibdiscord.localisation.Localiser;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
 
@@ -54,7 +55,7 @@ public final class MonitorToggleCommand extends Command {
                 .asBoolean();
         monitorData.set(MonitorData.ENABLED, !current);
         gravity.save(monitorData);
-        context.reply(current ? "Monitoring disabled." : "Monitoring enabled.");
+        context.reply(current ? Localiser.__(context, "success.monitor_disable") : Localiser.__(context, "success.monitor_enable"));
     }
 
 }

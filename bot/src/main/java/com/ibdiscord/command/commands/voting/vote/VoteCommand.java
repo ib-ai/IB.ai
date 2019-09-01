@@ -6,6 +6,7 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.voting.VoteLaddersData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UString;
 import com.ibdiscord.vote.VoteEntry;
 import com.ibdiscord.vote.VoteLadder;
@@ -59,17 +60,17 @@ public final class VoteCommand extends Command {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         VoteLaddersData laddersData = gravity.load(new VoteLaddersData(context.getGuild().getId()));
         if(!laddersData.contains(ladder)) {
-            context.reply("That ladder does not exist.");
+            context.reply(Localiser.__(context, "error.ladder_noexist"));
             return;
         }
         String text = UString.concat(context.getArguments(), " ", 1);
         VoteLadder voteLadder = new VoteLadder(context.getGuild(), ladder);
         VoteEntry voteEntry = voteLadder.createVote(text);
         if(voteEntry == null) {
-            context.reply("Could not create the vote. Is the ladder set up properly, and are the permissions correct?");
+            context.reply(Localiser.__(context, "error.vote_create"));
             return;
         }
-        context.reply("Created vote #" + voteEntry.getId());
+        context.reply(Localiser.__(context, "success.vote_create") + voteEntry.getId());
     }
 
 }

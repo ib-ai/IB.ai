@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.FilterData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
@@ -55,14 +56,14 @@ public final class FilterCreateCommand extends Command {
         }
         String input = UString.concat(context.getArguments(), " ", 0);
         if(!UInput.isValidRegex(input)) {
-            context.reply("The filter you provided is an invalid regular expression. Did you forget to escape any special characters?");
+            context.reply(Localiser.__(context, "error.filter"));
             return;
         }
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         FilterData filterData = gravity.load(new FilterData(context.getGuild().getId()));
         filterData.add(input);
         gravity.save(filterData);
-        context.reply("The filter has been added.");
+        context.reply(Localiser.__(context, "success.filter_add"));
     }
 
 }

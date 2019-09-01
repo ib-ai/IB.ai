@@ -80,7 +80,7 @@ public final class NoteCommand extends Command {
                                 data = data.substring(1);
                             }
                         }
-                        embedBuilder.addField("Entry by " + user + ":",
+                        embedBuilder.addField(Localiser.__(context, "info.note_author", user),
                                 data,
                                 false);
                     });

@@ -4,6 +4,7 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UString;
 
 import java.util.List;
@@ -76,16 +77,16 @@ public abstract class MonitorManageCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length < 1) {
-            context.reply("Please provide the operation.");
+            context.reply(Localiser.__(context, "error.missing_operation"));
             return;
         }
         if(context.getArguments().length < 2) {
-            context.reply("Please provide the data.");
+            context.reply(Localiser.__(context, "error.missing_data"));
             return;
         }
         String input = UString.concat(context.getArguments(), " ", 1);
         if(!isValidInput(context, input)) {
-            context.reply("The data provided is invalid (e.g. not a proper user).");
+            context.reply(Localiser.__(context, "error.invalid_data"));
             return;
         }
         switch(context.getArguments()[0].toLowerCase()) {
@@ -98,10 +99,10 @@ public abstract class MonitorManageCommand extends Command {
                 remove(context, input);
                 break;
             default:
-                context.reply("Invalid operation.");
+                context.reply(Localiser.__(context, "error.invalid_operation"));
                 return;
         }
-        context.reply("Consider it done.");
+        context.reply(Localiser.__(context, "success.done"));
     }
 
 }

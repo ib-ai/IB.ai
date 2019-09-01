@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands.voting.ladder;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.entries.voting.VoteLadderData;
+import com.ibdiscord.localisation.Localiser;
 import net.dv8tion.jda.core.Permission;
 
 import java.util.Set;
@@ -50,11 +51,11 @@ public final class VoteLadderThresholdCommand extends VoteLadderDataCommand {
         try {
             number = Integer.valueOf(raw);
         } catch(NumberFormatException exception) {
-            context.reply("Please provide a number.");
+            context.reply(Localiser.__(context, "error.missing_number"));
             return;
         }
         ladderData.set(VoteLadderData.THRESHOLD, number);
-        context.reply("The threshold has been updated.");
+        context.reply(Localiser.__(context, "success.threshold_update"));
     }
 
 }

@@ -76,12 +76,12 @@ public final class UserInfoCommand extends Command {
         context.reply(new EmbedBuilder()
                 .setAuthor(user.getName() + "#" + user.getDiscriminator(), "https://discord.gg/ibo", user.getEffectiveAvatarUrl())
                 .addField("ID", user.getId(), true)
-                .addField("Nickname", target.getEffectiveName(), true)
-                .addField("Status", target.getOnlineStatus().toString(), true)
-                .addField("Game", target.getGame() == null ? "N/A" : target.getGame().getName(), true)
-                .addField("Joined", target.getJoinDate().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
-                .addField("Join Position", joinOverride == null ? String.valueOf(joinPosition) : joinOverride, true)
-                .addField("Registered", user.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
+                .addField(Localiser.__(context, "info.user_nick"), target.getEffectiveName(), true)
+                .addField(Localiser.__(context, "info.user_status"), target.getOnlineStatus().toString(), true)
+                .addField(Localiser.__(context, "info.user_game"), target.getGame() == null ? "N/A" : target.getGame().getName(), true)
+                .addField(Localiser.__(context, "info.user_joined"), target.getJoinDate().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
+                .addField(Localiser.__(context, "info.user_position"), joinOverride == null ? String.valueOf(joinPosition) : joinOverride, true)
+                .addField(Localiser.__(context, "info.user_registered"), user.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
                 .build()
         );
     }

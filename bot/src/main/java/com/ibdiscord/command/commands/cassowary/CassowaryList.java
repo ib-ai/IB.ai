@@ -25,6 +25,7 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
 import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UString;
@@ -69,6 +70,6 @@ public class CassowaryList extends PaginatedCommand<String> {
 
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("List of cassowaries by label.");
+        embedBuilder.setDescription(Localiser.__(context, "info.list_cassowary"));
     }
 }

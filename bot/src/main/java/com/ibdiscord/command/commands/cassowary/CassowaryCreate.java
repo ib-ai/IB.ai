@@ -25,6 +25,7 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
 import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.core.Permission;
@@ -67,7 +68,7 @@ public class CassowaryCreate extends Command {
                 .anyMatch(id -> validateRoleID(id, context));
 
         if(invalidIDs) {
-            context.reply("One or more of the role IDs you entered was invalid.");
+            context.reply(Localiser.__(context, "error.cassowary_id"));
             return;
         }
 
@@ -79,7 +80,7 @@ public class CassowaryCreate extends Command {
         roleIDs.forEach(cassowaryData::add);
         DataContainer.INSTANCE.getGravity().save(cassowaryData);
 
-        context.reply("Consider it done.");
+        context.reply(Localiser.__(context, "success.done"));
     }
 
     private static boolean validateRoleID(String roleID, CommandContext context) {

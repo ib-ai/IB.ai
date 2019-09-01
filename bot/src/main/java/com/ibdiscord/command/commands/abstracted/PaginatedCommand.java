@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands.abstracted;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -84,7 +85,8 @@ public abstract class PaginatedCommand<T> extends Command {
         }
         Pagination<T> pagination = getPagination(context);
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setFooter("Page " + page + "/" + pagination.total(), null);
+        embedBuilder.setFooter(Localiser.__(context, "info.paginated", String.valueOf(page),
+                String.valueOf(pagination.total())), null);
         pagination.page(page).forEach(it -> handle(context, embedBuilder, it));
         tweak(context, embedBuilder);
         context.reply(embedBuilder.build());

@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.FilterData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
@@ -57,7 +58,7 @@ public final class FilterDeleteCommand extends Command {
         FilterData filterData = gravity.load(new FilterData(context.getGuild().getId()));
         filterData.remove(input);
         gravity.save(filterData);
-        context.reply("The phrase has been deleted.");
+        context.reply(Localiser.__(context, "success.filter_delete"));
     }
 
 }
