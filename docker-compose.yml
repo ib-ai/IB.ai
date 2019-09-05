@@ -7,7 +7,7 @@ services:
   bot:
     image: ib.ai
     restart: on-failure:3
-    build: ./bot
+    build: ./
     env_file:
       - bot.env
     depends_on:
