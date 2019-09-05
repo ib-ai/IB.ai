@@ -27,14 +27,15 @@ Please read the `CONTRIBUTING.md` file to find out more about contributing towar
 
 ## Installation and Compilation
 
-### Dependencies
+### From source
 
+**Dependencies:**
  - Docker
  - Docker-Compose
 
-### Run-time, baby!
+**Run-time:**
 
-Configure files:
+Configuration files:
  - bot.env
  - backup.env
 
@@ -42,6 +43,18 @@ Using `Docker` and `Docker-Compose` to build container images and run:
 ```
 $ docker-compose build
 $ docker-compose up
+```
+
+### From Docker Hub image
+
+TO BE COMPLETED
+
+```
+$ docker pull pants1/ib.ai
+```
+
+```
+$ docker run
 ```
 
 ## License
