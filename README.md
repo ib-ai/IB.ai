@@ -1,26 +1,61 @@
 # IB.ai
 
-IB.ai is the bot developed for the r/ibo Discord server, by the community.
-It is a free and open source project.
+[![Discord](https://img.shields.io/discord/230296179991248896?color=7289DA&label=discord&style=flat-square)](https://discord.gg/IBO) [![GitHub Stars](https://img.shields.io/github/stars/ib-ai/IB.ai?style=flat-square)](https://github.com/ib-ai/IB.ai/) [![Current Version](https://img.shields.io/badge/version-3.1.0-blue?style=flat-square)](https://github.com/ib-ai/IB.ai) [![Repo License](https://img.shields.io/github/license/ib-ai/IB.ai?style=flat-square)](https://github.com/ib-ai/IB.ai/blob/master/LICENSE.md)
 
-## Developers
+IB.ai is the bot developed for the /r/ibo Discord server, by the community.
+It is a free and open source project. We provide a wide domain of functionality. 
+Each function should be documented in the [project wiki](https://github.com/ib-ai/IB.ai/wiki).
 
-The project is currently being developed by the following developers:
+## Contribution
 
-Discord Name | GitHub Name | Role
---- | --- | ---
-Arraying#7363 | [Arraying](https://github.com/Arraying) | Project Lead, API + Bot Developer
-pants#3101 | [vardy](https://github.com/vardy) | API + Bot Developer
-kallak#4644 | [raynichc](https://github.com/raynichc) | Bot Developer
-redstone.tehnik#7139 | [LenartBucar](https://github.com/LenartBucar) | Web Developer
+### Maintainers
 
-## Usage
+<!-- ALL-MAINTAINERS-LIST -->
+| [<img src="https://avatars1.githubusercontent.com/u/16021050?s=460&v=4" width="100px;"/><br /><sub><b>Arraying</b></sub>](https://arraying.de/ "Arraying#7363")<br />[💻](https://github.com/ib-ai/IB.ai/commits?author=Arraying "Code") | [<img src="https://avatars3.githubusercontent.com/u/31592255?s=460&v=4" width="100px;"/><br /><sub><b>Jarred Vardy</b></sub>](https://vardy.dev/ "pants#0422")<br />[💻](https://github.com/ib-ai/IB.ai/commits?author=vardy "Code") | [<img src="https://cdn.discordapp.com/avatars/194811522793340929/882de32ae697c8ac7f6f51e666684338.png?size=1024" width="100px;"/><br /><sub><b>Ray Clark</b></sub>](https://github.com/raynichc "kallak#4644")<br />[💻](https://github.com/ib-ai/IB.ai/commits?author=raynichc "Code") |
+| :---: | :---: | :---: |
+<!-- END ALL-MAINTAINERS-LIST -->
 
-IB.ai has a large variety of functions. Each one of these should be documented in the [project wiki](https://github.com/ib-ai/IB.ai/wiki).
+### Contributors
 
-## Contributing
+Other contributors include:
+ - [@LenartBucar](https://github.com/LenartBucar/) (redstone.tehnik#7139)
+ - [@ImmortalPharaoh7](https://github.com/ImmortalPharaoh7/) (ImmortalPharaoh7#7811)
+
+### Contributing
 
 Please read the `CONTRIBUTING.md` file to find out more about contributing towards the project.
+
+## Installation and Compilation
+
+### From source
+
+**Dependencies:**
+ - Docker
+ - Docker-Compose
+
+**Run-time:**
+
+Configuration files:
+ - bot.env
+ - backup.env
+
+Using `Docker` and `Docker-Compose` to build container images and run:    
+```
+$ docker-compose build
+$ docker-compose up
+```
+
+### From Docker Hub image
+
+```
+$ docker pull pants1/ib.ai
+```
+
+```
+$ docker run -d -v db-data:/data redis
+
+$ docker run -d --env-file bot.env --link redis pants1/ib.ai
+```
 
 ## License
 
@@ -29,22 +64,3 @@ This license is copy-left and conducive to free, open-source software.
 
 Project license: https://github.com/ib-ai/IB.ai/blob/master/LICENSE.md    
 License details: https://choosealicense.com/licenses/gpl-3.0/#
-
-## Installation and Compilation
-
-Using `Maven` to compile the Java source:    
-```
-$ mvn clean install
-```
-Run in `/bot` directory.    
-Place produced .jar file into `/bot/docker` as `IB.ai.jar`.
-
-Configure files:
- - /env/bot.env
- - /db/Redis.conf
-
-Using `Docker` and `Docker-Compose` to build container images and run:    
-```
-$ docker-compose build
-$ docker-compose up
-```

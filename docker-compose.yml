@@ -7,9 +7,9 @@ services:
   bot:
     image: ib.ai
     restart: on-failure:3
-    build: ./bot/docker
+    build: ./bot
     env_file:
-      - ./env/bot.env
+      - bot.env
     depends_on:
       - db
 
@@ -27,7 +27,7 @@ services:
     image: pants1/docker-volume-backup
     restart: on-failure
     env_file:
-     - ./env/backup.env
+     - backup.env
     volumes:
      - /var/lib/docker/volumes/:/HostVolumeData
     depends_on:

@@ -1,7 +1,0 @@
-# Project meta-directories
-.idea
-node_modules
-
-# Environment variables
-.env
-mongo.env
