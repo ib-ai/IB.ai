@@ -24,7 +24,7 @@ services:
   
   # Automated backup of Redis image to S3 object storage
   backup:
-    image: docker.pkg.github.com/vardy/dockervolumebackup/docker-volume-backup:1.0.1
+    image: pants1/docker-volume-backup
     restart: on-failure
     env_file:
      - backup.env
