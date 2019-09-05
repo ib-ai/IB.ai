@@ -47,14 +47,14 @@ $ docker-compose up
 
 ### From Docker Hub image
 
-TO BE COMPLETED
-
 ```
 $ docker pull pants1/ib.ai
 ```
 
 ```
-$ docker run
+$ docker run -d -v db-data:/data redis
+
+$ docker run -d --env-file bot.env --link redis pants1/ib.ai
 ```
 
 ## License
