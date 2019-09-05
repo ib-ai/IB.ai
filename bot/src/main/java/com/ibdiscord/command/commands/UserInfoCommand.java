@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildUserData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -56,7 +57,7 @@ public final class UserInfoCommand extends Command {
             target = UInput.getMember(context.getGuild(), context.getArguments()[0]);
         }
         if(target == null) {
-            context.reply("User not found!");
+            context.reply(Localiser.__(context, "error.user_404"));
             return;
         }
         User user = target.getUser();
@@ -75,12 +76,12 @@ public final class UserInfoCommand extends Command {
         context.reply(new EmbedBuilder()
                 .setAuthor(user.getName() + "#" + user.getDiscriminator(), "https://discord.gg/ibo", user.getEffectiveAvatarUrl())
                 .addField("ID", user.getId(), true)
-                .addField("Nickname", target.getEffectiveName(), true)
-                .addField("Status", target.getOnlineStatus().toString(), true)
-                .addField("Game", target.getGame() == null ? "N/A" : target.getGame().getName(), true)
-                .addField("Joined", target.getJoinDate().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
-                .addField("Join Position", joinOverride == null ? String.valueOf(joinPosition) : joinOverride, true)
-                .addField("Registered", user.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
+                .addField(Localiser.__(context, "info.user_nick"), target.getEffectiveName(), true)
+                .addField(Localiser.__(context, "info.user_status"), target.getOnlineStatus().toString(), true)
+                .addField(Localiser.__(context, "info.user_game"), target.getGame() == null ? "N/A" : target.getGame().getName(), true)
+                .addField(Localiser.__(context, "info.user_joined"), target.getJoinDate().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
+                .addField(Localiser.__(context, "info.user_position"), joinOverride == null ? String.valueOf(joinPosition) : joinOverride, true)
+                .addField(Localiser.__(context, "info.user_registered"), user.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
                 .build()
         );
     }

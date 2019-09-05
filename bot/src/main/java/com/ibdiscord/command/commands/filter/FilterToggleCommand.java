@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.localisation.Localiser;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
 
@@ -53,7 +54,7 @@ public final class FilterToggleCommand extends Command {
         boolean current = guildData.get(GuildData.FILTERING).defaulting(false).asBoolean();
         guildData.set(GuildData.FILTERING, !current);
         gravity.save(guildData);
-        context.reply(current ? "The filter has been disabled." : "The filter has been enabled.");
+        context.reply(current ? Localiser.__(context, "success.filter_disable") : Localiser.__(context, "success.filter_enable"));
     }
 
 }

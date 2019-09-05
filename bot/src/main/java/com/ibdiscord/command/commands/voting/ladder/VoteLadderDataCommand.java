@@ -6,6 +6,7 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.voting.VoteLadderData;
 import com.ibdiscord.data.db.entries.voting.VoteLaddersData;
+import com.ibdiscord.localisation.Localiser;
 import de.arraying.gravity.Gravity;
 
 import java.util.Set;
@@ -51,14 +52,14 @@ public abstract class VoteLadderDataCommand extends Command {
     @Override
     protected final void execute(CommandContext context) {
         if(context.getArguments().length < 1) {
-            context.reply("Please provide the ladder name.");
+            context.reply(Localiser.__(context, "error.ladder_name"));
             return;
         }
         String ladder = context.getArguments()[0].toLowerCase();
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         VoteLaddersData laddersData = gravity.load(new VoteLaddersData(context.getGuild().getId()));
         if(!laddersData.contains(ladder)) {
-            context.reply("That ladder does not exist.");
+            context.reply(Localiser.__(context, "error.ladder_noexist"));
             return;
         }
         VoteLadderData ladderData = gravity.load(new VoteLadderData(context.getGuild().getId(), ladder));

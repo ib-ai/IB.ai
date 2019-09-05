@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Guild;
@@ -50,18 +51,18 @@ public final class ServerInfoCommand extends Command {
         Guild guild = context.getGuild();
         context.reply(new EmbedBuilder()
                 .addField("ID", guild.getId(), true)
-                .addField("Owner", guild.getOwner().getUser().getAsTag(), true)
-                .addField("Creation Date", guild.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
-                .addField("Voice Region", guild.getRegion().getName(), true)
-                .addField("# of members", itos(guild.getMembers().size()), true)
-                .addField("# of Bots", ltos(guild.getMembers().stream()
+                .addField(Localiser.__(context, "info.owner"), guild.getOwner().getUser().getAsTag(), true)
+                .addField(Localiser.__(context, "info.creation_date"), guild.getCreationTime().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
+                .addField(Localiser.__(context, "info.vc_region"), guild.getRegion().getName(), true)
+                .addField(Localiser.__(context, "info.number_members"), itos(guild.getMembers().size()), true)
+                .addField(Localiser.__(context, "info.number_bots"), ltos(guild.getMembers().stream()
                     .filter(it -> it.getUser().isBot())
                     .count()), true)
-                .addField("Currently Online", ltos(guild.getMembers().stream()
+                .addField(Localiser.__(context, "info.number_online"), ltos(guild.getMembers().stream()
                     .filter(it -> it.getOnlineStatus() != OnlineStatus.OFFLINE)
                     .count()), true)
-                .addField("# of Roles", itos(guild.getRoles().size()), true)
-                .addField("# of Channels", itos(guild.getVoiceChannels().size() + guild.getTextChannels().size() + guild.getCategories().size()), true)
+                .addField(Localiser.__(context, "info.number_roles"), itos(guild.getRoles().size()), true)
+                .addField(Localiser.__(context, "info.number_channels"), itos(guild.getVoiceChannels().size() + guild.getTextChannels().size() + guild.getCategories().size()), true)
                 .build()
         );
     }

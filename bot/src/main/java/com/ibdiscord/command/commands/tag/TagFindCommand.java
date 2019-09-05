@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.TagData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
@@ -81,10 +82,11 @@ public final class TagFindCommand extends Command {
             tags.append(entry.getValue()).append(", ");
         });
         if (tags.length() == 0) {
-            embedBuilder.addField("No tags found.", "", false);
+            embedBuilder.addField(Localiser.__(context, "error.tag_404"), "", false);
         } else {
-            embedBuilder.addField("Here is a list of similar tags.", tags.substring(0, tags.length() - 2), false);
-            embedBuilder.setFooter("Page " + page + "/" + pagination.total(), null);
+            embedBuilder.addField(Localiser.__(context, "info.tag_list_similar"), tags.substring(0, tags.length() - 2), false);
+            embedBuilder.setFooter(Localiser.__(context, "info.paginated",String.valueOf(page),
+                    String.valueOf(pagination.total())), null);
         }
         context.reply(embedBuilder.build());
     }

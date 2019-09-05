@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands.reminder;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.reminder.Reminder;
 import com.ibdiscord.reminder.ReminderHandler;
 
@@ -48,7 +49,7 @@ public final class ReminderDeleteCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length == 0) {
-            context.reply("Please specify the reminder ID. It is shown when listing all reminders.");
+            context.reply(Localiser.__(context, "error.reminderid"));
             return;
         }
         List<Reminder> reminders = ReminderHandler.INSTANCE.getFor(context.getMember().getUser()).stream()
@@ -61,11 +62,11 @@ public final class ReminderDeleteCommand extends Command {
                 .findFirst()
                 .orElse(null);
         if(reminder == null) {
-            context.reply("You have no (active) reminders with that ID.");
+            context.reply(Localiser.__(context, "error.reminder_inactiveid"));
             return;
         }
         reminder.setCompleted(true);
-        context.reply("The reminder has been deleted.");
+        context.reply(Localiser.__(context, "success.reminder_delete"));
     }
 
 }

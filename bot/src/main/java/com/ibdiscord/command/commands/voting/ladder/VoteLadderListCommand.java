@@ -5,6 +5,7 @@ import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.voting.VoteLaddersData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import de.arraying.gravity.data.property.Property;
@@ -77,7 +78,7 @@ public final class VoteLadderListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("Listed are the different vote ladders.");
+        embedBuilder.setDescription(Localiser.__(context, "info.ladder_list"));
     }
 
 }

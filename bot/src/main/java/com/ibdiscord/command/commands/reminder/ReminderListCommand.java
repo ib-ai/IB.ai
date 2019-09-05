@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands.reminder;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.reminder.Reminder;
@@ -81,7 +82,7 @@ public final class ReminderListCommand extends PaginatedCommand<Reminder> {
      */
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("Here is a list of your active reminders.");
+        embedBuilder.setDescription(Localiser.__(context, "info.reminder_list"));
     }
 
 }

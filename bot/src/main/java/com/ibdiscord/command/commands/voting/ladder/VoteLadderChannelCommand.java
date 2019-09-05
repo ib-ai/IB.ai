@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands.voting.ladder;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.entries.voting.VoteLadderData;
+import com.ibdiscord.localisation.Localiser;
 import net.dv8tion.jda.core.Permission;
 
 import java.util.Set;
@@ -46,11 +47,11 @@ public final class VoteLadderChannelCommand extends VoteLadderDataCommand {
     @Override
     protected void handle(CommandContext context, VoteLadderData ladderData) {
         if(context.getMessage().getMentionedChannels().isEmpty()) {
-            context.reply("Please mention a channel!");
+            context.reply(Localiser.__(context, "error.missing_channel"));
             return;
         }
         ladderData.set(VoteLadderData.CHANNEL, context.getMessage().getMentionedChannels().get(0).getIdLong());
-        context.reply("The channel has been updated.");
+        context.reply(Localiser.__(context, "succes.channel_update"));
     }
 
 }

@@ -6,6 +6,7 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorMessageData;
 import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import de.arraying.gravity.Gravity;
@@ -72,7 +73,7 @@ public final class MonitorListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
-        embedBuilder.addField("Entry #" + page.getNumber(), page.getValue(), false);
+        embedBuilder.addField(Localiser.__(context, "info.entry") + page.getNumber(), page.getValue(), false);
     }
 
     /**
@@ -82,7 +83,7 @@ public final class MonitorListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("Here is a list of entries.");
+        embedBuilder.setDescription(Localiser.__(context, "info.entry_list"));
     }
 
 }

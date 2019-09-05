@@ -24,6 +24,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.react.ReactionData;
+import com.ibdiscord.localisation.Localiser;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
@@ -72,19 +73,19 @@ public abstract class ReactionManageCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length < 1) {
-            context.reply("Please provide the channel ID.");
+            context.reply(Localiser.__(context, "error.missing_channelid"));
             return;
         }
         if(context.getArguments().length < 2) {
-            context.reply("Please provide the message ID.");
+            context.reply(Localiser.__(context, "error.missing_messageid"));
             return;
         }
         if(context.getArguments().length < 3) {
-            context.reply("Please provide the emoji ID.");
+            context.reply(Localiser.__(context, "error.missing_emojiid"));
             return;
         }
         if(context.getArguments().length < 4) {
-            context.reply("Please provide one or more role IDs.");
+            context.reply(Localiser.__(context, "error.missing_roleid"));
             return;
         }
         long channelId;
@@ -96,19 +97,19 @@ public abstract class ReactionManageCommand extends Command {
             messageId = Long.valueOf(context.getArguments()[1]);
             roleArgs = new ArrayList<>(Arrays.asList(context.getArguments()).subList(3, context.getArguments().length));
         } catch(NumberFormatException exception) {
-            context.reply("One of your IDs is not a number. Please make sure you only use numeric IDs, and not mentions.");
+            context.reply(Localiser.__(context, "error.reaction_invalidid"));
             return;
         }
         TextChannel channel = context.getGuild().getTextChannelById(channelId);
         if(channel == null) {
-            context.reply("The channel provided does not exist.");
+            context.reply(Localiser.__(context, "error.reaction_channel"));
             return;
         }
         Message message;
         try {
             message = channel.getMessageById(messageId).complete();
         } catch(IllegalArgumentException exception) {
-            context.reply("The message provided does not exist.");
+            context.reply(Localiser.__(context, "error.reaction_message"));
             return;
         }
 
@@ -119,14 +120,14 @@ public abstract class ReactionManageCommand extends Command {
                 .map(arg -> arg.replace("!", ""))
                 .forEach(id -> roles.add(context.getGuild().getRoleById(id)));
         if(roles.isEmpty() || roles.contains(null)) {
-            context.reply("The role(s) provided were invalid.");
+            context.reply(Localiser.__(context, "error.reaction_role"));
             return;
         }
         ReactionData data = DataContainer.INSTANCE.getGravity().load(new ReactionData(context.getGuild().getId(), messageId));
         modifyData(data, emoteRaw, roleIDData);
         modifyMessage(message, context.getMessage().getEmotes().isEmpty() ? emoteRaw : context.getMessage().getEmotes().get(0));
         DataContainer.INSTANCE.getGravity().save(data);
-        context.reply("Consider it done.");
+        context.reply(Localiser.__(context, "success.done"));
     }
 
 }

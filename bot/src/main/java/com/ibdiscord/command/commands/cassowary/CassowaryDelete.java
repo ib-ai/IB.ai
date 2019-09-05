@@ -25,6 +25,7 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
 import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.core.Permission;
 
@@ -64,6 +65,6 @@ public class CassowaryDelete extends Command {
 
         DataContainer.INSTANCE.getGravity().load(new CassowaryData(label)).delete();
 
-        context.reply("Consider it done.");
+        context.reply(Localiser.__(context, "success.done"));
     }
 }

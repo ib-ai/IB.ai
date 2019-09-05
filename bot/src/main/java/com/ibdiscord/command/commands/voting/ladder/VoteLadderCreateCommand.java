@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.voting.VoteLaddersData;
+import com.ibdiscord.localisation.Localiser;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.core.Permission;
 
@@ -48,7 +49,7 @@ public final class VoteLadderCreateCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length < 1) {
-            context.reply("Please provide the ladder name.");
+            context.reply(Localiser.__(context, "error.ladder_name"));
             return;
         }
         String ladder = context.getArguments()[0].toLowerCase();
@@ -56,7 +57,7 @@ public final class VoteLadderCreateCommand extends Command {
         VoteLaddersData laddersData = gravity.load(new VoteLaddersData(context.getGuild().getId()));
         laddersData.add(ladder);
         gravity.save(laddersData);
-        context.reply("The ladder \"" + ladder + "\" has been created.");
+        context.reply(Localiser.__(context, "success.ladder_create", ladder));
     }
 
 }

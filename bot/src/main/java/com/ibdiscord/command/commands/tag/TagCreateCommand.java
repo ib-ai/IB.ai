@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.TagData;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.core.Permission;
@@ -57,27 +58,27 @@ public final class TagCreateCommand extends Command {
         }
         List<String> data = UInput.extractQuotedStrings(context.getArguments());
         if(data.size() < 2) {
-            context.reply("Invalid input. Make sure to put both the trigger and output in double quotes.");
+            context.reply(Localiser.__(context, "error.tag_input"));
             return;
         }
         String trigger = data.get(0);
         if(UString.escapeFormatting(trigger).length()> MessageEmbed.TITLE_MAX_LENGTH) {
-            context.reply("Tag name too long.");
+            context.reply(Localiser.__(context, "error.tag_long_name"));
             return;
         }
         if(!UInput.isValidRegex(trigger)) {
-            context.reply("Trigger is not a valid regular expression.");
+            context.reply(Localiser.__(context, "error.tag_expression"));
             return;
         }
         String output = data.get(1);
         if(UString.escapeFormatting(output).length() > 512) {
-            context.reply("Tag value too long.");
+            context.reply(Localiser.__(context, "error.tag_long_value"));
             return;
         }
         TagData tags = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
         tags.set(trigger, output);
         DataContainer.INSTANCE.getGravity().save(tags);
-        context.reply("Consider it done: `%s` -> `%s`.", trigger, output);
+        context.reply(Localiser.__(context, "success.tag_done", trigger, output));
     }
 
 }

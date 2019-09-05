@@ -5,6 +5,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.localisation.Localiser;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.Set;
@@ -64,7 +65,7 @@ public abstract class LoggingCommand extends Command {
         GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
         guildData.set(key, channel == null ? DISABLED : channel.getId());
         DataContainer.INSTANCE.getGravity().save(guildData);
-        context.reply("The channel has been set to: " + (channel == null ? "nothing" : channel.getAsMention()) + ".");
+        context.reply(Localiser.__(context, "success.logging", (channel == null ? "nothing" : channel.getAsMention())));
     }
 
 }

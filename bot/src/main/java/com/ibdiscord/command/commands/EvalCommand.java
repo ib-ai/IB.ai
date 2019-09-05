@@ -3,6 +3,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UString;
 
 import javax.script.ScriptEngine;
@@ -67,17 +68,17 @@ public final class EvalCommand extends Command {
         try {
             out = engine.eval("(function(){with(imports){" + code + "}})();");
         } catch(ScriptException exception) {
-            context.reply("Error, stacktrace printed: " + exception.getMessage());
+            context.reply(Localiser.__(context, "error.eval_exception", exception.getMessage()));
             exception.printStackTrace();
             return;
         }
         String response = UString.stripMassMentions(out.toString());
         if(response.length() > 2000) {
             context.getChannel().sendFile(response.getBytes(), "output_past_threshold.txt")
-                    .queue(null, error -> context.reply("Well, it seems as if the output can't be sent as a file."));
+                    .queue(null, error -> context.reply(Localiser.__(context, "error.eval_file")));
             return;
         }
-        context.reply("**Output:**```" + response + "```");
+        context.reply(Localiser.__(context, "success.eval", response));
     }
 
 }
