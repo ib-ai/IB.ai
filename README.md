@@ -1,6 +1,6 @@
 # IB.ai
 
-[![Discord](https://img.shields.io/discord/230296179991248896?color=7289DA&label=discord&style=flat-square)](https://discord.gg/IBO) [![GitHub Stars](https://img.shields.io/github/stars/ib-ai/IB.ai?style=flat-square)](https://github.com/ib-ai/IB.ai/) [![Current Version](https://img.shields.io/badge/version-3.1.0-blue?style=flat-square)](https://github.com/ib-ai/IB.ai) [![Repo License](https://img.shields.io/github/license/ib-ai/IB.ai?style=flat-square)](https://github.com/ib-ai/IB.ai/blob/master/LICENSE.md)
+[![Discord](https://img.shields.io/discord/230296179991248896?color=7289DA&label=discord&style=flat-square)](https://discord.gg/IBO) [![Current Version](https://img.shields.io/github/v/tag/ib-ai/IB.ai?label=version&style=flat-square)](https://hub.docker.com/r/pants1/ib.ai/tags) [![Docker Pulls](https://img.shields.io/docker/pulls/pants1/ib.ai?style=flat-square)](https://hub.docker.com/r/pants1/ib.ai) [![Docker Build](https://img.shields.io/docker/cloud/build/pants1/ib.ai?style=flat-square)](https://cloud.docker.com/repository/docker/pants1/ib.ai/builds) [![Repo License](https://img.shields.io/github/license/ib-ai/IB.ai?style=flat-square)](https://github.com/ib-ai/IB.ai/blob/master/LICENSE.md)
 
 IB.ai is the bot developed for the /r/ibo Discord server, by the community.
 It is a free and open source project. We provide a wide domain of functionality. 
@@ -29,12 +29,6 @@ Please read the `CONTRIBUTING.md` file to find out more about contributing towar
 
 ### From source
 
-**Dependencies:**
- - Docker
- - Docker-Compose
-
-**Run-time:**
-
 Configuration files:
  - bot.env
  - backup.env
@@ -46,10 +40,6 @@ $ docker-compose up
 ```
 
 ### From Docker Hub image
-
-```
-$ docker pull pants1/ib.ai
-```
 
 ```
 $ docker run -d -v db-data:/data redis
