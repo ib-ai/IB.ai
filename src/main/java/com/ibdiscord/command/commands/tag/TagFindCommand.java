@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Copyright 2017-2019 Ray Clark
@@ -58,15 +59,12 @@ public final class TagFindCommand extends Command {
             return;
         }
         String guild = context.getGuild().getId();
-        String compare = UInput.extractQuotedStrings(context.getArguments()).get(0);
+        String compare = UInput.extractQuotedStrings(context.getArguments()).get(0).toLowerCase();
         Gravity gravity = DataContainer.INSTANCE.getGravity();
-        List<String> matches = new ArrayList<>();
-        Set<String> tagKeys = gravity.load(new TagData(guild)).getKeys();
-        Pattern pattern = Pattern.compile(compare);
-        for(String key : tagKeys) {
-            if(pattern.matcher(key).matches())
-                matches.add(key);
-        }
+        List<String> matches = gravity.load(new TagData(guild)).getKeys().stream()
+                .map(String::toLowerCase)
+                .filter(tag -> tag.contains(compare))
+                .collect(Collectors.toList());
         EmbedBuilder embedBuilder = new EmbedBuilder();
         StringBuilder tags = new StringBuilder();
         Pagination<String> pagination = new Pagination<>(matches, 20);
