@@ -7,6 +7,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UInput;
+import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -54,7 +55,7 @@ public final class TagFindCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        if(context.getArguments().length < 1) {
+        if(UInput.extractQuotedStrings(context.getArguments()).size() < 1) {
             sendUsage(context);
             return;
         }
@@ -75,7 +76,7 @@ public final class TagFindCommand extends Command {
             } catch (NumberFormatException ignored) {
             }
         }
-        pagination.page(page).forEach(entry -> tags.append(entry.getValue()).append(", "));
+        pagination.page(page).forEach(entry -> tags.append(UString.escapeFormatting(entry.getValue())).append(", "));
         if (tags.length() == 0) {
             embedBuilder.addField("No tags found.", "", false);
         } else {
