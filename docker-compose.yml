@@ -9,7 +9,7 @@ services:
     restart: on-failure:3
     build:
       context: ./
-      dockerfile: Dockerfile.prod
+      dockerfile: prod.Dockerfile
     env_file:
       - bot.env
     depends_on:
