@@ -52,8 +52,6 @@ public enum IBai {
     @Getter Logger logger = LoggerFactory.getLogger(getClass());
     @Getter private static JDA jda;
 
-    // TEST l l ll ll l ll l l ll l ll ll l ll l ll l ll ll ll l ll l ll ll l ll ll l ll l ll l ll l ll ll l lll ll l ll l ll l
-
     /**
      * Entry point of the program.
      * @param args The arguments.
