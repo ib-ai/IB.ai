@@ -25,6 +25,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UInput;
+import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public final class TagFindCommand extends Command {
 
@@ -53,21 +55,17 @@ public final class TagFindCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        if(context.getArguments().length < 1) {
+        if(UInput.extractQuotedStrings(context.getArguments()).size() < 1) {
             sendUsage(context);
             return;
         }
         String guild = context.getGuild().getId();
-        String compare = UInput.extractQuotedStrings(context.getArguments()).get(0);
+        String compare = UInput.extractQuotedStrings(context.getArguments()).get(0).toLowerCase();
         Gravity gravity = DataContainer.INSTANCE.getGravity();
-        List<String> matches = new ArrayList<>();
-        Set<String> tagKeys = gravity.load(new TagData(guild)).getKeys();
-        Pattern pattern = Pattern.compile(compare);
-        for(String key : tagKeys) {
-            if(pattern.matcher(key).matches()) {
-                matches.add(key);
-            }
-        }
+        List<String> matches = gravity.load(new TagData(guild)).getKeys().stream()
+                .map(String::toLowerCase)
+                .filter(tag -> tag.contains(compare))
+                .collect(Collectors.toList());
         EmbedBuilder embedBuilder = new EmbedBuilder();
         StringBuilder tags = new StringBuilder();
         Pagination<String> pagination = new Pagination<>(matches, 20);
@@ -79,8 +77,8 @@ public final class TagFindCommand extends Command {
                 // Ignored
             }
         }
-        pagination.page(page).forEach(entry -> tags.append(entry.getValue()).append(", "));
-        if(tags.length() == 0) {
+        pagination.page(page).forEach(entry -> tags.append(UString.escapeFormatting(entry.getValue())).append(", "));
+        if (tags.length() == 0) {
             embedBuilder.addField("No tags found.", "", false);
         } else {
             embedBuilder.addField("Here is a list of similar tags.", tags.substring(0, tags.length() - 2), false);

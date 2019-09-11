@@ -44,6 +44,11 @@ public final class UInput {
     private static final Pattern NAME_PATTERN = Pattern.compile("^.{2,32}#[0-9]{4}$");
 
     /**
+     * The regular expression for a non-universal quotation mark
+     */
+    private static final Pattern QUOTATION_MARK = Pattern.compile("[“”„”«»]");
+
+    /**
      * Gets the member corresponding to the given user input.
      * @param guild The guild.
      * @param input The input.
@@ -75,6 +80,7 @@ public final class UInput {
         List<String> output = new ArrayList<>();
         StringBuilder current = null;
         for(String argument : arguments) {
+            argument = QUOTATION_MARK.matcher(argument).replaceAll("\"");
             if(argument.startsWith("\"") && current == null) {
                 current = new StringBuilder();
             }

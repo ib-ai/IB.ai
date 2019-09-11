@@ -40,7 +40,7 @@ public final class TagCommand extends Command {
                         new TagFindCommand()
                 )
         );
-        this.correctUsage = "tag <create/delete/list> \"tag name\" \"tag value\"";
+        this.correctUsage = "tag <create/delete/list/find> \"tag name\" \"tag value\"";
     }
 
     /**
