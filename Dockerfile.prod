@@ -17,7 +17,7 @@ RUN mvn -e -B dependency:resolve
 # Build from source into ./target/*.jar
 COPY src ./src
 COPY checkstyle.xml .
-RUN mvn -e -B package
+RUN mvn -e -B -Dcheckstyle.skip=true package
 
 # Using Java JDK 10 base image
 FROM openjdk:10

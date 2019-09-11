@@ -7,7 +7,9 @@ services:
   bot:
     image: ib.ai
     restart: on-failure:3
-    build: ./
+    build:
+      context: ./
+      dockerfile: Dockerfile.prod
     env_file:
       - bot.env
     depends_on:
