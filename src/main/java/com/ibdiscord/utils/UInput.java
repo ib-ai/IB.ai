@@ -44,7 +44,7 @@ public final class UInput {
     private static final Pattern NAME_PATTERN = Pattern.compile("^.{2,32}#[0-9]{4}$");
 
     /**
-     * The regular expression for a non-universal quotation mark
+     * The regular expression for a non-universal quotation mark.
      */
     private static final Pattern QUOTATION_MARK = Pattern.compile("[“”„”«»]");
 
