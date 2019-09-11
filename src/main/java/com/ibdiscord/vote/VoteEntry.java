@@ -18,11 +18,11 @@
 
 package com.ibdiscord.vote;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.DataProvider;
 import com.ibdiscord.data.db.entries.voting.VoteEntryData;
 import com.ibdiscord.data.db.entries.voting.VoteLadderData;
-import com.ibdiscord.startup.tasks.StartBot;
 import de.arraying.gravity.Gravity;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -149,7 +149,7 @@ public final class VoteEntry {
                 long channel = ladderData.get(VoteLadderData.CHANNEL)
                         .defaulting(0)
                         .asLong();
-                TextChannel textChannel = StartBot.getJda().getTextChannelById(channel);
+                TextChannel textChannel = IBai.getJda().getTextChannelById(channel);
                 String text;
                 if(yes > no) {
                     text = "passed";

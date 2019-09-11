@@ -18,14 +18,28 @@
 
 package com.ibdiscord;
 
+import com.ibdiscord.command.Command;
 import com.ibdiscord.data.LocalConfig;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.exceptions.JavaVersionException;
-import com.ibdiscord.startup.Startup;
+import com.ibdiscord.listeners.FilterListener;
+import com.ibdiscord.listeners.GuildListener;
+import com.ibdiscord.listeners.MessageListener;
+import com.ibdiscord.listeners.MonitorListener;
+import com.ibdiscord.listeners.ReactionListener;
+import com.ibdiscord.listeners.ReadyListener;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.UJavaVersion;
 import lombok.Getter;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.security.auth.login.LoginException;
 
 public enum IBai {
 
@@ -36,6 +50,7 @@ public enum IBai {
 
     @Getter private LocalConfig config;
     @Getter Logger logger = LoggerFactory.getLogger(getClass());
+    @Getter private static JDA jda;
 
     /**
      * Entry point of the program.
@@ -58,7 +73,30 @@ public enum IBai {
      */
     private void init() {
         config = new LocalConfig();
-        Startup.start();
+        Command.init();
+        DataContainer.INSTANCE.connect();
+        Localiser.INSTANCE.init();
+        try {
+            jda = new JDABuilder()
+                    .setToken(config.getBotToken())
+                    .setStatus(OnlineStatus.DO_NOT_DISTURB)
+                    .setActivity(Activity.playing(String.format("v%s | %shelp",
+                            config.getBotVersion(),
+                            config.getStaticPrefix()))
+                    )
+                    .addEventListeners(new FilterListener(),
+                            new GuildListener(),
+                            new MessageListener(),
+                            new MonitorListener(),
+                            new ReactionListener(),
+                            new ReadyListener()
+                    )
+                    .build();
+            jda.setAutoReconnect(true);
+            jda.awaitReady();
+        } catch (LoginException | InterruptedException ex) {
+            ex.printStackTrace();
+        }
         UFormatter.makeASplash();
     }
 
