@@ -1,7 +1,4 @@
-package com.ibdiscord.utils.objects;
-
-/**
- * Copyright 2017-2019 Jarred Vardy
+/* Copyright 2017-2019 Jarred Vardy
  *
  * This file is part of IB.ai.
  *
@@ -18,7 +15,10 @@ package com.ibdiscord.utils.objects;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-public abstract class AbstractTask implements Runnable{
+
+package com.ibdiscord.utils.objects;
+
+public abstract class AbstractTask implements Runnable {
 
     private final String name;
 

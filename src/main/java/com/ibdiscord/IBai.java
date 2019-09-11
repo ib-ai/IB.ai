@@ -1,17 +1,4 @@
-package com.ibdiscord;
-
-import com.ibdiscord.data.LocalConfig;
-import com.ibdiscord.exceptions.JavaVersionException;
-import com.ibdiscord.startup.Startup;
-import com.ibdiscord.utils.UFormatter;
-import com.ibdiscord.utils.UJavaVersion;
-import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
-/**
- * Copyright 2017-2019 Jarred Vardy, Ray Clark, Arraying
+/* Copyright 2017-2019 Jarred Vardy, Ray Clark, Arraying
  *
  * This file is part of IB.ai.
  *
@@ -28,6 +15,18 @@ import org.slf4j.LoggerFactory;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord;
+
+import com.ibdiscord.data.LocalConfig;
+import com.ibdiscord.exceptions.JavaVersionException;
+import com.ibdiscord.startup.Startup;
+import com.ibdiscord.utils.UFormatter;
+import com.ibdiscord.utils.UJavaVersion;
+import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public enum IBai {
 
     /**

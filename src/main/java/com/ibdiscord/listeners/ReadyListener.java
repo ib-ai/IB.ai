@@ -1,3 +1,21 @@
+/* Copyright 2017-2019 Jarred Vardy, Arraying
+ *
+ * This file is part of IB.ai.
+ *
+ * IB.ai is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IB.ai is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IB.ai. If not, see http://www.gnu.org/licenses/.
+ */
+
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
@@ -27,24 +45,6 @@ import org.slf4j.Logger;
 
 import java.util.Objects;
 
-/**
- * Copyright 2017-2019 Jarred Vardy, Arraying
- *
- * This file is part of IB.ai.
- *
- * IB.ai is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * IB.ai is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with IB.ai. If not, see http://www.gnu.org/licenses/.
- */
 public final class ReadyListener extends ListenerAdapter {
 
     /**
@@ -72,7 +72,10 @@ public final class ReadyListener extends ListenerAdapter {
                     if(System.currentTimeMillis() > expiry) {
                         PunishmentExpiry.INSTANCE.expire(guild, key, punishment);
                     } else {
-                        PunishmentExpiry.INSTANCE.schedule(guild, key, expiry - System.currentTimeMillis(), punishment);
+                        PunishmentExpiry.INSTANCE.schedule(guild,
+                                key,
+                                expiry - System.currentTimeMillis(),
+                                punishment);
                     }
                 }
                 VoteLaddersData voteLaddersData = gravity.load(new VoteLaddersData(guild.getId()));
@@ -84,7 +87,10 @@ public final class ReadyListener extends ListenerAdapter {
                             voteListData.values().stream()
                                     .map(Property::asLong)
                                     .forEach(id -> {
-                                        VoteEntryData entry = gravity.load(new VoteEntryData(guild.getId(), ladder, id));
+                                        VoteEntryData entry = gravity.load(new VoteEntryData(guild.getId(),
+                                                ladder,
+                                                id)
+                                        );
                                         if(!entry.get(VoteEntryData.FINISHED).defaulting(false).asBoolean()) {
                                             long message = entry.get(VoteEntryData.MESSAGE).defaulting(0).asLong();
                                             VoteEntry voteEntry = new VoteEntry(guild.getId(), ladder, id);
@@ -105,9 +111,10 @@ public final class ReadyListener extends ListenerAdapter {
                 ReminderHandler.INSTANCE.schedule(new Reminder(i, time, text), user);
             }
         }, error -> {
-            error.printStackTrace();
-            System.exit(1);
-        });
+                error.printStackTrace();
+                System.exit(1);
+            }
+        );
         long now = System.currentTimeMillis();
         boolean success = APICaller.INSTANCE.dispatch(Route.PING, new BodyResultHandler((status, json) -> {
             long server = json.large("received");

@@ -1,21 +1,4 @@
-package com.ibdiscord.command.commands;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.entries.GuildData;
-import com.ibdiscord.punish.Punishment;
-import com.ibdiscord.punish.PunishmentHandler;
-import com.ibdiscord.punish.PunishmentType;
-import com.ibdiscord.utils.UFormatter;
-import com.ibdiscord.utils.UInput;
-import com.ibdiscord.utils.UString;
-import net.dv8tion.jda.api.entities.Member;
-
-import java.util.Set;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -32,6 +15,23 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.punish.Punishment;
+import com.ibdiscord.punish.PunishmentHandler;
+import com.ibdiscord.punish.PunishmentType;
+import com.ibdiscord.utils.UFormatter;
+import com.ibdiscord.utils.UInput;
+import com.ibdiscord.utils.UString;
+import net.dv8tion.jda.api.entities.Member;
+
+import java.util.Set;
+
 public final class WarnCommand extends Command {
 
     /**
@@ -63,26 +63,30 @@ public final class WarnCommand extends Command {
             return;
         }
         member.getUser().openPrivateChannel().queue(channel ->
-                channel.sendMessage(String.format("You have been warned on %s for: %s", context.getGuild().getName(), reason))
-                .queue(ignored -> {
-                            context.reply("The user has been warned.");
-                            PunishmentHandler punishmentHandler = new PunishmentHandler(context.getGuild(), new Punishment(PunishmentType.WARN,
-                                    UFormatter.formatMember(member.getUser()),
-                                    member.getUser().getId(),
-                                    UFormatter.formatMember(context.getMember().getUser()),
-                                    context.getMember().getUser().getId(),
-                                    reason,
-                                    false
-                            ));
-                            punishmentHandler.onPunish();
-                        },
+            channel.sendMessage(String.format("You have been warned on %s "
+                    + "for: %s", context.getGuild().getName(), reason))
+            .queue(ignored -> {
+                        context.reply("The user has been warned.");
+                        PunishmentHandler punishmentHandler = new PunishmentHandler(context.getGuild(),
+                            new Punishment(PunishmentType.WARN,
+                                UFormatter.formatMember(member.getUser()),
+                                member.getUser().getId(),
+                                UFormatter.formatMember(context.getMember().getUser()),
+                                context.getMember().getUser().getId(),
+                                reason,
+                                false
+                            )
+                        );
+                        punishmentHandler.onPunish();
+                    },
                     errorSend -> {
                         context.reply("Could not send warning message, please attempt to do so manually.");
                         errorSend.printStackTrace();
-                }), errorOpen -> {
-            context.reply("Could not open private channel.");
-            errorOpen.printStackTrace();
-        });
+                    }
+            ), errorOpen -> {
+                context.reply("Could not open private channel.");
+                errorOpen.printStackTrace();
+            }
+        );
     }
-
 }

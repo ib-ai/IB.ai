@@ -1,3 +1,21 @@
+/* Copyright 2017-2019 Arraying
+ *
+ * This file is part of IB.ai.
+ *
+ * IB.ai is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IB.ai is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IB.ai. If not, see http://www.gnu.org/licenses/.
+ */
+
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
@@ -19,24 +37,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-/**
- * Copyright 2017-2019 Arraying
- *
- * This file is part of IB.ai.
- *
- * IB.ai is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * IB.ai is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with IB.ai. If not, see http://www.gnu.org/licenses/.
- */
 public final class MonitorListener extends ListenerAdapter {
 
     private final GuildedCache<String, Pattern> regexCache = new GuildedCache<>();
@@ -86,9 +86,14 @@ public final class MonitorListener extends ListenerAdapter {
      * @param message The message.
      */
     private void logSuspicion(MonitorData monitorData, Message message, String channel) {
-        TextChannel textChannel = message.getGuild().getTextChannelById(monitorData.get(channel).defaulting(0).asLong());
+        TextChannel textChannel = message.getGuild().getTextChannelById(
+                monitorData.get(channel).defaulting(0).asLong()
+        );
         if(textChannel == null) {
-            IBai.INSTANCE.getLogger().info("Monitor channel not found: %s sent %s", message.getAuthor().getAsTag(), message.getContentRaw());
+            IBai.INSTANCE.getLogger().info("Monitor channel not found: %s sent %s",
+                    message.getAuthor().getAsTag(),
+                    message.getContentRaw()
+            );
             return;
         }
         EmbedBuilder embedBuilder = new EmbedBuilder()

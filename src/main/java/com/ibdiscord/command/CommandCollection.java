@@ -1,18 +1,4 @@
-package com.ibdiscord.command;
-
-import com.ibdiscord.command.commands.*;
-import com.ibdiscord.command.commands.cassowary.CassowaryCommand;
-import com.ibdiscord.command.commands.filter.FilterCommand;
-import com.ibdiscord.command.commands.monitor.MonitorCommand;
-import com.ibdiscord.command.commands.react.ReactionCommand;
-import com.ibdiscord.command.commands.reminder.ReminderCommand;
-import com.ibdiscord.command.commands.tag.TagCommand;
-import com.ibdiscord.command.commands.voting.ladder.VoteLadderCommand;
-import com.ibdiscord.command.commands.voting.vote.VoteCommand;
-import lombok.Getter;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -29,8 +15,21 @@ import lombok.Getter;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-public enum CommandCollection {
 
+package com.ibdiscord.command;
+
+import com.ibdiscord.command.commands.*;
+import com.ibdiscord.command.commands.cassowary.CassowaryCommand;
+import com.ibdiscord.command.commands.filter.FilterCommand;
+import com.ibdiscord.command.commands.monitor.MonitorCommand;
+import com.ibdiscord.command.commands.react.ReactionCommand;
+import com.ibdiscord.command.commands.reminder.ReminderCommand;
+import com.ibdiscord.command.commands.tag.TagCommand;
+import com.ibdiscord.command.commands.voting.ladder.VoteLadderCommand;
+import com.ibdiscord.command.commands.voting.vote.VoteCommand;
+import lombok.Getter;
+
+public enum CommandCollection {
 
     AVATAR(new AvatarCommand()),
     BLACKLIST(new BlacklistCommand()),

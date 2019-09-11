@@ -1,12 +1,4 @@
-package com.ibdiscord.utils;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-/**
- * Copyright 2017-2019 AlphartDev, Arraying
+/* Copyright 2017-2019 Arraying, AlphartDev
  *
  * This file is part of IB.ai.
  *
@@ -23,19 +15,27 @@ import java.util.regex.Pattern;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.utils;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public final class UTime {
 
     /**
      * The pattern to use when figuring out the time.
      * Credits to @AlphartDev on GitHub for this pattern.
      */
-    private static final Pattern TIME_PATTERN = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?" +
-                    "(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?" +
-                    "(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?" +
-                    "(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?" +
-                    "(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?" +
-                    "(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?" +
-                    "(?:([0-9]+)\\s*(?:s[a-z]*)?)?",
+    private static final Pattern TIME_PATTERN = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?"
+                    + "(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?"
+                    + "(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?"
+                    + "(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?"
+                    + "(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?"
+                    + "(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?"
+                    + "(?:([0-9]+)\\s*(?:s[a-z]*)?)?",
             Pattern.CASE_INSENSITIVE);
 
     /**

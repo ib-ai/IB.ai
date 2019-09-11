@@ -1,14 +1,4 @@
-package com.ibdiscord.api.result;
-
-import de.arraying.kotys.JSON;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-
-import java.io.IOException;
-import java.util.function.BiConsumer;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -25,6 +15,16 @@ import java.util.function.BiConsumer;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.api.result;
+
+import de.arraying.kotys.JSON;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+import java.io.IOException;
+import java.util.function.BiConsumer;
+
 public final class BodyResultHandler implements ResultHandler {
 
     private final BiConsumer<Integer, JSON> handler;

@@ -1,14 +1,4 @@
-package com.ibdiscord.command.commands;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.api.Permission;
-
-import java.util.Set;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -25,6 +15,16 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import net.dv8tion.jda.api.Permission;
+
+import java.util.Set;
+
 public final class BlacklistCommand extends Command {
 
     /**
@@ -58,13 +58,13 @@ public final class BlacklistCommand extends Command {
             return;
         }
         if(context.getGuild().getMemberById(id) != null) {
-            context.reply("You cannot blacklist someone who is already on the server. If you would like to get rid of them " +
-                    "please ban them manually.");
+            context.reply("You cannot blacklist someone who is already on the server. If you would like to "
+                    + "get rid of them please ban them manually.");
             return;
         }
         context.getGuild().ban(idRaw, 0).reason("Blacklisted.").queue(
-                success -> context.reply("Blacklisted successfully."),
-                fail -> context.reply("Blacklist failed. Is the ID correct and valid?")
+            success -> context.reply("Blacklisted successfully."),
+            fail -> context.reply("Blacklist failed. Is the ID correct and valid?")
         );
     }
 

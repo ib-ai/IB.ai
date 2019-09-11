@@ -1,3 +1,21 @@
+/* Copyright 2017-2019 Arraying
+ *
+ * This file is part of IB.ai.
+ *
+ * IB.ai is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IB.ai is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IB.ai. If not, see http://www.gnu.org/licenses/.
+ */
+
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
@@ -33,24 +51,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-/**
- * Copyright 2017-2019 Arraying
- *
- * This file is part of IB.ai.
- *
- * IB.ai is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * IB.ai is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with IB.ai. If not, see http://www.gnu.org/licenses/.
- */
 public final class GuildListener extends ListenerAdapter {
 
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
@@ -137,7 +137,8 @@ public final class GuildListener extends ListenerAdapter {
                         return;
                     }
                     AuditLogEntry latest = entries.get(0);
-                    IBai.INSTANCE.getLogger().info("Latest audit log: type '{}', target type '{}', target id '{}', user {}, options {}",
+                    IBai.INSTANCE.getLogger().info("Latest audit log: type '{}', target type '{}', target id '{}', "
+                                    + "user {}, options {}",
                             latest.getType(),
                             latest.getTargetType(),
                             latest.getTargetId(),
@@ -205,12 +206,15 @@ public final class GuildListener extends ListenerAdapter {
                                 punishment.setType(PunishmentType.BAN);
                                 handler.onRevocation();
                                 break;
+                            default:
+                                break;
                         }
                     });
                 }, error -> {
-                    IBai.INSTANCE.getLogger().info("Blimey, there's been an error.");
-                    error.printStackTrace();
-                });
+                        IBai.INSTANCE.getLogger().info("Blimey, there's been an error.");
+                        error.printStackTrace();
+                    }
+                );
             }
         }, 3, TimeUnit.SECONDS);
     }

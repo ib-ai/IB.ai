@@ -1,3 +1,21 @@
+/* Copyright 2017-2019 Arraying
+ *
+ * This file is part of IB.ai.
+ *
+ * IB.ai is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IB.ai is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IB.ai. If not, see http://www.gnu.org/licenses/.
+ */
+
 package com.ibdiscord.command.commands;
 
 import com.ibdiscord.IBai;
@@ -19,24 +37,6 @@ import java.util.Set;
 
 import static com.ibdiscord.data.db.entries.punish.PunishmentData.*;
 
-/**
- * Copyright 2017-2019 Arraying
- *
- * This file is part of IB.ai.
- *
- * IB.ai is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * IB.ai is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with IB.ai. If not, see http://www.gnu.org/licenses/.
- */
 public final class ReasonCommand extends Command {
 
     /**
@@ -85,13 +85,15 @@ public final class ReasonCommand extends Command {
             return;
         }
         boolean redacted = context.getOptions().stream()
-                .anyMatch(it -> it.getName().equalsIgnoreCase("redacted") || it.getName().equalsIgnoreCase("redact"));
+                .anyMatch(it -> it.getName().equalsIgnoreCase("redacted") || it.getName()
+                        .equalsIgnoreCase("redact"));
         IBai.INSTANCE.getLogger().info("Redacting: " + redacted);
         punishmentData.set(REASON, reason);
         punishmentData.set(REDACTED, redacted);
         punishment.redacting(redacted);
         gravity.save(punishmentData);
-        channel.editMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong(), punishment.getLogPunishment(guild, caseId)).queue(
+        channel.editMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong(),
+            punishment.getLogPunishment(guild, caseId)).queue(
                 outstandingMove -> {
                     punishmentData.set(REASON, reason);
                     context.reply("The reason has been updated.");
@@ -102,5 +104,4 @@ public final class ReasonCommand extends Command {
                 }
         );
     }
-
 }

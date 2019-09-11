@@ -1,19 +1,4 @@
-package com.ibdiscord.punish;
-
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.punish.PunishmentData;
-import com.ibdiscord.data.db.entries.punish.PunishmentsData;
-import com.ibdiscord.utils.UDatabase;
-import de.arraying.gravity.Gravity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import net.dv8tion.jda.api.entities.Guild;
-
-import static com.ibdiscord.data.db.entries.punish.PunishmentData.*;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -30,7 +15,24 @@ import static com.ibdiscord.data.db.entries.punish.PunishmentData.*;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-public final @Getter @AllArgsConstructor class Punishment {
+
+package com.ibdiscord.punish;
+
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.punish.PunishmentData;
+import com.ibdiscord.data.db.entries.punish.PunishmentsData;
+import com.ibdiscord.utils.UDatabase;
+import de.arraying.gravity.Gravity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import net.dv8tion.jda.api.entities.Guild;
+
+import static com.ibdiscord.data.db.entries.punish.PunishmentData.*;
+
+@AllArgsConstructor
+@Getter
+public final class Punishment {
 
     private static final String DEFAULT_REASON = "Use `%sreason %d <reason>` to specify a reason.";
 
@@ -68,7 +70,6 @@ public final @Getter @AllArgsConstructor class Punishment {
      */
     void dump(Guild guild, long caseNumber) {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
-        PunishmentsData list = gravity.load(new PunishmentsData(guild.getId()));
         PunishmentData punishment = gravity.load(new PunishmentData(guild.getId(), caseNumber));
         punishment.set(TYPE, type.toString());
         punishment.set(USER_DISPLAY, userDisplay);
@@ -77,8 +78,10 @@ public final @Getter @AllArgsConstructor class Punishment {
         punishment.set(STAFF_ID, staffId);
         punishment.set(REASON, reason == null ? getDefaultReason(guild, caseNumber) : reason);
         punishment.set(REDACTED, redacted);
-        list.add(caseNumber);
         gravity.save(punishment);
+
+        PunishmentsData list = gravity.load(new PunishmentsData(guild.getId()));
+        list.add(caseNumber);
         gravity.save(list);
     }
 
@@ -95,10 +98,12 @@ public final @Getter @AllArgsConstructor class Punishment {
     /**
      * Gets the punishment log message.
      * @param guild The guild.
+     * @param caseNumber Case number of the retrievable punishment.
      * @return The message.
      */
     public String getLogPunishment(Guild guild, long caseNumber) {
-        String modLog = String.format("**Case: #%d | %s**\n**Offender: **%s (ID: %s)\n**Moderator: **%s (ID: %s)\n**Reason: **%s",
+        String modLog = String.format("**Case: #%d | %s**\n**Offender: **%s (ID: %s)\n**Moderator: **%s "
+                        + "(ID: %s)\n**Reason: **%s",
                 caseNumber,
                 type.getDisplayInitial(),
                 getSensitiveField(userDisplay),

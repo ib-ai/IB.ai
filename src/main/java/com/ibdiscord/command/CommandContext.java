@@ -1,15 +1,4 @@
-package com.ibdiscord.command;
-
-import lombok.Getter;
-import net.dv8tion.jda.api.entities.*;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -26,6 +15,17 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command;
+
+import lombok.Getter;
+import net.dv8tion.jda.api.entities.*;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public final class CommandContext {
 
     @Getter final Message message;
@@ -86,9 +86,9 @@ public final class CommandContext {
             options.add(new Option(name, value, declareAsValue));
         }
         int decrementer = 0;
-        for(int i : toRemove) {
-            args = ArrayUtils.remove(args, i - decrementer); // the array size will shrink for every time something is removed
-            decrementer++; // make sure the correct indexes are removed
+        for(int i : toRemove) { // The array size will shrink for every time something is removed
+            args = ArrayUtils.remove(args, i - decrementer);
+            decrementer++;
         }
         return new CommandContext(message, args, options);
     }

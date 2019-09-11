@@ -1,13 +1,4 @@
-package com.ibdiscord.utils;
-
-import com.ibdiscord.IBai;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.GuildData;
-import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.api.entities.Guild;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -24,6 +15,15 @@ import net.dv8tion.jda.api.entities.Guild;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.utils;
+
+import com.ibdiscord.IBai;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.GuildData;
+import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.api.entities.Guild;
+
 public final class UDatabase {
 
     /**

@@ -1,19 +1,4 @@
-package com.ibdiscord.command;
-
-import com.ibdiscord.IBai;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.utils.UDatabase;
-import com.ibdiscord.utils.objects.Comparator;
-import lombok.Getter;
-import lombok.Setter;
-import net.dv8tion.jda.api.entities.GuildChannel;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.Set;
-import java.util.TreeSet;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -30,6 +15,21 @@ import java.util.TreeSet;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command;
+
+import com.ibdiscord.IBai;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.utils.UDatabase;
+import com.ibdiscord.utils.objects.Comparator;
+import lombok.Getter;
+import lombok.Setter;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.Set;
+import java.util.TreeSet;
+
 public abstract class Command {
 
     /**
@@ -78,7 +78,7 @@ public abstract class Command {
         final String query = queryRaw.toLowerCase();
         origin = origin == null ? COMMANDS : origin;
         return origin.stream().filter(
-                it -> it.getName().equals(query) || it.getAliases().contains(query))
+            it -> it.getName().equals(query) || it.getAliases().contains(query))
                 .findFirst()
                 .orElse(null);
     }
@@ -102,7 +102,11 @@ public abstract class Command {
             context.reply("You do not have permission to execute the command.");
             return;
         }
-        IBai.INSTANCE.getLogger().info("{} executed the command {} in {}", context.getMember().getUser().getId(), name, context.getGuild().getId());
+        IBai.INSTANCE.getLogger().info("{} executed the command {} in {}",
+                context.getMember().getUser().getId(),
+                name,
+                context.getGuild().getId()
+        );
         String[] args = context.getArguments();
         if(args.length == 0 || subCommands.size() == 0) {
             execute(context);
@@ -121,7 +125,8 @@ public abstract class Command {
      * @param commandContext The command usage.
      */
     protected void sendUsage(CommandContext commandContext) {
-        commandContext.reply(String.format("Correct usage: `%s%s`.", UDatabase.getPrefix(commandContext.getGuild()), correctUsage));
+        commandContext.reply(String.format("Correct usage: `%s%s`.",
+                UDatabase.getPrefix(commandContext.getGuild()), correctUsage)
+        );
     }
-
 }

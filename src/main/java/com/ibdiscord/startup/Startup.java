@@ -1,15 +1,4 @@
-package com.ibdiscord.startup;
-
-import com.ibdiscord.startup.tasks.StartBot;
-import com.ibdiscord.startup.tasks.StartCommands;
-import com.ibdiscord.startup.tasks.StartDatabase;
-import com.ibdiscord.startup.tasks.StartLocaliser;
-import com.ibdiscord.utils.objects.AbstractTask;
-
-import java.util.Arrays;
-
-/**
- * Copyright 2017-2019 Jarred Vardy
+/* Copyright 2017-2019 Jarred Vardy
  *
  * This file is part of IB.ai.
  *
@@ -26,15 +15,26 @@ import java.util.Arrays;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.startup;
+
+import com.ibdiscord.startup.tasks.StartBot;
+import com.ibdiscord.startup.tasks.StartCommands;
+import com.ibdiscord.startup.tasks.StartDatabase;
+import com.ibdiscord.startup.tasks.StartLocaliser;
+import com.ibdiscord.utils.objects.AbstractTask;
+
+import java.util.Arrays;
+
 public final class Startup {
 
     /**
      * All startup tasks.
      */
     private static final AbstractStartupTask[] STARTUP_TASKS = new AbstractStartupTask[] {
-            new StartDatabase(),
-            new StartCommands(),
-            new StartLocaliser()
+        new StartDatabase(),
+        new StartCommands(),
+        new StartLocaliser()
     };
 
     /**
@@ -49,10 +49,12 @@ public final class Startup {
 
             @Override
             public void execute() {
-                while (!Arrays.stream(STARTUP_TASKS).allMatch(AbstractStartupTask::isCompleted)) {
+                while(!Arrays.stream(STARTUP_TASKS).allMatch(AbstractStartupTask::isCompleted)) {
                     try {
                         Thread.sleep(50);
-                    } catch (InterruptedException ignored) {}
+                    } catch (InterruptedException ex) {
+                        // Ignored
+                    }
                 }
                 new StartBot().create();
             }

@@ -1,17 +1,4 @@
-package com.ibdiscord.command.commands.monitor;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.monitor.MonitorData;
-import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.api.Permission;
-
-import java.util.Set;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -28,6 +15,19 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands.monitor;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.monitor.MonitorData;
+import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.api.Permission;
+
+import java.util.Set;
+
 public final class MonitorToggleCommand extends Command {
 
     /**

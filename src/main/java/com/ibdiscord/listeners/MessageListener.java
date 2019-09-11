@@ -1,3 +1,21 @@
+/* Copyright 2017-2019 Jarred Vardy, Arraying
+ *
+ * This file is part of IB.ai.
+ *
+ * IB.ai is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IB.ai is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IB.ai. If not, see http://www.gnu.org/licenses/.
+ */
+
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.command.Command;
@@ -28,24 +46,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-/**
- * Copyright 2017-2019 Jarred Vardy, Arraying
- *
- * This file is part of IB.ai.
- *
- * IB.ai is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * IB.ai is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with IB.ai. If not, see http://www.gnu.org/licenses/.
- */
 public final class MessageListener extends ListenerAdapter {
 
     private final GuildedCache<String, Pattern> tagCache = new GuildedCache<>();
@@ -57,7 +57,9 @@ public final class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        messageCache.put(event.getMessageIdLong(), new MinimalMessage(event.getAuthor().getIdLong(), event.getMessage().getContentRaw()));
+        messageCache.put(event.getMessageIdLong(), new MinimalMessage(event.getAuthor().getIdLong(),
+                event.getMessage().getContentRaw())
+        );
         if(event.getAuthor().isBot()
                 || event.getAuthor().isFake()
                 || !event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_WRITE)) {
@@ -73,7 +75,9 @@ public final class MessageListener extends ListenerAdapter {
             Pattern pattern = tagCache.compute(event.getGuild().getIdLong(), key, Pattern.compile(key));
             if(pattern.matcher(message.toLowerCase()).matches()) {
                 event.getChannel().sendMessage(tags.get(key).asString()).queue(null, oops ->
-                        event.getChannel().sendMessage("Oh dear. Something went wrong. Ping a dev with this: " + oops.getMessage()).queue()
+                        event.getChannel().sendMessage("Oh dear. Something went wrong. Ping a dev with this: "
+                                + oops.getMessage())
+                            .queue()
                 );
                 break;
             }
@@ -102,10 +106,12 @@ public final class MessageListener extends ListenerAdapter {
             forLogChannel(channel -> {
                 User author = channel.getJDA().getUserById(message.getAuthor());
                 MessageEmbed embed = new EmbedBuilder()
-                        .setAuthor((author == null ? String.valueOf(message.getAuthor()) : author.getAsTag()) + " edited in #" + event.getChannel().getName())
+                        .setAuthor((author == null ? String.valueOf(message.getAuthor()) : author.getAsTag())
+                                + " edited in #" + event.getChannel().getName())
                         .addField("From", message.getContent(), false)
                         .addField("To", event.getMessage().getContentRaw(), false)
-                        .addField("\u200B", "[Click me to jump](" + event.getMessage().getJumpUrl() + ")", false)
+                        .addField("\u200B", "[Click me to jump](" + event.getMessage().getJumpUrl() + ")",
+                                false)
                         .build();
                 channel.sendMessage(embed).queue();
             }, event);
@@ -126,7 +132,8 @@ public final class MessageListener extends ListenerAdapter {
         forLogChannel(channel -> {
             User author = channel.getJDA().getUserById(message.getAuthor());
             MessageEmbed embed = new EmbedBuilder()
-                    .setAuthor((author == null ? String.valueOf(message.getAuthor()) : author.getAsTag()) + " deleted in #" + event.getChannel().getName())
+                    .setAuthor((author == null ? String.valueOf(message.getAuthor()) : author.getAsTag())
+                            + " deleted in #" + event.getChannel().getName())
                     .setDescription(message.getContent())
                     .build();
             channel.sendMessage(embed).queue();

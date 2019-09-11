@@ -1,12 +1,4 @@
-package com.ibdiscord.utils;
-
-import com.ibdiscord.IBai;
-import com.ibdiscord.data.LocalConfig;
-import net.dv8tion.jda.api.entities.User;
-import org.slf4j.Logger;
-
-/**
- * Copyright 2017-2019 Jarred Vardy, Arraying
+/* Copyright 2017-2019 Jarred Vardy, Arraying
  *
  * This file is part of IB.ai.
  *
@@ -23,6 +15,14 @@ import org.slf4j.Logger;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.utils;
+
+import com.ibdiscord.IBai;
+import com.ibdiscord.data.LocalConfig;
+import net.dv8tion.jda.api.entities.User;
+import org.slf4j.Logger;
+
 public final class UFormatter {
 
     /**
@@ -49,7 +49,7 @@ public final class UFormatter {
     /**
      * Formats a user to a user friendly name#discrim form.
      * @param user The user.
-     * @return The user, formatted.
+     * @return The user's name as a tag (formatted).
      */
     public static String formatMember(User user) {
         return user.getAsTag();

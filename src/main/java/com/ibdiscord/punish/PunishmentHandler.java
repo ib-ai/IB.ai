@@ -1,16 +1,4 @@
-package com.ibdiscord.punish;
-
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.GuildData;
-import com.ibdiscord.data.db.entries.punish.PunishmentData;
-import com.ibdiscord.data.db.entries.punish.PunishmentsData;
-import de.arraying.gravity.Gravity;
-import lombok.AllArgsConstructor;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -27,7 +15,20 @@ import net.dv8tion.jda.api.entities.TextChannel;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-public final @AllArgsConstructor class PunishmentHandler {
+
+package com.ibdiscord.punish;
+
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.entries.punish.PunishmentData;
+import com.ibdiscord.data.db.entries.punish.PunishmentsData;
+import de.arraying.gravity.Gravity;
+import lombok.AllArgsConstructor;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
+
+@AllArgsConstructor
+public final class PunishmentHandler {
 
     private final Guild guild;
     private final Punishment punishment;

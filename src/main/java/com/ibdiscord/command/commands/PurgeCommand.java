@@ -1,15 +1,4 @@
-package com.ibdiscord.command.commands;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.TextChannel;
-
-import java.util.Set;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -26,10 +15,21 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.util.Set;
+
 public final class PurgeCommand extends Command {
 
     /**
-     * Creates the command
+     * Creates the command.
      */
     public PurgeCommand() {
         super("purge",
@@ -57,17 +57,16 @@ public final class PurgeCommand extends Command {
             context.reply("You did not specify a number.");
             return;
         }
-        if(amount < 2
-                || amount > 100) {
+        if(amount < 2 || amount > 100) {
             context.reply("Amount of messages out of range (2-100).");
             return;
         }
         context.getChannel().getHistory().retrievePast(amount).queue(it ->
                 ((TextChannel) context.getChannel()).deleteMessages(it).queue(jollyGood ->
                     context.reply("Consider it done."),
-                bloodyHell ->
-                    context.reply("I tried to hard, and got so far, but in the end, it didn't even purge.")
-                )
+                    bloodyHell ->
+                        context.reply("I tried to hard, and got so far, but in the end, it didn't even purge.")
+                    )
         );
     }
 

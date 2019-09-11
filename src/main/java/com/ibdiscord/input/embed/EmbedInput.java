@@ -1,11 +1,4 @@
-package com.ibdiscord.input.embed;
-
-import com.ibdiscord.input.Input;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -22,6 +15,13 @@ import net.dv8tion.jda.api.entities.Message;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.input.embed;
+
+import com.ibdiscord.input.Input;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+
 public abstract class EmbedInput implements Input {
 
     final EmbedBuilder builder;

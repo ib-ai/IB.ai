@@ -1,16 +1,4 @@
-package com.ibdiscord.command.commands.abstracted;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.pagination.Page;
-import com.ibdiscord.pagination.Pagination;
-import net.dv8tion.jda.api.EmbedBuilder;
-
-import java.util.Set;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -27,12 +15,23 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands.abstracted;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.pagination.Page;
+import com.ibdiscord.pagination.Pagination;
+import net.dv8tion.jda.api.EmbedBuilder;
+
+import java.util.Set;
+
 public abstract class PaginatedCommand<T> extends Command {
 
     /*
-        Note to myself. You wrote this because supposedly you are for DRY friendly but then you copy and paste code.
-        Use this.
-
+     * Note to myself. You wrote this because supposedly you are for DRY friendly but then you copy and paste code.
+     * Use this.
      */
 
     /**
@@ -43,10 +42,12 @@ public abstract class PaginatedCommand<T> extends Command {
      * @param subCommands Any sub commands the command has.
      */
     @SuppressWarnings("SameParameterValue")
-    protected PaginatedCommand(String name, Set<String> aliases, CommandPermission permission, Set<Command> subCommands) {
+    protected PaginatedCommand(String name,
+                               Set<String> aliases,
+                               CommandPermission permission,
+                               Set<Command> subCommands) {
         super(name, aliases, permission, subCommands);
     }
-
 
     /**
      * Gets all pagination data.
@@ -80,7 +81,9 @@ public abstract class PaginatedCommand<T> extends Command {
         if(context.getArguments().length != 0) {
             try {
                 page = Integer.valueOf(context.getArguments()[0]);
-            } catch(NumberFormatException ignored) {}
+            } catch(NumberFormatException ex) {
+                // Ignored
+            }
         }
         Pagination<T> pagination = getPagination(context);
         EmbedBuilder embedBuilder = new EmbedBuilder();

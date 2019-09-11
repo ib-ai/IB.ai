@@ -1,15 +1,4 @@
-package com.ibdiscord.data;
-
-import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-/**
- * Copyright 2017-2019 Jarred Vardy, Arraying
+/* Copyright 2017-2019 Jarred Vardy, Arraying
  *
  * This file is part of IB.ai.
  *
@@ -26,58 +15,74 @@ import java.util.stream.Collectors;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.data;
+
+import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 public final class LocalConfig {
 
     /**
-     * AUTHORS
+     * AUTHORS.
      */
     @Getter private final List<String> botAuthors;
 
     /**
-     * DEVELOPERS
+     * DEVELOPERS.
      */
     @Getter private final List<Long> developIDs;
 
     /**
-     * GITHUB
+     * GITHUB.
      */
     @Getter private final String githubLink;
 
     /**
-     * TOKEN
+     * TOKEN.
      */
     @Getter private final String botToken;
 
     /**
-     * VERSION
+     * VERSION.
      */
     @Getter private final String botVersion;
 
     /**
-     * PREFIX
+     * PREFIX.
      */
     @Getter private final String staticPrefix;
 
     /**
-     * DATA_HOST
+     * DATA_HOST.
      */
     @Getter private final String dbIP;
 
     /**
-     * DATA_INDEX
+     * DATA_INDEX.
      */
     @Getter private final Long mainDatabaseNum;
 
     /**
-     * DATA_AUTH
+     * DATA_AUTH.
      */
     @Getter private final String mainDatabasePassword;
 
     /**
-     * API_BASE
+     * API_BASE.
      */
     @Getter private final String apiBase;
 
+    /**
+     * Constructor for the local configuration object.
+     * Sets all of the class properties to their corresponding environment
+     * variable.
+     */
     public LocalConfig() {
         this.botAuthors = getEnvironment("AUTHORS", raw -> Arrays.asList(raw.split(";")), new ArrayList<>());
         this.developIDs = getEnvironment("DEVELOPERS", raw -> Arrays.stream(raw.split(";"))

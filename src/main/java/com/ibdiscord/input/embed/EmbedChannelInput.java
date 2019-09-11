@@ -1,16 +1,4 @@
-package com.ibdiscord.input.embed;
-
-import com.ibdiscord.input.Input;
-import lombok.AllArgsConstructor;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
-
-import java.util.Objects;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -27,12 +15,26 @@ import java.util.Objects;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-public final @AllArgsConstructor class EmbedChannelInput implements Input {
+
+package com.ibdiscord.input.embed;
+
+import com.ibdiscord.input.Input;
+import lombok.AllArgsConstructor;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.util.Objects;
+
+@AllArgsConstructor
+public final class EmbedChannelInput implements Input {
 
     private final EmbedBuilder builder;
     private TextChannel channel;
 
     /**
+     * Gets the successor to the current input type.
      * @return null.
      */
     @Override
@@ -41,6 +43,7 @@ public final @AllArgsConstructor class EmbedChannelInput implements Input {
     }
 
     /**
+     * Returns 30 seconds in milliseconds as a long.
      * @return 30 seconds.
      */
     @Override
@@ -69,7 +72,8 @@ public final @AllArgsConstructor class EmbedChannelInput implements Input {
             return false;
         }
         TextChannel target = message.getMentionedChannels().get(0);
-        if(!Objects.requireNonNull(message.getMember()).hasPermission(target, Permission.MESSAGE_WRITE, Permission.MESSAGE_EMBED_LINKS)) {
+        if(!Objects.requireNonNull(message.getMember())
+                .hasPermission(target, Permission.MESSAGE_WRITE, Permission.MESSAGE_EMBED_LINKS)) {
             message.getChannel().sendMessage("You do not have access to that channel.").queue();
             return false;
         }

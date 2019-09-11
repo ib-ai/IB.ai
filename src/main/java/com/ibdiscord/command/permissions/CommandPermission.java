@@ -1,14 +1,4 @@
-package com.ibdiscord.command.permissions;
-
-import com.ibdiscord.IBai;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.GuildData;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.GuildChannel;
-import net.dv8tion.jda.api.entities.Member;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -25,6 +15,16 @@ import net.dv8tion.jda.api.entities.Member;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.permissions;
+
+import com.ibdiscord.IBai;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.GuildData;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Member;
+
 @SuppressWarnings("unused")
 public final class CommandPermission {
 
@@ -87,15 +87,19 @@ public final class CommandPermission {
             case DISCORD:
                 return member.hasPermission(channel, (Permission) value);
             case ROLE: {
-                String data = DataContainer.INSTANCE.getGravity().load(new GuildData(channel.getGuild().getId())).get(value.toString())
+                String data = DataContainer.INSTANCE.getGravity().load(new GuildData(channel.getGuild().getId()))
+                        .get(value.toString())
                         .asString();
                 return (data != null && member.getRoles().stream()
-                        .anyMatch(it -> it.getName().toLowerCase().contains(data.toLowerCase()) || it.getId().equalsIgnoreCase(data)))
-                        || member.hasPermission(Permission.ADMINISTRATOR);
+                        .anyMatch(it -> it.getName().toLowerCase()
+                            .contains(data.toLowerCase()) || it.getId().equalsIgnoreCase(data)))
+                            || member.hasPermission(Permission.ADMINISTRATOR);
             }
             case DEVELOPER:
                 return IBai.INSTANCE.getConfig().getDevelopIDs().contains(member.getUser().getIdLong())
                         && (value == null || ((CommandPermission) value).hasPermission(member, channel));
+            default:
+                break;
         }
         throw new IllegalStateException("Permission not exhaustive");
     }

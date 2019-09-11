@@ -1,17 +1,4 @@
-package com.ibdiscord.data.db;
-
-import com.ibdiscord.IBai;
-import com.ibdiscord.data.LocalConfig;
-import de.arraying.gravity.Gravity;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisCommands;
-import lombok.Getter;
-
-import static java.lang.Math.toIntExact;
-
-/**
- * Copyright 2017-2019 Jarred Vardy
+/* Copyright 2017-2019 Jarred Vardy
  *
  * This file is part of IB.ai.
  *
@@ -28,10 +15,23 @@ import static java.lang.Math.toIntExact;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.data.db;
+
+import com.ibdiscord.IBai;
+import com.ibdiscord.data.LocalConfig;
+import de.arraying.gravity.Gravity;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.sync.RedisCommands;
+import lombok.Getter;
+
+import static java.lang.Math.toIntExact;
+
 public enum DataContainer {
 
     /**
-     * <p> Singleton instance of container.</p>
+     * Singleton instance of container.
      */
     INSTANCE;
 
@@ -48,7 +48,7 @@ public enum DataContainer {
         int mainDbNum = toIntExact(config.getMainDatabaseNum());
         String mainDbPassword = config.getMainDatabasePassword();
 
-        if(connection != null){
+        if(connection != null) {
             return;
         }
 

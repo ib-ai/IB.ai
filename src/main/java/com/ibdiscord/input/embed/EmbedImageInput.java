@@ -1,13 +1,4 @@
-package com.ibdiscord.input.embed;
-
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -24,6 +15,15 @@ import java.net.URL;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.input.embed;
+
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public final class EmbedImageInput extends EmbedInput {
 
     /**
@@ -67,7 +67,9 @@ public final class EmbedImageInput extends EmbedInput {
     @Override
     public void initialize(Message message) {
         this.successor = new EmbedFieldInput(builder);
-        message.getChannel().sendMessage("Please provide the URL for the image you would like to display. Use `skip` to skip this.").queue();
+        message.getChannel().sendMessage("Please provide the URL for the image you would like to display. Use "
+                    + "`skip` to skip this.")
+                .queue();
     }
 
 }
