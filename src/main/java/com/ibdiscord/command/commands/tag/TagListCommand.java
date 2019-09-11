@@ -1,21 +1,4 @@
-package com.ibdiscord.command.commands.tag;
-
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.TagData;
-import com.ibdiscord.pagination.Page;
-import com.ibdiscord.pagination.Pagination;
-import com.ibdiscord.utils.UString;
-import net.dv8tion.jda.api.EmbedBuilder;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-/**
- * Copyright 2017-2019 Ray Clark, Arraying
+/* Copyright 2017-2019 Ray Clark, Arraying
  *
  * This file is part of IB.ai.
  *
@@ -32,6 +15,23 @@ import java.util.stream.Collectors;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands.tag;
+
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.TagData;
+import com.ibdiscord.pagination.Page;
+import com.ibdiscord.pagination.Pagination;
+import com.ibdiscord.utils.UString;
+import net.dv8tion.jda.api.EmbedBuilder;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public final class TagListCommand extends PaginatedCommand<String> {
 
     /**

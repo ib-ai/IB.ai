@@ -1,3 +1,21 @@
+/* Copyright 2017-2019 Jarred Vardy
+ *
+ * This file is part of IB.ai.
+ *
+ * IB.ai is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IB.ai is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IB.ai. If not, see http://www.gnu.org/licenses/.
+ */
+
 package com.ibdiscord.command.commands;
 
 import com.ibdiscord.command.Command;
@@ -11,24 +29,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Set;
 
-/**
- * Copyright 2017-2019 Jarred Vardy
- * <p>
- * This file is part of IB.ai.
- * <p>
- * IB.ai is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * IB.ai is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with IB.ai. If not, see http://www.gnu.org/licenses/.
- */
 public final class DadJokeCommand extends Command {
 
     /**
@@ -51,13 +51,13 @@ public final class DadJokeCommand extends Command {
             connection.setRequestProperty("Accept", "text/plain");
             connection.setRequestMethod("GET");
 
-            try (BufferedReader in = new BufferedReader(
+            try(BufferedReader in = new BufferedReader(
                     new InputStreamReader(connection.getInputStream()))) {
 
                 StringBuilder jokeBuilder = new StringBuilder();
 
                 String line;
-                while ((line = in.readLine()) != null) {
+                while((line = in.readLine()) != null) {
                     jokeBuilder.append(line);
                     jokeBuilder.append(System.lineSeparator());
                 }

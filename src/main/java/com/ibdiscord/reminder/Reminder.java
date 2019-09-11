@@ -1,14 +1,4 @@
-package com.ibdiscord.reminder;
-
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.reminder.ReminderUserData;
-import de.arraying.gravity.Gravity;
-import lombok.AllArgsConstructor;
-
-import java.util.Date;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -25,7 +15,19 @@ import java.util.Date;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-public @AllArgsConstructor final class Reminder {
+
+package com.ibdiscord.reminder;
+
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.reminder.ReminderUserData;
+import de.arraying.gravity.Gravity;
+import lombok.AllArgsConstructor;
+
+import java.util.Date;
+
+
+@AllArgsConstructor
+public final class Reminder {
 
     private final int id;
     private final long time;

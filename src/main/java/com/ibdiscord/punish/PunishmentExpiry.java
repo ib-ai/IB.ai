@@ -1,18 +1,4 @@
-package com.ibdiscord.punish;
-
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.GuildData;
-import com.ibdiscord.data.db.entries.punish.ExpiryData;
-import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
-
-import java.util.Map;
-import java.util.concurrent.*;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -29,6 +15,20 @@ import java.util.concurrent.*;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.punish;
+
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.entries.punish.ExpiryData;
+import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+
+import java.util.Map;
+import java.util.concurrent.*;
+
 public enum PunishmentExpiry {
 
     INSTANCE;
@@ -36,6 +36,11 @@ public enum PunishmentExpiry {
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private final Map<String, ScheduledFuture<?>> schedules = new ConcurrentHashMap<>();
 
+    /**
+     * Gets a schedule for a given case number.
+     * @param caseNumber The case number to get the schedule for
+     * @return The schedule corresponding to the given case number
+     */
     public ScheduledFuture<?> getFor(String caseNumber) {
         return schedules.get(caseNumber);
     }
@@ -48,7 +53,9 @@ public enum PunishmentExpiry {
      * @param punishment The punishment.
      */
     public void schedule(Guild guild, String caseNumber, long delay, Punishment punishment) {
-        schedules.put(caseNumber, executorService.schedule(() -> expire(guild, caseNumber, punishment), delay, TimeUnit.MILLISECONDS));
+        schedules.put(caseNumber, executorService.schedule(
+            () -> expire(guild, caseNumber, punishment), delay, TimeUnit.MILLISECONDS)
+        );
     }
 
     /**
@@ -74,8 +81,12 @@ public enum PunishmentExpiry {
                     return;
                 }
                 guild.removeRoleFromMember(member, role).queue();
+                break;
             case BAN:
                 guild.unban(punishment.getUserId()).queue();
+                break;
+            default:
+                break;
         }
     }
 

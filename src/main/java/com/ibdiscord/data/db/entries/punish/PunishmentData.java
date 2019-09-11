@@ -1,10 +1,4 @@
-package com.ibdiscord.data.db.entries.punish;
-
-import de.arraying.gravity.data.types.TypeMap;
-import lombok.AllArgsConstructor;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -21,7 +15,14 @@ import lombok.AllArgsConstructor;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-public final @AllArgsConstructor class PunishmentData extends TypeMap {
+
+package com.ibdiscord.data.db.entries.punish;
+
+import de.arraying.gravity.data.types.TypeMap;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public final class PunishmentData extends TypeMap {
 
     /**
      * The type.

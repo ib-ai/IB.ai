@@ -1,9 +1,4 @@
-package com.ibdiscord.startup;
-
-import com.ibdiscord.utils.objects.AbstractTask;
-
-/**
- * Copyright 2017-2019 Jarred Vardy
+/* Copyright 2017-2019 Jarred Vardy
  *
  * This file is part of IB.ai.
  *
@@ -20,6 +15,11 @@ import com.ibdiscord.utils.objects.AbstractTask;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.startup;
+
+import com.ibdiscord.utils.objects.AbstractTask;
+
 public abstract class AbstractStartupTask extends AbstractTask {
 
     private boolean completed = false;

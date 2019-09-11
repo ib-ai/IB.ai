@@ -1,20 +1,4 @@
-package com.ibdiscord.localisation;
-
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.LangData;
-import com.ibdiscord.exceptions.LocalisationException;
-import com.ibdiscord.exceptions.LocaliserSyntaxException;
-import com.ibdiscord.utils.UJSON;
-import de.arraying.gravity.Gravity;
-import de.arraying.kotys.JSON;
-import de.arraying.kotys.JSONArray;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-/**
- * Copyright 2017-2019 Jarred Vardy <jarred.vardy@gmail.com>
+/* Copyright 2017-2019 Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *
@@ -31,6 +15,22 @@ import java.util.regex.Pattern;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.localisation;
+
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.LangData;
+import com.ibdiscord.exceptions.LocalisationException;
+import com.ibdiscord.exceptions.LocaliserSyntaxException;
+import com.ibdiscord.utils.UJSON;
+import de.arraying.gravity.Gravity;
+import de.arraying.kotys.JSON;
+import de.arraying.kotys.JSONArray;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public enum Localiser {
 
     /**
@@ -40,6 +40,10 @@ public enum Localiser {
 
     private static final String variablesRegex = "\\{(\\d+)}";
 
+    /**
+     * Initialises localiser. Used to cache English translations for faster
+     * retrieval.
+     */
     public void init() {
         //TODO: Cache all english translations to Redis
     }
@@ -49,6 +53,7 @@ public enum Localiser {
      * the inputted user's language preference.
      * @param commandContext The context of the command this method is called from
      * @param key The identifier for the text that is to be found < category.key >
+     * @param variables Ordered variables to be substituted into final translation
      * @return The localised text corresponding to the inputted key
      */
     public static String __(CommandContext commandContext, String key, String... variables) {
@@ -107,6 +112,10 @@ public enum Localiser {
         return text;
     }
 
+    /**
+     * Retrieves available languages from JSON file.
+     * @return Array of all available languages for localisation
+     */
     public static String[] getAllLanguages() {
         String pathToAvailableLanguages = "/IB.ai/lang/available_languages.json";
         JSON allLanguagesFile = UJSON.retrieveJSONFromFile(pathToAvailableLanguages);

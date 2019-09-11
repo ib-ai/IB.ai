@@ -1,3 +1,21 @@
+/* Copyright 2017-2019 Arraying
+ *
+ * This file is part of IB.ai.
+ *
+ * IB.ai is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IB.ai is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IB.ai. If not, see http://www.gnu.org/licenses/.
+ */
+
 package com.ibdiscord.command.commands;
 
 import com.ibdiscord.command.Command;
@@ -15,24 +33,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.util.Set;
 
-/**
- * Copyright 2017-2019 Arraying
- *
- * This file is part of IB.ai.
- *
- * IB.ai is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * IB.ai is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with IB.ai. If not, see http://www.gnu.org/licenses/.
- */
 public final class NoteCommand extends Command {
 
     /**
@@ -87,7 +87,9 @@ public final class NoteCommand extends Command {
         } else {
             String note = UString.concat(context.getArguments(), " ", 1);
             if(note.length() > MessageEmbed.VALUE_MAX_LENGTH) {
-                context.reply("Your note is too long! Please make it less than " + MessageEmbed.VALUE_MAX_LENGTH + " characters.");
+                context.reply("Your note is too long! Please make it less than "
+                        + MessageEmbed.VALUE_MAX_LENGTH
+                        + " characters.");
                 return;
             }
             if(noteData.size() >= 25) {

@@ -1,17 +1,4 @@
-package com.ibdiscord.command.commands;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Guild;
-
-import java.time.format.DateTimeFormatter;
-import java.util.Set;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -28,6 +15,19 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Guild;
+
+import java.time.format.DateTimeFormatter;
+import java.util.Set;
+
 public final class ServerInfoCommand extends Command {
 
     /**
@@ -50,8 +50,10 @@ public final class ServerInfoCommand extends Command {
         Guild guild = context.getGuild();
         context.reply(new EmbedBuilder()
                 .addField("ID", guild.getId(), true)
-                .addField("Owner", guild.getOwner() == null ? "Nobody." : guild.getOwner().getUser().getAsTag(), true)
-                .addField("Creation Date", guild.getTimeCreated().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
+                .addField("Owner", guild.getOwner() == null ? "Nobody." : guild.getOwner().getUser().getAsTag(),
+                        true)
+                .addField("Creation Date", guild.getTimeCreated().format(DateTimeFormatter.RFC_1123_DATE_TIME),
+                        true)
                 .addField("Voice Region", guild.getRegion().getName(), true)
                 .addField("# of members", itos(guild.getMembers().size()), true)
                 .addField("# of Bots", ltos(guild.getMembers().stream()
@@ -61,7 +63,10 @@ public final class ServerInfoCommand extends Command {
                     .filter(it -> it.getOnlineStatus() != OnlineStatus.OFFLINE)
                     .count()), true)
                 .addField("# of Roles", itos(guild.getRoles().size()), true)
-                .addField("# of Channels", itos(guild.getVoiceChannels().size() + guild.getTextChannels().size() + guild.getCategories().size()), true)
+                .addField("# of Channels", itos(guild.getVoiceChannels().size()
+                        + guild.getTextChannels().size()
+                        + guild.getCategories().size()),
+                        true)
                 .build()
         );
     }

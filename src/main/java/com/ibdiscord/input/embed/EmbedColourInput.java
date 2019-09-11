@@ -1,12 +1,4 @@
-package com.ibdiscord.input.embed;
-
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-
-import java.awt.*;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -23,6 +15,14 @@ import java.awt.*;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.input.embed;
+
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+
+import java.awt.*;
+
 public final class EmbedColourInput extends EmbedInput {
 
     /**
@@ -51,7 +51,7 @@ public final class EmbedColourInput extends EmbedInput {
     }
 
     /**
-     * Gets the timeout.
+     * Gets 30 seconds in milliseconds as a long.
      * @return 30 seconds.
      */
     @Override
@@ -66,7 +66,9 @@ public final class EmbedColourInput extends EmbedInput {
     @Override
     public void initialize(Message message) {
         this.successor = new EmbedImageInput(builder);
-        message.getChannel().sendMessage("Please provide the colour in hex format (e.g. `#123456`). Use `skip` to skip this.").queue();
+        message.getChannel().sendMessage("Please provide the colour in hex format (e.g. `#123456`). Use `skip` "
+                    + "to skip this.")
+                .queue();
     }
 
 }

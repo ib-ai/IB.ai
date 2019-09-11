@@ -1,16 +1,4 @@
-package com.ibdiscord.command.commands.abstracted;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.GuildData;
-import net.dv8tion.jda.api.entities.TextChannel;
-
-import java.util.Set;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -27,6 +15,18 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands.abstracted;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.GuildData;
+import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.util.Set;
+
 public abstract class LoggingCommand extends Command {
 
     /**
@@ -44,7 +44,11 @@ public abstract class LoggingCommand extends Command {
      * @param subCommands Any sub commands the command has.
      * @param key The key for the channel field.
      */
-    protected LoggingCommand(String name, Set<String> aliases, CommandPermission permission, Set<Command> subCommands, String key) {
+    protected LoggingCommand(String name,
+                             Set<String> aliases,
+                             CommandPermission permission,
+                             Set<Command> subCommands,
+                             String key) {
         super(name, aliases, permission, subCommands);
         this.key = key;
     }

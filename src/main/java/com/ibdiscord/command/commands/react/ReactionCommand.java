@@ -1,21 +1,4 @@
-package com.ibdiscord.command.commands.react;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.react.EmoteData;
-import com.ibdiscord.data.db.entries.react.ReactionData;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Emote;
-import net.dv8tion.jda.api.entities.Message;
-
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-/**
- * Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
+/* Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *
@@ -32,6 +15,23 @@ import java.util.UUID;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands.react;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.react.EmoteData;
+import com.ibdiscord.data.db.entries.react.ReactionData;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Message;
+
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 public final class ReactionCommand extends Command {
 
     /**
@@ -125,7 +125,7 @@ public final class ReactionCommand extends Command {
          * @param emote The emote.
          */
         @Override
-        protected void modifyMessage(Message message, Object emote) {}
+        protected void modifyMessage(Message message, Object emote) { }
 
     }
 

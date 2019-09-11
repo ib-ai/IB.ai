@@ -1,3 +1,21 @@
+/* Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
+ *
+ * This file is part of IB.ai.
+ *
+ * IB.ai is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IB.ai is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IB.ai. If not, see http://www.gnu.org/licenses/.
+ */
+
 package com.ibdiscord.command.commands.react;
 
 import com.ibdiscord.command.Command;
@@ -15,25 +33,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-
-/**
- * Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
- *
- * This file is part of IB.ai.
- *
- * IB.ai is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * IB.ai is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with IB.ai. If not, see http://www.gnu.org/licenses/.
- */
 public abstract class ReactionManageCommand extends Command {
 
     /**
@@ -88,14 +87,14 @@ public abstract class ReactionManageCommand extends Command {
         }
         long channelId;
         long messageId;
-        String emoteRaw = context.getArguments()[2];
         ArrayList<String> roleArgs;
         try {
             channelId = Long.valueOf(context.getArguments()[0]);
             messageId = Long.valueOf(context.getArguments()[1]);
             roleArgs = new ArrayList<>(Arrays.asList(context.getArguments()).subList(3, context.getArguments().length));
         } catch(NumberFormatException exception) {
-            context.reply("One of your IDs is not a number. Please make sure you only use numeric IDs, and not mentions.");
+            context.reply("One of your IDs is not a number. Please make sure you only use numeric IDs, and "
+                    + "not mentions.");
             return;
         }
         TextChannel channel = context.getGuild().getTextChannelById(channelId);
@@ -121,9 +120,14 @@ public abstract class ReactionManageCommand extends Command {
             context.reply("The role(s) provided were invalid.");
             return;
         }
-        ReactionData data = DataContainer.INSTANCE.getGravity().load(new ReactionData(context.getGuild().getId(), messageId));
+        ReactionData data = DataContainer.INSTANCE.getGravity().load(
+                new ReactionData(context.getGuild().getId(), messageId)
+        );
+
+        String emoteRaw = context.getArguments()[2];
         modifyData(data, emoteRaw, roleIDData);
-        modifyMessage(message, context.getMessage().getEmotes().isEmpty() ? emoteRaw : context.getMessage().getEmotes().get(0));
+        modifyMessage(message,
+                context.getMessage().getEmotes().isEmpty() ? emoteRaw : context.getMessage().getEmotes().get(0));
         DataContainer.INSTANCE.getGravity().save(data);
         context.reply("Consider it done.");
     }

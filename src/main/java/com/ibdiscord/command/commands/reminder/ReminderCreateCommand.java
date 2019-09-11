@@ -1,16 +1,4 @@
-package com.ibdiscord.command.commands.reminder;
-
-import com.ibdiscord.command.Command;
-import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.reminder.ReminderHandler;
-import com.ibdiscord.utils.UString;
-import com.ibdiscord.utils.UTime;
-
-import java.util.Set;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -27,6 +15,18 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.commands.reminder;
+
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.reminder.ReminderHandler;
+import com.ibdiscord.utils.UString;
+import com.ibdiscord.utils.UTime;
+
+import java.util.Set;
+
 public final class ReminderCreateCommand extends Command {
 
     /**
@@ -56,7 +56,8 @@ public final class ReminderCreateCommand extends Command {
         }
         long duration = UTime.parseDuration(context.getArguments()[0]);
         if(duration == -1) {
-            context.reply("Your duration is invalid. For example, a reminder in 3 hours and 15 minutes would be `3h15`.");
+            context.reply("Your duration is invalid. For example, a reminder in 3 hours and 15 minutes "
+                    + "would be `3h15`.");
             return;
         }
         String reminder = UString.concat(context.getArguments(), " ", 1);

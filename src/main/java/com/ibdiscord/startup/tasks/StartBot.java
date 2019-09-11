@@ -1,17 +1,4 @@
-package com.ibdiscord.startup.tasks;
-
-import com.ibdiscord.IBai;
-import com.ibdiscord.data.LocalConfig;
-import com.ibdiscord.listeners.*;
-import com.ibdiscord.startup.AbstractStartupTask;
-import lombok.Getter;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
-
-/**
- * Copyright 2017-2019 Jarred Vardy
+/* Copyright 2017-2019 Jarred Vardy
  *
  * This file is part of IB.ai.
  *
@@ -28,6 +15,24 @@ import net.dv8tion.jda.api.entities.Activity;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.startup.tasks;
+
+import com.ibdiscord.IBai;
+import com.ibdiscord.data.LocalConfig;
+import com.ibdiscord.listeners.FilterListener;
+import com.ibdiscord.listeners.GuildListener;
+import com.ibdiscord.listeners.MessageListener;
+import com.ibdiscord.listeners.MonitorListener;
+import com.ibdiscord.listeners.ReactionListener;
+import com.ibdiscord.listeners.ReadyListener;
+import com.ibdiscord.startup.AbstractStartupTask;
+import lombok.Getter;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
+
 public final class StartBot extends AbstractStartupTask {
 
     @Getter private static JDA jda;
@@ -50,8 +55,17 @@ public final class StartBot extends AbstractStartupTask {
         jda = new JDABuilder()
                 .setToken(localConfig.getBotToken())
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                .setActivity(Activity.playing(String.format("v%s | %shelp", localConfig.getBotVersion(), localConfig.getStaticPrefix())))
-                .addEventListeners(new FilterListener(), new GuildListener(), new MessageListener(), new MonitorListener(), new ReactionListener(), new ReadyListener())
+                .setActivity(Activity.playing(String.format("v%s | %shelp",
+                        localConfig.getBotVersion(),
+                        localConfig.getStaticPrefix()))
+                )
+                .addEventListeners(new FilterListener(),
+                        new GuildListener(),
+                        new MessageListener(),
+                        new MonitorListener(),
+                        new ReactionListener(),
+                        new ReadyListener()
+                )
                 .build();
         jda.setAutoReconnect(true);
         jda.awaitReady();

@@ -1,9 +1,4 @@
-package com.ibdiscord.utils.objects;
-
-import lombok.Data;
-
-/**
- * Copyright 2017-2019 Jarred Vardy
+/* Copyright 2017-2019 Jarred Vardy
  *
  * This file is part of IB.ai.
  *
@@ -20,10 +15,15 @@ import lombok.Data;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.utils.objects;
+
+import lombok.Data;
+
 @Data
 public final class Tuple<A, B> {
 
-    private final A a;
-    private final B b;
+    private final A propertyA;
+    private final B propertyB;
 
 }

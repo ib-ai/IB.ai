@@ -1,3 +1,21 @@
+/* Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
+ *
+ * This file is part of IB.ai.
+ *
+ * IB.ai is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IB.ai is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IB.ai. If not, see http://www.gnu.org/licenses/.
+ */
+
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.data.db.DataContainer;
@@ -16,24 +34,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Copyright 2017-2019 Arraying, Jarred Vardy <jarred.vardy@gmail.com>
- *
- * This file is part of IB.ai.
- *
- * IB.ai is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * IB.ai is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with IB.ai. If not, see http://www.gnu.org/licenses/.
- */
 public final class ReactionListener extends ListenerAdapter {
 
     /**
@@ -57,6 +57,8 @@ public final class ReactionListener extends ListenerAdapter {
                 break;
             case "\uD83D\uDC4E": // thumbs down
                 react(event.getMessageIdLong(), (short) 2);
+                break;
+            default:
                 break;
         }
     }
@@ -83,6 +85,8 @@ public final class ReactionListener extends ListenerAdapter {
             case "\uD83D\uDC4E": // thumbs down
                 react(event.getMessageIdLong(), (short) 3);
                 break;
+            default:
+                break;
         }
     }
 
@@ -96,7 +100,9 @@ public final class ReactionListener extends ListenerAdapter {
     private void react(Member member, long message, String emote, boolean add) {
         Guild guild = member.getGuild();
         ReactionData reactionData = DataContainer.INSTANCE.getGravity().load(new ReactionData(guild.getId(), message));
-        EmoteData emoteData = DataContainer.INSTANCE.getGravity().load(new EmoteData(reactionData.get(emote).asString()));
+        EmoteData emoteData = DataContainer.INSTANCE.getGravity().load(new EmoteData(
+                reactionData.get(emote).asString())
+        );
 
         Collection<Role> positiveRoles = emoteData.contents().stream()
                 .filter(prop -> !prop.asString().startsWith("!"))
@@ -114,8 +120,8 @@ public final class ReactionListener extends ListenerAdapter {
         // Tried to incorporate the 'add' bool into the collection of
         // the positive and negative roles instead of doing this conditional but
         // got some weird behaviour. Perhaps make less verbose in future.
-        Collection<Role> rolesToAdd = add ? positiveRoles: negativeRoles;
-        Collection<Role> rolesToRemove = add ? negativeRoles: positiveRoles;
+        Collection<Role> rolesToAdd = add ? positiveRoles : negativeRoles;
+        Collection<Role> rolesToRemove = add ? negativeRoles : positiveRoles;
 
         // Check to stop Pre-IB students from getting the NSFW role.
         // This is basically a HARDXXX CASSOWARY
@@ -137,9 +143,11 @@ public final class ReactionListener extends ListenerAdapter {
         }
 
         CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData());
-        for(Property cassowariesProp : cassowariesData.contents() ) {
+        for(Property cassowariesProp : cassowariesData.contents()) {
 
-            CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(cassowariesProp.asString()));
+            CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(
+                    cassowariesProp.asString())
+            );
             boolean containsRoleToAdd = !Collections.disjoint(cassowaryData.contents().stream()
                     .map(Property::asString)
                             .collect(Collectors.toSet()),
@@ -189,6 +197,8 @@ public final class ReactionListener extends ListenerAdapter {
                 case 3:
                     entry.unvoteNo();
                     break;
+                default:
+                    break;
             }
         }
     }
@@ -199,9 +209,9 @@ public final class ReactionListener extends ListenerAdapter {
      * @return An emoji.
      */
     private String getEmoji(MessageReaction.ReactionEmote emote) {
-        return emote.isEmote() ?
-                emote.getEmote().getAsMention() :
-                emote.getName();
+        return emote.isEmote()
+                ? emote.getEmote().getAsMention()
+                : emote.getName();
     }
 
 }

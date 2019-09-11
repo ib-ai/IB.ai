@@ -1,14 +1,4 @@
-package com.ibdiscord.input;
-
-import com.ibdiscord.utils.objects.Tuple;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-
-import java.util.Map;
-import java.util.concurrent.*;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -25,6 +15,16 @@ import java.util.concurrent.*;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.input;
+
+import com.ibdiscord.utils.objects.Tuple;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+
+import java.util.Map;
+import java.util.concurrent.*;
+
 public enum InputHandler {
 
     /**
@@ -47,11 +47,11 @@ public enum InputHandler {
             throw new IllegalStateException("Already processing input, cannot start new input.");
         }
         ScheduledFuture future = executorService.schedule(() -> {
-                    stop(member);
-                    initial.getChannel().sendMessage("Input timed out.").queue();
-                },
-                input.getTimeout(),
-                TimeUnit.MILLISECONDS
+                stop(member);
+                initial.getChannel().sendMessage("Input timed out.").queue();
+            },
+            input.getTimeout(),
+            TimeUnit.MILLISECONDS
         );
         tuple = new Tuple<>(input, future);
         inputs.get(member.getGuild().getIdLong()).put(member.getUser().getIdLong(), tuple);
@@ -63,8 +63,8 @@ public enum InputHandler {
      * @param member The member.
      * @param message The message.
      * @return If the member is currently inputting, this will return false.
-     * When this is false, the input should NOT be used further in message handling,
-     * such as command execution. If this can be used, true will be returned.
+     *     When this is false, the input should NOT be used further in message handling,
+     *     such as command execution. If this can be used, true will be returned.
      */
     public synchronized boolean offer(Member member, Message message) {
         construct(member);
@@ -76,9 +76,9 @@ public enum InputHandler {
             stop(member);
             return false;
         }
-        boolean pass = tuple.getA().offer(message);
+        boolean pass = tuple.getPropertyA().offer(message);
         if(pass) {
-            Input next = tuple.getA().getSuccessor();
+            Input next = tuple.getPropertyA().getSuccessor();
             stop(member);
             if(next != null) {
                 start(member, next, message);
@@ -96,7 +96,7 @@ public enum InputHandler {
         if(tuple == null) {
             return;
         }
-        tuple.getB().cancel(true);
+        tuple.getPropertyB().cancel(true);
         inputs.get(member.getGuild().getIdLong()).remove(member.getUser().getIdLong());
     }
 

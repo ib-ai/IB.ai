@@ -1,7 +1,4 @@
-package com.ibdiscord.command.permissions;
-
-/**
- * Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -18,6 +15,9 @@ package com.ibdiscord.command.permissions;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.command.permissions;
+
 public enum PermissionType {
 
     /**

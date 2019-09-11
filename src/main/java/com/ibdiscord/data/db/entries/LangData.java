@@ -1,10 +1,4 @@
-package com.ibdiscord.data.db.entries;
-
-import de.arraying.gravity.data.types.TypeMap;
-import lombok.AllArgsConstructor;
-
-/**
- * Copyright 2017-2019 Jarred Vardy <jarred.vardy@gmail.com>
+/* Copyright 2017-2019 Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *
@@ -21,7 +15,14 @@ import lombok.AllArgsConstructor;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-public final @AllArgsConstructor class LangData extends TypeMap {
+
+package com.ibdiscord.data.db.entries;
+
+import de.arraying.gravity.data.types.TypeMap;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public final class LangData extends TypeMap {
 
     /**
      * Gets the unique identifier.

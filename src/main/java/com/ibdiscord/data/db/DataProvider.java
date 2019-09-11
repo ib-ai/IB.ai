@@ -1,16 +1,4 @@
-package com.ibdiscord.data.db;
-
-import de.arraying.gravity.GravityProvider;
-import io.lettuce.core.RedisException;
-import io.lettuce.core.api.sync.RedisCommands;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-/**
- * Copyright 2017-2019 Ray Clark
+/* Copyright 2017-2019 Ray Clark
  *
  * This file is part of IB.ai.
  *
@@ -27,10 +15,25 @@ import java.util.Set;
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
+package com.ibdiscord.data.db;
+
+import de.arraying.gravity.GravityProvider;
+import io.lettuce.core.RedisException;
+import io.lettuce.core.api.sync.RedisCommands;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @SuppressWarnings("unchecked")
 public final class DataProvider implements GravityProvider {
     private final RedisCommands sync;
 
+    /**
+     * Creates data provider object. Sets sync from Redis instance.
+     */
     public DataProvider() {
         sync = DataContainer.INSTANCE.getSync();
     }
