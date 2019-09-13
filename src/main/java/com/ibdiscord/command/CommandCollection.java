@@ -34,6 +34,7 @@ public enum CommandCollection {
     AVATAR(new AvatarCommand()),
     BLACKLIST(new BlacklistCommand()),
     CASSOWARY(new CassowaryCommand()),
+    COIN_FLIP(new CoinFlipCommand()),
     DAD_JOKE(new DadJokeCommand()),
     ECHO(new EchoCommand()),
     EMBED(new EmbedCommand()),
