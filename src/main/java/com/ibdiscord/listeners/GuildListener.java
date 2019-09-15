@@ -183,7 +183,10 @@ public final class GuildListener extends ListenerAdapter {
                                 AuditLogChange rolesRemovedRaw = latest.getChangeByKey(AuditLogKey.MEMBER_ROLES_REMOVE);
                                 if(rolesAddedRaw != null) {
                                     if(staff.getIdLong() == guild.getJDA().getSelfUser().getIdLong()) {
-                                        IBai.INSTANCE.getLogger().info("Ignored adding role since it was sent by user {} (self)", staff.getIdLong());
+                                        IBai.INSTANCE.getLogger().info("Ignored adding role since it was sent by user "
+                                                + "{} (self)",
+                                            staff.getIdLong()
+                                        );
                                         return;
                                     }
                                     List<Map<String, String>> roles = rolesAddedRaw.getNewValue();
