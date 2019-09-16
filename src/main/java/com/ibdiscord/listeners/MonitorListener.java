@@ -27,6 +27,7 @@ import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -49,6 +50,9 @@ public final class MonitorListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if(event.getAuthor().isBot()) {
+            return;
+        }
+        if(event.getChannelType() != ChannelType.TEXT) {
             return;
         }
         Message message = event.getMessage();

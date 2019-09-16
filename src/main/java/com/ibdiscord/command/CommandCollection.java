@@ -52,6 +52,7 @@ public enum CommandCollection {
     MONITOR(new MonitorCommand()),
     MUTE_ROLE(new MuteRoleCommand()),
     NOTES(new NoteCommand()),
+    ODDS(new OddsCommand()),
     PING(new PingCommand()),
     PREFIX(new PrefixCommand()),
     PURGE(new PurgeCommand()),

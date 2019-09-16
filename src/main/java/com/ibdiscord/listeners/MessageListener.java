@@ -24,6 +24,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.TagData;
 import com.ibdiscord.input.InputHandler;
+import com.ibdiscord.odds.OddsManager;
 import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.ExpiringCache;
 import com.ibdiscord.utils.objects.GuildedCache;
@@ -39,6 +40,7 @@ import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageUpdateEvent;
+import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -138,6 +140,17 @@ public final class MessageListener extends ListenerAdapter {
                     .build();
             channel.sendMessage(embed).queue();
         }, event);
+    }
+
+    /**
+     * Handles private messages sent to the bot.
+     * @param event The event.
+     */
+    @Override
+    public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
+        // Presently event is used for users to submit 'odds' guesses.
+        String rawMessage = event.getMessage().getContentRaw();
+        OddsManager.newGuess(event.getChannel(), event.getAuthor().getId(), rawMessage);
     }
 
     /**
