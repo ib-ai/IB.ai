@@ -57,7 +57,7 @@ public abstract class Command implements ILocalised {
         this.aliases = aliases;
         this.permission = permission;
         this.subCommands = subCommands;
-        this.correctUsage = "unknown";
+        this.correctUsage = "Unknown";
     }
 
     /**

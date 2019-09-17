@@ -21,6 +21,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.api.entities.Member;
@@ -34,7 +35,7 @@ public final class AvatarCommand extends Command {
      */
     public AvatarCommand() {
         super("avatar",
-                Set.of("av"),
+                Localiser.getAllCommandAliases("L.avatar"),
                 CommandPermission.discord(),
                 Set.of()
         );
