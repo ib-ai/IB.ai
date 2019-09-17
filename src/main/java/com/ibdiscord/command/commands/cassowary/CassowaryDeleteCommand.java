@@ -25,30 +25,28 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
 import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
 import com.ibdiscord.utils.UInput;
-import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.api.Permission;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public final class CassowaryCreate extends Command {
+public final class CassowaryDeleteCommand extends Command {
 
     /**
-     * Creates a new CassowaryCreate command.
+     * Creates a new CassowaryDeleteCommand command.
      */
-    CassowaryCreate() {
-        super("create",
-                Set.of("c", "add", "new"),
+    CassowaryDeleteCommand() {
+        super("delete",
+                Set.of("d", "remove", "r"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
+        this.correctUsage = "cassowary delete \"label\"";
     }
 
     @Override
     protected void execute(CommandContext context) {
-        if(context.getArguments().length < 3) {
+        if(context.getArguments().length < 1) {
             sendUsage(context);
             return;
         }
@@ -59,37 +57,12 @@ public final class CassowaryCreate extends Command {
         }
         String label = quotedStrings.get(0);
 
-        String allArgs = UString.concat(context.getArguments(), " ", 0);
-        String argsWithoutLabel = allArgs.replace(label, "")
-                .replaceAll("\"", "")
-                .trim();
-        ArrayList<String> roleIDs = new ArrayList<>(Arrays.asList(argsWithoutLabel.split(" ")));
-
-        boolean invalidIDs = roleIDs.stream()
-                .anyMatch(id -> validateRoleID(id, context));
-
-        if(invalidIDs) {
-            context.reply("One or more of the role IDs you entered was invalid.");
-            return;
-        }
-
         CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData());
-        cassowariesData.add(label);
+        cassowariesData.remove(label);
         DataContainer.INSTANCE.getGravity().save(cassowariesData);
 
-        CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(label));
-        roleIDs.forEach(cassowaryData::add);
-        DataContainer.INSTANCE.getGravity().save(cassowaryData);
+        DataContainer.INSTANCE.getGravity().load(new CassowaryData(label)).delete();
 
         context.reply("Consider it done.");
-    }
-
-    private static boolean validateRoleID(String roleID, CommandContext context) {
-        try {
-            context.getGuild().getRoleById(roleID);
-            return false;
-        } catch(Exception ex) {
-            return true;
-        }
     }
 }
