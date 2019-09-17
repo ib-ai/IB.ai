@@ -21,6 +21,7 @@ package com.ibdiscord.command;
 import com.ibdiscord.IBai;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.localisation.ILocalised;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.Comparator;
 import lombok.Getter;
@@ -52,9 +53,9 @@ public abstract class Command implements ILocalised {
      * @param permission The permission required to execute the command.
      * @param subCommands Any sub commands the command has.
      */
-    protected Command(String name, Set<String> aliases, CommandPermission permission, Set<Command> subCommands) {
+    protected Command(String name, CommandPermission permission, Set<Command> subCommands) {
         this.name = name;
-        this.aliases = aliases;
+        this.aliases = Localiser.getAllCommandAliases("command_aliases." + name);
         this.permission = permission;
         this.subCommands = subCommands;
         this.correctUsage = "Unknown";

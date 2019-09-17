@@ -87,9 +87,8 @@ public enum Localiser {
     public static Set<String> getAllCommandAliases(String key) {
         String[] splitKey = key.split(Pattern.quote("."));
         List<String> allAliases = new ArrayList<>();
-        String finalKey = "command_names." + splitKey[1];
         getAllLanguages().stream().forEach(lang -> {
-            JSON languageFile = getJSONObjectFromKey(lang, finalKey);
+            JSON languageFile = getJSONObjectFromKey(lang, key);
             JSONArray arrayOfAliasesObj = languageFile.array(splitKey[1]);
             allAliases.addAll(Arrays.stream(arrayOfAliasesObj.toArray())
                     .map(Object::toString)

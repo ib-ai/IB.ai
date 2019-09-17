@@ -1,0 +1,5 @@
+{
+  "avatar": ["av"],
+  "blacklist": ["hackban"],
+  "coinflip": ["flip", "headsortails", "coin"]
+}
