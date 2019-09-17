@@ -36,12 +36,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public final class CassowaryList extends PaginatedCommand<String> {
+public final class CassowaryListCommand extends PaginatedCommand<String> {
 
     /**
-     * Creates a new CassowaryList command.
+     * Creates a new CassowaryListCommand command.
      */
-    CassowaryList() {
+    CassowaryListCommand() {
         super("list",
                 Set.of("l"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
