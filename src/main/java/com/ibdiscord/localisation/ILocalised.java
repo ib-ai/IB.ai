@@ -21,6 +21,14 @@ package com.ibdiscord.localisation;
 import com.ibdiscord.command.CommandContext;
 
 public interface ILocalised {
+
+    /**
+     * Interface method alias for Localiser __ method.
+     * @param commandContext The context of the command this method is called from.
+     * @param key The identifier for the text that is to be found < category.key >.
+     * @param variables Ordered variables to be substituted into final translation.
+     * @return The localised text corresponding to the inputted key.
+     */
     default String __(CommandContext commandContext, String key, String... variables) {
         return Localiser.__(commandContext, key, variables);
     }

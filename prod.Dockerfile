@@ -7,9 +7,6 @@ LABEL "maintainer"="Jarred Vardy <jarred.vardy@gmail.com>"
 
 WORKDIR /IB.ai/
 
-# Add language files
-ADD lang ./lang
-
 # Resolve maven dependencies
 COPY pom.xml .
 RUN mvn -e -B dependency:resolve
@@ -22,9 +19,14 @@ RUN mvn -e -B -Dcheckstyle.skip=true package
 # Using Java JDK 10 base image
 FROM openjdk:10
 
+WORKDIR /IB.ai/
+
+# Add language files
+COPY lang ./lang
+
 # Copying artifacts from maven (builder) build stage
-COPY --from=builder /IB.ai/pom.xml /IB.ai/pom.xml
-COPY --from=builder /IB.ai/target/ /IB.ai/target
+COPY --from=builder /IB.ai/pom.xml .
+COPY --from=builder /IB.ai/target/ ./target
 
 # Running bot. Uses version from pom.xml to call artifact file name.
 CMD VERSION="$(grep -oP -m 1 '(?<=<version>).*?(?=</version>)' /IB.ai/pom.xml)" && \
