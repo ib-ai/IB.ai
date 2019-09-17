@@ -28,8 +28,11 @@ import de.arraying.gravity.Gravity;
 import de.arraying.kotys.JSON;
 import de.arraying.kotys.JSONArray;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public enum Localiser {
 
@@ -116,12 +119,13 @@ public enum Localiser {
      * Retrieves available languages from JSON file.
      * @return Array of all available languages for localisation
      */
-    public static String[] getAllLanguages() {
+    public static List<String> getAllLanguages() {
         String pathToAvailableLanguages = "/IB.ai/lang/available_languages.json";
         JSON allLanguagesFile = UJSON.retrieveJSONFromFile(pathToAvailableLanguages);
 
         JSONArray arrayOfLanguages = allLanguagesFile.array("languages");
-        return (String[]) arrayOfLanguages.toArray();
+        List<Object> langsAsObj = Arrays.asList(arrayOfLanguages.toArray());
+        return langsAsObj.stream().map(Object::toString).collect(Collectors.toList());
     }
 
     /**
