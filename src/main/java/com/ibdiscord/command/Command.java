@@ -20,6 +20,7 @@ package com.ibdiscord.command;
 
 import com.ibdiscord.IBai;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.ILocalised;
 import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.Comparator;
 import lombok.Getter;
@@ -30,7 +31,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.Set;
 import java.util.TreeSet;
 
-public abstract class Command {
+public abstract class Command implements ILocalised {
 
     /**
      * All commands.
