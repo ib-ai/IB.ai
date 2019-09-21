@@ -32,7 +32,6 @@ public final class VoteLadderCommand extends Command {
      */
     public VoteLadderCommand() {
         super("voteladder",
-                Set.of(),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of(new VoteLadderCreateCommand(),
                         new VoteLadderDeleteCommand(),

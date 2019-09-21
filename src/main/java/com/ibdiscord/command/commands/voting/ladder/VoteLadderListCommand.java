@@ -39,8 +39,7 @@ public final class VoteLadderListCommand extends PaginatedCommand<String> {
      * Creates the command.
      */
     VoteLadderListCommand() {
-        super("list",
-                Set.of("l"),
+        super("voteladder_list",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

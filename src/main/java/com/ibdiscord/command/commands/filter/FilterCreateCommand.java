@@ -36,8 +36,7 @@ public final class FilterCreateCommand extends Command {
      * Creates the command.
      */
     FilterCreateCommand() {
-        super("create",
-                Set.of("c", "add", "a"),
+        super("filter_create",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

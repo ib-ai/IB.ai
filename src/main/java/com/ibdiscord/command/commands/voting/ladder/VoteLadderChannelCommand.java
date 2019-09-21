@@ -31,8 +31,7 @@ public final class VoteLadderChannelCommand extends VoteLadderDataCommand {
      * Creates the command.
      */
     VoteLadderChannelCommand() {
-        super("channel",
-                Set.of(),
+        super("voteladder_channel",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

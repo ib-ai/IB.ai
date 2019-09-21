@@ -37,8 +37,7 @@ public final class TagCreateCommand extends Command {
      * Creates the command.
      */
     TagCreateCommand() {
-        super("create",
-                Set.of(),
+        super("tag_create",
                 CommandPermission.discord(Permission.MANAGE_CHANNEL),
                 Set.of()
         );

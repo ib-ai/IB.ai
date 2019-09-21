@@ -39,7 +39,6 @@ public final class ReminderListCommand extends PaginatedCommand<Reminder> {
      */
     ReminderListCommand() {
         super("list",
-                Set.of("l"),
                 CommandPermission.discord(),
                 Set.of()
         );

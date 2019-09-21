@@ -41,7 +41,6 @@ public final class FindCommand extends Command {
      */
     public FindCommand() {
         super("find",
-                Set.of("lookupuser"),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );

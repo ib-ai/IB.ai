@@ -32,7 +32,6 @@ public final class ModLogCommand extends LoggingCommand {
      */
     public ModLogCommand() {
         super("modlog",
-                Set.of("setmodlog"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of(),
                 GuildData.MODLOGS

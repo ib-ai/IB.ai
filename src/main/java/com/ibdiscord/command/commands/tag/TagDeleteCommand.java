@@ -35,8 +35,7 @@ public final class TagDeleteCommand extends Command {
      * Creates the command.
      */
     TagDeleteCommand() {
-        super("delete",
-                Set.of(),
+        super("tag_delete",
                 CommandPermission.discord(Permission.MANAGE_CHANNEL),
                 Set.of()
         );

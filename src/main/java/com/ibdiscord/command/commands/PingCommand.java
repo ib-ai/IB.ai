@@ -24,8 +24,6 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import net.dv8tion.jda.api.JDA;
 
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class PingCommand extends Command {
 
@@ -34,7 +32,6 @@ public final class PingCommand extends Command {
      */
     public PingCommand() {
         super("ping",
-                Stream.of("pong", "latency").collect(Collectors.toSet()),
                 CommandPermission.discord(),
                 Set.of()
         );

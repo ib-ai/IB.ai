@@ -32,7 +32,6 @@ public final class EchoCommand extends Command {
      */
     public EchoCommand() {
         super("echo",
-                Set.of("copycat"),
                 CommandPermission.discord(),
                 Set.of()
         );

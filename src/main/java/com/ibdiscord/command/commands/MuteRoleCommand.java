@@ -37,7 +37,6 @@ public final class MuteRoleCommand extends Command {
      */
     public MuteRoleCommand() {
         super("muterole",
-                Set.of("setmuterole"),
                 CommandPermission.discord(Permission.MANAGE_ROLES),
                 Set.of()
         );

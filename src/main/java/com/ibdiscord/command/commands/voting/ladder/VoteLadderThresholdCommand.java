@@ -31,8 +31,7 @@ public final class VoteLadderThresholdCommand extends VoteLadderDataCommand {
      * Creates the command.
      */
     VoteLadderThresholdCommand() {
-        super("threshold",
-                Set.of(),
+        super("voteladder_threshold",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

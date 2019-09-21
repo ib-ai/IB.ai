@@ -35,8 +35,7 @@ public final class FilterToggleCommand extends Command {
      * Creates the command.
      */
     FilterToggleCommand() {
-        super("toggle",
-                Set.of(),
+        super("filter_toggle",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

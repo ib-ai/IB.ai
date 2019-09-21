@@ -34,8 +34,7 @@ public final class MonitorToggleCommand extends Command {
      * Creates the command.
      */
     MonitorToggleCommand() {
-        super("toggle",
-                Set.of(),
+        super("monitor_toggle",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

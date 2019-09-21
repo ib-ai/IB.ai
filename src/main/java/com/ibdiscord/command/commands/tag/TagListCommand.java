@@ -38,8 +38,7 @@ public final class TagListCommand extends PaginatedCommand<String> {
      * Creates the command.
      */
     TagListCommand() {
-        super("list",
-                Set.of(),
+        super("tag_list",
                 CommandPermission.discord(),
                 Set.of()
         );

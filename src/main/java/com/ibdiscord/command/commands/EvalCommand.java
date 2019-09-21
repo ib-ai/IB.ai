@@ -37,7 +37,6 @@ public final class EvalCommand extends Command {
      */
     public EvalCommand() {
         super("eval",
-                Set.of("evaluate", "js", "justgeekythings"),
                 CommandPermission.developer(CommandPermission.discord()),
                 Set.of()
         );

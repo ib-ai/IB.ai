@@ -35,7 +35,6 @@ public final class UserRolesCommand extends Command {
      */
     public UserRolesCommand() {
         super("userroles",
-                Set.of("myroles", "showroles"),
                 CommandPermission.discord(),
                 Set.of()
         );

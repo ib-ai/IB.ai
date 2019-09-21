@@ -40,7 +40,6 @@ public final class ExpireCommand extends Command {
      */
     public ExpireCommand() {
         super("expire",
-                Set.of("expiry"),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );

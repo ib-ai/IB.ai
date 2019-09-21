@@ -34,8 +34,7 @@ public final class MonitorUserChannelCommand extends Command {
      * Creates the command.
      */
     MonitorUserChannelCommand() {
-        super("userchannel",
-                Set.of(),
+        super("monitor_userchannel",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

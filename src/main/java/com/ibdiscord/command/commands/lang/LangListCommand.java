@@ -31,14 +31,13 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import java.util.List;
 import java.util.Set;
 
-public class LangListCommand extends PaginatedCommand<String> {
+public final class LangListCommand extends PaginatedCommand<String> {
 
     /**
      * Creates a new LangList command.
      */
     LangListCommand() {
-        super("list",
-                Set.of("l", "ls"),
+        super("lang_list",
                 CommandPermission.discord(),
                 Set.of()
         );

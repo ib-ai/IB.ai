@@ -40,7 +40,6 @@ public final class NoteCommand extends Command {
      */
     public NoteCommand() {
         super("note",
-                Set.of("notes"),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );

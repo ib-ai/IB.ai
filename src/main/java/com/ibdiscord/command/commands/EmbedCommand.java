@@ -33,7 +33,6 @@ public final class EmbedCommand extends Command {
      */
     public EmbedCommand() {
         super("embed",
-                Set.of("embeds", "fancystuff"),
                 CommandPermission.discord(),
                 Set.of()
         );

@@ -21,7 +21,6 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.localisation.Localiser;
 import net.dv8tion.jda.api.Permission;
 
 import java.util.Set;
@@ -33,7 +32,6 @@ public final class BlacklistCommand extends Command {
      */
     public BlacklistCommand() {
         super("blacklist",
-                Localiser.getAllCommandAliases("L.blacklist"),
                 CommandPermission.discord(Permission.BAN_MEMBERS),
                 Set.of()
         );

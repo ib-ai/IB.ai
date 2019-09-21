@@ -34,7 +34,7 @@ public final class MonitorUserCommand extends MonitorManageCommand {
      * Creates the command.
      */
     MonitorUserCommand() {
-        super("user");
+        super("monitor_user");
     }
 
     /**

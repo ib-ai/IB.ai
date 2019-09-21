@@ -90,9 +90,11 @@ public enum Localiser {
         getAllLanguages().stream().forEach(lang -> {
             JSON languageFile = getJSONObjectFromKey(lang, key);
             JSONArray arrayOfAliasesObj = languageFile.array(splitKey[1]);
-            allAliases.addAll(Arrays.stream(arrayOfAliasesObj.toArray())
-                    .map(Object::toString)
-                    .collect(Collectors.toSet()));
+            if(arrayOfAliasesObj.length() != 0 && arrayOfAliasesObj != null) {
+                allAliases.addAll(Arrays.stream(arrayOfAliasesObj.toArray())
+                        .map(Object::toString)
+                        .collect(Collectors.toSet()));
+            }
         });
         return new HashSet<>(allAliases);
     }

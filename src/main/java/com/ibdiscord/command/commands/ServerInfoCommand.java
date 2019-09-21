@@ -35,7 +35,6 @@ public final class ServerInfoCommand extends Command {
      */
     public ServerInfoCommand() {
         super("serverinfo",
-                Set.of("guildinfo", "si"),
                 CommandPermission.discord(),
                 Set.of()
         );

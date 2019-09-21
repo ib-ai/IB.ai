@@ -32,7 +32,6 @@ public final class OddsCommand extends Command {
      */
     public OddsCommand() {
         super("odds",
-                Set.of("odd", "wtfarethebloodyoddsgoodsir"),
                 CommandPermission.discord(),
                 Set.of()
         );

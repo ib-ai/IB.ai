@@ -36,7 +36,6 @@ public final class ModeratorCommand extends Command {
      */
     public ModeratorCommand() {
         super("moderator",
-                Set.of("mod"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

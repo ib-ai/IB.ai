@@ -39,8 +39,7 @@ public final class MonitorListCommand extends PaginatedCommand<String> {
      * Creates the command.
      */
     MonitorListCommand() {
-        super("list",
-                Set.of(),
+        super("monitor_list",
                 CommandPermission.discord(),
                 Set.of()
         );

@@ -40,8 +40,7 @@ public final class FilterListCommand extends PaginatedCommand<String> {
      * Creates the command.
      */
     FilterListCommand() {
-        super("list",
-                Set.of("l"),
+        super("filter_list",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

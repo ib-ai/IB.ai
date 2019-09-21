@@ -33,7 +33,6 @@ public final class PurgeCommand extends Command {
      */
     public PurgeCommand() {
         super("purge",
-                Set.of("prune", "clear", "deletebrowserhistory"),
                 CommandPermission.discord(Permission.MESSAGE_MANAGE),
                 Set.of()
         );

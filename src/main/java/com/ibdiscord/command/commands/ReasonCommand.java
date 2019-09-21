@@ -44,7 +44,6 @@ public final class ReasonCommand extends Command {
      */
     public ReasonCommand() {
         super("reason",
-                Set.of(),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );

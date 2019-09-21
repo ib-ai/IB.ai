@@ -34,8 +34,7 @@ public final class VoteLadderDeleteCommand extends Command {
      * Creates the command.
      */
     VoteLadderDeleteCommand() {
-        super("delete",
-                Set.of("d", "remove", "r"),
+        super("voteladder_delete",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

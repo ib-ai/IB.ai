@@ -38,7 +38,6 @@ public final class LookupCommand extends Command {
      */
     public LookupCommand() {
         super("lookup",
-                Set.of(),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );

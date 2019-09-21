@@ -39,8 +39,7 @@ public final class CassowaryCreateCommand extends Command {
      * Creates a new CassowaryCreateCommand command.
      */
     CassowaryCreateCommand() {
-        super("create",
-                Set.of("c", "add", "new"),
+        super("cassowary_create",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

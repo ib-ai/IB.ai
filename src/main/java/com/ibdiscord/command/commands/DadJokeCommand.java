@@ -36,7 +36,6 @@ public final class DadJokeCommand extends Command {
      */
     public DadJokeCommand() {
         super("dadjoke",
-                Set.of("dad"),
                 CommandPermission.discord(),
                 Set.of()
         );

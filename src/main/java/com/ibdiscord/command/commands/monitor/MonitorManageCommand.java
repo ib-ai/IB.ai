@@ -34,7 +34,6 @@ public abstract class MonitorManageCommand extends Command {
      */
     MonitorManageCommand(String name) {
         super(name,
-                Set.of(),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );

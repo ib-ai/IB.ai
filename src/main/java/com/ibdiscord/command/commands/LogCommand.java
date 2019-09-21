@@ -32,7 +32,6 @@ public final class LogCommand extends LoggingCommand {
      */
     public LogCommand() {
         super("log",
-                Set.of("setlog"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of(),
                 GuildData.LOGS

@@ -39,8 +39,7 @@ public final class TagFindCommand extends Command {
      * Creates the command.
      */
     TagFindCommand() {
-        super("find",
-                Set.of("lookup"),
+        super("tag_find",
                 CommandPermission.discord(),
                 Set.of()
         );

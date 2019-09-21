@@ -33,8 +33,8 @@ public abstract class VoteLadderDataCommand extends Command {
     /**
      * Creates the command.
      */
-    VoteLadderDataCommand(String name, Set<String> aliases, CommandPermission permission, Set<Command> subCommands) {
-        super(name, aliases, permission, subCommands);
+    VoteLadderDataCommand(String name, CommandPermission permission, Set<Command> subCommands) {
+        super(name, permission, subCommands);
     }
 
     /**

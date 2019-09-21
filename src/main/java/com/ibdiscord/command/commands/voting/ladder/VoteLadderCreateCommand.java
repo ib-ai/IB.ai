@@ -34,8 +34,7 @@ public final class VoteLadderCreateCommand extends Command {
      * Creates the command.
      */
     VoteLadderCreateCommand() {
-        super("create",
-                Set.of("c", "add", "a"),
+        super("voteladder_create",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

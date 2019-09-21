@@ -26,14 +26,13 @@ import net.dv8tion.jda.api.entities.Role;
 
 import java.util.Set;
 
-public class PinCommand extends Command {
+public final class PinCommand extends Command {
 
     /**
      * Creates a new Pin command.
      */
     public PinCommand() {
         super("pin",
-                Set.of(),
                 CommandPermission.discord(),
                 Set.of()
         );

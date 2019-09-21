@@ -35,7 +35,6 @@ public final class GiveRoleCommand extends Command {
      */
     public GiveRoleCommand() {
         super("giverole",
-                Set.of(),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

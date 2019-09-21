@@ -32,7 +32,6 @@ public final class CassowaryCommand extends Command {
      */
     public CassowaryCommand() {
         super("cassowary",
-                Set.of(),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of(new CassowaryCreateCommand(), new CassowaryDeleteCommand(), new CassowaryListCommand()));
         this.correctUsage = "cassowary <create/delete/list> <\"label\"/page> [roleIDs... (2+)]";

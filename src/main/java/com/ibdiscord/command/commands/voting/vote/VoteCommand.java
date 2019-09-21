@@ -38,7 +38,6 @@ public final class VoteCommand extends Command {
      */
     public VoteCommand() {
         super("vote",
-                Set.of(),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );

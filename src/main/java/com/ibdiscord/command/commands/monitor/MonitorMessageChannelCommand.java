@@ -28,14 +28,13 @@ import net.dv8tion.jda.api.Permission;
 
 import java.util.Set;
 
-public class MonitorMessageChannelCommand extends Command {
+public final class MonitorMessageChannelCommand extends Command {
 
     /**
      * Creates the command.
      */
     MonitorMessageChannelCommand() {
-        super("messagechannel",
-                Set.of(),
+        super("monitor_messagechannel",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

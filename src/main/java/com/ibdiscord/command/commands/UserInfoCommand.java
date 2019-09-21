@@ -40,7 +40,6 @@ public final class UserInfoCommand extends Command {
      */
     public UserInfoCommand() {
         super("userinfo",
-                Set.of("memberinfo", "ui"),
                 CommandPermission.discord(),
                 Set.of()
         );

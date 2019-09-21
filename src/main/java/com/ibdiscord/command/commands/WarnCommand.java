@@ -39,7 +39,6 @@ public final class WarnCommand extends Command {
      */
     public WarnCommand() {
         super("warn",
-                Set.of(),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );

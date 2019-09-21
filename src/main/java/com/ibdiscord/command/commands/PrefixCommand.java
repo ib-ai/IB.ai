@@ -35,7 +35,6 @@ public final class PrefixCommand extends Command {
      */
     public PrefixCommand() {
         super("prefix",
-                Set.of("setprefix"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

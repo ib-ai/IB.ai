@@ -38,7 +38,6 @@ public final class HelpCommand extends Command {
      */
     public HelpCommand() {
         super("help",
-                Set.of(),
                 CommandPermission.discord(),
                 Set.of()
         );

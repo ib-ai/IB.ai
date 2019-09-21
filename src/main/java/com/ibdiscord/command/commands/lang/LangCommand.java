@@ -31,7 +31,6 @@ public final class LangCommand extends Command {
      */
     public LangCommand() {
         super("lang",
-                Set.of("language", "l10n", "l18n"),
                 CommandPermission.discord(),
                 Set.of(new LangListCommand(), new LangSetCommand())
         );

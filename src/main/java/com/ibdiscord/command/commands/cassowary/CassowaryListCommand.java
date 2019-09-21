@@ -42,8 +42,7 @@ public final class CassowaryListCommand extends PaginatedCommand<String> {
      * Creates a new CassowaryListCommand command.
      */
     CassowaryListCommand() {
-        super("list",
-                Set.of("l"),
+        super("cassowary_list",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

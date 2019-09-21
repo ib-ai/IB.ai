@@ -35,8 +35,7 @@ public final class FilterDeleteCommand extends Command {
      * Creates the command.
      */
     FilterDeleteCommand() {
-        super("delete",
-                Set.of("d", "remove", "r"),
+        super("filter_delete",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

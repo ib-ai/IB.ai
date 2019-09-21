@@ -38,11 +38,9 @@ public abstract class ReactionManageCommand extends Command {
     /**
      * Creates a new command.
      * @param name The name of the command, all lowercase.
-     * @param aliases Any aliases the command has, also all lowercase.
      */
-    ReactionManageCommand(String name, Set<String> aliases) {
+    ReactionManageCommand(String name) {
         super(name,
-                aliases,
                 CommandPermission.discord(Permission.MANAGE_ROLES),
                 Set.of()
         );

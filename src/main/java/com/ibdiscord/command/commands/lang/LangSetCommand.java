@@ -29,14 +29,13 @@ import de.arraying.gravity.Gravity;
 
 import java.util.Set;
 
-public class LangSetCommand extends Command {
+public final class LangSetCommand extends Command {
 
     /**
      * Creates a new LangSet command.
      */
     LangSetCommand() {
-        super("set",
-                Set.of("s", "ispeak"),
+        super("lang_set",
                 CommandPermission.discord(),
                 Set.of()
         );

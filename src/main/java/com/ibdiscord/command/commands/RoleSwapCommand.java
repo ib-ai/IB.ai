@@ -35,7 +35,6 @@ public final class RoleSwapCommand extends Command {
      */
     public RoleSwapCommand() {
         super("roleswap",
-                Set.of("swaproles"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );

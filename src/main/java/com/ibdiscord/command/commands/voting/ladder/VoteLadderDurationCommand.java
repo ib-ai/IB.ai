@@ -32,8 +32,7 @@ public final class VoteLadderDurationCommand extends VoteLadderDataCommand {
      * Creates the command.
      */
     VoteLadderDurationCommand() {
-        super("duration",
-                Set.of("timeout"),
+        super("voteladder_duration",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
