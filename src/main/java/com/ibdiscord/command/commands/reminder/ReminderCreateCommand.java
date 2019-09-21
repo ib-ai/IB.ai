@@ -33,7 +33,7 @@ public final class ReminderCreateCommand extends Command {
      * Creates the command.
      */
     ReminderCreateCommand() {
-        super("create",
+        super("reminder_create",
                 CommandPermission.discord(),
                 Set.of()
         );

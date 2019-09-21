@@ -34,7 +34,7 @@ public final class ReminderDeleteCommand extends Command {
      * Creates the command.
      */
     ReminderDeleteCommand() {
-        super("delete",
+        super("reminder_delete",
                 CommandPermission.discord(),
                 Set.of()
         );

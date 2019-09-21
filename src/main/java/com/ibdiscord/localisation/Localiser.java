@@ -90,10 +90,14 @@ public enum Localiser {
         getAllLanguages().stream().forEach(lang -> {
             JSON languageFile = getJSONObjectFromKey(lang, key);
             JSONArray arrayOfAliasesObj = languageFile.array(splitKey[1]);
-            if(arrayOfAliasesObj.length() != 0 && arrayOfAliasesObj != null) {
+            try {
                 allAliases.addAll(Arrays.stream(arrayOfAliasesObj.toArray())
                         .map(Object::toString)
                         .collect(Collectors.toSet()));
+            } catch(NullPointerException ex) {
+                ex.printStackTrace();
+                System.out.println("KEY THROWING ERROR: " + splitKey[1]);
+                System.exit(1);
             }
         });
         return new HashSet<>(allAliases);
