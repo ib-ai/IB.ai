@@ -9,17 +9,20 @@ WORKDIR /IB.ai/
 
 # Resolve maven dependencies
 COPY pom.xml .
-RUN mvn -e -B dependency:resolve
+COPY checkstyle.xml .
+RUN mvn dependency:go-offline
 
 # Build from source into ./target/*.jar
 COPY src ./src
-COPY checkstyle.xml .
 RUN mvn -e -B -Dcheckstyle.skip=true package
 
 # Using Java JDK 10 base image
 FROM openjdk:10
 
 WORKDIR /IB.ai/
+
+# Copying maven dependencies from builder image to prevent re-downloads
+COPY --from=builder /root/.m2 /root/.m2
 
 # Add language files
 COPY lang ./lang
