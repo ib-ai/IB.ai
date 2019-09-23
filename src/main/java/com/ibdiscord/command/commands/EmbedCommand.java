@@ -44,7 +44,7 @@ public final class EmbedCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        InputHandler.INSTANCE.start(context.getMember(), new EmbedDescriptionInput(), context.getMessage());
+        InputHandler.INSTANCE.start(context.getMember(), new EmbedDescriptionInput(), context);
     }
 
 }

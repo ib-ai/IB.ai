@@ -18,6 +18,7 @@
 
 package com.ibdiscord.input;
 
+import com.ibdiscord.command.CommandContext;
 import net.dv8tion.jda.api.entities.Message;
 
 public interface Input {
@@ -36,15 +37,15 @@ public interface Input {
 
     /**
      * Initializes the input.
-     * @param message The initializing message.
+     * @param context The initializing message's context.
      */
-    void initialize(Message message);
+    void initialize(CommandContext context);
 
     /**
      * Offers the input a certain string of inputted text.
-     * @param message The message.
+     * @param context The message's original context.
      * @return True if the input was accepted, false if it was rejected.
      */
-    boolean offer(Message message);
+    boolean offer(CommandContext context);
 
 }

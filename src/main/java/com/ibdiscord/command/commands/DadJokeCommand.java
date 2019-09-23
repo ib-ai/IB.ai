@@ -66,7 +66,7 @@ public final class DadJokeCommand extends Command {
             }
 
         } catch(IOException ex) {
-            context.reply("Something went wrong...");
+            context.reply(__(context, "error.generic"));
             ex.printStackTrace();
         }
     }

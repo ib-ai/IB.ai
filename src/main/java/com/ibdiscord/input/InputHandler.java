@@ -18,9 +18,9 @@
 
 package com.ibdiscord.input;
 
+import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.utils.objects.Tuple;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
 
 import java.util.Map;
 import java.util.concurrent.*;
@@ -39,9 +39,9 @@ public enum InputHandler {
      * Starts an input for a member.
      * @param member The member.
      * @param input The input.
-     * @param initial The initial message.
+     * @param initial The initial context of the message.
      */
-    public void start(Member member, Input input, Message initial) {
+    public void start(Member member, Input input, CommandContext initial) {
         Tuple<Input, ScheduledFuture> tuple = getFor(member);
         if(tuple != null) {
             throw new IllegalStateException("Already processing input, cannot start new input.");
@@ -61,27 +61,27 @@ public enum InputHandler {
     /**
      * Offers input for a member.
      * @param member The member.
-     * @param message The message.
+     * @param context The message's context.
      * @return If the member is currently inputting, this will return false.
      *     When this is false, the input should NOT be used further in message handling,
      *     such as command execution. If this can be used, true will be returned.
      */
-    public synchronized boolean offer(Member member, Message message) {
+    public synchronized boolean offer(Member member, CommandContext context) {
         construct(member);
         Tuple<Input, ScheduledFuture> tuple = getFor(member);
         if(tuple == null) {
             return true;
         }
-        if(message.getContentRaw().equalsIgnoreCase("cancel")) {
+        if(context.getMessage().getContentRaw().equalsIgnoreCase("cancel")) {
             stop(member);
             return false;
         }
-        boolean pass = tuple.getPropertyA().offer(message);
+        boolean pass = tuple.getPropertyA().offer(context.getMessage());
         if(pass) {
             Input next = tuple.getPropertyA().getSuccessor();
             stop(member);
             if(next != null) {
-                start(member, next, message);
+                start(member, next, context);
             }
         }
         return false;

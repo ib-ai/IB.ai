@@ -18,8 +18,8 @@
 
 package com.ibdiscord.input.embed;
 
+import com.ibdiscord.command.CommandContext;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public final class EmbedDescriptionInput extends EmbedInput {
@@ -33,12 +33,12 @@ public final class EmbedDescriptionInput extends EmbedInput {
 
     /**
      * Sets the description.
-     * @param input The input.
+     * @param context The context of the input.
      * @return True.
      */
     @Override
-    protected boolean internalOffer(Message input) {
-        String string = input.getContentRaw();
+    protected boolean internalOffer(CommandContext context) {
+        String string = context.getMessage().getContentRaw();
         if(string.length() > MessageEmbed.TEXT_MAX_LENGTH) {
             string = string.substring(0, MessageEmbed.TEXT_MAX_LENGTH);
         }
@@ -57,12 +57,11 @@ public final class EmbedDescriptionInput extends EmbedInput {
 
     /**
      * Sends the initial message.
-     * @param message The initial message.
+     * @param context The initial message's context.
      */
     @Override
-    public void initialize(Message message) {
-        message.getChannel().sendMessage("Please type the description of the embed. Use `skip` to skip this.").queue();
+    public void initialize(CommandContext context) {
+        context.getChannel().sendMessage(__(context, "prompt.embed_description")).queue();
         this.successor = new EmbedColourInput(builder);
     }
-
 }

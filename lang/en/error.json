@@ -1,4 +1,6 @@
 {
+  "generic": "Oops, something went wrong.",
+  "generic_suggest_perms": "An error occurred, are the perms set up properly?",
   "unknown_user": "Unknown user.",
   "user_404": "User not found!",
   "blacklist_id": "You need to specify a valid number ID.",
@@ -35,8 +37,10 @@
   "missing_operation": "Please provide the operation.",
   "missing_data": "Please provide the data.",
   "invalid_data": "The data provided is invalid (e.g. not a proper user).",
-  "invalid_operation": "Invalid Operation",
+  "invalid_operation": "Invalid Operation.",
+  "invalid_url": "Invalid url.",
   "missing_channel": "Please mention a channel!",
+  "missing_channel_permissions": "You do not have access to that channel.",
   "missing_channelid": "Please provide the channel ID.",
   "missing_messageid": "Please provide the message ID.",
   "missing_emojiid": "Please provide the emoji ID.",
@@ -53,12 +57,14 @@
   "ladder_name": "Please provide the ladder name.",
   "ladder_noexist": "That ladder does not exist.",
   "ladder_format": "Invalid or too short time format specified (e.g. use 3d for 3 days).",
-  "missing_number": "Please provide a number",
+  "missing_number": "Please provide a number.",
   "vote_create": "Could not create the vote. Is the ladder set up properly, and are the permissions correct?",
   "tag_input": "Invalid input. Make sure to put both the trigger and output in double quotes.",
   "tag_long_name": "Tag name too long.",
   "tag_long_value": "Tag value too long.",
   "tag_expression": "Trigger is not a valid regular expression.",
   "tag_quotation": "Invalid name, please provide it in quotation marks.",
-  "tag_404": "No tags found."
+  "tag_404": "No tags found.",
+  "invalid_colour": "Invalid format. Please use hex, for example: `#123456`.",
+  "embed_field_format": "Please provide the field in the following form: `\"Title\" \"Value\"`"
 }

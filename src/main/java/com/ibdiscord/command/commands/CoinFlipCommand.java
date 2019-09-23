@@ -39,6 +39,9 @@ public final class CoinFlipCommand extends Command {
 
     @Override
     protected void execute(CommandContext context) {
-        context.reply(new Random().nextInt(2) == 0 ? "Heads" : "Tails");
+        context.reply(new Random().nextInt(2) == 0
+                ? __(context, "success.coinflip_heads")
+                : __(context, "success.coinflip_tails")
+        );
     }
 }

@@ -18,7 +18,9 @@
 
 package com.ibdiscord.input.embed;
 
+import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.input.Input;
+import com.ibdiscord.localisation.ILocalised;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -27,7 +29,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.RestAction;
 
 @AllArgsConstructor
-public final class EmbedMessageInput implements Input {
+public final class EmbedMessageInput implements Input, ILocalised {
 
     private final EmbedBuilder builder;
     private final TextChannel channel;
@@ -51,29 +53,27 @@ public final class EmbedMessageInput implements Input {
     }
 
     @Override
-    public void initialize(Message message) {
-        message.getChannel().sendMessage("Should this embed replace any existing message in that channel? If "
-                    + "yes, type the message ID, otherwise type anything else.")
-                .queue();
+    public void initialize(CommandContext context) {
+        context.getChannel().sendMessage(__(context, "prompt.embed_replace")).queue();
     }
 
     /**
      * Offers the message.
-     * @param message The message.
+     * @param context The context of the message.
      * @return True always.
      */
     @Override
-    public boolean offer(Message message) {
+    public boolean offer(CommandContext context) {
         RestAction<Message> result;
         try {
-            long id = Long.valueOf(message.getContentRaw());
+            long id = Long.valueOf(context.getMessage().getContentRaw());
             result = sendUpdate(channel, id);
         } catch(NumberFormatException exception) {
             result = sendNew(channel);
         }
-        MessageChannel update = message.getChannel();
+        MessageChannel update = context.getChannel();
         result.queue(success -> update.sendMessage("Done.").queue(),
-            failure -> update.sendMessage("An error occurred, are the perms set up properly?").queue());
+            failure -> update.sendMessage(__(context, "error.generic_suggest_perms")).queue());
         return true;
     }
 

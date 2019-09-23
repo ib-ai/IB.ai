@@ -18,9 +18,9 @@
 
 package com.ibdiscord.input.embed;
 
+import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.util.List;
@@ -37,16 +37,14 @@ public final class EmbedFieldInput extends EmbedInput {
 
     /**
      * Internally offers the string.
-     * @param input The input.
+     * @param context The input's context.
      * @return True if accepted, false if not.
      */
     @Override
-    protected boolean internalOffer(Message input) {
-        List<String> quoted = UInput.extractQuotedStrings(input.getContentRaw().split(" +"));
+    protected boolean internalOffer(CommandContext context) {
+        List<String> quoted = UInput.extractQuotedStrings(context.getMessage().getContentRaw().split(" +"));
         if(quoted.size() < 2) {
-            input.getChannel()
-                    .sendMessage("Please provide the field in the following form: `\"Title\" \"Value\"`")
-                    .queue();
+            context.getChannel().sendMessage(__(context, "error.embed_field_format")).queue();
             return false;
         }
         String field = quoted.get(0);
@@ -75,14 +73,11 @@ public final class EmbedFieldInput extends EmbedInput {
 
     /**
      * Initializes the message.
-     * @param message The initial message.
+     * @param context The initial message's context
      */
     @Override
-    public void initialize(Message message) {
-        message.getChannel().sendMessage("You are now adding another field. Please use the following format: "
-                    + "`\"Title\" \"Value\"`. You can type `done` to complete the embed.")
-                .queue();
+    public void initialize(CommandContext context) {
+        context.getChannel().sendMessage(__(context, "prompt.embed_field")).queue();
         this.successor = new EmbedFieldInput(builder);
     }
-
 }
