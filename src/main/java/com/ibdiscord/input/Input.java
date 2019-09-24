@@ -19,7 +19,6 @@
 package com.ibdiscord.input;
 
 import com.ibdiscord.command.CommandContext;
-import net.dv8tion.jda.api.entities.Message;
 
 public interface Input {
 

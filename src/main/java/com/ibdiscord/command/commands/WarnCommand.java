@@ -62,25 +62,28 @@ public final class WarnCommand extends Command {
             return;
         }
         member.getUser().openPrivateChannel().queue(channel ->
-                channel.sendMessage(__(context, "info.warned_you", context.getGuild().getName(), reason))
-                        .queue(ignored -> {
-                                    context.reply(__(context, "info.warned_they"));
-                                    PunishmentHandler punishmentHandler = new PunishmentHandler(context.getGuild(), new Punishment(PunishmentType.WARN,
-                                            UFormatter.formatMember(member.getUser()),
-                                            member.getUser().getId(),
-                                            UFormatter.formatMember(context.getMember().getUser()),
-                                            context.getMember().getUser().getId(),
-                                            reason,
-                                            false
-                                    ));
-                                    punishmentHandler.onPunish();
-                                },
-                                errorSend -> {
-                                    context.reply(__(context, "error.warn_send"));
-                                    errorSend.printStackTrace();
-                                }), errorOpen -> {
-            context.reply(__(context, "error.warn_channel"));
-            errorOpen.printStackTrace();
-        });
+            channel.sendMessage(__(context, "info.warned_you", context.getGuild().getName(), reason))
+                .queue(ignored -> {
+                    context.reply(__(context, "info.warned_they"));
+                    PunishmentHandler punishmentHandler = new PunishmentHandler(context.getGuild(),
+                            new Punishment(PunishmentType.WARN,
+                                UFormatter.formatMember(member.getUser()),
+                                member.getUser().getId(),
+                                UFormatter.formatMember(context.getMember().getUser()),
+                                context.getMember().getUser().getId(),
+                                reason,
+                                false
+                            )
+                    );
+                    punishmentHandler.onPunish();
+                },
+                    errorSend -> {
+                        context.reply(__(context, "error.warn_send"));
+                        errorSend.printStackTrace();
+                    }), errorOpen -> {
+                context.reply(__(context, "error.warn_channel"));
+                errorOpen.printStackTrace();
+            }
+        );
     }
 }

@@ -64,8 +64,8 @@ public final class HelpCommand extends Command {
                 false
         );
         ebHelpMenu.addField(
-                __(context, "info.features1"),
-                __(context, "info_features2", botPrefix),
+                __(context, "info.intro_features1"),
+                __(context, "info.intro_features2", botPrefix),
                 false
         );
         ebHelpMenu.addField(

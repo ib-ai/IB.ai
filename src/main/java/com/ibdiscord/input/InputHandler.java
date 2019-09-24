@@ -76,7 +76,7 @@ public enum InputHandler {
             stop(member);
             return false;
         }
-        boolean pass = tuple.getPropertyA().offer(context.getMessage());
+        boolean pass = tuple.getPropertyA().offer(context);
         if(pass) {
             Input next = tuple.getPropertyA().getSuccessor();
             stop(member);

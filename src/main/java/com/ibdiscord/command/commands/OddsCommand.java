@@ -46,8 +46,8 @@ public final class OddsCommand extends Command {
             return;
         }
 
-        Set<String> cancel_aliases = Localiser.getAllCommandAliases("command_aliases.odds_cancel");
-        if(cancel_aliases.contains(context.getArguments()[0])) {
+        Set<String> cancelAliases = Localiser.getAllCommandAliases("command_aliases.odds_cancel");
+        if(cancelAliases.contains(context.getArguments()[0])) {
             OddsManager.cancelBet(context, context.getMember().getId());
             return;
         }
