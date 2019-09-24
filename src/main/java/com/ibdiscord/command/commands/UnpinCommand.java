@@ -22,9 +22,15 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.Role;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class UnpinCommand extends Command {
 
@@ -37,13 +43,23 @@ public final class UnpinCommand extends Command {
                 Set.of()
         );
 
-        this.correctUsage = "&unpin <messageID>";
+        this.correctUsage = "unpin <messageID>";
     }
 
     @Override
     protected void execute(CommandContext context) {
-        Role helperRole = context.getGuild().getRolesByName("Helper", true).get(0);
-        if(!context.getMember().getRoles().contains(helperRole) || helperRole == null) {
+        Role helperRole;
+        try {
+            helperRole = context.getGuild().getRolesByName("Helper", true).get(0);
+        } catch(IndexOutOfBoundsException ex) {
+            context.reply(__(context, "error.helper_exists"));
+            return;
+        }
+        if(helperRole == null) {
+            context.reply(__(context, "error.generic"));
+            return;
+        }
+        if(!context.getMember().getRoles().contains(helperRole)) {
             context.reply(__(context, "error.helper_perms"));
             return;
         }
@@ -53,11 +69,28 @@ public final class UnpinCommand extends Command {
             return;
         }
 
-        Message message = context.getChannel().getHistory().getMessageById(context.getArguments()[0]);
-        if(message == null) {
-            context.reply(__(context, "error.pin_channel"));
-        } else {
-            message.unpin().queue();
+        OffsetDateTime channelInception = context.getChannel().getTimeCreated();
+        OffsetDateTime current = Instant.now().atOffset(ZoneOffset.UTC);
+        long id = context.getChannel().getLatestMessageIdLong();
+        while(current.isAfter(channelInception)) {
+            MessageHistory messageHistory = context.getChannel().getHistoryBefore(id, 100).complete();
+            List<Message> history = messageHistory.getRetrievedHistory();
+            if(history.isEmpty()) {
+                break;
+            }
+            Message updated = history.get(history.size() - 1);
+            current = updated.getTimeCreated();
+            id = updated.getIdLong();
+            List<Message> matchingMessages =  messageHistory.getRetrievedHistory().stream()
+                    .filter(msg -> msg.getId()
+                            .equals(context.getArguments()[0]))
+                    .collect(Collectors.toList());
+            if(matchingMessages.size() > 0) {
+                matchingMessages.get(0).unpin().queue();
+                context.reply(__(context, "success.done"));
+                return;
+            }
         }
+        context.reply(__(context, "error.pin_channel"));
     }
 }

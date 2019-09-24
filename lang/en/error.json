@@ -70,5 +70,6 @@
   "odds_user": "Please mention a user to challenge.",
   "odds_number": "Please provide an integer greater than zero as the first argument.",
   "helper_perms": "You must be a helper to use this command.",
+  "helper_exists": "This command requires a 'Helper' role to exist.",
   "pin_channel": "Invalid message ID provided. You must be in the same channel as the message."
 }
