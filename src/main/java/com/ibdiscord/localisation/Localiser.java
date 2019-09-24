@@ -21,7 +21,6 @@ package com.ibdiscord.localisation;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.LangData;
-import com.ibdiscord.exceptions.LocalisationException;
 import com.ibdiscord.exceptions.LocaliserSyntaxException;
 import com.ibdiscord.utils.UJSON;
 import de.arraying.gravity.Gravity;
@@ -63,18 +62,19 @@ public enum Localiser {
      * @return The localised text corresponding to the inputted key.
      */
     public static String __(CommandContext commandContext, String key, String... variables) {
-        JSON languageFile = getJSONObjectFromKey(getUserLang(commandContext), key);
-        String[] splitKey = key.split(Pattern.quote("."));
-        String translation = languageFile.string(splitKey[1]);
-
-        if(translation == null) {
-            try {
-                throwLocalisationError(key);
-            } catch (LocalisationException ex) {
-                ex.printStackTrace();
-            }
+        String translationErrorMessage = "**Translation error. If you see this, please report it to "
+                + "pants#0422 or Arraying#7363.**";
+        String translation;
+        try {
+            JSON languageFile = getJSONObjectFromKey(getUserLang(commandContext), key);
+            String[] splitKey = key.split(Pattern.quote("."));
+            translation = languageFile.string(splitKey[1]);
+        } catch(Exception ex) {
+            return translationErrorMessage;
         }
-
+        if(translation == null) {
+            return translationErrorMessage;
+        }
         // Replace variables within translation before returning final translation.
         return replaceVariables(translation, variables);
     }
@@ -189,14 +189,5 @@ public enum Localiser {
      */
     private static void throwSyntaxError(String numOfKeys) throws LocaliserSyntaxException {
         throw new LocaliserSyntaxException(numOfKeys);
-    }
-
-    /**
-     * Throws a localisation error.
-     * @param message Message to throw.
-     * @throws LocalisationException Localisation exception.
-     */
-    private static void throwLocalisationError(String message) throws LocalisationException {
-        throw new LocalisationException(message);
     }
 }
