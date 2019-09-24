@@ -21,16 +21,9 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.Role;
 
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public final class PinCommand extends Command {
 
@@ -69,27 +62,16 @@ public final class PinCommand extends Command {
             return;
         }
 
-        OffsetDateTime channelInception = context.getChannel().getTimeCreated();
-        OffsetDateTime current = Instant.now().atOffset(ZoneOffset.UTC);
-        long id = context.getChannel().getLatestMessageIdLong();
-        while(current.isAfter(channelInception)) {
-            MessageHistory messageHistory = context.getChannel().getHistoryBefore(id, 100).complete();
-            List<Message> history = messageHistory.getRetrievedHistory();
-            if(history.isEmpty()) {
-                break;
-            }
-            Message updated = history.get(history.size() - 1);
-            current = updated.getTimeCreated();
-            id = updated.getIdLong();
-            List<Message> matchingMessages =  messageHistory.getRetrievedHistory().stream()
-                    .filter(msg -> msg.getId()
-                    .equals(context.getArguments()[0]))
-                    .collect(Collectors.toList());
-            if(matchingMessages.size() > 0) {
-                matchingMessages.get(0).pin().queue();
-                return;
-            }
+        long id;
+        try {
+            id = Long.parseLong(context.getArguments()[0]);
+        } catch(NumberFormatException ex) {
+            context.reply(__(context, "error.pin_channel"));
+            return;
         }
-        context.reply(__(context, "error.pin_channel"));
+
+        context.getChannel().pinMessageById(id).queue(null,
+            err -> context.reply(__(context, "error.pin_channel"))
+        );
     }
 }
