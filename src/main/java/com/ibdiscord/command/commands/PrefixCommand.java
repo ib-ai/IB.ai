@@ -35,7 +35,6 @@ public final class PrefixCommand extends Command {
      */
     public PrefixCommand() {
         super("prefix",
-                Set.of("setprefix"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
@@ -55,14 +54,14 @@ public final class PrefixCommand extends Command {
 
         String prefixNew = context.getArguments()[0];
         if(Arrays.stream(new String[]{"/", "$", "#", "+", "*", "?"}).anyMatch(prefixNew::equals)) {
-            context.reply("Invalid Prefix ( " +  prefixNew + ").");
+            context.reply(__(context, "error.prefix", prefixNew));
             return;
         }
 
         GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
         guildData.set(GuildData.PREFIX, prefixNew);
         DataContainer.INSTANCE.getGravity().save(guildData);
-        context.reply("The prefix has been updated to (" + prefixNew + ").");
+        context.reply(__(context, "success.prefix", prefixNew));
     }
 
 }

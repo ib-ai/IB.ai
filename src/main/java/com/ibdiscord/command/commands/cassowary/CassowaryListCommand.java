@@ -42,8 +42,7 @@ public final class CassowaryListCommand extends PaginatedCommand<String> {
      * Creates a new CassowaryListCommand command.
      */
     CassowaryListCommand() {
-        super("list",
-                Set.of("l"),
+        super("cassowary_list",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
@@ -73,6 +72,6 @@ public final class CassowaryListCommand extends PaginatedCommand<String> {
 
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("List of cassowaries by label.");
+        embedBuilder.setDescription(__(context, "info.list_cassowary"));
     }
 }

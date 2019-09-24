@@ -36,7 +36,6 @@ public final class ModeratorCommand extends Command {
      */
     public ModeratorCommand() {
         super("moderator",
-                Set.of("mod"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
@@ -55,13 +54,13 @@ public final class ModeratorCommand extends Command {
             String permission = guildData.get(GuildData.MODERATOR)
                     .defaulting("not set")
                     .asString();
-            context.reply("The moderator permission is currently: " + permission + ".");
+            context.reply(__(context, "info.mod_permission", permission));
             return;
         }
         String newValue = UString.concat(context.getArguments(), " ", 0);
         guildData.set(GuildData.MODERATOR, newValue);
         gravity.save(guildData);
-        context.reply("The moderator permission has been updated.");
+        context.reply(__(context, "success.mod_permission"));
     }
 
 }

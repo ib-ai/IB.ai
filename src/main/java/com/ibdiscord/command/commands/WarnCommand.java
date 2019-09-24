@@ -39,7 +39,6 @@ public final class WarnCommand extends Command {
      */
     public WarnCommand() {
         super("warn",
-                Set.of(),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );
@@ -59,15 +58,14 @@ public final class WarnCommand extends Command {
         Member member = UInput.getMember(context.getGuild(), context.getArguments()[0]);
         String reason = UString.concat(context.getArguments(), " ", 1);
         if(member == null) {
-            context.reply("User not found!");
+            context.reply(__(context, "error.user_404"));
             return;
         }
         member.getUser().openPrivateChannel().queue(channel ->
-            channel.sendMessage(String.format("You have been warned on %s "
-                    + "for: %s", context.getGuild().getName(), reason))
-            .queue(ignored -> {
-                        context.reply("The user has been warned.");
-                        PunishmentHandler punishmentHandler = new PunishmentHandler(context.getGuild(),
+            channel.sendMessage(__(context, "info.warned_you", context.getGuild().getName(), reason))
+                .queue(ignored -> {
+                    context.reply(__(context, "info.warned_they"));
+                    PunishmentHandler punishmentHandler = new PunishmentHandler(context.getGuild(),
                             new Punishment(PunishmentType.WARN,
                                 UFormatter.formatMember(member.getUser()),
                                 member.getUser().getId(),
@@ -76,15 +74,14 @@ public final class WarnCommand extends Command {
                                 reason,
                                 false
                             )
-                        );
-                        punishmentHandler.onPunish();
-                    },
+                    );
+                    punishmentHandler.onPunish();
+                },
                     errorSend -> {
-                        context.reply("Could not send warning message, please attempt to do so manually.");
+                        context.reply(__(context, "error.warn_send"));
                         errorSend.printStackTrace();
-                    }
-            ), errorOpen -> {
-                context.reply("Could not open private channel.");
+                    }), errorOpen -> {
+                context.reply(__(context, "error.warn_channel"));
                 errorOpen.printStackTrace();
             }
         );

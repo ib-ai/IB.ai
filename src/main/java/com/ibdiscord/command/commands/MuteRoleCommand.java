@@ -37,7 +37,6 @@ public final class MuteRoleCommand extends Command {
      */
     public MuteRoleCommand() {
         super("muterole",
-                Set.of("setmuterole"),
                 CommandPermission.discord(Permission.MANAGE_ROLES),
                 Set.of()
         );
@@ -52,15 +51,13 @@ public final class MuteRoleCommand extends Command {
     protected void execute(CommandContext context) {
         List<Role> roles = context.getMessage().getMentionedRoles();
         if(roles.isEmpty()) {
-            context.reply("Please mention the role that you would like to act as a muted role. It is "
-                    + "recommended to do this in a private channel.");
+            context.reply(__(context, "error.mute_role"));
             return;
         }
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
         guildData.set(GuildData.MUTE, roles.get(0).getId());
         gravity.save(guildData);
-        context.reply("The new role has been set.");
+        context.reply(__(context, "success.mute_role"));
     }
-
 }

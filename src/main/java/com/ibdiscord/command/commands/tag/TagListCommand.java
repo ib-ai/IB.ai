@@ -38,8 +38,7 @@ public final class TagListCommand extends PaginatedCommand<String> {
      * Creates the command.
      */
     TagListCommand() {
-        super("list",
-                Set.of(),
+        super("tag_list",
                 CommandPermission.discord(),
                 Set.of()
         );
@@ -79,7 +78,7 @@ public final class TagListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("Here is a list of tags.");
+        embedBuilder.setDescription(__(context, "info.tag_list"));
     }
 
 }

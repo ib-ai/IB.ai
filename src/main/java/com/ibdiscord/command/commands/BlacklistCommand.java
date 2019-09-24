@@ -32,7 +32,6 @@ public final class BlacklistCommand extends Command {
      */
     public BlacklistCommand() {
         super("blacklist",
-                Set.of("hackban"),
                 CommandPermission.discord(Permission.BAN_MEMBERS),
                 Set.of()
         );
@@ -54,17 +53,16 @@ public final class BlacklistCommand extends Command {
         try {
             id = Long.valueOf(idRaw);
         } catch(NumberFormatException exception) {
-            context.reply("You need to specify a valid number ID.");
+            context.reply(__(context, "error.blacklist_id"));
             return;
         }
         if(context.getGuild().getMemberById(id) != null) {
-            context.reply("You cannot blacklist someone who is already on the server. If you would like to "
-                    + "get rid of them please ban them manually.");
+            context.reply(__(context, "error.blacklist_present"));
             return;
         }
         context.getGuild().ban(idRaw, 0).reason("Blacklisted.").queue(
-            success -> context.reply("Blacklisted successfully."),
-            fail -> context.reply("Blacklist failed. Is the ID correct and valid?")
+            success -> context.reply(__(context, "success.blacklist")),
+            fail -> context.reply(__(context, "error.blacklist_fail"))
         );
     }
 

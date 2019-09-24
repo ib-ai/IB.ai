@@ -35,7 +35,6 @@ public final class RoleSwapCommand extends Command {
      */
     public RoleSwapCommand() {
         super("roleswap",
-                Set.of("swaproles"),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
@@ -50,10 +49,10 @@ public final class RoleSwapCommand extends Command {
     protected void execute(CommandContext context) {
         List<Role> roles = context.getMessage().getMentionedRoles();
         if(roles.isEmpty()) {
-            context.reply("Please mention the roles that you want to swap.");
+            context.reply(__(context, "error.swap_empty"));
             return;
         } else if(roles.size() == 1) {
-            context.reply("Please mention a new role to swap to.");
+            context.reply(__(context, "error.swap_missing"));
             return;
         }
 
@@ -62,7 +61,7 @@ public final class RoleSwapCommand extends Command {
             context.getGuild().modifyMemberRoles(member, roles.subList(1,2), roles.subList(0,1)).queue();
         }
 
-        context.reply("The roles have been swapped for " + members.size() + " users.");
+        context.reply(__(context, "success.swap_role", String.valueOf(members.size())));
     }
 
 }

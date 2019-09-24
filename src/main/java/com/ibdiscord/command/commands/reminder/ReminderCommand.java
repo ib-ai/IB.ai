@@ -31,7 +31,6 @@ public final class ReminderCommand extends Command {
      */
     public ReminderCommand() {
         super("reminder",
-                Set.of("remindme", "remind", "yeet"),
                 CommandPermission.discord(),
                 Set.of(new ReminderCreateCommand(),
                         new ReminderDeleteCommand(),

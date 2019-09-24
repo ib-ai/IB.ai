@@ -18,7 +18,9 @@
 
 package com.ibdiscord.input.embed;
 
+import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.input.Input;
+import com.ibdiscord.localisation.ILocalised;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -28,7 +30,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import java.util.Objects;
 
 @AllArgsConstructor
-public final class EmbedChannelInput implements Input {
+public final class EmbedChannelInput implements Input, ILocalised {
 
     private final EmbedBuilder builder;
     private TextChannel channel;
@@ -53,32 +55,32 @@ public final class EmbedChannelInput implements Input {
 
     /**
      * Sends the message.
-     * @param message The initial message.
+     * @param context The initial message's context.
      */
     @Override
-    public void initialize(Message message) {
-        message.getChannel().sendMessage("What channel should the embed be sent in?").queue();
+    public void initialize(CommandContext context) {
+        context.getChannel().sendMessage(__(context, "prompt.embed_channel")).queue();
     }
 
     /**
      * Handles the input.
-     * @param message The message.
+     * @param context The message's context.
      * @return True if the channel is accepted, false otherwise.
      */
     @Override
-    public boolean offer(Message message) {
+    public boolean offer(CommandContext context) {
+        Message message = context.getMessage();
         if(message.getMentionedChannels().isEmpty()) {
-            message.getChannel().sendMessage("You need to mention a channel!").queue();
+            message.getChannel().sendMessage(__(context, "error.missing_channel")).queue();
             return false;
         }
         TextChannel target = message.getMentionedChannels().get(0);
         if(!Objects.requireNonNull(message.getMember())
                 .hasPermission(target, Permission.MESSAGE_WRITE, Permission.MESSAGE_EMBED_LINKS)) {
-            message.getChannel().sendMessage("You do not have access to that channel.").queue();
+            message.getChannel().sendMessage(__(context, "error.missing_channel_permissions")).queue();
             return false;
         }
         channel = target;
         return true;
     }
-
 }

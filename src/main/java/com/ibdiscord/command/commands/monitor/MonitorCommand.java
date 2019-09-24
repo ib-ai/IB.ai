@@ -32,7 +32,6 @@ public final class MonitorCommand extends Command {
      */
     public MonitorCommand() {
         super("monitor",
-                Set.of("nsa"),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of(new MonitorToggleCommand(),
                         new MonitorUserChannelCommand(),

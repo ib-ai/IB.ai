@@ -32,7 +32,6 @@ public final class FilterCommand extends Command {
      */
     public FilterCommand() {
         super("filter",
-                Set.of(),
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of(new FilterCreateCommand(),
                         new FilterDeleteCommand(),

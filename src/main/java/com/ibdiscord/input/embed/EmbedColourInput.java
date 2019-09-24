@@ -18,8 +18,8 @@
 
 package com.ibdiscord.input.embed;
 
+import com.ibdiscord.command.CommandContext;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 
 import java.awt.*;
 
@@ -35,17 +35,17 @@ public final class EmbedColourInput extends EmbedInput {
 
     /**
      * Sets the colour.
-     * @param input The input.
+     * @param context The context of the input.
      * @return True if the colour is acceptable, otherwise false.
      */
     @Override
-    protected boolean internalOffer(Message input) {
+    protected boolean internalOffer(CommandContext context) {
         try {
-            Color color = Color.decode(input.getContentRaw());
+            Color color = Color.decode(context.getMessage().getContentRaw());
             builder.setColor(color);
             return true;
         } catch(Exception exception) {
-            input.getChannel().sendMessage("Invalid format. Please use hex, for example: `#123456`.").queue();
+            context.getChannel().sendMessage(__(context, "error.invalid_colour")).queue();
             return false;
         }
     }
@@ -61,14 +61,12 @@ public final class EmbedColourInput extends EmbedInput {
 
     /**
      * Sends the initialization.
-     * @param message The initializing message.
+     * @param context The initializing message's context.
      */
     @Override
-    public void initialize(Message message) {
+    public void initialize(CommandContext context) {
         this.successor = new EmbedImageInput(builder);
-        message.getChannel().sendMessage("Please provide the colour in hex format (e.g. `#123456`). Use `skip` "
-                    + "to skip this.")
-                .queue();
+        context.getChannel().sendMessage(__(context, "prompt.embed_colour")).queue();
     }
 
 }

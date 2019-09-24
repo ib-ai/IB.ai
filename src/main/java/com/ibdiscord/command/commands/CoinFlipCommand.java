@@ -25,14 +25,13 @@ import com.ibdiscord.command.permissions.CommandPermission;
 import java.util.Random;
 import java.util.Set;
 
-public class CoinFlipCommand extends Command {
+public final class CoinFlipCommand extends Command {
 
     /**
      * Creates a new coinflip command.
      */
     public CoinFlipCommand() {
         super("coinflip",
-                Set.of("flip", "headsortails", "coin"),
                 CommandPermission.discord(),
                 Set.of()
         );
@@ -40,6 +39,9 @@ public class CoinFlipCommand extends Command {
 
     @Override
     protected void execute(CommandContext context) {
-        context.reply(new Random().nextInt(2) == 0 ? "Heads" : "Tails");
+        context.reply(new Random().nextInt(2) == 0
+                ? __(context, "success.coinflip_heads")
+                : __(context, "success.coinflip_tails")
+        );
     }
 }

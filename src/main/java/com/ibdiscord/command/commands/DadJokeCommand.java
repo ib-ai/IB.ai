@@ -36,7 +36,6 @@ public final class DadJokeCommand extends Command {
      */
     public DadJokeCommand() {
         super("dadjoke",
-                Set.of("dad"),
                 CommandPermission.discord(),
                 Set.of()
         );
@@ -67,7 +66,7 @@ public final class DadJokeCommand extends Command {
             }
 
         } catch(IOException ex) {
-            context.reply("Something went wrong...");
+            context.reply(__(context, "error.generic"));
             ex.printStackTrace();
         }
     }

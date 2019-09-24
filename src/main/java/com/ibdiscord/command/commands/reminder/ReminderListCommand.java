@@ -38,8 +38,7 @@ public final class ReminderListCommand extends PaginatedCommand<Reminder> {
      * Creates the command.
      */
     ReminderListCommand() {
-        super("list",
-                Set.of("l"),
+        super("reminder_list",
                 CommandPermission.discord(),
                 Set.of()
         );
@@ -81,7 +80,6 @@ public final class ReminderListCommand extends PaginatedCommand<Reminder> {
      */
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("Here is a list of your active reminders.");
+        embedBuilder.setDescription(__(context, "info.reminder_list"));
     }
-
 }

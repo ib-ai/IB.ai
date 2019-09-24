@@ -41,7 +41,6 @@ public final class FindCommand extends Command {
      */
     public FindCommand() {
         super("find",
-                Set.of("lookupuser"),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );
@@ -84,12 +83,15 @@ public final class FindCommand extends Command {
         }
         pagination.page(page).forEach(entry -> {
             Punishment punishment = entry.getValue().getPropertyA();
-            embedBuilder.addField(String.format("Case #%d:", entry.getValue().getPropertyB()),
-                    String.format("%s punished %s", punishment.getStaffDisplay(), punishment.getUserDisplay()),
-                    false);
+            embedBuilder.addField(
+                    __(context, "info.case_number", entry.getValue().getPropertyB().toString()),
+                    __(context, "info.punished_user", punishment.getStaffDisplay(), punishment.getUserDisplay()),
+                    false
+            );
         });
-        embedBuilder.setFooter("Page " + page + "/" + pagination.total(), null);
+        embedBuilder.setFooter(__(context, "info.paginated",
+                String.valueOf(page),
+                String.valueOf(pagination.total())), null);
         context.reply(embedBuilder.build());
     }
-
 }

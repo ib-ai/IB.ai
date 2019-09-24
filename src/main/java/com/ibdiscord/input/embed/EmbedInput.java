@@ -18,11 +18,12 @@
 
 package com.ibdiscord.input.embed;
 
+import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.input.Input;
+import com.ibdiscord.localisation.ILocalised;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 
-public abstract class EmbedInput implements Input {
+public abstract class EmbedInput implements Input, ILocalised {
 
     final EmbedBuilder builder;
     Input successor;
@@ -37,10 +38,10 @@ public abstract class EmbedInput implements Input {
 
     /**
      * Internally offers the input.
-     * @param input The input.
+     * @param context The context of the input.
      * @return True if the input is accepted, false if it is rejected.
      */
-    protected abstract boolean internalOffer(Message input);
+    protected abstract boolean internalOffer(CommandContext context);
 
     /**
      * Gets the successor.
@@ -53,19 +54,19 @@ public abstract class EmbedInput implements Input {
 
     /**
      * Handles the input.
-     * @param input The input.
+     * @param context The context of the input.
      * @return True if the input is accepted, false if it is rejected.
      */
     @Override
-    public final boolean offer(Message input) {
-        switch(input.getContentRaw().toLowerCase()) {
+    public final boolean offer(CommandContext context) {
+        switch(context.getMessage().getContentRaw().toLowerCase()) {
             case "skip":
                 return true;
             case "done":
                 successor = new EmbedChannelInput(builder, null);
                 return true;
             default:
-                return internalOffer(input);
+                return internalOffer(context);
         }
     }
 

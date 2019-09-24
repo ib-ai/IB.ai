@@ -34,8 +34,7 @@ public final class ReminderDeleteCommand extends Command {
      * Creates the command.
      */
     ReminderDeleteCommand() {
-        super("delete",
-                Set.of("d", "remove"),
+        super("reminder_delete",
                 CommandPermission.discord(),
                 Set.of()
         );
@@ -48,7 +47,7 @@ public final class ReminderDeleteCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length == 0) {
-            context.reply("Please specify the reminder ID. It is shown when listing all reminders.");
+            context.reply(__(context, "error.reminderid"));
             return;
         }
         List<Reminder> reminders = ReminderHandler.INSTANCE.getFor(context.getMember().getUser()).stream()
@@ -61,11 +60,10 @@ public final class ReminderDeleteCommand extends Command {
                 .findFirst()
                 .orElse(null);
         if(reminder == null) {
-            context.reply("You have no (active) reminders with that ID.");
+            context.reply(__(context, "error.reminder_inactiveid"));
             return;
         }
         reminder.setCompleted(true);
-        context.reply("The reminder has been deleted.");
+        context.reply(__(context, "success.reminder_delete"));
     }
-
 }

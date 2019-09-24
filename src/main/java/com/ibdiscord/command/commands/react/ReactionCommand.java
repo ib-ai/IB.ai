@@ -39,7 +39,6 @@ public final class ReactionCommand extends Command {
      */
     public ReactionCommand() {
         super("reaction",
-                Set.of("react", "reactionroles", "rr"),
                 CommandPermission.discord(Permission.MANAGE_ROLES),
                 Set.of(new Add(),
                         new Delete()
@@ -63,7 +62,7 @@ public final class ReactionCommand extends Command {
          * Creates the command.
          */
         private Add() {
-            super("add", Set.of("a", "create", "c"));
+            super("reaction_add");
         }
 
         /**
@@ -104,7 +103,7 @@ public final class ReactionCommand extends Command {
          * Creates the command.
          */
         private Delete() {
-            super("delete", Set.of("d", "remove", "r"));
+            super("reaction_delete");
         }
 
         /**

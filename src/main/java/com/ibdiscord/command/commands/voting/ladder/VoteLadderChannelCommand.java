@@ -31,8 +31,7 @@ public final class VoteLadderChannelCommand extends VoteLadderDataCommand {
      * Creates the command.
      */
     VoteLadderChannelCommand() {
-        super("channel",
-                Set.of(),
+        super("voteladder_channel",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
@@ -46,11 +45,10 @@ public final class VoteLadderChannelCommand extends VoteLadderDataCommand {
     @Override
     protected void handle(CommandContext context, VoteLadderData ladderData) {
         if(context.getMessage().getMentionedChannels().isEmpty()) {
-            context.reply("Please mention a channel!");
+            context.reply(__(context, "error.missing_channel"));
             return;
         }
         ladderData.set(VoteLadderData.CHANNEL, context.getMessage().getMentionedChannels().get(0).getIdLong());
-        context.reply("The channel has been updated.");
+        context.reply(__(context, "succes.channel_update"));
     }
-
 }

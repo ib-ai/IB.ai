@@ -68,7 +68,11 @@ public final class MessageListener extends ListenerAdapter {
             return;
         }
         String message = event.getMessage().getContentRaw();
-        if(!InputHandler.INSTANCE.offer(event.getMember(), event.getMessage())) {
+        String prefix = UDatabase.getPrefix(event.getGuild());
+        String messageSub = message.substring(prefix.length()).replaceAll(" +", " ");
+        String[] arguments = messageSub.split(" ");
+        CommandContext context = CommandContext.construct(event.getMessage(), ArrayUtils.remove(arguments, 0));
+        if(!InputHandler.INSTANCE.offer(event.getMember(), context)) {
             return;
         }
         Gravity gravity = DataContainer.INSTANCE.getGravity();
@@ -84,16 +88,13 @@ public final class MessageListener extends ListenerAdapter {
                 break;
             }
         }
-        String prefix = UDatabase.getPrefix(event.getGuild());
         if(!message.startsWith(prefix)) {
             return;
         }
-        message = message.substring(prefix.length()).replaceAll(" +", " ");
-        String[] arguments = message.split(" ");
         String commandName = arguments[0].toLowerCase();
         Command command = Command.find(null, commandName);
         if(command != null) {
-            command.preprocess(CommandContext.construct(event.getMessage(), ArrayUtils.remove(arguments, 0)));
+            command.preprocess(context);
         }
     }
 

@@ -35,8 +35,7 @@ public final class FilterToggleCommand extends Command {
      * Creates the command.
      */
     FilterToggleCommand() {
-        super("toggle",
-                Set.of(),
+        super("filter_toggle",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
@@ -53,7 +52,7 @@ public final class FilterToggleCommand extends Command {
         boolean current = guildData.get(GuildData.FILTERING).defaulting(false).asBoolean();
         guildData.set(GuildData.FILTERING, !current);
         gravity.save(guildData);
-        context.reply(current ? "The filter has been disabled." : "The filter has been enabled.");
+        context.reply(current ? __(context, "success.filter_disable") : __(context, "success.filter_enable"));
     }
 
 }

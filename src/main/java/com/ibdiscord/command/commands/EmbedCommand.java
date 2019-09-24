@@ -33,7 +33,6 @@ public final class EmbedCommand extends Command {
      */
     public EmbedCommand() {
         super("embed",
-                Set.of("embeds", "fancystuff"),
                 CommandPermission.discord(),
                 Set.of()
         );
@@ -45,7 +44,7 @@ public final class EmbedCommand extends Command {
      */
     @Override
     protected void execute(CommandContext context) {
-        InputHandler.INSTANCE.start(context.getMember(), new EmbedDescriptionInput(), context.getMessage());
+        InputHandler.INSTANCE.start(context.getMember(), new EmbedDescriptionInput(), context);
     }
 
 }

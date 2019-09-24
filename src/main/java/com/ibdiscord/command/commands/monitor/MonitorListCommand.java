@@ -39,8 +39,7 @@ public final class MonitorListCommand extends PaginatedCommand<String> {
      * Creates the command.
      */
     MonitorListCommand() {
-        super("list",
-                Set.of(),
+        super("monitor_list",
                 CommandPermission.discord(),
                 Set.of()
         );
@@ -72,7 +71,7 @@ public final class MonitorListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
-        embedBuilder.addField("Entry #" + page.getNumber(), page.getValue(), false);
+        embedBuilder.addField(__(context, "info.entry") + page.getNumber(), page.getValue(), false);
     }
 
     /**
@@ -82,7 +81,6 @@ public final class MonitorListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("Here is a list of entries.");
+        embedBuilder.setDescription(__(context, "info.entry_list"));
     }
-
 }

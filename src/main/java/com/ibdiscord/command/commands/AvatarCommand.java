@@ -34,7 +34,6 @@ public final class AvatarCommand extends Command {
      */
     public AvatarCommand() {
         super("avatar",
-                Set.of("av"),
                 CommandPermission.discord(),
                 Set.of()
         );

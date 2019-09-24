@@ -36,8 +36,7 @@ public final class CassowaryDeleteCommand extends Command {
      * Creates a new CassowaryDeleteCommand command.
      */
     CassowaryDeleteCommand() {
-        super("delete",
-                Set.of("d", "remove", "r"),
+        super("cassowary_delete",
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
@@ -63,6 +62,6 @@ public final class CassowaryDeleteCommand extends Command {
 
         DataContainer.INSTANCE.getGravity().load(new CassowaryData(label)).delete();
 
-        context.reply("Consider it done.");
+        context.reply(__(context, "success.done"));
     }
 }

@@ -18,8 +18,8 @@
 
 package com.ibdiscord.input.embed;
 
+import com.ibdiscord.command.CommandContext;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,17 +36,18 @@ public final class EmbedImageInput extends EmbedInput {
 
     /**
      * Sets the colour.
-     * @param input The input.
+     * @param context The context of the input.
      * @return True if the colour is acceptable, otherwise false.
      */
     @Override
-    protected boolean internalOffer(Message input) {
+    protected boolean internalOffer(CommandContext context) {
         try {
-            new URL(input.getContentRaw());
-            builder.setImage(input.getContentRaw());
+            String messageRaw = context.getMessage().getContentRaw();
+            new URL(messageRaw);
+            builder.setImage(messageRaw);
             return true;
         } catch(MalformedURLException exception) {
-            input.getChannel().sendMessage("Invalid url.").queue();
+            context.getChannel().sendMessage(__(context, "error.invalid_url")).queue();
             return false;
         }
     }
@@ -62,14 +63,11 @@ public final class EmbedImageInput extends EmbedInput {
 
     /**
      * Sends the initialization.
-     * @param message The initializing message.
+     * @param context The initializing message's context.
      */
     @Override
-    public void initialize(Message message) {
+    public void initialize(CommandContext context) {
         this.successor = new EmbedFieldInput(builder);
-        message.getChannel().sendMessage("Please provide the URL for the image you would like to display. Use "
-                    + "`skip` to skip this.")
-                .queue();
+        context.getChannel().sendMessage(__(context, "prompt.embed_image")).queue();
     }
-
 }

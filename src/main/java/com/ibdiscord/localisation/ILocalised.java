@@ -16,17 +16,20 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.exceptions;
+package com.ibdiscord.localisation;
 
-public class LocalisationException extends Exception {
+import com.ibdiscord.command.CommandContext;
 
-    private static final String errorMessage = "There was an error in fetching the localised text for input: ";
+public interface ILocalised {
 
     /**
-     * Creates a localisation exception.
-     * @param message The message to append.
+     * Interface method alias for Localiser __ method.
+     * @param commandContext The context of the command this method is called from.
+     * @param key The identifier for the text that is to be found < category.key >.
+     * @param variables Ordered variables to be substituted into final translation.
+     * @return The localised text corresponding to the inputted key.
      */
-    public LocalisationException(String message) {
-        super(errorMessage + message);
+    default String __(CommandContext commandContext, String key, String... variables) {
+        return Localiser.__(commandContext, key, variables);
     }
 }

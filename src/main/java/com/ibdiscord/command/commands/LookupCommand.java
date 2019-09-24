@@ -38,7 +38,6 @@ public final class LookupCommand extends Command {
      */
     public LookupCommand() {
         super("lookup",
-                Set.of(),
                 CommandPermission.role(GuildData.MODERATOR),
                 Set.of()
         );
@@ -60,12 +59,12 @@ public final class LookupCommand extends Command {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
         if(!punishmentList.contains(caseNumber)) {
-            context.reply("That case does not exist!");
+            context.reply(__(context, "error.lookup_noexist"));
             return;
         }
         Long caseId = UString.toLong(caseNumber);
         if(caseId == null) {
-            context.reply("Internal error converting long.");
+            context.reply(__(context, "error.lookup_convert"));
             return;
         }
         Punishment punishment = Punishment.of(context.getGuild(), caseId);

@@ -37,16 +37,14 @@ public abstract class PaginatedCommand<T> extends Command {
     /**
      * Creates a new command.
      * @param name The name of the command, all lowercase.
-     * @param aliases Any aliases the command has, also all lowercase.
      * @param permission The permission required to execute the command.
      * @param subCommands Any sub commands the command has.
      */
     @SuppressWarnings("SameParameterValue")
     protected PaginatedCommand(String name,
-                               Set<String> aliases,
                                CommandPermission permission,
                                Set<Command> subCommands) {
-        super(name, aliases, permission, subCommands);
+        super(name, permission, subCommands);
     }
 
     /**
@@ -87,7 +85,11 @@ public abstract class PaginatedCommand<T> extends Command {
         }
         Pagination<T> pagination = getPagination(context);
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setFooter("Page " + page + "/" + pagination.total(), null);
+        embedBuilder.setFooter(__(context, "info.paginated",
+                String.valueOf(page),
+                String.valueOf(pagination.total())),
+                null
+        );
         pagination.page(page).forEach(it -> handle(context, embedBuilder, it));
         tweak(context, embedBuilder);
         context.reply(embedBuilder.build());

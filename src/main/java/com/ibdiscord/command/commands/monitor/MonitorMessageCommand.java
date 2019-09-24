@@ -34,7 +34,7 @@ public final class MonitorMessageCommand extends MonitorManageCommand {
      * Creates the command.
      */
     MonitorMessageCommand() {
-        super("message");
+        super("monitor_message");
     }
 
     /**

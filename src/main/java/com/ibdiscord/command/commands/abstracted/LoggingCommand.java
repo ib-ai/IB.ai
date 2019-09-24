@@ -39,17 +39,15 @@ public abstract class LoggingCommand extends Command {
     /**
      * Creates a new command.
      * @param name The name of the command, all lowercase.
-     * @param aliases Any aliases the command has, also all lowercase.
      * @param permission The permission required to execute the command.
      * @param subCommands Any sub commands the command has.
      * @param key The key for the channel field.
      */
     protected LoggingCommand(String name,
-                             Set<String> aliases,
                              CommandPermission permission,
                              Set<Command> subCommands,
                              String key) {
-        super(name, aliases, permission, subCommands);
+        super(name, permission, subCommands);
         this.key = key;
     }
 
@@ -68,7 +66,7 @@ public abstract class LoggingCommand extends Command {
         GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
         guildData.set(key, channel == null ? DISABLED : channel.getId());
         DataContainer.INSTANCE.getGravity().save(guildData);
-        context.reply("The channel has been set to: " + (channel == null ? "nothing" : channel.getAsMention()) + ".");
+        context.reply(__(context, "success.logging", channel == null ? "nothing" : channel.getAsMention()));
     }
 
 }

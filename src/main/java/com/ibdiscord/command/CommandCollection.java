@@ -21,6 +21,7 @@ package com.ibdiscord.command;
 import com.ibdiscord.command.commands.*;
 import com.ibdiscord.command.commands.cassowary.CassowaryCommand;
 import com.ibdiscord.command.commands.filter.FilterCommand;
+import com.ibdiscord.command.commands.lang.LangCommand;
 import com.ibdiscord.command.commands.monitor.MonitorCommand;
 import com.ibdiscord.command.commands.react.ReactionCommand;
 import com.ibdiscord.command.commands.reminder.ReminderCommand;

@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2017-2019 Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *
@@ -16,38 +16,29 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.command.commands;
+package com.ibdiscord.command.commands.lang;
 
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.api.JDA;
 
 import java.util.Set;
 
-public final class PingCommand extends Command {
+public final class LangCommand extends Command {
 
     /**
-     * Creates the command.
+     * Creates a new command.
      */
-    public PingCommand() {
-        super("ping",
+    public LangCommand() {
+        super("lang",
                 CommandPermission.discord(),
-                Set.of()
+                Set.of(new LangListCommand(), new LangSetCommand())
         );
+        this.correctUsage = "lang <list|set> [language]";
     }
 
-    /**
-     * Returns the current shard's WSS ping.
-     * @param context The command context.
-     */
     @Override
     protected void execute(CommandContext context) {
-        JDA jda = context.getGuild().getJDA();
-        context.reply(__(context, "info.latency",
-                String.valueOf(jda.getRestPing().complete()),
-                String.valueOf(jda.getGatewayPing()))
-        );
+        sendUsage(context);
     }
-
 }

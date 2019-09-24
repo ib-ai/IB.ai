@@ -35,8 +35,7 @@ public final class TagDeleteCommand extends Command {
      * Creates the command.
      */
     TagDeleteCommand() {
-        super("delete",
-                Set.of(),
+        super("tag_delete",
                 CommandPermission.discord(Permission.MANAGE_CHANNEL),
                 Set.of()
         );
@@ -54,13 +53,13 @@ public final class TagDeleteCommand extends Command {
         } else {
             List<String> names = UInput.extractQuotedStrings(context.getArguments());
             if(names.isEmpty()) {
-                context.reply("Invalid name, please provide it in quotation marks.");
+                context.reply(__(context, "error.tag_quotation"));
                 return;
             }
             TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
             tagData.unset(names.get(0));
             DataContainer.INSTANCE.getGravity().save(tagData);
-            context.reply("The tag has been removed.");
+            context.reply(__(context, "success.tag_remove"));
         }
 
     }

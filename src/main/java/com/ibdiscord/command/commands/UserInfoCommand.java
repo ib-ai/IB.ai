@@ -40,7 +40,6 @@ public final class UserInfoCommand extends Command {
      */
     public UserInfoCommand() {
         super("userinfo",
-                Set.of("memberinfo", "ui"),
                 CommandPermission.discord(),
                 Set.of()
         );
@@ -57,7 +56,7 @@ public final class UserInfoCommand extends Command {
             target = UInput.getMember(context.getGuild(), context.getArguments()[0]);
         }
         if(target == null) {
-            context.reply("User not found!");
+            context.reply(__(context, "error.user_404"));
             return;
         }
         User user = target.getUser();
@@ -75,14 +74,45 @@ public final class UserInfoCommand extends Command {
                     .asString();
         Activity activity = target.getActivities().size() == 0 ? null : target.getActivities().get(0);
         context.reply(new EmbedBuilder()
-                .setAuthor(user.getName() + "#" + user.getDiscriminator(), "https://discord.gg/ibo", user.getEffectiveAvatarUrl())
-                .addField("ID", user.getId(), true)
-                .addField("Nickname", target.getEffectiveName(), true)
-                .addField("Status", target.getOnlineStatus().toString(), true)
-                .addField("Game", activity == null ? "N/A" : activity.getName(), true)
-                .addField("Joined", target.getTimeJoined().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
-                .addField("Join Position", joinOverride == null ? String.valueOf(joinPosition) : joinOverride, true)
-                .addField("Registered", user.getTimeCreated().format(DateTimeFormatter.RFC_1123_DATE_TIME), true)
+                .setAuthor(user.getName() + "#" + user.getDiscriminator(),
+                        "https://discord.gg/ibo",
+                        user.getEffectiveAvatarUrl()
+                )
+                .addField(
+                        "ID",
+                        user.getId(),
+                        true
+                )
+                .addField(
+                        __(context, "info.user_nick"),
+                        target.getEffectiveName(),
+                        true
+                )
+                .addField(
+                        __(context, "info.user_status"),
+                        target.getOnlineStatus().toString(),
+                        true
+                )
+                .addField(
+                        __(context, "info.user_game"),
+                        activity == null ? "N/A" : activity.getName(),
+                        true
+                )
+                .addField(
+                        __(context, "info.user_joined"),
+                        target.getTimeJoined().format(DateTimeFormatter.RFC_1123_DATE_TIME),
+                        true
+                )
+                .addField(
+                        __(context, "info.user_position"),
+                        joinOverride == null ? String.valueOf(joinPosition) : joinOverride,
+                        true
+                )
+                .addField(
+                        __(context, "info.user_registered"),
+                        user.getTimeCreated().format(DateTimeFormatter.RFC_1123_DATE_TIME),
+                        true
+                )
                 .build()
         );
     }
