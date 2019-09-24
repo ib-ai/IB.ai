@@ -53,7 +53,6 @@ public final class MonitorToggleCommand extends Command {
                 .asBoolean();
         monitorData.set(MonitorData.ENABLED, !current);
         gravity.save(monitorData);
-        context.reply(current ? "Monitoring disabled." : "Monitoring enabled.");
+        context.reply(current ? __(context, "success.monitor_disable") : __(context, "success.monitor_enable"));
     }
-
 }

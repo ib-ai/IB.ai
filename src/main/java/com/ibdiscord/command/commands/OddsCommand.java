@@ -21,6 +21,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.odds.OddsManager;
 
 import java.util.Set;
@@ -45,19 +46,20 @@ public final class OddsCommand extends Command {
             return;
         }
 
-        if(context.getArguments()[0].equals("cancel")) {
+        Set<String> cancel_aliases = Localiser.getAllCommandAliases("command_aliases.odds_cancel");
+        if(cancel_aliases.contains(context.getArguments()[0])) {
             OddsManager.cancelBet(context, context.getMember().getId());
             return;
         }
 
         if(context.getMessage().getMentionedMembers().isEmpty()) {
-            context.reply("Please mention a user to challenge.");
+            context.reply(__(context, "error.odds_user"));
             return;
         }
 
         // If user is challenging itself
         if(context.getMember().getId().equals(context.getMessage().getMentionedUsers().get(0).getId())) {
-            context.reply("Nice try bud.");
+            context.reply(__(context, "error.oddball"));
             return;
         }
 
@@ -65,10 +67,10 @@ public final class OddsCommand extends Command {
         try {
             odds = Integer.parseInt(context.getArguments()[0]);
         } catch(NumberFormatException ex) {
-            context.reply("Please provide an integer greater than zero as the first argument.");
+            context.reply(__(context, "error.odds_number"));
             return;
         }
-        if(!(odds > 0)) {
+        if(odds <= 0) {
             return;
         }
 

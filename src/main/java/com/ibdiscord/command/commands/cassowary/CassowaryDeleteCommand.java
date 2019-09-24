@@ -62,6 +62,6 @@ public final class CassowaryDeleteCommand extends Command {
 
         DataContainer.INSTANCE.getGravity().load(new CassowaryData(label)).delete();
 
-        context.reply("Consider it done.");
+        context.reply(__(context, "success.done"));
     }
 }

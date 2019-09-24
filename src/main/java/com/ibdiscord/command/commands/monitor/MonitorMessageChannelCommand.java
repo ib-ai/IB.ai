@@ -47,14 +47,14 @@ public final class MonitorMessageChannelCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getMessage().getMentionedChannels().isEmpty()) {
-            context.reply("Please mention a channel!");
+            context.reply(__(context, "error.missing_channel"));
             return;
         }
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         MonitorData monitorData = gravity.load(new MonitorData(context.getGuild().getId()));
         monitorData.set(MonitorData.MESSAGE_CHANNEL, context.getMessage().getMentionedChannels().get(0).getId());
         gravity.save(monitorData);
-        context.reply("Consider it done.");
+        context.reply(__(context, "success.done"));
     }
 
 }

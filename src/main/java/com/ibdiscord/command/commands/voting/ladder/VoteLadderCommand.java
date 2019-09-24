@@ -52,5 +52,4 @@ public final class VoteLadderCommand extends Command {
     protected void execute(CommandContext context) {
         sendUsage(context);
     }
-
 }

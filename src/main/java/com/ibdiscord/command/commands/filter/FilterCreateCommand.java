@@ -54,15 +54,14 @@ public final class FilterCreateCommand extends Command {
         }
         String input = UString.concat(context.getArguments(), " ", 0);
         if(!UInput.isValidRegex(input)) {
-            context.reply("The filter you provided is an invalid regular expression. Did you forget to "
-                    + "escape any special characters?");
+            context.reply(__(context, "error.filter"));
             return;
         }
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         FilterData filterData = gravity.load(new FilterData(context.getGuild().getId()));
         filterData.add(input);
         gravity.save(filterData);
-        context.reply("The filter has been added.");
+        context.reply(__(context, "success.filter_add"));
     }
 
 }

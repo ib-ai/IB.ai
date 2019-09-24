@@ -69,7 +69,11 @@ public final class FilterListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
-        embedBuilder.addField(String.format("#%d", page.getNumber()), UString.escapeFormatting(page.getValue()), false);
+        embedBuilder.addField(
+                __(context, "info.number", String.valueOf(page.getNumber())),
+                UString.escapeFormatting(page.getValue()),
+                false
+        );
     }
 
     /**
@@ -79,7 +83,7 @@ public final class FilterListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("Here is a list of regular expressions for filtered phrases.");
+        embedBuilder.setDescription(__(context, "info.filtered_phrases"));
     }
 
 }

@@ -85,7 +85,11 @@ public abstract class PaginatedCommand<T> extends Command {
         }
         Pagination<T> pagination = getPagination(context);
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setFooter("Page " + page + "/" + pagination.total(), null);
+        embedBuilder.setFooter(__(context, "info.paginated",
+                String.valueOf(page),
+                String.valueOf(pagination.total())),
+                null
+        );
         pagination.page(page).forEach(it -> handle(context, embedBuilder, it));
         tweak(context, embedBuilder);
         context.reply(embedBuilder.build());

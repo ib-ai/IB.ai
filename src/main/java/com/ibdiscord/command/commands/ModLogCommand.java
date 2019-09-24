@@ -38,5 +38,4 @@ public final class ModLogCommand extends LoggingCommand {
         );
         this.correctUsage = "modlog [new channel]";
     }
-
 }

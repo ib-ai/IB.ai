@@ -66,7 +66,7 @@ public abstract class LoggingCommand extends Command {
         GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
         guildData.set(key, channel == null ? DISABLED : channel.getId());
         DataContainer.INSTANCE.getGravity().save(guildData);
-        context.reply("The channel has been set to: " + (channel == null ? "nothing" : channel.getAsMention()) + ".");
+        context.reply(__(context, "success.logging", channel == null ? "nothing" : channel.getAsMention()));
     }
 
 }

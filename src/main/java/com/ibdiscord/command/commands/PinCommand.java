@@ -44,7 +44,7 @@ public final class PinCommand extends Command {
     protected void execute(CommandContext context) {
         Role helperRole = context.getGuild().getRolesByName("Helper", true).get(0);
         if(!context.getMember().getRoles().contains(helperRole) || helperRole == null) {
-            context.reply("You must be a helper to use this command.");
+            context.reply(__(context, "error.helper_perms"));
             return;
         }
 
@@ -55,7 +55,7 @@ public final class PinCommand extends Command {
 
         Message message = context.getChannel().getHistory().getMessageById(context.getArguments()[0]);
         if(message == null) {
-            context.reply("Invalid message ID provided. You must be in the same channel as the message.");
+            context.reply(__(context, "error.pin_channel"));
         } else {
             message.pin().queue();
         }

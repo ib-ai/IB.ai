@@ -53,20 +53,19 @@ public final class PurgeCommand extends Command {
         try {
             amount = Integer.valueOf(context.getArguments()[0]);
         } catch(NumberFormatException exception) {
-            context.reply("You did not specify a number.");
+            context.reply(__(context, "error.purge_number"));
             return;
         }
         if(amount < 2 || amount > 100) {
-            context.reply("Amount of messages out of range (2-100).");
+            context.reply(__(context, "error.purge_range"));
             return;
         }
         context.getChannel().getHistory().retrievePast(amount).queue(it ->
                 ((TextChannel) context.getChannel()).deleteMessages(it).queue(jollyGood ->
-                    context.reply("Consider it done."),
+                    context.reply(__(context, "success.done")),
                     bloodyHell ->
                         context.reply("I tried to hard, and got so far, but in the end, it didn't even purge.")
                     )
         );
     }
-
 }

@@ -66,19 +66,17 @@ public final class EvalCommand extends Command {
         try {
             out = engine.eval("(function(){with(imports){" + code + "}})();");
         } catch(ScriptException exception) {
-            context.reply("Error, stacktrace printed: " + exception.getMessage());
+            context.reply(__(context, "error.eval_exception", exception.getMessage()));
             exception.printStackTrace();
             return;
         }
         String response = UString.stripMassMentions(out.toString());
         if(response.length() > 2000) {
             context.getChannel().sendFile(response.getBytes(), "output_past_threshold.txt")
-                    .queue(null, error -> context.reply("Well, it seems as if the output can't "
-                            + "be sent as a file.")
+                    .queue(null, error -> context.reply(__(context, "error.generic"))
             );
             return;
         }
-        context.reply("**Output:**```" + response + "```");
+        context.reply(__(context, "success.eval", response));
     }
-
 }

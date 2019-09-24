@@ -1,4 +1,5 @@
 {
+  "oddball": "Nice try bud.",
   "generic": "Oops, something went wrong.",
   "generic_suggest_perms": "An error occurred, are the perms set up properly?",
   "unknown_user": "Unknown user.",
@@ -25,7 +26,6 @@
   "prefix": "Invalid Prefix ({0}).",
   "purge_number": "You did not specify a number.",
   "purge_range": "Amount of messages out of range (2-100).",
-  "purge_bloodyhell": "I tried too hard, and got so far, but in the end, it didn't even purge.",
   "reason_logging": "Logging is currently not enabled or set up incorrectly.",
   "reason": "An error occurred, the reason could not be updated.",
   "swap_empty": "Please mention the roles that you want to swap.",
@@ -66,5 +66,9 @@
   "tag_quotation": "Invalid name, please provide it in quotation marks.",
   "tag_404": "No tags found.",
   "invalid_colour": "Invalid format. Please use hex, for example: `#123456`.",
-  "embed_field_format": "Please provide the field in the following form: `\"Title\" \"Value\"`"
+  "embed_field_format": "Please provide the field in the following form: `\"Title\" \"Value\"`",
+  "odds_user": "Please mention a user to challenge.",
+  "odds_number": "Please provide an integer greater than zero as the first argument.",
+  "helper_perms": "You must be a helper to use this command.",
+  "pin_channel": "Invalid message ID provided. You must be in the same channel as the message."
 }

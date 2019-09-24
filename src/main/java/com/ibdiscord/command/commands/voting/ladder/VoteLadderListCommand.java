@@ -78,7 +78,7 @@ public final class VoteLadderListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("Listed are the different vote ladders.");
+        embedBuilder.setDescription(__(context, "info.ladder_list"));
     }
 
 }

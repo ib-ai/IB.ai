@@ -72,6 +72,6 @@ public final class CassowaryListCommand extends PaginatedCommand<String> {
 
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription("List of cassowaries by label.");
+        embedBuilder.setDescription(__(context, "info.list_cassowary"));
     }
 }

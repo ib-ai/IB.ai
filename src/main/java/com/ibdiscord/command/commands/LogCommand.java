@@ -38,5 +38,4 @@ public final class LogCommand extends LoggingCommand {
         );
         this.correctUsage = "log [new channel]";
     }
-
 }

@@ -68,7 +68,7 @@ public final class CassowaryCreateCommand extends Command {
                 .anyMatch(id -> validateRoleID(id, context));
 
         if(invalidIDs) {
-            context.reply("One or more of the role IDs you entered was invalid.");
+            context.reply(__(context, "error.cassowary_id"));
             return;
         }
 
@@ -80,7 +80,7 @@ public final class CassowaryCreateCommand extends Command {
         roleIDs.forEach(cassowaryData::add);
         DataContainer.INSTANCE.getGravity().save(cassowaryData);
 
-        context.reply("Consider it done.");
+        context.reply(__(context, "success.done"));
     }
 
     private static boolean validateRoleID(String roleID, CommandContext context) {

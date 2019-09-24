@@ -51,17 +51,15 @@ public final class LangListCommand extends PaginatedCommand<String> {
 
     @Override
     protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
-        embedBuilder.addField(String.format(
-                "#%d", page.getNumber()), UString.escapeFormatting(page.getValue()), false
+        embedBuilder.addField(
+                __(context, "info.number", String.valueOf(page.getNumber())),
+                UString.escapeFormatting(page.getValue()),
+                false
         );
     }
 
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
-        embedBuilder.setDescription(
-                String.format("List of available languages. Use `%slang set <language>`",
-                    UDatabase.getPrefix(context.getGuild())
-                )
-        );
+        embedBuilder.setDescription(__(context, "info.supported_langs", UDatabase.getPrefix(context.getGuild())));
     }
 }

@@ -48,11 +48,11 @@ public final class VoteLadderDurationCommand extends VoteLadderDataCommand {
         String duration = context.getArguments()[1];
         long time = UTime.parseDuration(duration) - System.currentTimeMillis(); // Adjusts for the current time
         if(time < 0) {
-            context.reply("Invalid or too short time format specified (e.g. use 3d for 3 days).");
+            context.reply(__(context, "error.ladder_format"));
             return;
         }
         ladderData.set(VoteLadderData.TIMEOUT, time);
-        context.reply("The duration has been specified.");
+        context.reply(__(context, "success.ladder_specify"));
     }
 
 }

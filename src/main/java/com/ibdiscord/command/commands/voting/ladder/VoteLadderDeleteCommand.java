@@ -47,7 +47,7 @@ public final class VoteLadderDeleteCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length < 1) {
-            context.reply("Please provide the ladder name.");
+            context.reply(__(context, "error.ladder_name"));
             return;
         }
         String ladder = context.getArguments()[0].toLowerCase();
@@ -55,7 +55,6 @@ public final class VoteLadderDeleteCommand extends Command {
         VoteLaddersData laddersData = gravity.load(new VoteLaddersData(context.getGuild().getId()));
         laddersData.remove(ladder);
         gravity.save(laddersData);
-        context.reply("The ladder \"" + ladder + "\" has been deleted.");
+        context.reply(__(context, "success.ladder_delete", ladder));
     }
-
 }

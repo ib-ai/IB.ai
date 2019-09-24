@@ -49,11 +49,11 @@ public final class VoteLadderThresholdCommand extends VoteLadderDataCommand {
         try {
             number = Integer.valueOf(raw);
         } catch(NumberFormatException exception) {
-            context.reply("Please provide a number.");
+            context.reply(__(context, "error.missing_number"));
             return;
         }
         ladderData.set(VoteLadderData.THRESHOLD, number);
-        context.reply("The threshold has been updated.");
+        context.reply(__(context, "success.threshold_update"));
     }
 
 }

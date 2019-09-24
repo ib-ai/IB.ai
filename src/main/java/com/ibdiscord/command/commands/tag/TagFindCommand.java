@@ -76,10 +76,21 @@ public final class TagFindCommand extends Command {
         }
         pagination.page(page).forEach(entry -> tags.append(UString.escapeFormatting(entry.getValue())).append(", "));
         if (tags.length() == 0) {
-            embedBuilder.addField("No tags found.", "", false);
+            embedBuilder.addField(
+                    __(context, "error.tag_404"),
+                    "",
+                    false
+            );
         } else {
-            embedBuilder.addField("Here is a list of similar tags.", tags.substring(0, tags.length() - 2), false);
-            embedBuilder.setFooter("Page " + page + "/" + pagination.total(), null);
+            embedBuilder.addField(
+                    __(context, "info.tag_list_similar"),
+                    tags.substring(0, tags.length() - 2),
+                    false
+            );
+            embedBuilder.setFooter(
+                    __(context, "info.paginated",String.valueOf(page), String.valueOf(pagination.total())),
+                    null
+            );
         }
         context.reply(embedBuilder.build());
     }

@@ -52,12 +52,12 @@ public final class UserRolesCommand extends Command {
             target = UInput.getMember(context.getGuild(), context.getArguments()[0]);
         }
         if(target == null) {
-            context.reply("User not found!");
+            context.reply(__(context, "error.user_404"));
             return;
         }
-        context.reply("This user has the following roles: `%s`.", target.getRoles().stream()
+        context.reply(__(context, "info.user_roles", target.getRoles().stream()
                 .map(Role::getName)
-                .collect(Collectors.joining(", "))
+                .collect(Collectors.joining(", ")))
         );
     }
 

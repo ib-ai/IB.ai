@@ -18,6 +18,7 @@
 
 package com.ibdiscord.command.commands;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
@@ -48,24 +49,56 @@ public final class ServerInfoCommand extends Command {
     protected void execute(CommandContext context) {
         Guild guild = context.getGuild();
         context.reply(new EmbedBuilder()
+                .setAuthor(guild.getName(), IBai.INSTANCE.getConfig().getGithubLink(), guild.getIconUrl())
                 .addField("ID", guild.getId(), true)
-                .addField("Owner", guild.getOwner() == null ? "Nobody." : guild.getOwner().getUser().getAsTag(),
-                        true)
-                .addField("Creation Date", guild.getTimeCreated().format(DateTimeFormatter.RFC_1123_DATE_TIME),
-                        true)
-                .addField("Voice Region", guild.getRegion().getName(), true)
-                .addField("# of members", itos(guild.getMembers().size()), true)
-                .addField("# of Bots", ltos(guild.getMembers().stream()
-                    .filter(it -> it.getUser().isBot())
-                    .count()), true)
-                .addField("Currently Online", ltos(guild.getMembers().stream()
-                    .filter(it -> it.getOnlineStatus() != OnlineStatus.OFFLINE)
-                    .count()), true)
-                .addField("# of Roles", itos(guild.getRoles().size()), true)
-                .addField("# of Channels", itos(guild.getVoiceChannels().size()
-                        + guild.getTextChannels().size()
-                        + guild.getCategories().size()),
-                        true)
+                .addField(
+                        __(context, "info.owner"),
+                        guild.getOwner().getUser().getAsTag(),
+                        true
+                )
+                .addField(
+                        __(context, "info.creation_date"),
+                        guild.getTimeCreated().format(DateTimeFormatter.RFC_1123_DATE_TIME),
+                        true
+                )
+                .addField(
+                        __(context, "info.vc_region"), guild.getRegion().getName(),
+                        true
+                )
+                .addField(
+                        __(context, "info.number_members"),
+                        itos(guild.getMembers().size()),
+                        true
+                )
+                .addField(
+                        __(context, "info.number_bots"),
+                        ltos(guild.getMembers().stream()
+                            .filter(it -> it.getUser().isBot())
+                            .count()
+                        ),
+                        true
+                )
+                .addField(
+                        __(context, "info.number_online"),
+                        ltos(guild.getMembers().stream()
+                            .filter(it -> it.getOnlineStatus() != OnlineStatus.OFFLINE)
+                            .count()
+                        ),
+                        true
+                )
+                .addField(
+                        __(context, "info.number_roles"),
+                        itos(guild.getRoles().size()),
+                        true
+                )
+                .addField(
+                        __(context, "info.number_channels"),
+                        itos(guild.getVoiceChannels().size()
+                                + guild.getTextChannels().size()
+                                + guild.getCategories().size()
+                        ),
+                        true
+                )
                 .build()
         );
     }

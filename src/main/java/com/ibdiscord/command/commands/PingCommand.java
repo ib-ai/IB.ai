@@ -44,9 +44,9 @@ public final class PingCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         JDA jda = context.getGuild().getJDA();
-        context.reply("Pong! WebSocket latency is currently %d ms and %d ms for REST and WSS respectively.",
-                jda.getRestPing().complete(),
-                jda.getGatewayPing()
+        context.reply(__(context, "info.latency",
+                String.valueOf(jda.getRestPing().complete()),
+                String.valueOf(jda.getGatewayPing()))
         );
     }
 

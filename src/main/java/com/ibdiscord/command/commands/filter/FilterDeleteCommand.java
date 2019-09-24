@@ -56,7 +56,6 @@ public final class FilterDeleteCommand extends Command {
         FilterData filterData = gravity.load(new FilterData(context.getGuild().getId()));
         filterData.remove(input);
         gravity.save(filterData);
-        context.reply("The phrase has been deleted.");
+        context.reply(__(context, "success.filter_delete"));
     }
-
 }
