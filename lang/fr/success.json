@@ -1,6 +1,6 @@
 {
-  "help": "Bienvenue sur le serveur Discord du BI",
-  "blacklist": "Mis sur liste noire avec succès.",
+  "help": "Bienvenue au serveur Discord du BI",
+  "blacklist": "Mis sur la liste noire avec succès.",
   "coinflip_heads": "Pile",
   "coinflip_tails": "Face",
   "expire": "L'expiration a été fixée",
@@ -9,7 +9,7 @@
   "mod_permission": "L'autorisation du modérateur a été mise à jour.",
   "note": "La note a été ajoutée.",
   "prefix": "Le préfixe a été mis à jour à ({0}).",
-  "done": "Considèrez que c'est fait.",
+  "done": "C'est fait.",
   "reason": "La raison a été mise à jour.",
   "swap_role": "Les rôles ont été échangés pour {0} utilisateurs.",
   "eval": "**Sortie:**``` {0} ```",
@@ -28,6 +28,6 @@
   "ladder_specify": "La durée a été précisée.",
   "threshold_update": "Le seuil a été mis à jour.",
   "vote_create": "Vote créé #",
-  "tag_done": "Considèrez que c'est fait: `{0}` -> `{1}`.",
+  "tag_done": "C'est fait: `{0}` -> `{1}`.",
   "tag_remove": "L'étiquette a été retirée."
 }
