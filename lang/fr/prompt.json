@@ -1,8 +1,8 @@
 {
-  "embed_channel": "Which channel should the embed be sent in?",
-  "embed_colour": "Please provide the colour in hex format (e.g. `#123456`). Use `skip` to skip this.",
-  "embed_description": "Please type the description of the embed. Use `skip` to skip this.",
-  "embed_field": "You are now adding another field. Please use the following format: `\"Title\" \"Value\"`. You can type `done` to complete the embed.",
-  "embed_image": "Please provide the URL for the image you would like to display. Use `skip` to skip this.",
-  "embed_replace": "Should this embed replace any existing message in that channel? If yes, type the message ID, otherwise type anything else."
+  "embed_channel": "Dans quel canal l'embed devrait-il être envoyé?",
+  "embed_colour": "Indiquez la couleur en format hexadécimal (p. ex. `#123456`). Tapez `skip` pour sauter cette étape.",
+  "embed_description": "Veuillez fournir la description de l'embed. Tapez `skip` pour sauter cette étape.",
+  "embed_field": "Vous ajoutez maintenant un autre champ. Utilisez le format suivant: `\"Titre\" \"Valeur\"`. Vous pouvez taper `done` pour complèter l'embed.",
+  "embed_image": "Fournissez l'URL de l'image que vous souhaitez afficher. Tapez `skip` pour sauter cette étape.",
+  "embed_replace": "Cet embed devrait-il remplacer un message existant dans ce canal? Si oui, taper l'ID du message, sinon, tapez n'importe quelle autre chose."
 }
