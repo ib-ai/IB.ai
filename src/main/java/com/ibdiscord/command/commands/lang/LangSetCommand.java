@@ -48,14 +48,17 @@ public final class LangSetCommand extends Command {
             return;
         }
 
-        String language = context.getArguments()[0];
+        String language = context.getArguments()[0].toLowerCase();
 
-        if(!Localiser.getAllLanguages().contains(language)) {
+        if(!Localiser.getAllLanguageCodes().contains(language) && !Localiser.getAllLanguages().contains(language)) {
             context.reply(__(context, "error.lang_command", language, UDatabase.getPrefix(context.getGuild())));
         } else {
             Gravity gravity = DataContainer.INSTANCE.getGravity();
             LangData langData = gravity.load(new LangData());
-            langData.set(context.getMember().getUser().getId(), language);
+            String finalLang = Localiser.getAllLanguageCodes().contains(language)
+                    ? language
+                    : Localiser.getLanguageCode(language);
+            langData.set(context.getMember().getUser().getId(), finalLang);
             gravity.save(langData);
 
             context.reply(__(context, "success.lang_command"));

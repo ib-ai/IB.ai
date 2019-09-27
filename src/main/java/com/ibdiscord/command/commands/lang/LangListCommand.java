@@ -45,16 +45,17 @@ public final class LangListCommand extends PaginatedCommand<String> {
 
     @Override
     protected Pagination<String> getPagination(CommandContext context) {
-        List<String> values = Localiser.getAllLanguages();
+        List<String> values = Localiser.getAllLanguageCodes();
         return new Pagination<>(values, 15);
     }
 
     @Override
     protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
+        int entryNum = page.getNumber() - 1;
         embedBuilder.addField(
-                __(context, "info.number", String.valueOf(page.getNumber())),
+                Localiser.getLanguageNameByIndex(entryNum) + "  " + Localiser.getLanguageFlagByIndex(entryNum),
                 UString.escapeFormatting(page.getValue()),
-                false
+                true
         );
     }
 

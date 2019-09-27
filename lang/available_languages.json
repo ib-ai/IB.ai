@@ -1,5 +1,9 @@
 {
   "languages": [
-    "en"
+    {
+      "language": "English",
+      "language-code": "en",
+      "flag": ":flag_gb:"
+    }
   ]
 }

@@ -87,7 +87,7 @@ public enum Localiser {
     public static Set<String> getAllCommandAliases(String key) {
         String[] splitKey = key.split(Pattern.quote("."));
         List<String> allAliases = new ArrayList<>();
-        getAllLanguages().stream().forEach(lang -> {
+        getAllLanguageCodes().stream().forEach(lang -> {
             JSON languageFile = getJSONObjectFromKey(lang, key);
             JSONArray arrayOfAliasesObj = languageFile.array(splitKey[1]);
             try {
@@ -170,6 +170,23 @@ public enum Localiser {
     }
 
     /**
+     * Retrieves available languages from JSON file as their codes
+     * @return Array of all available languages for localisation
+     */
+    public static List<String> getAllLanguageCodes() {
+        String pathToAvailableLanguages = "/IB.ai/lang/available_languages.json";
+        JSON allLanguagesFile = UJSON.retrieveJSONFromFile(pathToAvailableLanguages);
+
+        JSONArray arrayOfLanguages = allLanguagesFile.array("languages");
+        List<String> languageCodes = new ArrayList<>();
+        for(int i = 0; i < arrayOfLanguages.length(); i++) {
+            JSON jsonObj = arrayOfLanguages.json(i);
+            languageCodes.add(jsonObj.string("language-code").toLowerCase());
+        }
+        return languageCodes;
+    }
+
+    /**
      * Retrieves available languages from JSON file.
      * @return Array of all available languages for localisation
      */
@@ -178,8 +195,61 @@ public enum Localiser {
         JSON allLanguagesFile = UJSON.retrieveJSONFromFile(pathToAvailableLanguages);
 
         JSONArray arrayOfLanguages = allLanguagesFile.array("languages");
-        List<Object> langsAsObj = Arrays.asList(arrayOfLanguages.toArray());
-        return langsAsObj.stream().map(Object::toString).collect(Collectors.toList());
+        List<String> languageCodes = new ArrayList<>();
+        for(int i = 0; i < arrayOfLanguages.length(); i++) {
+            JSON jsonObj = arrayOfLanguages.json(i);
+            languageCodes.add(jsonObj.string("language").toLowerCase());
+        }
+        return languageCodes;
+    }
+
+    /**
+     * Retrieves language name from its code.
+     * @return The name of the language.
+     */
+    public static String getLanguageCode(String lang) {
+        String pathToAvailableLanguages = "/IB.ai/lang/available_languages.json";
+        JSON allLanguagesFile = UJSON.retrieveJSONFromFile(pathToAvailableLanguages);
+
+        JSONArray arrayOfLanguages = allLanguagesFile.array("languages");
+        String language = null;
+        for(int i = 0; i < arrayOfLanguages.length(); i++) {
+            JSON jsonObj = arrayOfLanguages.json(i);
+            if(jsonObj.string("language").equals(lang)) {
+                language = jsonObj.string("language-code");
+            }
+        }
+        return language;
+    }
+
+    /**
+     * Retrieves the name of a language based off of its index in
+     * the languages array in the available_languages.json file.
+     * @param index The index of the language
+     * @return The name of the language at the given index
+     */
+    public static String getLanguageNameByIndex(int index) {
+        String pathToAvailableLanguages = "/IB.ai/lang/available_languages.json";
+        JSON allLanguagesFile = UJSON.retrieveJSONFromFile(pathToAvailableLanguages);
+
+        JSONArray arrayOfLanguages = allLanguagesFile.array("languages");
+        JSON langObj = arrayOfLanguages.json(index);
+        return langObj.string("language");
+    }
+
+    /**
+     * Retrieves the flag belonging to a language based off of its index in
+     * the languages array in the available_languages.json file.
+     * @param index The index of the language
+     * @return The flag emote of the language at the given index
+     */
+    public static String getLanguageFlagByIndex(int index) {
+        String pathToAvailableLanguages = "/IB.ai/lang/available_languages.json";
+        JSON allLanguagesFile = UJSON.retrieveJSONFromFile(pathToAvailableLanguages);
+
+        JSONArray arrayOfLanguages = allLanguagesFile.array("languages");
+        JSON langObj = arrayOfLanguages.json(index);
+        return langObj.string("flag");
     }
 
     /**
