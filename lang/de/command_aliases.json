@@ -57,7 +57,7 @@
   "monitor_user": ["benutzer", "nutzer"],
   "lang": ["sprache", "sprichdeutschduhurensohn"],
   "lang_list": ["liste", "listen", "l", "ls"],
-  "lang_set": ["set", "s", "ispeak"],
+  "lang_set": ["setzen", "s", "ispeak"],
   "filter": ["filter"],
   "filter_create": ["kreieren", "k", "erstellen", "hinzufügen", "neu"],
   "filter_delete": ["entfernen", "zerstören", "z"],
