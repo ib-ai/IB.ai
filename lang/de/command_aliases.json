@@ -14,7 +14,7 @@
   "lookup": ["inspizieren"],
   "moderator": ["moderator", "mod"],
   "modlog": ["modlogsetzen"],
-  "muterole": ["muterole", "setmuterole"],
+  "muterole": ["stummrolle", "stumrollesetzen"],
   "note": ["notiz", "notizen"],
   "odds": ["chancen", "chance"],
   "pin": ["pin"],
