@@ -1,8 +1,0 @@
-{
-  "embed_channel": "¿En qué canal debería ser enviado el archivo incrustado?",
-  "embed_colour": "Por favor ingresa el color en formato hex (p.ej. `#123456`). Usa `skip` para saltarte esto.",
-  "embed_description": "Por favor escribe la descripción del archivo adjunto. Usa `skip` para saltarte esto.",
-  "embed_field": "Ahora estás añadiendo otro campo. Por favor usa el siguiente formato: `\"Título\" \"Valor\"`. Puedes escribir `listo` para completar el archivo incrustado.",
-  "embed_image": "Por favor ingresa la URL para la imagen que te gustaría que se muestre. Usa `skip` para saltarte esto.",
-  "embed_replace": "¿Debería este archivo incrustado reemplazar algún otro mensaje del canal? Si es el caso, escribe la ID del mensaje, si no es posible escribe alguna otra cosa."
-}
