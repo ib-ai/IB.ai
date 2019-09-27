@@ -1,0 +1,8 @@
+{
+  "embed_channel": "W jakim kanale powinnien być wysłany embed?",
+  "embed_colour": "Podaj kolor w formacie HEX (np. `#123456`). Użyj `skip` by pominąć.",
+  "embed_description": "Wpisz opis embedu. Użyj `skip` by pominąć.",
+  "embed_field": "Dodajesz właśnie dodatkowe pole. Proszę użyć formatu: `\"Nazwa\" \"Wartość\"`. Wpisz `done` by zakończyć embed.",
+  "embed_image": "Podaj URL dla zdjęcia, które chcesz wyświetlić. Użyj `skip` by pominąć.",
+  "embed_replace": "Czy ten embed powinien nadpisać istniejącą wiadomość? Jeśli tak, wpisz jej ID, inaczej wpisz cokolwiek."
+}
