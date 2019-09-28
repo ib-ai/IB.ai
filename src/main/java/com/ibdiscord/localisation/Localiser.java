@@ -170,7 +170,7 @@ public enum Localiser {
     }
 
     /**
-     * Retrieves available languages from JSON file as their codes
+     * Retrieves available languages from JSON file as their codes.
      * @return Array of all available languages for localisation
      */
     public static List<String> getAllLanguageCodes() {
@@ -205,6 +205,7 @@ public enum Localiser {
 
     /**
      * Retrieves language name from its code.
+     * @param lang The language to find the code for.
      * @return The name of the language.
      */
     public static String getLanguageCode(String lang) {
