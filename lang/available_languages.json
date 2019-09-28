@@ -4,6 +4,11 @@
       "language": "English",
       "language-code": "en",
       "flag": ":flag_gb:"
+    },
+    {
+      "language": "Spanish",
+      "language-code": "es",
+      "flag": "flag_es"
     }
   ]
 }
