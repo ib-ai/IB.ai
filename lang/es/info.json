@@ -1,4 +1,4 @@
-﻿{
+{
   "number": "#{0}",
   "supported_langs": "Lista de lenguajes disponibles. Use `ajuste de lenguaje {0} <language>`",
   "mod_permission": "El permiso de moderador es: {0}.",

@@ -48,6 +48,7 @@ public enum CommandCollection {
     LANG(new LangCommand()),
     LOG(new LogCommand()),
     LOOKUP(new LookupCommand()),
+    HELPER(new HelperCommand()),
     MODERATOR(new ModeratorCommand()),
     MOD_LOG(new ModLogCommand()),
     MONITOR(new MonitorCommand()),

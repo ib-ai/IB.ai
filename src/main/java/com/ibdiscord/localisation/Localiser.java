@@ -66,10 +66,12 @@ public enum Localiser {
                 + "pants#0422 or Arraying#7363.**";
         String translation;
         try {
+            System.out.println("Retrieving " + key);
             JSON languageFile = getJSONObjectFromKey(getUserLang(commandContext), key);
             String[] splitKey = key.split(Pattern.quote("."));
             translation = languageFile.string(splitKey[1]);
         } catch(Exception ex) {
+            ex.printStackTrace(); // pantsyboo, don't you want to print the error to be able to fix it?
             return translationErrorMessage;
         }
         if(translation == null) {
@@ -87,7 +89,7 @@ public enum Localiser {
     public static Set<String> getAllCommandAliases(String key) {
         String[] splitKey = key.split(Pattern.quote("."));
         List<String> allAliases = new ArrayList<>();
-        getAllLanguageCodes().stream().forEach(lang -> {
+        getAllLanguageCodes().forEach(lang -> {
             JSON languageFile = getJSONObjectFromKey(lang, key);
             JSONArray arrayOfAliasesObj = languageFile.array(splitKey[1]);
             try {
@@ -139,7 +141,7 @@ public enum Localiser {
          * half of the 'key' parameter.
          */
         String pathToLanguageFile = String.format("/IB.ai/lang/%s/%s.json", language, splitKey[0]);
-        return UJSON.retrieveJSONFromFile(pathToLanguageFile);
+        return UJSON.retrieveJSONFromFile(pathToLanguageFile, getLanguageCharset(language));
     }
 
     /**
@@ -216,11 +218,31 @@ public enum Localiser {
         String language = null;
         for(int i = 0; i < arrayOfLanguages.length(); i++) {
             JSON jsonObj = arrayOfLanguages.json(i);
-            if(jsonObj.string("language").equals(lang)) {
+            if(jsonObj.string("language").equalsIgnoreCase(lang)) {
                 language = jsonObj.string("language-code");
             }
         }
         return language;
+    }
+
+    /**
+     * Gets the language charset to use when decoding the file.
+     * @param lang The language to find the charset for.
+     * @return The charset of the language.
+     */
+    public static String getLanguageCharset(String lang) {
+        String pathToAvailableLanguages = "/IB.ai/lang/available_languages.json";
+        JSON allLanguagesFile = UJSON.retrieveJSONFromFile(pathToAvailableLanguages);
+
+        JSONArray arrayOfLanguages = allLanguagesFile.array("languages");
+        String charset = null;
+        for(int i = 0; i < arrayOfLanguages.length(); i++) {
+            JSON jsonObj = arrayOfLanguages.json(i);
+            if(jsonObj.string("language-code").equals(lang)) {
+                charset = jsonObj.string("encoding");
+            }
+        }
+        return charset;
     }
 
     /**

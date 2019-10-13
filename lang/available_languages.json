@@ -3,12 +3,14 @@
     {
       "language": "English",
       "language-code": "en",
-      "flag": ":flag_gb:"
+      "flag": ":flag_gb:",
+      "encoding": "UTF-8"
     },
     {
       "language": "Spanish",
       "language-code": "es",
-      "flag": ":flag_es:"
+      "flag": ":flag_es:",
+      "encoding": "UTF-8"
     }
   ]
 }

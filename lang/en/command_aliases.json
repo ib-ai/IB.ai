@@ -10,6 +10,7 @@
   "find": ["find", "lookupuser"],
   "giverole": ["giverole"],
   "help": ["help"],
+  "helper": ["sethelper"],
   "log": ["log", "setlog"],
   "lookup": ["lookup"],
   "moderator": ["moderator", "mod"],
