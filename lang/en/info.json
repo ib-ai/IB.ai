@@ -2,7 +2,7 @@
   "number": "#{0}",
   "supported_langs": "List of available languages. Use `{0}lang set <language>`",
   "mod_permission": "The moderator permission is currently: {0}.",
-  "helper_permission": "The helper permission is currently: {}",
+  "helper_permission": "The helper permission is currently: {0}",
   "mute_role": "The new role has been set.",
   "note": "Here are the notes for the user.",
   "note_author": "Entry by {0}:",

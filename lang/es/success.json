@@ -7,6 +7,7 @@
   "give_role": "El rol ha sido añadido a {0} usuarios.",
   "lang_command": "Preferencias de lenguaje correctamente actualizadas.",
   "mod_permission": "El permiso del moderador ha sido actualizado.",
+  "helper_permission":"The helper permission has been updated.",
   "note": "Se ha añadido la nota.",
   "prefix": "El prefijo se ha actualizado a ({0}).",
   "done": "Considéralo hecho.",
