@@ -10,7 +10,7 @@
   "find": ["buscar", "verusuario"],
   "giverole": ["rol", "darrol"],
   "help": ["ayuda"],
-  "helper":[],
+  "helper": ["ayudante"],
   "log": ["log", "configlog"],
   "lookup": ["buscara"],
   "moderator": ["moderador", "mod"],
