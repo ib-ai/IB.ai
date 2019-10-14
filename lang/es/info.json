@@ -13,7 +13,7 @@
   "intro_started1": "Empezando:",
   "intro_started2": "Obtén un rol de año al cliquear el emote apropiado en {0}. Puedes añadirte también a ciertas asignaturas de esta forma. Comparte tus pasiones con otros uniéndote a las salas de distintos intereses, también usando reacciones, en {1}.",
   "intro_features1": "Algunas cosas que puedo hacer:",
-  "intro_features2": "- Para obtener un link para descargas actualizadas de libros de texto, anteriores pruebas (Past Papers), guías y más, escribe `link a los recursos` en el chat\n - Mostrar información acerca de un usuario específico: `{0}userinfo [usuario]`\n - Mostrar información acerca del servidor `{0}serverinfo`\n - Revisar si el bot está respondiendo: `{0}ping`\n",
+  "intro_features2": "- Para obtener un link para descargas actualizadas de libros de texto, anteriores pruebas (Past Papers), guías y más, escribe `link the resources` en el chat\n - Mostrar información acerca de un usuario específico: `{0}userinfo [usuario]`\n - Mostrar información acerca del servidor `{0}serverinfo`\n - Revisar si el bot está respondiendo: `{0}ping`\n",
   "intro_dev1": "Desarrollo:",
   "intro_dev2": "IB.ai es un ({0}) proyecto de Software Libre [FOSS] desarrollado por la comunidad.\n Créditos a los siguientes minions por desarrollarme:\n {1} \n\n Por favor considera [donar en](https://paypal.me/libreresources) si aprecias sus esfuerzos. Las donaciones van directamente de regreso dentro del bot y otros proyectos del servidor, pagando por tarifas del servidor",
   "intro_footer": "Desarrollado con ❤",
