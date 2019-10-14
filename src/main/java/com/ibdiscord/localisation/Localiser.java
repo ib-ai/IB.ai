@@ -62,8 +62,7 @@ public enum Localiser {
      * @return The localised text corresponding to the inputted key.
      */
     public static String __(CommandContext commandContext, String key, String... variables) {
-        String translationErrorMessage = "**Translation error. If you see this, please report it to "
-                + "pants#0422 or Arraying#7363.**";
+        String translationErrorMessage = "**Translation error. If you see this, please report it to a bot developer.**";
         String translation;
         try {
             System.out.println("Retrieving " + key);
@@ -71,8 +70,15 @@ public enum Localiser {
             String[] splitKey = key.split(Pattern.quote("."));
             translation = languageFile.string(splitKey[1]);
         } catch(Exception ex) {
-            ex.printStackTrace(); // pantsyboo, don't you want to print the error to be able to fix it?
-            return translationErrorMessage;
+            try {
+                System.out.println("Retrieving " + key);
+                JSON languageFile = getJSONObjectFromKey("en", key);
+                String[] splitKey = key.split(Pattern.quote("."));
+                translation = languageFile.string(splitKey[1]);
+            } catch(Exception exceptionNestedInAnotherExceptionSmileyface) {
+                exceptionNestedInAnotherExceptionSmileyface.printStackTrace();
+                return translationErrorMessage;
+            }
         }
         if(translation == null) {
             return translationErrorMessage;
