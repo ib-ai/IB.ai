@@ -50,6 +50,7 @@
   "reaction_message": "The message provided does not exist.",
   "reaction_role": "The role(s) provided were invalid.",
   "reminder_duration": "Please provide the duration until you want to be reminded.",
+  "reminder_content": "Please state what you would like to be reminded of.",
   "reminder_message": "Please provide the reminder.",
   "reminder_format": "Your duration is invalid. For example, a reminder in 3 hours and 15 minutes would be `3h15`.",
   "reminderid": "Please specify the reminder ID. It is shown when listing all reminders.",

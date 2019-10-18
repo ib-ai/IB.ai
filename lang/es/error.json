@@ -51,6 +51,7 @@
   "reaction_message": "El mensaje que ingresaste no existe.",
   "reaction_role": "El(los) rol(es) que ingresaste no existen.",
   "reminder_duration": "Por favor ingresa dentro de cuanto tiempo quieres el recordatorio.",
+  "reminder_content": "Please state what you would like to be reminded of.",
   "reminder_message": "Por favor ingresa el recordatorio.",
   "reminder_format": "Tu duración no es válida. Por ejemplo, un recordatorio dentro de 3 horas y 15 minutos sería `3h15`.",
   "reminderid": "Por favor especifica la ID del recordatorio. Se muestra cuando se enlistan todos los recordatorios.",
