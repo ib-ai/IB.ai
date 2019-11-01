@@ -67,5 +67,5 @@
   "cassowary_create": ["kreieren", "k", "erstellen", "hinzufügen", "neu"],
   "cassowary_delete": ["entfernen", "zerstören", "z"],
   "cassowary_list": ["liste", "listen", "l", "ls"],
-  "odds_cancel": ["stornieren", "s"]
+  "odds_cancel": ["abbrechen", "s"]
 }

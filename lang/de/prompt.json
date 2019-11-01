@@ -1,8 +1,8 @@
 {
   "embed_channel": "In welchem Channel soll das Embed geschickt werden?",
-  "embed_colour": "Bitte gebe die Farbe im Hexadezimalformat an (z.B. `#123456`). Schreibe `skip` um dies zu überspringen.",
-  "embed_description": "Gebe die Beschreibung an. Schreibe `skip` um dies zu Überspringen.",
-  "embed_field": "Du fügst gerade ein neues Field dazu. Benutze das folgende Format: `\"Titel\" \"Inhalt\"`. Schreibe `done` um diesen Prozess zu beenden.",
-  "embed_image": "Bitte gebe die URL für das Bild an. Schreibe `skip` um dies zu überspringen.",
+  "embed_colour": "Bitte gib die Farbe im Hexadezimalformat an (z.B. `#123456`). Schreibe `skip` um dies zu überspringen.",
+  "embed_description": "Gebe die Beschreibung an. Schreibe `skip` um dies zu überspringen.",
+  "embed_field": "Du fügst gerade ein neues Field hinzu. Benutze das folgende Format: `\"Titel\" \"Inhalt\"`. Schreibe `done` um diesen Prozess zu beenden.",
+  "embed_image": "Bitte gib die URL für das Bild an. Schreibe `skip` um dies zu überspringen.",
   "embed_replace": "Soll dieses Embed vorhandene Nachrichten ersetzen? Wenn ja, schreibe die Nachrichten-ID. Anderfalls, schreibe etwas willkürliches."
 }

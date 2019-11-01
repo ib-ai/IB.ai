@@ -1,6 +1,6 @@
 {
   "number": "#{0}",
-  "supported_langs": "Hier sind alle Sprachen die zur Verfügung sind. Verwende `{0}lang setzen <Sprache>`",
+  "supported_langs": "Hier sind alle Sprachen die zur Verfügung stehen. Verwende `{0}lang setzen <Sprache>`",
   "mod_permission": "Das Moderatorenpermission ist momentan: {0}.",
   "mute_role": "Die Stummrolle wurde konfiguriert.",
   "note": "Hier sind die Notizen für den Benutzer.",
@@ -9,7 +9,7 @@
   "user_roles": "Dieser Benutzer hat die folgenden Rollen: `{0}`.",
   "warned_you": "Du wurdest auf dem Server {0} gewarnt: {1}",
   "warned_they": "Der Benutzer wurde gewarnt.",
-  "intro_welcome": "Hallo! Wilkommen auf dem IBO Discord Server. Ich bin IB.ai, version: `{0}`. Alle Felder die als <> markiert sind sind Pflichtfelder, [] sind optional.",
+  "intro_welcome": "Hallo! Wilkommen auf dem IBO Discord Server. Ich bin IB.ai, version: `{0}`. Alle Felder die als <> markiert sind sind Pflichtfelder, [] sind freiwillig.",
   "intro_started1": "Zum Loslegen:",
   "intro_started2": "Hol' dir eine Year-Role in dem du auf eines der Emojis in {0} clickst. So kannst du dir auch Zugang zu verschiedenen Fächern verschaffen. Teile deine Leidenschaften mit anderen indem du Lounges beitritts, die Emojis dazu sind in {1}.",
   "intro_features1": "Was ich machen kann:",
