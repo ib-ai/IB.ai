@@ -10,6 +10,7 @@
   "find": ["suchen"],
   "giverole": ["rollegeben"],
   "help": ["hilfe"],
+  "helper": ["helfer"],
   "log": ["logsetzen"],
   "lookup": ["inspizieren"],
   "moderator": ["moderator", "mod"],
