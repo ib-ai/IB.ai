@@ -11,6 +11,12 @@
       "language-code": "es",
       "flag": ":flag_es:",
       "encoding": "UTF-8"
+    },
+    {
+      "language": "German",
+      "language-code": "de",
+      "flag": ":flag_de:",
+      "encoding": "UTF-8"
     }
   ]
 }
