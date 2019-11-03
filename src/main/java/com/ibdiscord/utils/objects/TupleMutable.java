@@ -28,6 +28,11 @@ public final class TupleMutable<A, B> {
     @Getter @Setter
     private B propertyB;
 
+    /**
+     * Constructs a TupleMutable object using two generic parameter types.
+     * @param a Property A of tuple.
+     * @param b Property B of tuple.
+     */
     public TupleMutable(A a, B b) {
         this.propertyA = a;
         this.propertyB = b;
