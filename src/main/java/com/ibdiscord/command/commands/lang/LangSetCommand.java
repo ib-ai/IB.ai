@@ -39,6 +39,8 @@ public final class LangSetCommand extends Command {
                 CommandPermission.discord(),
                 Set.of()
         );
+
+        this.correctUsage = "lang set [language]";
     }
 
     @Override

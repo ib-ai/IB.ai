@@ -41,6 +41,8 @@ public final class LangListCommand extends PaginatedCommand<String> {
                 CommandPermission.discord(),
                 Set.of()
         );
+
+        this.correctUsage = "lang list";
     }
 
     @Override
