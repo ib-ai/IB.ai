@@ -50,6 +50,7 @@
   "reaction_message": "Die angegebene Nachricht gibt es nicht.",
   "reaction_role": "Rie Rolle(n) ist/sind ungültig.",
   "reminder_duration": "Bitte gib an, wann du erinnert werden willst.",
+  "reminder_content": "Please state what you would like to be reminded of.",
   "reminder_message": "Bitte gib die Erinnerung an.",
   "reminder_format": "Die angegebene Dauer ist ungültig. 3 Stunden und 15 Minuten sind z.B. `3h15`",
   "reminderid": "Bitte gib die Erinnerungs-ID an. Sie wird in der Liste von allen Erinnerungen angegeben.",

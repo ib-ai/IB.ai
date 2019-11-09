@@ -7,6 +7,7 @@
   "give_role": "Die Rolle wurde zu {0} Benutzern hinzugefügt.",
   "lang_command": "Deine Sprache wurde erfolgreich geändert..",
   "mod_permission": "Die Moderatorpermission wurde geändert.",
+  "helper_permission":"The helper permission has been updated.",
   "note": "Die Notiz wurde hinzugefügt.",
   "prefix": "Der Präfix wurde zu ({0}) geändert.",
   "done": "Fertig.",
