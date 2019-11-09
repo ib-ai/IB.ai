@@ -17,6 +17,12 @@
       "language-code": "de",
       "flag": ":flag_de:",
       "encoding": "UTF-8"
+    },
+    {
+      "language": "Japanese",
+      "language-code": "ja",
+      "flag": "flag_jp",
+      "encoding": "UTF-8"
     }
   ]
 }
