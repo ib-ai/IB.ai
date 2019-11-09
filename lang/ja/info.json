@@ -2,6 +2,7 @@
   "number": "#{0}",
   "supported_langs": "使用可能な言語のリストです。`{0}lang set <language>`で変更できます。",
   "mod_permission": "現在のモデレーターの権限は以下のとおりです: {0}.",
+  "helper_permission": "現在のヘルパーの権限は以下のとおりです: {0}.",
   "mute_role": "ロールを付与しました。",
   "note": "このユーザーのメモは以下のとおりです。",
   "note_author": "記入者: {0}",

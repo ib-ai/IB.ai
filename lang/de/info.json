@@ -2,6 +2,7 @@
   "number": "#{0}",
   "supported_langs": "Hier sind alle Sprachen die zur Verfügung stehen. Verwende `{0}lang setzen <Sprache>`",
   "mod_permission": "Das Moderatorenpermission ist momentan: {0}.",
+  "helper_permission": "The helper permission is currently: {0}",
   "mute_role": "Die Stummrolle wurde konfiguriert.",
   "note": "Hier sind die Notizen für den Benutzer.",
   "note_author": "Eintrag von {0}:",
