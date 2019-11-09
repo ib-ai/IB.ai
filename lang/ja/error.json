@@ -50,6 +50,7 @@
   "reaction_message": "メッセージが存在しません。",
   "reaction_role": "指定されたロールは無効です。",
   "reminder_duration": "お知らせされるまでの時間を指定してください。",
+  "reminder_content": "Please state what you would like to be reminded of.",
   "reminder_message": "リマインダーを指定してください。",
   "reminder_format": "期間が正しく指定されていません。3時間15分後なら、`3h15`と入力します。",
   "reminderid": "リマインダーIDを指定してください。リマインダー一覧するときに使われます。",
