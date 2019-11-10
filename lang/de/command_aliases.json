@@ -56,6 +56,7 @@
   "monitor_toggle": ["umschalten"],
   "monitor_userchannel": ["benutzerkanal", "nutzerkanal"],
   "monitor_user": ["benutzer", "nutzer"],
+  "monitor_cleanup": ["cleanup", "springcleaning", "springclean"],
   "lang": ["sprache", "sprichdeutschduhurensohn"],
   "lang_list": ["liste", "listen", "l", "ls"],
   "lang_set": ["setzen", "s", "ispeak"],

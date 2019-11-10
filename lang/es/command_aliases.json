@@ -56,6 +56,7 @@
   "monitor_toggle": ["toggle", "switch"],
   "monitor_userchannel": ["canalusuario"],
   "monitor_user": ["usuario"],
+  "monitor_cleanup": ["cleanup", "springcleaning", "springclean"],
   "lang": ["lang", "lenguaje", "idioma", "l10n", "i18n"],
   "lang_list": ["lista", "l", "ls"],
   "lang_set": ["set", "s", "yohablo", "hablo"],

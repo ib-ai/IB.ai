@@ -56,6 +56,7 @@
   "monitor_toggle": ["トグル"],
   "monitor_userchannel": ["ユーザーチャンネル"],
   "monitor_user": ["ユーザ","ユーザー"],
+  "monitor_cleanup": ["cleanup", "springcleaning", "springclean"],
   "lang": ["げんご", "言語"],
   "lang_list": ["リスト"],
   "lang_set": ["設定", "せってい"],
