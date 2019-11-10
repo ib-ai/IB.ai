@@ -87,9 +87,9 @@ public final class FilterListener extends ListenerAdapter {
                             .setColor(Color.MAGENTA)
                             .setAuthor("Filter was triggered!")
                             .setTitle(event.getMessage().getAuthor().getAsTag())
-                            .setDescription(description)
-                            .addField("Alert", "@here", false);
+                            .setDescription(description);
                     monitorChannel.sendMessage(embedBuilder.build()).queue();
+                    monitorChannel.sendMessage("@here").queue();
                 }
             );
         }
