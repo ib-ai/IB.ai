@@ -18,14 +18,19 @@
 
 package com.ibdiscord.listeners;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.FilterData;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.entries.monitor.MonitorData;
 import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.awt.Color;
 import java.util.regex.Pattern;
 
 public final class FilterListener extends ListenerAdapter {
@@ -54,13 +59,38 @@ public final class FilterListener extends ListenerAdapter {
                         Pattern.compile(it.asString()))
                 )
                 .anyMatch(it -> it.matcher(message).matches())) {
-            event.getMessage().delete().queue(success ->
-                event.getAuthor().openPrivateChannel().queue(dm -> {
-                    String send = String.format("The following message has been automatically flagged and "
-                            + "removed from %s:\n\n%s", event.getGuild().getName(), message);
-                    send = send.length() > 2000 ? send.substring(0, 2000) : send;
-                    dm.sendMessage(send).queue();
-                })
+            event.getMessage().delete().queue(success -> {
+                    event.getAuthor().openPrivateChannel().queue(dm -> {
+                        String send = String.format("The following message has been automatically flagged and "
+                                + "removed from %s:\n\n%s", event.getGuild().getName(), message);
+                        send = send.length() > 2000 ? send.substring(0, 2000) : send;
+                        dm.sendMessage(send).queue();
+                    });
+                    MonitorData monitorData = gravity.load(new MonitorData(event.getGuild().getId()));
+                    TextChannel monitorChannel = event.getGuild().getTextChannelById(
+                            monitorData.get(MonitorData.MESSAGE_CHANNEL).defaulting(0).asLong()
+                    );
+                    if(monitorChannel == null) {
+                        IBai.INSTANCE.getLogger().info("Monitor channel not found: %s sent %s",
+                                event.getAuthor().getAsTag(),
+                                event.getMessage().getContentRaw()
+                        );
+                        return;
+                    }
+                    String description = String.format(
+                            "\"%s\", sent in **%s**",
+                            event.getMessage().getContentRaw(),
+                            event.getChannel().getName()
+                    );
+                    description = description.length() > 2000 ? description.substring(0, 2000) : description;
+                    EmbedBuilder embedBuilder = new EmbedBuilder()
+                            .setColor(Color.MAGENTA)
+                            .setAuthor("Filter was triggered!")
+                            .setTitle(event.getMessage().getAuthor().getAsTag())
+                            .setDescription(description);
+                    monitorChannel.sendMessage(embedBuilder.build()).queue();
+                    monitorChannel.sendMessage("@here").queue();
+                }
             );
         }
     }

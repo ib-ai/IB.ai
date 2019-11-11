@@ -21,7 +21,7 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.api.entities.Role;
+import com.ibdiscord.data.db.entries.GuildData;
 
 import java.util.Set;
 
@@ -32,31 +32,19 @@ public final class PinCommand extends Command {
      */
     public PinCommand() {
         super("pin",
-                CommandPermission.discord(),
+                CommandPermission.role(GuildData.HELPER),
                 Set.of()
         );
 
-        this.correctUsage = "pin <messageID>";
+        this.correctUsage = "pin <message ID>";
     }
 
+    /**
+     * Pins a message by ID.
+     * @param context The command context.
+     */
     @Override
     protected void execute(CommandContext context) {
-        Role helperRole;
-        try {
-            helperRole = context.getGuild().getRolesByName("Helper", true).get(0);
-        } catch(IndexOutOfBoundsException ex) {
-            context.reply(__(context, "error.helper_exists"));
-            return;
-        }
-        if(helperRole == null) {
-            context.reply(__(context, "error.generic"));
-            return;
-        }
-        if(!context.getMember().getRoles().contains(helperRole)) {
-            context.reply(__(context, "error.helper_perms"));
-            return;
-        }
-
         if(context.getArguments().length == 0) {
             sendUsage(context);
             return;
@@ -74,4 +62,5 @@ public final class PinCommand extends Command {
             err -> context.reply(__(context, "error.pin_channel"))
         );
     }
+
 }

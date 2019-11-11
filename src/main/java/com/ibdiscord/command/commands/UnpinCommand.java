@@ -21,7 +21,6 @@ package com.ibdiscord.command.commands;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
-import net.dv8tion.jda.api.entities.Role;
 
 import java.util.Set;
 
@@ -36,27 +35,15 @@ public final class UnpinCommand extends Command {
                 Set.of()
         );
 
-        this.correctUsage = "unpin <messageID>";
+        this.correctUsage = "unpin <message ID>";
     }
 
+    /**
+     * Unpins a message.
+     * @param context The command context.
+     */
     @Override
     protected void execute(CommandContext context) {
-        Role helperRole;
-        try {
-            helperRole = context.getGuild().getRolesByName("Helper", true).get(0);
-        } catch(IndexOutOfBoundsException ex) {
-            context.reply(__(context, "error.helper_exists"));
-            return;
-        }
-        if(helperRole == null) {
-            context.reply(__(context, "error.generic"));
-            return;
-        }
-        if(!context.getMember().getRoles().contains(helperRole)) {
-            context.reply(__(context, "error.helper_perms"));
-            return;
-        }
-
         if(context.getArguments().length == 0) {
             sendUsage(context);
             return;
@@ -74,4 +61,5 @@ public final class UnpinCommand extends Command {
             error -> context.reply(__(context, "error.pin_channel"))
         );
     }
+
 }

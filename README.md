@@ -20,6 +20,7 @@ Each function should be documented in the [project wiki](https://github.com/ib-a
 Other contributors include:
  - [@LenartBucar](https://github.com/LenartBucar/) (redstone.tehnik#7139)
  - [@ImmortalPharaoh7](https://github.com/ImmortalPharaoh7/) (ImmortalPharaoh7#7811)
+ - AlexH3021#0807 (Spanish Translator)
 
 ### Contributing
 

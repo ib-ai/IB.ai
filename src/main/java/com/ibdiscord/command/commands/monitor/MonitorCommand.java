@@ -38,10 +38,11 @@ public final class MonitorCommand extends Command {
                         new MonitorUserCommand(),
                         new MonitorMessageChannelCommand(),
                         new MonitorMessageCommand(),
-                        new MonitorListCommand()
+                        new MonitorListCommand(),
+                        new MonitorCleanupCommand()
                 )
         );
-        this.correctUsage = "monitor <toggle|userchannel|messagechannel|user|message|list> "
+        this.correctUsage = "monitor <toggle|userchannel|messagechannel|user|message|list|cleanup> "
                 + "[channel]|create|delete [value]";
     }
 

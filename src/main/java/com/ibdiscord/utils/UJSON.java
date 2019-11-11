@@ -20,32 +20,45 @@ package com.ibdiscord.utils;
 
 import de.arraying.kotys.JSON;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public final class UJSON {
 
     /**
      * Reads a file from disk and loads data into a JSON object.
      * @param relativeFilePath Relative path to JSON file from project root
+     * @param charset The charset to use to decode the file.
      * @return JSON object corresponding to file at desired location.
      */
-    public static JSON retrieveJSONFromFile(String relativeFilePath) {
+    public static JSON retrieveJSONFromFile(String relativeFilePath, String charset) {
         StringBuilder jsonBuilder = new StringBuilder();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(relativeFilePath));
+            //BufferedReader reader = new BufferedReader(new FileReader(relativeFilePath));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(new File(relativeFilePath)),
+                    charset
+            ));
             String line = reader.readLine();
             while(line != null) {
                 jsonBuilder.append(line);
                 line = reader.readLine();
             }
             reader.close();
-
+            System.out.println("Loading using charset " + charset);
         } catch(IOException ex) {
             ex.printStackTrace();
         }
 
         return new JSON(jsonBuilder.toString());
     }
+
+    /**
+     * Alias to {@link #retrieveJSONFromFile(String, String)} with default UTF-8 encoding.
+     * @param relativeFilePath Relatie path to JSON file from project root.
+     * @return JSON object corresponding to file at desired location.
+     */
+    public static JSON retrieveJSONFromFile(String relativeFilePath) {
+        return retrieveJSONFromFile(relativeFilePath, "UTF-8");
+    }
+
 }
