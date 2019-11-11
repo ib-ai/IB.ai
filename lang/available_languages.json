@@ -1,6 +1,34 @@
 {
   "languages": [
-    "en",
-    "zh-cn"
+    {
+      "language": "English",
+      "language-code": "en",
+      "flag": ":flag_gb:",
+      "encoding": "UTF-8"
+    },
+    {
+      "language": "Spanish",
+      "language-code": "es",
+      "flag": ":flag_es:",
+      "encoding": "UTF-8"
+    },
+    {
+      "language": "German",
+      "language-code": "de",
+      "flag": ":flag_de:",
+      "encoding": "UTF-8"
+    },
+    {
+      "language": "Japanese",
+      "language-code": "ja",
+      "flag": ":flag_jp:",
+      "encoding": "UTF-8"
+    },
+    {
+      "language": "Chinese (Mandarin)",
+      "language-code": "zh-cn",
+      "flag": ":flag_cn:",
+      "encoding": "UTF-8"
+    }
   ]
 }
