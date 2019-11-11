@@ -23,6 +23,12 @@
       "language-code": "ja",
       "flag": ":flag_jp:",
       "encoding": "UTF-8"
+    },
+    {
+      "language": "Chinese (Mandarin)",
+      "language-code": "zh-cn",
+      "flag": ":flag_cn:",
+      "encoding": "UTF-8"
     }
   ]
 }
