@@ -29,6 +29,7 @@ import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.ExpiringCache;
 import com.ibdiscord.utils.objects.GuildedCache;
 import com.ibdiscord.utils.objects.MinimalMessage;
+import com.ibdiscord.utils.objects.TupleMutable;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -44,6 +45,7 @@ import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -52,6 +54,7 @@ public final class MessageListener extends ListenerAdapter {
 
     private final GuildedCache<String, Pattern> tagCache = new GuildedCache<>();
     private final ExpiringCache<Long, MinimalMessage> messageCache = new ExpiringCache<>(1, TimeUnit.HOURS);
+    private ArrayList<TupleMutable<String, ArrayList<String>>> recentMessages = new ArrayList<>();
 
     /**
      * When an message is sent in a guild channel (because DMs are boring).
@@ -59,6 +62,9 @@ public final class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        if(!event.getAuthor().isBot()) {
+            repeater(event);
+        }
         messageCache.put(event.getMessageIdLong(), new MinimalMessage(event.getAuthor().getIdLong(),
                 event.getMessage().getContentRaw())
         );
@@ -172,4 +178,34 @@ public final class MessageListener extends ListenerAdapter {
         consumer.accept(textChannel);
     }
 
+    /**
+     * Bot repeats message if it has been repeated 4 times within a channel.
+     * @param event Event of when guild message was received.
+     */
+    private void repeater(GuildMessageReceivedEvent event) {
+        boolean foundChannel = false;
+        for(TupleMutable<String, ArrayList<String>> channel : recentMessages) {
+            if(channel.getPropertyA().equals(event.getChannel().getId())) {
+                foundChannel = true;
+                channel.getPropertyB().add(event.getMessage().getContentRaw());
+                if(channel.getPropertyB().stream().allMatch(channel.getPropertyB().get(0)::equals)
+                        && channel.getPropertyB().size() == 4) {
+                    event.getChannel().sendMessage(event.getMessage().getContentRaw()).queue();
+                    ArrayList<String> msgs = channel.getPropertyB();
+                    channel.getPropertyB().removeAll(msgs);
+                }
+                if(channel.getPropertyB().size() == 4) {
+                    ArrayList<String> msgs = channel.getPropertyB();
+                    channel.getPropertyB().removeAll(msgs);
+                }
+            }
+        }
+        if(!foundChannel) {
+            ArrayList<String> initList = new ArrayList<>();
+            initList.add(event.getMessage().getContentRaw());
+            String eventChannelId = event.getChannel().getId();
+            TupleMutable<String, ArrayList<String>> initTuple = new TupleMutable<>(eventChannelId, initList);
+            recentMessages.add(initTuple);
+        }
+    }
 }

@@ -50,6 +50,11 @@ public final class GuildData extends TypeMap {
     public static final String MODERATOR = "moderator";
 
     /**
+     * The helper key.
+     */
+    public static final String HELPER = "helper";
+
+    /**
      * Whether or not filtering is enabled.
      */
     public static final String FILTERING = "filtering";

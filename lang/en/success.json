@@ -7,6 +7,7 @@
   "give_role": "The role have been added to {0} users.",
   "lang_command": "Successfully updated your language preferences.",
   "mod_permission": "The moderator permission has been updated.",
+  "helper_permission":"The helper permission has been updated.",
   "note": "The note has been added.",
   "prefix": "The prefix has been updated to ({0}).",
   "done": "Consider it done.",
