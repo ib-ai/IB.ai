@@ -18,7 +18,7 @@
   "intro_dev2": "IB.ai 是一个 社区项目 请考虑捐款 如果你喜欢这个机器人请支持一下他们  钱会直接投入服务器和机器人IB.ai is a [FOSS]({0}) project developed the community.\n Credit to the following minions for developing me:\n {1} \n\n Please consider [donating](https://paypal.me/libreresources) if you appreciate their efforts. Donations go directly back into the bot and other server projects, paying for server fees",
   "intro_footer": "Developer with ??",
   "owner": "服主",
-  "creation_date": "创建日期"
+  "creation_date": "创建日期",
   "vc_region": "语音区域",
   "number_members": "用户数量#",
   "number_bots": "机器人数量# ",
