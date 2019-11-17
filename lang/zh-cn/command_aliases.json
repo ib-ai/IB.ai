@@ -51,7 +51,7 @@
   "monitor": ["监视", "监控"],
   "monitor_list": ["列表", "列举"],
   "monitor_messagechannel": ["有消息频道", "有消息的频道", "有信息频道", "有信息的频道"],
-  "monitor_message": ["消息, 信息"],
+  "monitor_message": ["消息", "信息"],
   "monitor_toggle": ["切换"],
   "monitor_userchannel": ["用户频道"],
   "monitor_user": ["用户"],
