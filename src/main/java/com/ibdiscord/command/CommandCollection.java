@@ -37,7 +37,6 @@ public enum CommandCollection {
     CASSOWARY(new CassowaryCommand()),
     COIN_FLIP(new CoinFlipCommand()),
     DAD_JOKE(new DadJokeCommand()),
-    ECHO(new EchoCommand()),
     EMBED(new EmbedCommand()),
     EVAL(new EvalCommand()),
     EXPIRE(new ExpireCommand()),

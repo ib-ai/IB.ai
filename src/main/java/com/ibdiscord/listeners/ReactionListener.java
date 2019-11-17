@@ -58,6 +58,19 @@ public final class ReactionListener extends ListenerAdapter {
             case "\uD83D\uDC4E": // thumbs down
                 react(event.getMessageIdLong(), (short) 2);
                 break;
+            case "\u2B50": // star
+                event.getChannel().retrieveMessageById(event.getMessageIdLong()).queue(message -> {
+                    if(message.getAuthor().getIdLong() == event.getMember().getUser().getIdLong()
+                            && message.getReactions().stream()
+                            // here it checks whether the :star: reaction has no reactions beforehand
+                            // this is so that the message only gets triggered with initial stars, not looking at anyone
+                            // in particular who always does this
+                            .anyMatch(react -> react.getReactionEmote().getName().equals("\u2B50")
+                                    && react.getCount() <= 1)) {
+                        roast(message);
+                    }
+                });
+                break;
             default:
                 break;
         }
@@ -201,6 +214,15 @@ public final class ReactionListener extends ListenerAdapter {
                     break;
             }
         }
+    }
+
+    /**
+     * Roasts the creator of the message.
+     * @param message The message object.
+     */
+    private void roast(Message message) {
+        String tag = message.getAuthor().getAsMention();
+        message.getChannel().sendMessage(tag + " did you really just star your own message? \uD83E\uDD26").queue();
     }
 
     /**

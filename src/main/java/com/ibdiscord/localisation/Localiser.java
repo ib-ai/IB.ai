@@ -18,6 +18,7 @@
 
 package com.ibdiscord.localisation;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.LangData;
@@ -104,8 +105,10 @@ public enum Localiser {
                         .collect(Collectors.toSet()));
             } catch(NullPointerException ex) {
                 ex.printStackTrace();
-                System.out.println("KEY THROWING ERROR: " + splitKey[1]);
-                System.exit(1);
+                IBai.INSTANCE.getLogger().warn("Translation error! Missing command alias {} for language {}",
+                        splitKey[1],
+                        lang
+                );
             }
         });
         return new HashSet<>(allAliases);
