@@ -38,7 +38,7 @@ public final class GiveRoleCommand extends Command {
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
-        this.correctUsage = "giverole <target role>";
+        this.correctUsage = "giverole <target role> <additional role>";
     }
 
     /**
