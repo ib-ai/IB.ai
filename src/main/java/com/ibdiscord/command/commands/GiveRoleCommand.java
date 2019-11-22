@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 raynichc
+/* Copyright 2017-2019 raynichc, Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *
@@ -38,7 +38,7 @@ public final class GiveRoleCommand extends Command {
                 CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
-        this.correctUsage = "giverole <target role> <new role>";
+        this.correctUsage = "giverole <target role>";
     }
 
     /**
