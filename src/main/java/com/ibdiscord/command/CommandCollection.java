@@ -56,6 +56,7 @@ public enum CommandCollection {
     ODDS(new OddsCommand()),
     PIN(new PinCommand()),
     PING(new PingCommand()),
+    PINGABLE(new PingableCommand()),
     PREFIX(new PrefixCommand()),
     PURGE(new PurgeCommand()),
     REACTION(new ReactionCommand()),
