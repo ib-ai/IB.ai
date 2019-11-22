@@ -22,8 +22,6 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.entries.GuildData;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.managers.GuildManager;
 import net.dv8tion.jda.api.managers.RoleManager;
 
 import java.util.Objects;
@@ -32,7 +30,7 @@ import java.util.Set;
 public class PingableCommand extends Command {
 
     /**
-     * Creates a PingableCommand
+     * Creates a PingableCommand.
      */
     public PingableCommand() {
         super("pingable",
