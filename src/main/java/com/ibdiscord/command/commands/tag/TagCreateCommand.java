@@ -22,7 +22,7 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.TagData;
+import com.ibdiscord.data.db.entries.tag.TagData;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.api.Permission;

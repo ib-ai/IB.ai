@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Ray Clark, Arraying
+/* Copyright 2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -22,45 +22,57 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.tag.TagData;
+import com.ibdiscord.data.db.entries.tag.TagActiveData;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.api.Permission;
 
 import java.util.List;
 import java.util.Set;
 
-public final class TagDeleteCommand extends Command {
+public final class TagActiveCommand extends Command {
 
     /**
      * Creates the command.
      */
-    TagDeleteCommand() {
-        super("tag_delete",
-                CommandPermission.discord(Permission.MANAGE_CHANNEL),
+    TagActiveCommand() {
+        super("tag_active",
+                CommandPermission.discord(Permission.MANAGE_SERVER),
                 Set.of()
         );
-        this.correctUsage = "tag delete \"tag name\"";
+        this.correctUsage = "tag active \"tag name\"";
     }
 
     /**
-     * Deletes a tag.
+     * Toggles a certain tag as active.
+     * Deactivated tags still exist, but cannot be triggered. Useful for temporary tags.
      * @param context The command context.
      */
     @Override
     protected void execute(CommandContext context) {
         if(context.getArguments().length == 0) {
             sendUsage(context);
-        } else {
-            List<String> names = UInput.extractQuotedStrings(context.getArguments());
-            if(names.isEmpty()) {
-                context.reply(__(context, "error.tag_quotation"));
-                return;
-            }
-            TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
-            tagData.unset(names.get(0));
-            DataContainer.INSTANCE.getGravity().save(tagData);
-            context.reply(__(context, "success.tag_remove"));
+            return;
         }
-
+        List<String> data = UInput.extractQuotedStrings(context.getArguments());
+        if(data.size() < 1) {
+            context.reply(__(context, "error.tag_input"));
+            return;
+        }
+        String trigger = data.get(0);
+        if(!UInput.isValidRegex(trigger)) {
+            context.reply(__(context, "error.tag_expression"));
+            return;
+        }
+        TagActiveData tagActiveData = DataContainer.INSTANCE.getGravity()
+                .load(new TagActiveData(context.getGuild().getId()));
+        if(tagActiveData.contains(trigger)) {
+            tagActiveData.remove(trigger);
+            context.reply(__(context, "info.tag_enabled"));
+        } else {
+            tagActiveData.add(trigger);
+            context.reply(__(context, "info.tag_disabled"));
+        }
+        DataContainer.INSTANCE.getGravity().save(tagActiveData);
     }
+
 }

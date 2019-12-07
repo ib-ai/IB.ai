@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Ray Clark, Arraying
+/* Copyright 2019 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -22,23 +22,25 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.commands.abstracted.PaginatedCommand;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.tag.TagActiveData;
 import com.ibdiscord.data.db.entries.tag.TagData;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UString;
+import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public final class TagListCommand extends PaginatedCommand<String> {
+public final class TagDisabledCommand extends PaginatedCommand<String> {
 
     /**
      * Creates the command.
      */
-    TagListCommand() {
-        super("tag_list",
+    TagDisabledCommand() {
+        super("tag_disabled",
                 CommandPermission.discord(),
                 Set.of()
         );
@@ -51,9 +53,9 @@ public final class TagListCommand extends PaginatedCommand<String> {
      */
     @Override
     protected Pagination<String> getPagination(CommandContext context) {
-        TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
-        List<String> entries = tagData.getKeys().stream()
-                .sorted(String::compareToIgnoreCase)
+        TagActiveData tagData = DataContainer.INSTANCE.getGravity().load(new TagActiveData(context.getGuild().getId()));
+        List<String> entries = tagData.values().stream()
+                .map(Property::asString)
                 .collect(Collectors.toList());
         return new Pagination<>(entries, 10);
     }

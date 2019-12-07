@@ -42,6 +42,8 @@
   "tag_delete": ["delete", "d", "remove","r"],
   "tag_find": ["find", "f", "lookup"],
   "tag_list": ["list", "l", "ls"],
+  "tag_active": ["active"],
+  "tag_disabled": ["disabled"],
   "reminder": ["reminder", "remindme", "remind"],
   "reminder_create": ["create", "c", "new", "make", "add"],
   "reminder_delete": ["delete", "d", "remove","r"],

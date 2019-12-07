@@ -49,7 +49,6 @@ public abstract class Command implements ILocalised {
     /**
      * Creates a new command.
      * @param name The name of the command, all lowercase.
-     * @param aliases Any aliases the command has, also all lowercase.
      * @param permission The permission required to execute the command.
      * @param subCommands Any sub commands the command has.
      */

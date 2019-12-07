@@ -16,7 +16,7 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.data.db.entries;
+package com.ibdiscord.data.db.entries.tag;
 
 import de.arraying.gravity.data.types.TypeMap;
 import lombok.AllArgsConstructor;

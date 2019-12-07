@@ -22,7 +22,8 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
-import com.ibdiscord.data.db.entries.TagData;
+import com.ibdiscord.data.db.entries.tag.TagActiveData;
+import com.ibdiscord.data.db.entries.tag.TagData;
 import com.ibdiscord.input.InputHandler;
 import com.ibdiscord.odds.OddsManager;
 import com.ibdiscord.utils.UDatabase;
@@ -83,7 +84,11 @@ public final class MessageListener extends ListenerAdapter {
         }
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         TagData tags = gravity.load(new TagData(event.getGuild().getId()));
+        TagActiveData tagActiveData = gravity.load(new TagActiveData(event.getGuild().getId()));
         for(String key : tags.getKeys()) {
+            if(tagActiveData.contains(key)) {
+                continue;
+            }
             Pattern pattern = tagCache.compute(event.getGuild().getIdLong(), key, Pattern.compile(key));
             if(pattern.matcher(message.toLowerCase()).matches()) {
                 event.getChannel().sendMessage(tags.get(key).asString()).queue(null, oops ->

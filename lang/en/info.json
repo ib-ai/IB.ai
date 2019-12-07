@@ -41,6 +41,8 @@
   "ladder_list": "Listed are the different vote ladders.",
   "tag_list_similar": "Here is a list of similar tags.",
   "tag_list": "Here is a list of tags.",
+  "tag_enabled": "The tag has been enabled.",
+  "tag_disabled": "The tag has been disabled.",
   "case_number": "Case #{0}:",
   "punished_user": "{0} punished {1}"
 }
