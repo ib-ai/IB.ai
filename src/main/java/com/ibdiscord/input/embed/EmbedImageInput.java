@@ -70,4 +70,7 @@ public final class EmbedImageInput extends EmbedInput {
         this.successor = new EmbedFieldInput(builder);
         context.getChannel().sendMessage(__(context, "prompt.embed_image")).queue();
     }
+
+    // Happy New Year 2019 -> 2020
+    // Gotta start with a nice green square on GitHub contribs, amirite?
 }
