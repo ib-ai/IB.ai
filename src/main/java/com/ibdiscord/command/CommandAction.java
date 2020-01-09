@@ -17,21 +17,6 @@
  */
 package com.ibdiscord.command;
 
-import lombok.Data;
+import java.util.function.Consumer;
 
-public final @Data class Option {
-
-    private final String name;
-    private final String value;
-    private final boolean declaredAsValue;
-
-    /**
-     * Pretty prints the option for debug purposes.
-     * @return The string version.
-     */
-    @Override
-    public String toString() {
-        return "Option[" + name + "](" + value + ")";
-    }
-
-}
+public interface CommandAction extends Consumer<CommandContext> {} // Aliasing for simplicity.

@@ -18,7 +18,8 @@
 
 package com.ibdiscord;
 
-import com.ibdiscord.command.Command;
+import com.ibdiscord.command.registry.CommandRegistrar;
+import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.data.LocalConfig;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.exceptions.JavaVersionException;
@@ -49,6 +50,7 @@ public enum IBai {
     INSTANCE;
 
     @Getter private LocalConfig config;
+    @Getter private CommandRegistry commandRegistry;
     @Getter Logger logger = LoggerFactory.getLogger(getClass());
     @Getter private static JDA jda;
 
@@ -73,7 +75,10 @@ public enum IBai {
      */
     private void init() {
         config = new LocalConfig();
-        Command.init();
+        commandRegistry = new CommandRegistry();
+        for(CommandRegistrar registrar : CommandRegistrar.KNOWN) {
+            registrar.register(commandRegistry);
+        }
         DataContainer.INSTANCE.connect();
         Localiser.INSTANCE.init();
         try {

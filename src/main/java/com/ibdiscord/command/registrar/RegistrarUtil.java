@@ -15,23 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-package com.ibdiscord.command;
+package com.ibdiscord.command.registrar;
 
-import lombok.Data;
+import com.ibdiscord.command.registry.CommandRegistrar;
+import com.ibdiscord.command.registry.CommandRegistry;
 
-public final @Data class Option {
+public final class RegistrarUtil implements CommandRegistrar {
 
-    private final String name;
-    private final String value;
-    private final boolean declaredAsValue;
-
-    /**
-     * Pretty prints the option for debug purposes.
-     * @return The string version.
-     */
     @Override
-    public String toString() {
-        return "Option[" + name + "](" + value + ")";
+    public void register(CommandRegistry registry) {
+        registry.define("ping")
+                .on(context ->
+                    context.replyI18n("info.latency",
+                            context.getJda().getRestPing().complete(),
+                            context.getJda().getGatewayPing())
+                );
     }
 
 }

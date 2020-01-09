@@ -50,7 +50,7 @@ public final class OddsManager {
      * @param userB The ID of the second user.
      * @param denominator The 'odds' of the bet being fulfilled.
      */
-    public static void newBet(CommandContext context, String userA, String userB, int denominator) {
+    public static void newBet(CommandContext context, String userA, String userB, int denominator) { // TODO: i18n
         boolean userAlreadyEngaged = pendingBets.stream()
                 .anyMatch(bet -> bet.getUserA().equals(userA)
                         || bet.getUserA().equals(userB)
@@ -66,7 +66,7 @@ public final class OddsManager {
                         context.getChannel().getId()
                     )
             );
-            context.reply("New odds have been set! %s and %s, please DM me your guesses between 1 and %d. "
+            context.replyRaw("New odds have been set! %s and %s, please DM me your guesses between 1 and %d. "
                             + "If both of you send me the same number, the forfeit must be fulfilled. "
                             + "Use `%sodds cancel` to cancel.",
                     context.getMember().getAsMention(),
@@ -75,7 +75,7 @@ public final class OddsManager {
                     UDatabase.getPrefix(context.getGuild())
             );
         } else {
-            context.reply("One of you are already engaged in an odds. Use `%sodds cancel` to cancel "
+            context.replyRaw("One of you are already engaged in an odds. Use `%sodds cancel` to cancel "
                 + "pending odds.", UDatabase.getPrefix(context.getGuild()));
         }
     }
@@ -169,10 +169,10 @@ public final class OddsManager {
                 .collect(Collectors.toList());
 
         if(priorBet.isEmpty()) {
-            context.reply("You have no pending odds.");
+            context.replyRaw("You have no pending odds.");
         } else {
             pendingBets.removeAll(priorBet);
-            context.reply("Successfully canceled odds between %s and %s.",
+            context.replyRaw("Successfully canceled odds between %s and %s.",
                  UFormatter.formatMember(context.getGuild().getMemberById(priorBet.get(0).getUserA()).getUser()),
                  UFormatter.formatMember(context.getGuild().getMemberById(priorBet.get(0).getUserB()).getUser())
             );

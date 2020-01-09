@@ -15,23 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-package com.ibdiscord.command;
+package com.ibdiscord.command.registry;
 
-import lombok.Data;
+import com.ibdiscord.command.registrar.RegistrarFun;
+import com.ibdiscord.command.registrar.RegistrarMod;
+import com.ibdiscord.command.registrar.RegistrarSys;
+import com.ibdiscord.command.registrar.RegistrarUtil;
 
-public final @Data class Option {
-
-    private final String name;
-    private final String value;
-    private final boolean declaredAsValue;
+public interface CommandRegistrar {
 
     /**
-     * Pretty prints the option for debug purposes.
-     * @return The string version.
+     * All known implementations.
      */
-    @Override
-    public String toString() {
-        return "Option[" + name + "](" + value + ")";
-    }
+    CommandRegistrar[] KNOWN = new CommandRegistrar[] {
+            new RegistrarFun(),
+            new RegistrarMod(),
+            new RegistrarSys(),
+            new RegistrarUtil(),
+    };
+
+    /**
+     * Performs all registration events on the registry.
+     * @param registry The command registry.
+     */
+    void register(CommandRegistry registry);
 
 }

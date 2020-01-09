@@ -1,4 +1,4 @@
-/* Copyright 2018-2020 Arraying
+/* Copyright 2017-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -15,92 +15,66 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-
 package com.ibdiscord.command;
 
 import com.ibdiscord.IBai;
-import com.ibdiscord.command.permissions.CommandPermission;
-import com.ibdiscord.localisation.ILocalised;
-import com.ibdiscord.localisation.Localiser;
-import com.ibdiscord.utils.UDatabase;
-import com.ibdiscord.utils.objects.Comparator;
-import lombok.Getter;
-import lombok.Setter;
+import com.ibdiscord.command.permission.CommandPermission;
+import com.ibdiscord.utils.UCommand;
+import lombok.RequiredArgsConstructor;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.function.Consumer;
 
-public abstract class Command implements ILocalised {
+public final @RequiredArgsConstructor class Command {
 
-    /**
-     * All commands.
-     */
-    private static final Set<Command> COMMANDS = new TreeSet<>(new Comparator());
-
-    @Getter private final String name;
-    @Getter private final Set<String> aliases;
-    private final CommandPermission permission;
-    private final Set<Command> subCommands;
-    @Getter @Setter private boolean enabled = true;
-    protected String correctUsage;
+    private final String name;
+    private final Set<String> aliases;
+    private CommandPermission permission = CommandPermission.discord(Permission.MESSAGE_WRITE);
+    private Set<Command> subCommands = new HashSet<>();
+    private Consumer<CommandContext> action;
 
     /**
-     * Creates a new command.
-     * @param name The name of the command, all lowercase.
-     * @param permission The permission required to execute the command.
-     * @param subCommands Any sub commands the command has.
+     * Restricts a command by setting its permission.
+     * @param permission The permission.
+     * @return The current command.
      */
-    protected Command(String name, CommandPermission permission, Set<Command> subCommands) {
-        this.name = name;
-        this.aliases = Localiser.getAllCommandAliases("command_aliases." + name);
+    public Command restrict(CommandPermission permission) {
         this.permission = permission;
-        this.subCommands = subCommands;
-        this.correctUsage = "Unknown";
+        return this;
     }
 
     /**
-     * Initializes all commands.
+     * Adds a sub-command to the current command.
+     * @param subCommand The sub-command.
+     * @return The current command.
      */
-    public static void init() {
-        for(CommandCollection commandCollection : CommandCollection.values()) {
-            COMMANDS.add(commandCollection.getCommand());
-        }
+    public Command sub(Command subCommand) {
+        this.subCommands.add(subCommand);
+        return this;
     }
 
     /**
-     * Finds a command based on the criteria.
-     * @param origin The place where to look for the command.
-     * @param queryRaw The criteria.
-     * @return The command, or null if it was not found.
+     * Sets the command action.
+     * @param action The consumer/action to use.
+     * @return The current command.
      */
-    public static Command find(Set<Command> origin, String queryRaw) {
-        final String query = queryRaw.toLowerCase();
-        origin = origin == null ? COMMANDS : origin;
-        return origin.stream().filter(
-            it -> it.getName().equals(query) || it.getAliases().contains(query))
-                .findFirst()
-                .orElse(null);
+    public Command on(Consumer<CommandContext> action) {
+        this.action = action;
+        return this;
     }
-
-    /**
-     * Abstracted method that executes the command, this is executed when all preflight checks have been executed.
-     * @param context The command context.
-     */
-    protected abstract void execute(CommandContext context);
 
     /**
      * Pre-processes the command. This takes care of any common checks such as permission.
      * @param context The command context.
      */
     public void preprocess(CommandContext context) {
-        if(!enabled) {
-            context.reply("Unfortunately this command is momentarily disabled.");
-            return;
-        }
         if(!permission.hasPermission(context.getMember(), (GuildChannel) context.getChannel())) {
-            context.reply("You do not have permission to execute the command.");
+            context.replyI18n("error.permission");
             return;
         }
         IBai.INSTANCE.getLogger().info("{} executed the command {} in {}",
@@ -110,24 +84,34 @@ public abstract class Command implements ILocalised {
         );
         String[] args = context.getArguments();
         if(args.length == 0 || subCommands.size() == 0) {
-            execute(context);
+            if(action == null) {
+                return;
+            }
+            try {
+                action.accept(context);
+            } catch(RuntimeException exception) {
+                context.replyRaw(exception.getMessage());
+            }
             return;
         }
-        Command subCommand = find(subCommands, args[0]);
+        Command subCommand = UCommand.query(subCommands, args[0]);
         if(subCommand == null) {
-            context.reply("Unknown sub command %s.", args[0]);
+            context.replyI18n("error.unknown_sub", args[0]);
         } else {
             subCommand.preprocess(context.clone(ArrayUtils.remove(context.getArguments(), 0)));
         }
     }
 
-    /**
-     * Sends the correct command usage to the context.
-     * @param commandContext The command usage.
-     */
-    protected void sendUsage(CommandContext commandContext) {
-        commandContext.reply(String.format("Correct usage: `%s%s`.",
-                UDatabase.getPrefix(commandContext.getGuild()), correctUsage)
-        );
+    public String getName() {
+        return name;
     }
+
+    public Set<String> getAliases() {
+        return aliases;
+    }
+
+    public Set<Command> getSubCommands() {
+        return subCommands;
+    }
+
 }

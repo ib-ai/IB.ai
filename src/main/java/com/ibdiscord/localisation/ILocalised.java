@@ -1,4 +1,4 @@
-/* Copyright 2018-2020 Jarred Vardy
+/* Copyright 2017-2020 Arraying, Jarred Vardy
  *
  * This file is part of IB.ai.
  *
@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-
 package com.ibdiscord.localisation;
 
 import com.ibdiscord.command.CommandContext;
@@ -29,7 +28,8 @@ public interface ILocalised {
      * @param variables Ordered variables to be substituted into final translation.
      * @return The localised text corresponding to the inputted key.
      */
-    default String __(CommandContext commandContext, String key, String... variables) {
-        return Localiser.__(commandContext, key, variables);
+    default String __(CommandContext commandContext, String key, Object... variables) {
+        return Localiser.__(commandContext, key, (Object[]) variables);
     }
+
 }

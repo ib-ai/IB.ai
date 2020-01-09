@@ -15,23 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-package com.ibdiscord.command;
+package com.ibdiscord.utils;
 
-import lombok.Data;
+import com.ibdiscord.command.Command;
 
-public final @Data class Option {
+import java.util.Set;
 
-    private final String name;
-    private final String value;
-    private final boolean declaredAsValue;
+public final class UCommand {
 
     /**
-     * Pretty prints the option for debug purposes.
-     * @return The string version.
+     * Searches for a command that meets the query (name or alias is equal to it).
+     * @param from The set of commands to query.
+     * @param query The actual query (name).
+     * @return A command, or null if there is none.
      */
-    @Override
-    public String toString() {
-        return "Option[" + name + "](" + value + ")";
+    public static Command query(Set<Command> from, String query) {
+        final String search = query.toLowerCase();
+        return from.stream().filter(
+                it -> it.getName().equals(search) || it.getAliases().contains(search))
+                .findFirst()
+                .orElse(null);
     }
 
 }

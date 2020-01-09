@@ -15,23 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-package com.ibdiscord.command;
+package com.ibdiscord.command.permission;
 
-import lombok.Data;
-
-public final @Data class Option {
-
-    private final String name;
-    private final String value;
-    private final boolean declaredAsValue;
+public enum PermissionType {
 
     /**
-     * Pretty prints the option for debug purposes.
-     * @return The string version.
+     * A permission provided by Discord.
      */
-    @Override
-    public String toString() {
-        return "Option[" + name + "](" + value + ")";
-    }
+    DISCORD,
+
+    /**
+     * A role name or ID, and dependent on a guild basis.
+     */
+    ROLE,
+
+    /**
+     * A developer command.
+     */
+    DEVELOPER
 
 }

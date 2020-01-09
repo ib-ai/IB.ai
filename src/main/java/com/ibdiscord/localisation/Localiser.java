@@ -62,7 +62,7 @@ public enum Localiser {
      * @param variables Ordered variables to be substituted into final translation.
      * @return The localised text corresponding to the inputted key.
      */
-    public static String __(CommandContext commandContext, String key, String... variables) {
+    public static String __(CommandContext commandContext, String key, Object... variables) {
         String translationErrorMessage = "**Translation error. If you see this, please report it to a bot developer.**";
         String translation;
         try {
@@ -159,7 +159,7 @@ public enum Localiser {
      * @param vars The variables to insert into the text.
      * @return The text once all variable locations have been replaced by text.
      */
-    private static String replaceVariables(String text, String[] vars) {
+    private static String replaceVariables(String text, Object[] vars) {
         final Pattern pattern = Pattern.compile(variablesRegex, Pattern.MULTILINE);
         final Matcher matcher = pattern.matcher(text);
 
@@ -171,7 +171,7 @@ public enum Localiser {
             String replaceNum = matcher.group(1);
 
             try {
-                text = text.replace(toReplace, vars[Integer.parseInt(replaceNum)]);
+                text = text.replace(toReplace, vars[Integer.parseInt(replaceNum)].toString());
             } catch(ArrayIndexOutOfBoundsException ex) {
                 ex.printStackTrace();
             }

@@ -18,6 +18,7 @@
 
 package com.ibdiscord.listeners;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
@@ -103,7 +104,7 @@ public final class MessageListener extends ListenerAdapter {
             return;
         }
         String commandName = arguments[0].toLowerCase();
-        Command command = Command.find(null, commandName);
+        Command command = IBai.INSTANCE.getCommandRegistry().query(commandName);
         if(command != null) {
             command.preprocess(context);
         }
