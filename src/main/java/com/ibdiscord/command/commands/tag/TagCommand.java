@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Ray Clark
+/* Copyright 2018-2020 Ray Clark
  *
  * This file is part of IB.ai.
  *

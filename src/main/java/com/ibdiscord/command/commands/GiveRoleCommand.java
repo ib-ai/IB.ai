@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 raynichc, Jarred Vardy <jarred.vardy@gmail.com>
+/* Copyright 2018-2020 raynichc, Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *

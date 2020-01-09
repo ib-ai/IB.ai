@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 raynichc
+/* Copyright 2018-2020 raynichc
  *
  * This file is part of IB.ai.
  *

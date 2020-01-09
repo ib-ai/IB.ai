@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2018-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -48,6 +48,7 @@ public final class ServerInfoCommand extends Command {
     @Override
     protected void execute(CommandContext context) {
         Guild guild = context.getGuild();
+        //noinspection ConstantConditions
         context.reply(new EmbedBuilder()
                 .setAuthor(guild.getName(), IBai.INSTANCE.getConfig().getGithubLink(), guild.getIconUrl())
                 .addField("ID", guild.getId(), true)

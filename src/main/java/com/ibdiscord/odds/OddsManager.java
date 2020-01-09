@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Jarred Vardy
+/* Copyright 2018-2020 Jarred Vardy
  *
  * This file is part of IB.ai.
  *
@@ -86,6 +86,7 @@ public final class OddsManager {
      * @param userID The ID of the user sending the DM.
      * @param rawGuess The string sent by the user.
      */
+    @SuppressWarnings("ConstantConditions")
     public static void newGuess(PrivateChannel channel, String userID, String rawGuess) {
         int guess = 0;
         boolean valid;
@@ -159,6 +160,7 @@ public final class OddsManager {
      * @param context The command context of the bet cancellation command that was called.
      * @param userID The ID of the user cancelling the bet.
      */
+    @SuppressWarnings("ConstantConditions")
     public static void cancelBet(CommandContext context, String userID) {
         // Due to users only being allowed one pending bet at a time,
         // 'priorBet' should always only contain one or zero element.

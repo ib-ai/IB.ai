@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2018-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -46,7 +46,7 @@ public final class UInput {
     /**
      * The regular expression for a non-universal quotation mark.
      */
-    private static final Pattern QUOTATION_MARK = Pattern.compile("[“”„”«»]");
+    private static final Pattern QUOTATION_MARK = Pattern.compile("[“”„«»]");
 
     /**
      * Gets the member corresponding to the given user input.
