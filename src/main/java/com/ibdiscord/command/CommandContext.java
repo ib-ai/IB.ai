@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
 package com.ibdiscord.command;
 
 import com.ibdiscord.localisation.ILocalised;
@@ -32,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CommandContext implements ILocalised {
+public final class CommandContext implements ILocalised {
 
     @Getter private final JDA jda;
     @Getter private final Message message;

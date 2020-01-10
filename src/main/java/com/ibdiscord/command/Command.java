@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
 package com.ibdiscord.command;
 
 import com.ibdiscord.IBai;
@@ -25,7 +26,6 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;

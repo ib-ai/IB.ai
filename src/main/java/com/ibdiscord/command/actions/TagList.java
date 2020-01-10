@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
-package com.ibdiscord.command.actions;
 
+package com.ibdiscord.command.actions;
 
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.abstractions.PaginatedCommand;

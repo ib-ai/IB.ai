@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
 package com.ibdiscord.command.registrar;
 
 import com.ibdiscord.command.Command;
