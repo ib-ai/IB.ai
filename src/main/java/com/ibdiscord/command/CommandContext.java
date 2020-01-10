@@ -248,9 +248,10 @@ public final class CommandContext implements ILocalised {
 
     /**
      * Asserts that a member can be extracted from the identifier.
+     * NOTE: Usernames (unlike channels) can contain whitespace. They must be concatenated before being asserted.
      * @param identifier The identifier, e.g. ID, mention, Name#Discrim.
      * @param error The i18n key.
-     * @return The Member.
+     * @return The member.
      */
     public Member assertMember(String identifier, String error) {
         Member member = UInput.getMember(guild, identifier);
@@ -258,6 +259,36 @@ public final class CommandContext implements ILocalised {
             throw new RuntimeException(__(this, error));
         }
         return member;
+    }
+
+    /**
+     * Asserts that a role can be extracted from the identifier.
+     * NOTE: Roles (unlike channels) can contain whitespace. They must be concatenated before being asserted.
+     * @param identifier The identifier, e.g. ID, mention, role name.
+     * @param error The i18n key.
+     * @return The role.
+     */
+    public Role assertRole(String identifier, String error) {
+        Role role = UInput.getRole(guild, identifier);
+        if(role == null) {
+            throw new RuntimeException(__(this, error));
+        }
+        return role;
+    }
+
+    /**
+     * Asserts that a text channel can be extracted from the identifier.
+     * @param identifier The identifier, e.g. ID, mention, channel name.
+     * @param error The i18n key.
+     * @return The channel.
+     */
+    public TextChannel assertChannel(String identifier, String error) {
+        //TODO: Finish assertion
+        TextChannel channel = UInput.getChannel(guild, identifier);
+        if(channel == null) {
+            throw new RuntimeException(__(this, error));
+        }
+        return channel;
     }
 
     /**
