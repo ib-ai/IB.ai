@@ -127,6 +127,15 @@ public final class UInput {
     }
 
     /**
+     * Checks whether a String matches the Discord ID pattern.
+     * @param input The value to check.
+     * @return A boolean depicting whether or not the input is a valid Discord ID.
+     */
+    public static boolean isValidID(String input) {
+        return ID_PATTERN.matcher(input).find();
+    }
+
+    /**
      * Extracts quoted strings.
      * @param arguments An array of arguments.
      * @return A set, where each entry is one quoted string, without the quotations.

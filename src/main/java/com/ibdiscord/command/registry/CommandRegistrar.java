@@ -19,6 +19,7 @@
 package com.ibdiscord.command.registry;
 
 import com.ibdiscord.command.registrar.RegistrarFun;
+import com.ibdiscord.command.registrar.RegistrarHelper;
 import com.ibdiscord.command.registrar.RegistrarMod;
 import com.ibdiscord.command.registrar.RegistrarSys;
 import com.ibdiscord.command.registrar.RegistrarUtil;
@@ -30,6 +31,7 @@ public interface CommandRegistrar {
      */
     CommandRegistrar[] KNOWN = new CommandRegistrar[] {
             new RegistrarFun(),
+            new RegistrarHelper(),
             new RegistrarMod(),
             new RegistrarSys(),
             new RegistrarUtil(),

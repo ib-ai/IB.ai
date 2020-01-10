@@ -231,6 +231,18 @@ public final class CommandContext implements ILocalised {
     }
 
     /**
+     * Asserts that the argument provided is of a Discord snowflake ID format.
+     * @param identifier The value to test.
+     * @param error The i18n key for an error.
+     * @return A boolean depicting whether or not the assertion failed.
+     */
+    public void assertID(String identifier, String error) {
+        if(!UInput.isValidID(identifier)) {
+            throw new RuntimeException(__(this, error));
+        }
+    }
+
+    /**
      * Asserts that the arguments provided contain at least a given number of mentioned users.
      * @param minimum The minimum occurrences. Null for 1.
      * @param error The i18n key.

@@ -60,6 +60,8 @@
   "ladder_format": "Formato de tiempo especificado no válido o muy corto (p.ej. usa 3d para 3 días).",
   "missing_number": "Por favor ingresa un número.",
   "vote_create": "No se pudo crear la votación. ¿Está configurada correctamente la categoría, y son correctos los permisos?",
+  "subject_channel": "You may only pin messages in subject channels.",
+  "too_few_args": "Too few arguments were provided for this command.",
   "tag_input": "Entrada no válida. Asegúrate de ponerle comillas dobles a la etiqueta y también a la salida.",
   "tag_long_name": "Etiqueta de nombre muy larga.",
   "tag_long_value": "Etiqueta de valor muy larga.",

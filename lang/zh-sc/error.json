@@ -59,6 +59,8 @@
   "ladder_format": "无效或者格式太短了（尝试 3d for 3days）Invalid or too short time format specified (e.g. use 3d for 3 days).",
   "missing_number": "请提供一个数字.",
   "vote_create": "无法创建此次投票，检查梯子是否格式正确，或者有没有权限?",
+  "subject_channel": "You may only pin messages in subject channels.",
+  "too_few_args": "Too few arguments were provided for this command.",
   "tag_input": "无效的指令，记得要把trigger和输出放进双引号.",
   "tag_long_name": "标签名过长了.",
   "tag_long_value": "标签名的值太高了.",

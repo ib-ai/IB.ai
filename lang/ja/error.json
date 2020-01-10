@@ -60,6 +60,8 @@
   "ladder_format": "短すぎるか、無効なフォーマットです。(例:3日なら、 `3d`と入力します)",
   "missing_number": "数字を指定してください。",
   "vote_create": "投票を作成できませんでした。カテゴリや権限は正しく設定されていますか？",
+  "subject_channel": "You may only pin messages in subject channels.",
+  "too_few_args": "Too few arguments were provided for this command.",
   "tag_input": "無効な入力です。トリガーと出力をダブルクォートで囲んでください",
   "tag_long_name": "タグが長すぎます。",
   "tag_long_value": "タグの内容が長すぎます。",
