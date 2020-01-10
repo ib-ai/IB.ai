@@ -69,10 +69,11 @@ public final @RequiredArgsConstructor class Command {
     }
 
     /**
-     * Pre-processes the command. This takes care of any common checks such as permission.
+     * Process the command and finally execute it. This takes care of any common checks such as permission and handles
+     * recursive sub-commands before finally executing the deepest subcommand.
      * @param context The command context.
      */
-    public void preprocess(CommandContext context) {
+    public void processAndExecute(CommandContext context) {
         if(!permission.hasPermission(context.getMember(), (GuildChannel) context.getChannel())) {
             context.replyI18n("error.permission");
             return;
@@ -98,7 +99,7 @@ public final @RequiredArgsConstructor class Command {
         if(subCommand == null) {
             context.replyI18n("error.unknown_sub", args[0]);
         } else {
-            subCommand.preprocess(context.clone(ArrayUtils.remove(context.getArguments(), 0)));
+            subCommand.processAndExecute(context.clone(ArrayUtils.remove(context.getArguments(), 0)));
         }
     }
 

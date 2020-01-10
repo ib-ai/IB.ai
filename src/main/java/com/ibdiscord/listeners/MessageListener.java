@@ -106,7 +106,7 @@ public final class MessageListener extends ListenerAdapter {
         String commandName = arguments[0].toLowerCase();
         Command command = IBai.INSTANCE.getCommandRegistry().query(commandName);
         if(command != null) {
-            command.preprocess(context);
+            command.processAndExecute(context);
         }
     }
 
