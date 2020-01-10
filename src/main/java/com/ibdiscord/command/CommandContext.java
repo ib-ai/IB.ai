@@ -215,7 +215,7 @@ public final class CommandContext implements ILocalised {
     }
 
     /**
-     * Asserts that the arguments provided contain at least one quoted string.
+     * Asserts that the arguments provided contain at least a given number of quoted string.
      * @param minimum The minimum occurrences. Null for 1.
      * @param error The i18n key.
      * @return The quotes.
@@ -228,6 +228,22 @@ public final class CommandContext implements ILocalised {
             throw new RuntimeException(__(this, error));
         }
         return quotes;
+    }
+
+    /**
+     * Asserts that the arguments provided contain at least a given number of mentioned users.
+     * @param minimum The minimum occurrences. Null for 1.
+     * @param error The i18n key.
+     * @return The users mentioned.
+     */
+    public List<User> assertMentions(Integer minimum, String error) {
+        List<User> mentions = message.getMentionedUsers();
+        if(mentions.isEmpty() || (minimum != null
+                && mentions.size() < minimum)) {
+
+            throw new RuntimeException(__(this, error));
+        }
+        return mentions;
     }
 
     /**
