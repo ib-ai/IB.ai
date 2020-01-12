@@ -23,6 +23,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.utils.UJSON;
 import de.arraying.kotys.JSON;
 import de.arraying.kotys.JSONArray;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.ArrayList;
@@ -47,13 +48,7 @@ public final class Pin implements CommandAction {
                 context.replyI18n("error.subject_channel");
                 return;
             }
-            if(channel.retrieveMessageById(msgID).complete().isPinned()) {
-                channel.unpinMessageById(msgID)
-                        .queue(null, err -> context.replyI18n("error.reaction_message"));
-            } else {
-                channel.pinMessageById(msgID)
-                        .queue(null, err -> context.replyI18n("error.reaction_message"));
-            }
+            togglePin(context, channel, context.getArguments()[1]);
             context.replyI18n("success.done");
         } else { // Channel is unspecified. Uses channel the user issued the command from.
             context.assertID(context.getArguments()[0], "error.pin_channel");
@@ -61,14 +56,18 @@ public final class Pin implements CommandAction {
                 context.replyI18n("error.subject_channel");
                 return;
             }
-            if(context.getChannel().retrieveMessageById(context.getArguments()[0]).complete().isPinned()) {
-                context.getChannel().unpinMessageById(context.getArguments()[0])
-                        .queue(null, err -> context.replyI18n("error.pin_channel"));
-            } else {
-                context.getChannel().pinMessageById(context.getArguments()[0])
-                        .queue(null, err -> context.replyI18n("error.pin_channel"));
-            }
+            togglePin(context, context.getChannel(), context.getArguments()[0]);
             context.replyI18n("success.done");
+        }
+    }
+
+    private void togglePin(CommandContext context, MessageChannel channel, String messageID) {
+        if(channel.retrieveMessageById(messageID).complete().isPinned()) {
+            channel.unpinMessageById(messageID)
+                    .queue(null, err -> context.replyI18n("error.pin_channel"));
+        } else {
+            channel.pinMessageById(messageID)
+                    .queue(null, err -> context.replyI18n("error.pin_channel"));
         }
     }
 
