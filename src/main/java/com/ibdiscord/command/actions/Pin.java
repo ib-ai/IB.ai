@@ -48,15 +48,11 @@ public final class Pin implements CommandAction {
                 return;
             }
             if(channel.retrieveMessageById(msgID).complete().isPinned()) {
-                channel.unpinMessageById(msgID).queue(
-                        null,
-                        err -> context.replyI18n("error.reaction_message")
-                );
+                channel.unpinMessageById(msgID)
+                        .queue(null, err -> context.replyI18n("error.reaction_message"));
             } else {
-                channel.pinMessageById(msgID).queue(
-                        null,
-                        err -> context.replyI18n("error.reaction_message")
-                );
+                channel.pinMessageById(msgID)
+                        .queue(null, err -> context.replyI18n("error.reaction_message"));
             }
             context.replyI18n("success.done");
         } else { // Channel is unspecified. Uses channel the user issued the command from.
@@ -66,15 +62,11 @@ public final class Pin implements CommandAction {
                 return;
             }
             if(context.getChannel().retrieveMessageById(context.getArguments()[0]).complete().isPinned()) {
-                context.getChannel().unpinMessageById(context.getArguments()[0]).queue(
-                        null,
-                        err -> context.replyI18n("error.pin_channel")
-                );
+                context.getChannel().unpinMessageById(context.getArguments()[0])
+                        .queue(null, err -> context.replyI18n("error.pin_channel"));
             } else {
-                context.getChannel().pinMessageById(context.getArguments()[0]).queue(
-                        null,
-                        err -> context.replyI18n("error.pin_channel")
-                );
+                context.getChannel().pinMessageById(context.getArguments()[0])
+                        .queue(null, err -> context.replyI18n("error.pin_channel"));
             }
             context.replyI18n("success.done");
         }
