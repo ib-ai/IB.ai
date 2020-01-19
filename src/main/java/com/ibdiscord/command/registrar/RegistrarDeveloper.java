@@ -15,29 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+package com.ibdiscord.command.registrar;
 
-package com.ibdiscord.command.registry;
+import com.ibdiscord.command.registry.CommandRegistrar;
+import com.ibdiscord.command.registry.CommandRegistry;
 
-import com.ibdiscord.command.registrar.*;
+public class RegistrarDeveloper implements CommandRegistrar {
 
-public interface CommandRegistrar {
+    @Override
+    public void register(CommandRegistry registry) {
 
-    /**
-     * All known implementations.
-     */
-    CommandRegistrar[] KNOWN = new CommandRegistrar[] {
-            new RegistrarDeveloper(),
-            new RegistrarFun(),
-            new RegistrarHelper(),
-            new RegistrarMod(),
-            new RegistrarSys(),
-            new RegistrarUtil(),
-    };
-
-    /**
-     * Performs all registration events on the registry.
-     * @param registry The command registry.
-     */
-    void register(CommandRegistry registry);
+    }
 
 }

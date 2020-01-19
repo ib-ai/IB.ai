@@ -159,7 +159,7 @@ public enum Localiser {
      * @param vars The variables to insert into the text.
      * @return The text once all variable locations have been replaced by text.
      */
-    private static String replaceVariables(String text, Object[] vars) {
+    public static String replaceVariables(String text, Object[] vars) {
         final Pattern pattern = Pattern.compile(variablesRegex, Pattern.MULTILINE);
         final Matcher matcher = pattern.matcher(text);
 
