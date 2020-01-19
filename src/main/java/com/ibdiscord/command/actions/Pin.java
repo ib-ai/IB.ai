@@ -61,6 +61,12 @@ public final class Pin implements CommandAction {
         }
     }
 
+    /**
+     * Toggles the 'pinned' state of a given message in a given channel.
+     * @param context The context of the issued command.
+     * @param channel The channel the message is in.
+     * @param messageID The ID of the message to pin or unpin.
+     */
     private void togglePin(CommandContext context, MessageChannel channel, String messageID) {
         if(channel.retrieveMessageById(messageID).complete().isPinned()) {
             channel.unpinMessageById(messageID)
