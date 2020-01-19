@@ -234,7 +234,6 @@ public final class CommandContext implements ILocalised {
      * Asserts that the argument provided is of a Discord snowflake ID format.
      * @param identifier The value to test.
      * @param error The i18n key for an error.
-     * @return A boolean depicting whether or not the assertion failed.
      */
     public void assertID(String identifier, String error) {
         if(!UInput.isValidID(identifier)) {
@@ -271,6 +270,25 @@ public final class CommandContext implements ILocalised {
             throw new RuntimeException(__(this, error));
         }
         return member;
+    }
+
+    /**
+     * Asserts that a member can be extracted from the argument.
+     * If no argument is provided, the self member will be used.
+     * @param error The i18n key.
+     * @return The member.
+     */
+    public Member assertMemberArgument(String error) {
+        Member target;
+        if(arguments.length < 1) {
+            target = member;
+        } else {
+            target = UInput.getMember(guild, arguments[0]);
+        }
+        if(target == null) {
+            throw new RuntimeException(__(this, error));
+        }
+        return target;
     }
 
     /**
