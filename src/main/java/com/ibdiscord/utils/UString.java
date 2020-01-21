@@ -117,14 +117,22 @@ public final class UString {
      * @return The truncated string.
      */
     public static String truncate(String input, int length, int loopback, TruncationSymbol symbol) {
-        //TODO: Finish fancy concat
         String ending;
         switch (symbol) {
             case ELLIPSES: ending = "...";
                 break;
+            case HYPHEN: ending = "-";
+                break;
+            case NONE: ending = "";
+                break;
+            default: ending = "...";
+                break;
         }
 
-        return null;
+        String cap = ending + input.substring(input.length() - loopback);
+        int diff = length - cap.length();
+
+        return input.substring(0, diff) + cap;
     }
 
 }
