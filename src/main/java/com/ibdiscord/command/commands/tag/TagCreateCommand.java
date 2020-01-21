@@ -69,10 +69,6 @@ public final class TagCreateCommand extends Command {
             return;
         }
         String output = data.get(1);
-        if(UString.escapeFormatting(output).length() > 512) {
-            context.reply(__(context, "error.tag_long_value"));
-            return;
-        }
         TagData tags = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
         tags.set(trigger, output);
         DataContainer.INSTANCE.getGravity().save(tags);

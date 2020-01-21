@@ -91,4 +91,40 @@ public final class UString {
                 .replace("`", "\\`");
     }
 
+    /**
+     * Simple truncation of string, using an ellipses to cut a given string input down to a given length.
+     * @param length The string to truncate.
+     * @return The truncated string.
+     */
+    public static String truncate(String input, int length) {
+        String symbol = "...";
+        int cutDown = symbol.length() + 1;
+        return input.substring(0, length - cutDown) + symbol;
+    }
+
+    /**
+     * Truncates a string to a given length, inserting a given truncation at the end. Overload for default
+     * ellipses truncation. Examples:
+     *
+     * #("Hello-there-world, 8, 3, TruncationSymbol.ELLIPSES") ->
+     *   "He...rld" (total of 8 length)
+     *
+     * #("Hello-there-world, 5, 0, TruncationSymbol.HYPHEN") ->
+     *   "Hell-" (total of 5 length)
+     *
+     * @param length The string to truncate.
+     * @param loopback The number of characters to leave at the end of the truncated string. See example.
+     * @return The truncated string.
+     */
+    public static String truncate(String input, int length, int loopback, TruncationSymbol symbol) {
+        //TODO: Finish fancy concat
+        String ending;
+        switch (symbol) {
+            case ELLIPSES: ending = "...";
+                break;
+        }
+
+        return null;
+    }
+
 }
