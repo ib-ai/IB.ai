@@ -97,7 +97,10 @@ public final class UString {
      * @return The truncated string.
      */
     public static String truncate(String input, int length) {
-        String symbol = "...";
+        if(input.length() <= length) { // Roses are red
+            return input;              // Violets are blue
+        }                              // What a fucking oversight
+        String symbol = "...";         // My skills are poo
         int cutDown = symbol.length() + 1;
         return input.substring(0, length - cutDown) + symbol;
     }
@@ -117,6 +120,9 @@ public final class UString {
      * @return The truncated string.
      */
     public static String truncate(String input, int length, int loopback, TruncationSymbol symbol) {
+        if(input.length() <= length) {
+            return input;
+        }
         String ending;
         switch (symbol) {
             case ELLIPSES: ending = "...";
