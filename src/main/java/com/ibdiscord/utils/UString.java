@@ -93,7 +93,8 @@ public final class UString {
 
     /**
      * Simple truncation of string, using an ellipses to cut a given string input down to a given length.
-     * @param length The string to truncate.
+     * @param input The string to truncate.
+     * @param length The length to truncate the string to.
      * @return The truncated string.
      */
     public static String truncate(String input, int length) {
@@ -115,8 +116,10 @@ public final class UString {
      * #("Hello-there-world, 5, 0, TruncationSymbol.HYPHEN") ->
      *   "Hell-" (total of 5 length)
      *
-     * @param length The string to truncate.
+     * @param input The string to truncate.
+     * @param length The length to truncate the string to.
      * @param loopback The number of characters to leave at the end of the truncated string. See example.
+     * @param symbol The TruncationSymbol to use at the end of the truncation.
      * @return The truncated string.
      */
     public static String truncate(String input, int length, int loopback, TruncationSymbol symbol) {
