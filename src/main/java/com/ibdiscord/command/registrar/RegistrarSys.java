@@ -19,11 +19,20 @@
 package com.ibdiscord.command.registrar;
 
 import com.ibdiscord.command.Command;
+import com.ibdiscord.command.abstractions.React;
 import com.ibdiscord.command.actions.*;
 import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
+import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.react.EmoteData;
+import com.ibdiscord.data.db.entries.react.ReactionData;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Message;
+
+import java.util.List;
+import java.util.UUID;
 
 public final class RegistrarSys implements CommandRegistrar {
 
@@ -52,6 +61,43 @@ public final class RegistrarSys implements CommandRegistrar {
                         .on(new TagList())
                 );
         commandTag.on(context -> context.replySyntax(commandTag));
+
+        Command commandReact = registry.define("react")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .sub(registry.sub("add")
+                        .on(new React() {
+                            @Override
+                            protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
+                                String uniqueID = UUID.randomUUID().toString();
+                                data.set(emote, uniqueID);
+                                EmoteData emoteData = DataContainer.INSTANCE.getGravity().load(new EmoteData(uniqueID));
+                                roleIDs.forEach(emoteData::add);
+                                DataContainer.INSTANCE.getGravity().save(emoteData);
+                            }
+
+                            @Override
+                            protected void modifyMessage(Message message, Object emote) {
+                                if(emote instanceof Emote) {
+                                    message.addReaction((Emote) emote).queue();
+                                } else {
+                                    message.addReaction(emote.toString()).queue();
+                                }
+                            }
+                        })
+                )
+                .sub(registry.sub("remove")
+                        .on(new React() {
+                            @Override
+                            protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
+                                DataContainer.INSTANCE.getGravity().load(new EmoteData(data.get(emote).asString())).delete();
+                                data.unset(emote);
+                            }
+
+                            @Override
+                            protected void modifyMessage(Message message, Object emote) {}
+                        })
+                );
+        commandReact.on(context -> context.replySyntax(commandReact));
     }
 
 }
