@@ -31,7 +31,7 @@ import java.util.List;
 
 public final class Pin implements CommandAction {
 
-    private final List<String> SUBJECT_CHANNELS = this.getSubjectChannels();
+    private final List<String> subjectChannels = this.getSubjectChannels();
 
     /**
      * Pins a message in its channel.
@@ -44,7 +44,7 @@ public final class Pin implements CommandAction {
             TextChannel channel = context.assertChannel(context.getArguments()[0], "error.reaction_channel");
             String msgID = context.getArguments()[1];
             context.assertID(msgID, "error.reaction_message");
-            if(!SUBJECT_CHANNELS.contains(channel.getId())) {
+            if(!subjectChannels.contains(channel.getId())) {
                 context.replyI18n("error.subject_channel");
                 return;
             }
@@ -52,7 +52,7 @@ public final class Pin implements CommandAction {
             context.replyI18n("success.done");
         } else { // Channel is unspecified. Uses channel the user issued the command from.
             context.assertID(context.getArguments()[0], "error.pin_channel");
-            if(!SUBJECT_CHANNELS.contains(context.getChannel().getId())) {
+            if(!subjectChannels.contains(context.getChannel().getId())) {
                 context.replyI18n("error.subject_channel");
                 return;
             }
