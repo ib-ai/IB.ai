@@ -20,7 +20,8 @@ package com.ibdiscord.command;
 
 import lombok.Data;
 
-public final @Data class Option {
+@Data
+public final class Option {
 
     private final String name;
     private final String value;

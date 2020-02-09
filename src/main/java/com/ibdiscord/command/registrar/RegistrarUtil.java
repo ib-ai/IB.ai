@@ -48,10 +48,14 @@ public final class RegistrarUtil implements CommandRegistrar {
         registry.define("help")
                 .on(context -> {
                     String botPrefix = UDatabase.getPrefix(context.getGuild());
-                    List<TextChannel> channelsGetRoles = context.getGuild().getTextChannelsByName("get-roles", true);
-                    String getRoles = channelsGetRoles.isEmpty() ? "#get-roles" : channelsGetRoles.get(0).getAsMention();
-                    List<TextChannel> channelsJoinLounge = context.getGuild().getTextChannelsByName("join-lounge", true);
-                    String joinLounge = channelsJoinLounge.isEmpty() ? "#join-lounge" : channelsJoinLounge.get(0).getAsMention();
+                    List<TextChannel> channelsGetRoles =
+                            context.getGuild().getTextChannelsByName("get-roles", true);
+                    String getRoles =
+                            channelsGetRoles.isEmpty() ? "#get-roles" : channelsGetRoles.get(0).getAsMention();
+                    List<TextChannel> channelsJoinLounge =
+                            context.getGuild().getTextChannelsByName("join-lounge", true);
+                    String joinLounge =
+                            channelsJoinLounge.isEmpty() ? "#join-lounge" : channelsJoinLounge.get(0).getAsMention();
 
                     EmbedBuilderI18n embedBuilder = new EmbedBuilderI18n(context)
                             .setColor(Color.white)
@@ -76,12 +80,18 @@ public final class RegistrarUtil implements CommandRegistrar {
                     context.replyEmbed(embedBuilder.build());
                 });
 
+        // Needs a noinspection because checkstyle is annoying with lambda expressions.
+        // Why do we even need a program to tell us how to factor our code?
+        // Surely it'd be more effective to have code reviews and spank contributors' butts if they don't adhere
+        // by the coding standards.
+
+        //noinspection CodeBlock2Expr
         registry.define("ping")
-                .on(context ->
-                        context.replyI18n("info.latency",
-                                context.getJda().getRestPing().complete(),
-                                context.getJda().getGatewayPing())
-                );
+                .on(context -> {
+                    context.replyI18n("info.latency",
+                            context.getJda().getRestPing().complete(),
+                            context.getJda().getGatewayPing());
+                });
 
         registry.define("serverinfo")
                 .on(context -> {

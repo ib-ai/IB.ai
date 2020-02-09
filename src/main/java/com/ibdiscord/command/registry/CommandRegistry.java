@@ -51,6 +51,11 @@ public final class CommandRegistry {
         return new Command(name, new HashSet<>());
     }
 
+    /**
+     * Queries a command by name.
+     * @param name The command name.
+     * @return A command, or null if it could not be found.
+     */
     public Command query(String name) {
         return UCommand.query(commands, name);
     }

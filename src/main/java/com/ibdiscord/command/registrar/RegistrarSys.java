@@ -89,12 +89,16 @@ public final class RegistrarSys implements CommandRegistrar {
                         .on(new React() {
                             @Override
                             protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
-                                DataContainer.INSTANCE.getGravity().load(new EmoteData(data.get(emote).asString())).delete();
+                                DataContainer.INSTANCE.getGravity()
+                                        .load(new EmoteData(data.get(emote).asString()))
+                                        .delete();
                                 data.unset(emote);
                             }
 
                             @Override
-                            protected void modifyMessage(Message message, Object emote) {}
+                            protected void modifyMessage(Message message, Object emote) {
+                                // Do nothing. Thanks for making me add this comment, checkstyle.
+                            }
                         })
                 );
         commandReact.on(context -> context.replySyntax(commandReact));

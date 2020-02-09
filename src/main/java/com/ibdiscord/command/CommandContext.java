@@ -333,6 +333,7 @@ public final class CommandContext implements ILocalised {
     /**
      * Replies raw text without translating.
      * @param message The message.
+     * @param format The formatters.
      */
     public void replyRaw(String message, Object... format) {
         channel.sendMessageFormat(message, (Object[]) format).queue(null, Throwable::printStackTrace);

@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
 package com.ibdiscord.utils;
 
 import com.ibdiscord.command.Command;
@@ -31,8 +32,8 @@ public final class UCommand {
      */
     public static Command query(Set<Command> from, String query) {
         final String search = query.toLowerCase();
-        return from.stream().filter(
-                it -> it.getName().equals(search) || it.getAliases().contains(search))
+        return from.stream().filter(it ->
+                it.getName().equals(search) || it.getAliases().contains(search))
                 .findFirst()
                 .orElse(null);
     }

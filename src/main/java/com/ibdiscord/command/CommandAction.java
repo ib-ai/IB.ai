@@ -20,4 +20,6 @@ package com.ibdiscord.command;
 
 import java.util.function.Consumer;
 
-public interface CommandAction extends Consumer<CommandContext> {} // Aliasing for simplicity.
+public interface CommandAction extends Consumer<CommandContext> {
+    // Aliasing for simplicity.
+}

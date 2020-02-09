@@ -30,7 +30,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public final @RequiredArgsConstructor class Command {
+@RequiredArgsConstructor
+public final class Command {
 
     private final String name;
     private final Set<String> aliases;
@@ -103,14 +104,26 @@ public final @RequiredArgsConstructor class Command {
         }
     }
 
+    /**
+     * Gets the name.
+     * @return The command name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the aliases.
+     * @return The command aliases.
+     */
     public Set<String> getAliases() {
         return aliases;
     }
 
+    /**
+     * Gets the sub-commands.
+     * @return The command sub-commands.
+     */
     public Set<Command> getSubCommands() {
         return subCommands;
     }
