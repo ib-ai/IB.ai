@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
+
 package com.ibdiscord.localisation;
 
 import com.ibdiscord.command.CommandContext;
@@ -36,6 +37,8 @@ public final class StringI18n implements ILocalised {
      * Set <code>first</code> to <code>null</code> and set the first element of <code>following</code> to the string.
      * Any formatting elements can be defined as further objects in <code>following</code>.
      *
+     * @param first See above.
+     * @param following See above.
      */
     public StringI18n(String first, Object... following) {
         this.first = first;
