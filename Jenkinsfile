@@ -9,6 +9,7 @@ node {
     // Packages the source in order to generate a .jar artifact.
     stage('Package') {
         sh "${mavenHome}/bin/mvn clean install" // Execute compile command.
+        archiveArtifacts 'target/**/*'
     }
 
 }
