@@ -10,5 +10,5 @@ node {
         def mavenHome = tool name: 'maven-3', type: 'maven' // The maven home directory.
         sh "${mavenHome}/bin/mvn clean package" // Execute compile command.
     }
-    
+
 }
