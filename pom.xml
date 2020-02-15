@@ -26,6 +26,7 @@
     <packaging>jar</packaging>
 
     <build>
+        <finalName>IB.ai</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -230,11 +231,6 @@
             <version>16.0.1</version>
             <scope>compile</scope>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>com.squareup.okhttp3</groupId>-->
-        <!--<artifactId>okhttp</artifactId>-->
-        <!--<version>3.12.1</version>-->
-        <!--</dependency>-->
 
     </dependencies>
 </project>
