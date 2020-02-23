@@ -24,7 +24,7 @@ import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.data.db.entries.GuildData;
 
-public class RegistrarHelper implements CommandRegistrar {
+public final class RegistrarHelper implements CommandRegistrar {
 
     @Override
     public void register(CommandRegistry registry) {
@@ -32,4 +32,5 @@ public class RegistrarHelper implements CommandRegistrar {
                 .restrict(CommandPermission.role(GuildData.HELPER))
                 .on(new Pin());
     }
+
 }

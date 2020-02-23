@@ -19,13 +19,18 @@
 package com.ibdiscord.command.registrar;
 
 import com.ibdiscord.IBai;
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.actions.LangList;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildUserData;
+import com.ibdiscord.data.db.entries.LangData;
 import com.ibdiscord.localisation.EmbedBuilderI18n;
+import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.localisation.StringI18n;
 import com.ibdiscord.utils.UDatabase;
+import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 
@@ -33,6 +38,8 @@ import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.ibdiscord.localisation.Localiser.__;
 
 public final class RegistrarUtil implements CommandRegistrar {
 
@@ -79,6 +86,30 @@ public final class RegistrarUtil implements CommandRegistrar {
                             .setFooter(new StringI18n("info.intro_footer"));
                     context.replyEmbed(embedBuilder.build());
                 });
+
+        Command commandLang = registry.define("lang")
+                .sub(registry.sub("list")
+                        .on(new LangList())
+                )
+                .sub(registry.sub("set")
+                        .on(context -> {
+                            context.assertArguments(1, "generic_syntax_arg");
+                            String language = context.getArguments()[0].toLowerCase();
+
+                            if(!Localiser.getAllLanguageCodes().contains(language) && !Localiser.getAllLanguages().contains(language)) {
+                                context.replyI18n("error.lang_command", language, UDatabase.getPrefix(context.getGuild()));
+                            } else {
+                                Gravity gravity = DataContainer.INSTANCE.getGravity();
+                                LangData langData = gravity.load(new LangData());
+                                String finalLang = Localiser.getAllLanguageCodes().contains(language) ? language : Localiser.getLanguageCode(language);
+                                langData.set(context.getMember().getUser().getId(), finalLang);
+                                gravity.save(langData);
+
+                                context.replyI18n("success.lang_command");
+                            }
+                        })
+                );
+        commandLang.on(context -> context.replySyntax(commandLang));
 
         // Needs a noinspection because checkstyle is annoying with lambda expressions.
         // Why do we even need a program to tell us how to factor our code?
