@@ -21,6 +21,7 @@ package com.ibdiscord.command.registrar;
 import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.actions.LangList;
+import com.ibdiscord.command.actions.ReminderList;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.data.db.DataContainer;
@@ -29,7 +30,10 @@ import com.ibdiscord.data.db.entries.LangData;
 import com.ibdiscord.localisation.EmbedBuilderI18n;
 import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.localisation.StringI18n;
+import com.ibdiscord.reminder.Reminder;
+import com.ibdiscord.reminder.ReminderHandler;
 import com.ibdiscord.utils.UDatabase;
+import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
@@ -123,6 +127,43 @@ public final class RegistrarUtil implements CommandRegistrar {
                             context.getJda().getRestPing().complete(),
                             context.getJda().getGatewayPing());
                 });
+
+        Command commandReminder = registry.define("reminder")
+                .sub(registry.sub("create")
+                        .on(context -> {
+                            context.assertArguments(1, "error.reminder_duration");
+                            context.assertArguments(2, "error.reminder_content");
+                            long duration = context.assertDuration(context.getArguments()[0],
+                                    "error.reminder_format");
+                            String reminder = UString.concat(context.getArguments(), " ", 1);
+                            ReminderHandler.INSTANCE.create(context.getMember().getUser(), duration, reminder);
+                            context.replyI18n("success.reminder_schedule");
+                        })
+                )
+                .sub(registry.sub("delete")
+                        .on(context -> {
+                            context.assertArguments(1, "error.reminderid");
+                            List<Reminder> reminders = ReminderHandler.INSTANCE.getFor(context.getMember().getUser()).stream()
+                                    .filter(it -> !it.isCompleted())
+                                    .collect(Collectors.toList());
+                            String id = context.getArguments()[0];
+                            Reminder reminder = reminders.stream()
+                                    .filter(it -> !it.isCompleted())
+                                    .filter(it -> String.valueOf(it.getId()).equals(id))
+                                    .findFirst()
+                                    .orElse(null);
+                            if(reminder == null) {
+                                context.replyI18n("error.reminder_inactiveid");
+                                return;
+                            }
+                            reminder.setCompleted(true);
+                            context.replyI18n("success.reminder_delete");
+                        })
+                )
+                .sub(registry.sub("list")
+                        .on(new ReminderList())
+                );
+        commandReminder.on(context -> context.replySyntax(commandReminder));
 
         registry.define("serverinfo")
                 .on(context -> {
