@@ -43,8 +43,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ibdiscord.localisation.Localiser.__;
-
 public final class RegistrarUtil implements CommandRegistrar {
 
     @Override
@@ -100,12 +98,18 @@ public final class RegistrarUtil implements CommandRegistrar {
                             context.assertArguments(1, "generic_syntax_arg");
                             String language = context.getArguments()[0].toLowerCase();
 
-                            if(!Localiser.getAllLanguageCodes().contains(language) && !Localiser.getAllLanguages().contains(language)) {
-                                context.replyI18n("error.lang_command", language, UDatabase.getPrefix(context.getGuild()));
+                            if(!Localiser.getAllLanguageCodes().contains(language)
+                                    && !Localiser.getAllLanguages().contains(language)) {
+                                context.replyI18n("error.lang_command",
+                                        language,
+                                        UDatabase.getPrefix(context.getGuild())
+                                );
                             } else {
                                 Gravity gravity = DataContainer.INSTANCE.getGravity();
                                 LangData langData = gravity.load(new LangData());
-                                String finalLang = Localiser.getAllLanguageCodes().contains(language) ? language : Localiser.getLanguageCode(language);
+                                String finalLang = Localiser.getAllLanguageCodes().contains(language)
+                                        ? language
+                                        : Localiser.getLanguageCode(language);
                                 langData.set(context.getMember().getUser().getId(), finalLang);
                                 gravity.save(langData);
 
@@ -143,7 +147,8 @@ public final class RegistrarUtil implements CommandRegistrar {
                 .sub(registry.sub("delete")
                         .on(context -> {
                             context.assertArguments(1, "error.reminderid");
-                            List<Reminder> reminders = ReminderHandler.INSTANCE.getFor(context.getMember().getUser()).stream()
+                            List<Reminder> reminders = ReminderHandler.INSTANCE.getFor(context.getMember().getUser())
+                                    .stream()
                                     .filter(it -> !it.isCompleted())
                                     .collect(Collectors.toList());
                             String id = context.getArguments()[0];

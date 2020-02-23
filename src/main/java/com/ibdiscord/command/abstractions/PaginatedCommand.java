@@ -58,7 +58,9 @@ public abstract class PaginatedCommand<T> implements CommandAction {
         if(context.getArguments().length != 0) {
             try {
                 page = Integer.valueOf(context.getArguments()[0]);
-            } catch(NumberFormatException ignored) {}
+            } catch(NumberFormatException ignored) {
+                // Ignored, I forgot you needed this for bloody checkstyle to work.
+            }
         }
         Pagination<T> pagination = getPagination(context);
         EmbedBuilder embedBuilder = new EmbedBuilder();
