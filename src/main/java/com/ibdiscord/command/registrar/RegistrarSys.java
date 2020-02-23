@@ -64,7 +64,7 @@ public final class RegistrarSys implements CommandRegistrar {
 
         Command commandReact = registry.define("react")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                .sub(registry.sub("add")
+                .sub(registry.sub("create")
                         .on(new React() {
                             @Override
                             protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
@@ -85,7 +85,7 @@ public final class RegistrarSys implements CommandRegistrar {
                             }
                         })
                 )
-                .sub(registry.sub("remove")
+                .sub(registry.sub("delete")
                         .on(new React() {
                             @Override
                             protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
@@ -102,6 +102,21 @@ public final class RegistrarSys implements CommandRegistrar {
                         })
                 );
         commandReact.on(context -> context.replySyntax(commandReact));
+
+        Command commandCassowary = registry.define("cassowary")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .sub(registry.sub("create")
+                    .on(new CassowaryCreate())
+                )
+                .sub(registry.sub("delete")
+                    .on(new CassowaryDelete())
+                )
+                .sub(registry.sub("list")
+                    .on(new CassowaryList())
+                );
+        commandCassowary.on(context -> context.replySyntax(commandCassowary));
+
+
     }
 
 }

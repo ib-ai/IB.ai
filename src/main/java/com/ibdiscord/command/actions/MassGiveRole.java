@@ -21,7 +21,7 @@ package com.ibdiscord.command.actions;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 
-public class MassGiveRole implements CommandAction {
+public final class MassGiveRole implements CommandAction {
 
     @Override
     public void accept(CommandContext context) {

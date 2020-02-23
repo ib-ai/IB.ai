@@ -58,9 +58,7 @@ public abstract class PaginatedCommand<T> implements CommandAction {
         if(context.getArguments().length != 0) {
             try {
                 page = Integer.valueOf(context.getArguments()[0]);
-            } catch(NumberFormatException ex) {
-                // Ignored
-            }
+            } catch(NumberFormatException ignored) {}
         }
         Pagination<T> pagination = getPagination(context);
         EmbedBuilder embedBuilder = new EmbedBuilder();
