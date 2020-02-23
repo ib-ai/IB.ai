@@ -18,14 +18,35 @@
 
 package com.ibdiscord.command.registrar;
 
+import com.ibdiscord.command.Command;
+import com.ibdiscord.command.actions.FilterCreate;
+import com.ibdiscord.command.actions.FilterDelete;
+import com.ibdiscord.command.actions.FilterList;
+import com.ibdiscord.command.actions.FilterToggle;
+import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
+import com.ibdiscord.data.db.entries.GuildData;
 
 public final class RegistrarMod implements CommandRegistrar {
 
     @Override
     public void register(CommandRegistry registry) {
-        // TODO: Implement.
+        Command commandFilter = registry.define("filter")
+                .restrict(CommandPermission.role(GuildData.MODERATOR))
+                .sub(registry.sub("create")
+                        .on(new FilterCreate())
+                )
+                .sub(registry.sub("delete")
+                        .on(new FilterDelete())
+                )
+                .sub(registry.sub("list")
+                        .on(new FilterList())
+                )
+                .sub(registry.sub("toggle")
+                        .on(new FilterToggle())
+                );
+        commandFilter.on(context -> context.replySyntax(commandFilter));
     }
 
 }

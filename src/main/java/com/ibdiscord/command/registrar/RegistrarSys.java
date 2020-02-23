@@ -106,13 +106,13 @@ public final class RegistrarSys implements CommandRegistrar {
         Command commandCassowary = registry.define("cassowary")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                 .sub(registry.sub("create")
-                    .on(new CassowaryCreate())
+                        .on(new CassowaryCreate())
                 )
                 .sub(registry.sub("delete")
-                    .on(new CassowaryDelete())
+                        .on(new CassowaryDelete())
                 )
                 .sub(registry.sub("list")
-                    .on(new CassowaryList())
+                        .on(new CassowaryList())
                 );
         commandCassowary.on(context -> context.replySyntax(commandCassowary));
 
