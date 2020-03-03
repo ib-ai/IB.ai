@@ -20,11 +20,12 @@ package com.ibdiscord.command.abstractions;
 
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.i18n.LocaleShorthand;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import net.dv8tion.jda.api.EmbedBuilder;
 
-public abstract class PaginatedCommand<T> implements CommandAction {
+public abstract class PaginatedCommand<T> implements CommandAction, LocaleShorthand {
 
     /**
      * Gets all pagination data.
@@ -64,7 +65,7 @@ public abstract class PaginatedCommand<T> implements CommandAction {
         }
         Pagination<T> pagination = getPagination(context);
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setFooter(context.__(context, "info.paginated",
+        embedBuilder.setFooter(__(context, "info.paginated",
                 page,
                 pagination.total()),
                 null

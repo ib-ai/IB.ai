@@ -26,6 +26,7 @@ import de.arraying.kotys.JSONArray;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,12 +83,16 @@ public final class Pin implements CommandAction {
      * @return The String list of subject channel IDs.
      */
     private List<String> getSubjectChannels() {
-        JSON penis = UJSON.retrieveJSONFromFile("/IB.ai/lang/subject_channels.json");
-        JSONArray channels = penis.array("channels");
         List<String> listOfChannelIDs = new ArrayList<>();
-        for(int i = 0; i < channels.length(); i++) {
-            JSON jsonObj = channels.json(i);
-            listOfChannelIDs.add(jsonObj.string("id"));
+        try {
+            JSON penis = UJSON.retrieveJSONFromFile("/IB.ai/lang/subject_channels.json");
+            JSONArray channels = penis.array("channels");
+            for(int i = 0; i < channels.length(); i++) {
+                JSON jsonObj = channels.json(i);
+                listOfChannelIDs.add(jsonObj.string("id"));
+            }
+        } catch(IOException exception) {
+            exception.printStackTrace();
         }
         return listOfChannelIDs;
     }

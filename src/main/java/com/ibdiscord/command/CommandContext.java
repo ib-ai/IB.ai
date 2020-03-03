@@ -18,7 +18,7 @@
 
 package com.ibdiscord.command;
 
-import com.ibdiscord.localisation.ILocalised;
+import com.ibdiscord.i18n.LocaleShorthand;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import com.ibdiscord.utils.UTime;
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public final class CommandContext implements ILocalised {
+public final class CommandContext implements LocaleShorthand {
 
     @Getter private final JDA jda;
     @Getter private final Message message;

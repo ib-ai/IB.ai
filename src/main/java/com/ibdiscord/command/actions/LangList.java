@@ -20,18 +20,18 @@ package com.ibdiscord.command.actions;
 
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.abstractions.PaginatedCommand;
-import com.ibdiscord.localisation.Localiser;
+import com.ibdiscord.i18n.Locale;
+import com.ibdiscord.i18n.LocaliserHandler;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.api.EmbedBuilder;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import static com.ibdiscord.localisation.Localiser.__;
-
-public final class LangList extends PaginatedCommand<String> {
+public final class LangList extends PaginatedCommand<Locale> {
 
     /**
      * Gets all languages.
@@ -39,9 +39,9 @@ public final class LangList extends PaginatedCommand<String> {
      * @return The list.
      */
     @Override
-    protected Pagination<String> getPagination(CommandContext context) {
-        List<String> values = Localiser.getAllLanguageCodes();
-        return new Pagination<>(values, 15);
+    protected Pagination<Locale> getPagination(CommandContext context) {
+        Collection<Locale> values = LocaliserHandler.INSTANCE.locales();
+        return new Pagination<>(new ArrayList<>(values), 15);
     }
 
     /**
@@ -51,11 +51,10 @@ public final class LangList extends PaginatedCommand<String> {
      * @param page The page.
      */
     @Override
-    protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
-        int entryNum = page.getNumber() - 1;
+    protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<Locale> page) {
         embedBuilder.addField(
-                Localiser.getLanguageNameByIndex(entryNum) + "  " + Localiser.getLanguageFlagByIndex(entryNum),
-                UString.escapeFormatting(page.getValue()),
+                page.getValue().getName() + " " + page.getValue().getFlag(),
+                UString.escapeFormatting(page.getValue().getCode()),
                 true
         );
     }

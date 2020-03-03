@@ -30,8 +30,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ibdiscord.localisation.Localiser.__;
-
 public final class ReminderList extends PaginatedCommand<Reminder> {
 
     /**

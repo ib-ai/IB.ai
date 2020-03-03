@@ -31,8 +31,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ibdiscord.localisation.Localiser.__;
-
 public final class MonitorList extends PaginatedCommand<String> {
 
     /**

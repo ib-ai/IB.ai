@@ -149,7 +149,7 @@ public final class VoteEntry {
                 long channel = ladderData.get(VoteLadderData.CHANNEL)
                         .defaulting(0)
                         .asLong();
-                TextChannel textChannel = IBai.getJda().getTextChannelById(channel);
+                TextChannel textChannel = IBai.INSTANCE.getJda().getTextChannelById(channel);
                 String text;
                 if(yes > no) {
                     text = "passed";

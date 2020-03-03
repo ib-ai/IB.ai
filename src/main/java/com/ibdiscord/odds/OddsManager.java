@@ -123,7 +123,7 @@ public final class OddsManager {
                     }
 
                     if(bet.getGuessUserA() != 0 && bet.getGuessUserB() != 0) {
-                        Guild guild = IBai.getJda().getGuildById(bet.getInitialGuild());
+                        Guild guild = IBai.INSTANCE.getJda().getGuildById(bet.getInitialGuild());
                         String message;
 
                         if(bet.getGuessUserA() == bet.getGuessUserB()) {
