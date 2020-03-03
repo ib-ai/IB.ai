@@ -21,6 +21,7 @@ package com.ibdiscord.command.registrar;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.abstractions.MonitorManage;
+import com.ibdiscord.command.abstractions.VoteLadderManage;
 import com.ibdiscord.command.actions.*;
 import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
@@ -30,7 +31,12 @@ import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.monitor.MonitorData;
 import com.ibdiscord.data.db.entries.monitor.MonitorMessageData;
 import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
+import com.ibdiscord.data.db.entries.voting.VoteLadderData;
+import com.ibdiscord.data.db.entries.voting.VoteLaddersData;
 import com.ibdiscord.utils.UInput;
+import com.ibdiscord.utils.UString;
+import com.ibdiscord.vote.VoteEntry;
+import com.ibdiscord.vote.VoteLadder;
 import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.Permission;
@@ -174,6 +180,96 @@ public final class RegistrarMod implements CommandRegistrar {
                         .on(new MonitorCleanup())
                 );
         commandMonitor.on(context -> context.replySyntax(commandMonitor));
+
+        registry.define("vote")
+                .restrict(CommandPermission.role(GuildData.MODERATOR))
+                .on(context -> {
+                    context.assertArguments(2, "error.generic_arg_length");
+                    String ladder = context.getArguments()[0].toLowerCase();
+                    Gravity gravity = DataContainer.INSTANCE.getGravity();
+                    VoteLaddersData laddersData = gravity.load(new VoteLaddersData(context.getGuild().getId()));
+                    if(!laddersData.contains(ladder)) {
+                        context.replyI18n("error.ladder_noexist");
+                        return;
+                    }
+                    String text = UString.concat(context.getArguments(), " ", 1);
+                    VoteLadder voteLadder = new VoteLadder(context.getGuild(), ladder);
+                    VoteEntry voteEntry = voteLadder.createVote(text);
+                    if(voteEntry == null) {
+                        context.replyI18n("error.vote_create");
+                        return;
+                    }
+                    context.replyI18n("success.vote_create", voteEntry.getId());
+                });
+
+        Command commandVote = registry.define("voteladder")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .sub(registry.sub("create", "generic_create")
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(context -> {
+                            context.assertArguments(1, "error.ladder_name");
+                            String ladder = context.getArguments()[0].toLowerCase();
+                            Gravity gravity = DataContainer.INSTANCE.getGravity();
+                            VoteLaddersData laddersData = gravity.load(new VoteLaddersData(context.getGuild().getId()));
+                            laddersData.add(ladder);
+                            gravity.save(laddersData);
+                            context.replyI18n("success.ladder_create", ladder);
+                        })
+                )
+                .sub(registry.sub("delete", "generic_delete")
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(context -> {
+                            context.assertArguments(1, "error.ladder_name");
+                            String ladder = context.getArguments()[0].toLowerCase();
+                            Gravity gravity = DataContainer.INSTANCE.getGravity();
+                            VoteLaddersData laddersData = gravity.load(new VoteLaddersData(context.getGuild().getId()));
+                            laddersData.remove(ladder);
+                            gravity.save(laddersData);
+                            context.replyI18n("success.ladder_delete", ladder);
+                        })
+                )
+                .sub(registry.sub("list", "generic_list")
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new VoteLadderList())
+                )
+                .sub(registry.sub("channel",  null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new VoteLadderManage() {
+                            protected void handle(CommandContext context, VoteLadderData ladderData) {
+                                context.assertArguments(2, "error.missing_channel");
+                                TextChannel channel = context.assertChannel(context.getArguments()[1],
+                                        "error.missing_channel");
+                                ladderData.set(VoteLadderData.CHANNEL, channel.getIdLong());
+                                context.replyI18n("success.channel_update");
+                            }
+                        })
+                )
+                .sub(registry.sub("duration", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new VoteLadderManage() {
+                            protected void handle(CommandContext context, VoteLadderData ladderData) {
+                                context.assertArguments(2, "error.ladder_format");
+                                long time = context.assertDuration(context.getArguments()[1],
+                                        "error.lader_format");
+                                ladderData.set(VoteLadderData.TIMEOUT, time);
+                                context.replyI18n("success.ladder_specify");
+                            }
+                        })
+                )
+                .sub(registry.sub("threshold", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new VoteLadderManage() {
+                            protected void handle(CommandContext context, VoteLadderData ladderData) {
+                                context.assertArguments(2, "error.missing_number");
+                                int result = context.assertInt(context.getArguments()[2],
+                                        null,
+                                        null,
+                                        "error.missing_number");
+                                ladderData.set(VoteLadderData.THRESHOLD, result);
+                                context.replyI18n("success.threshold_update");
+                            }
+                        })
+                );
     }
 
 }
