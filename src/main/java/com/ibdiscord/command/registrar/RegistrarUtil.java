@@ -27,9 +27,10 @@ import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildUserData;
 import com.ibdiscord.data.db.entries.LangData;
-import com.ibdiscord.localisation.EmbedBuilderI18n;
-import com.ibdiscord.localisation.Localiser;
-import com.ibdiscord.localisation.StringI18n;
+import com.ibdiscord.i18n.EmbedBuilderI18n;
+import com.ibdiscord.i18n.Locale;
+import com.ibdiscord.i18n.LocaliserHandler;
+import com.ibdiscord.i18n.StringI18n;
 import com.ibdiscord.reminder.Reminder;
 import com.ibdiscord.reminder.ReminderHandler;
 import com.ibdiscord.utils.UDatabase;
@@ -40,6 +41,7 @@ import net.dv8tion.jda.api.entities.*;
 
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,16 +92,20 @@ public final class RegistrarUtil implements CommandRegistrar {
                 });
 
         Command commandLang = registry.define("lang")
-                .sub(registry.sub("list")
+                .sub(registry.sub("list", "generic_list")
                         .on(new LangList())
                 )
-                .sub(registry.sub("set")
+                .sub(registry.sub("set", null)
                         .on(context -> {
                             context.assertArguments(1, "generic_syntax_arg");
                             String language = context.getArguments()[0].toLowerCase();
-
-                            if(!Localiser.getAllLanguageCodes().contains(language)
-                                    && !Localiser.getAllLanguages().contains(language)) {
+                            Collection<Locale> locales = LocaliserHandler.INSTANCE.locales();
+                            Locale locale = locales.stream()
+                                    .filter(it -> it.getCode().equalsIgnoreCase(language)
+                                            || it.getName().equalsIgnoreCase(language))
+                                    .findFirst()
+                                    .orElse(null);
+                            if(locale == null) {
                                 context.replyI18n("error.lang_command",
                                         language,
                                         UDatabase.getPrefix(context.getGuild())
@@ -107,12 +113,8 @@ public final class RegistrarUtil implements CommandRegistrar {
                             } else {
                                 Gravity gravity = DataContainer.INSTANCE.getGravity();
                                 LangData langData = gravity.load(new LangData());
-                                String finalLang = Localiser.getAllLanguageCodes().contains(language)
-                                        ? language
-                                        : Localiser.getLanguageCode(language);
-                                langData.set(context.getMember().getUser().getId(), finalLang);
+                                langData.set(context.getMember().getUser().getId(), locale.getCode());
                                 gravity.save(langData);
-
                                 context.replyI18n("success.lang_command");
                             }
                         })
@@ -133,7 +135,7 @@ public final class RegistrarUtil implements CommandRegistrar {
                 });
 
         Command commandReminder = registry.define("reminder")
-                .sub(registry.sub("create")
+                .sub(registry.sub("create", "generic_create")
                         .on(context -> {
                             context.assertArguments(1, "error.reminder_duration");
                             context.assertArguments(2, "error.reminder_content");
@@ -144,7 +146,7 @@ public final class RegistrarUtil implements CommandRegistrar {
                             context.replyI18n("success.reminder_schedule");
                         })
                 )
-                .sub(registry.sub("delete")
+                .sub(registry.sub("delete", "generic_delete")
                         .on(context -> {
                             context.assertArguments(1, "error.reminderid");
                             List<Reminder> reminders = ReminderHandler.INSTANCE.getFor(context.getMember().getUser())
@@ -165,7 +167,7 @@ public final class RegistrarUtil implements CommandRegistrar {
                             context.replyI18n("success.reminder_delete");
                         })
                 )
-                .sub(registry.sub("list")
+                .sub(registry.sub("list", "generic_list")
                         .on(new ReminderList())
                 );
         commandReminder.on(context -> context.replySyntax(commandReminder));

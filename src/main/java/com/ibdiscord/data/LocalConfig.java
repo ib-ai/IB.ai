@@ -79,6 +79,11 @@ public final class LocalConfig {
     @Getter private final String apiBase;
 
     /**
+     * LANGUAGE_BASE.
+     */
+    @Getter private final String langBase;
+
+    /**
      * Constructor for the local configuration object.
      * Sets all of the class properties to their corresponding environment
      * variable.
@@ -97,6 +102,7 @@ public final class LocalConfig {
         this.mainDatabaseNum = getEnvironment("DATA_INDEX", Long::valueOf, 0L);
         this.mainDatabasePassword = getEnvironment("DATA_AUTH", null);
         this.apiBase = getEnvironment("API_BASE", "http://localhost:80");
+        this.langBase = getEnvironment("LANGUAGE_BASE", "/IB.ai/lang/");
     }
 
     /**

@@ -39,34 +39,33 @@ public final class RegistrarSys implements CommandRegistrar {
     @Override
     public void register(CommandRegistry registry) {
         Command commandTag = registry.define("tag") // Explicitly state it to allow cross referencing.
-                .sub(registry.sub("activate")
+                .sub(registry.sub("activate", "tag_activate")
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                         .on(new TagActivate())
                 )
-                .sub(registry.sub("create")
+                .sub(registry.sub("create", "generic_create")
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                         .on(new TagCreate())
                 )
-                .sub(registry.sub("delete")
+                .sub(registry.sub("delete", "generic_delete")
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                         .on(new TagDelete())
                 )
-                .sub(registry.sub("disabled")
+                .sub(registry.sub("disabled", null)
                         .on(new TagDisabled())
                 )
-                .sub(registry.sub("find")
+                .sub(registry.sub("find", "tag_find")
                         .on(new TagFind())
                 )
-                .sub(registry.sub("list")
+                .sub(registry.sub("list", "generic_list")
                         .on(new TagList())
                 );
         commandTag.on(context -> context.replySyntax(commandTag));
 
         Command commandReact = registry.define("react")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                .sub(registry.sub("create")
+                .sub(registry.sub("create", "generic_create")
                         .on(new React() {
-                            @Override
                             protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
                                 String uniqueID = UUID.randomUUID().toString();
                                 data.set(emote, uniqueID);
@@ -75,7 +74,6 @@ public final class RegistrarSys implements CommandRegistrar {
                                 DataContainer.INSTANCE.getGravity().save(emoteData);
                             }
 
-                            @Override
                             protected void modifyMessage(Message message, Object emote) {
                                 if(emote instanceof Emote) {
                                     message.addReaction((Emote) emote).queue();
@@ -85,9 +83,8 @@ public final class RegistrarSys implements CommandRegistrar {
                             }
                         })
                 )
-                .sub(registry.sub("delete")
+                .sub(registry.sub("delete", "generic_delete")
                         .on(new React() {
-                            @Override
                             protected void modifyData(ReactionData data, String emote, List<String> roleIDs) {
                                 DataContainer.INSTANCE.getGravity()
                                         .load(new EmoteData(data.get(emote).asString()))
@@ -95,7 +92,6 @@ public final class RegistrarSys implements CommandRegistrar {
                                 data.unset(emote);
                             }
 
-                            @Override
                             protected void modifyMessage(Message message, Object emote) {
                                 // Do nothing. Thanks for making me add this comment, checkstyle.
                             }
@@ -105,18 +101,16 @@ public final class RegistrarSys implements CommandRegistrar {
 
         Command commandCassowary = registry.define("cassowary")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                .sub(registry.sub("create")
+                .sub(registry.sub("create", "generic_create")
                         .on(new CassowaryCreate())
                 )
-                .sub(registry.sub("delete")
+                .sub(registry.sub("delete", "generic_delete")
                         .on(new CassowaryDelete())
                 )
-                .sub(registry.sub("list")
+                .sub(registry.sub("list", "generic_list")
                         .on(new CassowaryList())
                 );
         commandCassowary.on(context -> context.replySyntax(commandCassowary));
-
-
     }
 
 }

@@ -19,7 +19,7 @@
 package com.ibdiscord.command.registry;
 
 import com.ibdiscord.command.Command;
-import com.ibdiscord.localisation.Localiser;
+import com.ibdiscord.i18n.LocaliserHandler;
 import com.ibdiscord.utils.UCommand;
 import com.ibdiscord.utils.objects.Comparator;
 
@@ -37,7 +37,7 @@ public final class CommandRegistry {
      * @return A command object.
      */
     public Command define(String name) {
-        Command command = new Command(name, Localiser.getAllCommandAliases("command_aliases." + name));
+        Command command = new Command(name, LocaliserHandler.INSTANCE.getCommandAliases(name));
         commands.add(command);
         return command;
     }
@@ -45,10 +45,13 @@ public final class CommandRegistry {
     /**
      * Creates a sub-command with that name.
      * @param name The name.
+     * @param aliases The key for all the aliases.
      * @return A command object.
      */
-    public Command sub(String name) {
-        return new Command(name, new HashSet<>());
+    public Command sub(String name, String aliases) {
+        return new Command(name, aliases == null
+                ? new HashSet<>()
+                : LocaliserHandler.INSTANCE.getCommandAliases(aliases));
     }
 
     /**

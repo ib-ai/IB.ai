@@ -16,7 +16,7 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.localisation;
+package com.ibdiscord.i18n;
 
 import com.ibdiscord.command.CommandContext;
 import net.dv8tion.jda.api.AccountType;
@@ -36,7 +36,7 @@ import java.util.List;
  * Additionally, all the formatter variables are slightly annoying so instead of method overloading we can use
  * custom objects instead.
  */
-public final class EmbedBuilderI18n implements ILocalised {
+public final class EmbedBuilderI18n {
 
     private final EmbedBuilder nest = new EmbedBuilder();
     private final CommandContext context;

@@ -16,13 +16,13 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.localisation;
+package com.ibdiscord.i18n;
 
 import com.ibdiscord.command.CommandContext;
 
 import java.util.Arrays;
 
-public final class StringI18n implements ILocalised {
+public final class StringI18n {
 
     private final String first;
     private final Object[] following;
@@ -50,6 +50,7 @@ public final class StringI18n implements ILocalised {
      * @param context The command context.
      * @return A string.
      */
+    @SuppressWarnings("WeakerAccess")
     public String parse(CommandContext context) {
         if(first == null) {
             if(following.length == 0) {
@@ -57,9 +58,9 @@ public final class StringI18n implements ILocalised {
             }
             String value = following[0].toString();
             Object[] update = Arrays.copyOfRange(following, 1, following.length);
-            return Localiser.replaceVariables(value, update);
+            return LocaliserHandler.INSTANCE.format(value, (Object[]) update);
         } else {
-            return __(context, first, (Object[]) following);
+            return LocaliserHandler.INSTANCE.translate(context, first, (Object[]) following);
         }
     }
 

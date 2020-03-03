@@ -45,22 +45,22 @@ public final class RegistrarMod implements CommandRegistrar {
     public void register(CommandRegistry registry) {
         Command commandFilter = registry.define("filter")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
-                .sub(registry.sub("create")
+                .sub(registry.sub("create", "generic_create")
                         .on(new FilterCreate())
                 )
-                .sub(registry.sub("delete")
+                .sub(registry.sub("delete", "generic_delete")
                         .on(new FilterDelete())
                 )
-                .sub(registry.sub("list")
+                .sub(registry.sub("list", "generic_list")
                         .on(new FilterList())
                 )
-                .sub(registry.sub("toggle")
+                .sub(registry.sub("toggle", "generic_toggle")
                         .on(new FilterToggle())
                 );
         commandFilter.on(context -> context.replySyntax(commandFilter));
         Command commandMonitor = registry.define("monitor")
                 .restrict(CommandPermission.role(GuildData.MODERATOR)) // All moderators can use the base command.
-                .sub(registry.sub("toggle")
+                .sub(registry.sub("toggle", "generic_toggle")
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                         .on(context -> {
                             Gravity gravity = DataContainer.INSTANCE.getGravity();
@@ -73,7 +73,7 @@ public final class RegistrarMod implements CommandRegistrar {
                             context.replyI18n(current ? "success.monitor_disable" : "success.monitor_enable");
                         })
                 )
-                .sub(registry.sub("userchannel")
+                .sub(registry.sub("userchannel", null)
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER)) // Manage server only.
                         .on(context -> {
                             context.assertArguments(1, "error.missing_channel");
@@ -86,7 +86,7 @@ public final class RegistrarMod implements CommandRegistrar {
                             context.replyI18n("success.done");
                         })
                 )
-                .sub(registry.sub("user")
+                .sub(registry.sub("user", null)
                         .restrict(CommandPermission.role(GuildData.MODERATOR)) // All moderators.
                         .on(new MonitorManage() {
                             protected boolean isValidInput(CommandContext context, String input) {
@@ -120,7 +120,7 @@ public final class RegistrarMod implements CommandRegistrar {
                             }
                         })
                 )
-                .sub(registry.sub("messagechannel")
+                .sub(registry.sub("messagechannel", null)
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER)) // Manage server only.
                         .on(context -> {
                             context.assertArguments(1, "error.missing_channel");
@@ -133,7 +133,7 @@ public final class RegistrarMod implements CommandRegistrar {
                             context.replyI18n("success.done");
                         })
                 )
-                .sub(registry.sub("message")
+                .sub(registry.sub("message", null)
                         .restrict(CommandPermission.role(GuildData.MODERATOR)) // All moderators.
                         .on(new MonitorManage() {
                             protected boolean isValidInput(CommandContext context, String input) {
@@ -165,11 +165,11 @@ public final class RegistrarMod implements CommandRegistrar {
                             }
                         })
                 )
-                .sub(registry.sub("list")
+                .sub(registry.sub("list", "generic_list")
                         .restrict(CommandPermission.role(GuildData.MODERATOR)) // All moderators.
                         .on(new MonitorList())
                 )
-                .sub(registry.sub("cleanup")
+                .sub(registry.sub("cleanup", "monitor_cleanup")
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER)) // Manage server only.
                         .on(new MonitorCleanup())
                 );
