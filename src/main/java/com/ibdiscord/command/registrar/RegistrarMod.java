@@ -202,7 +202,7 @@ public final class RegistrarMod implements CommandRegistrar {
                     context.replyI18n("success.vote_create", voteEntry.getId());
                 });
 
-        Command commandVote = registry.define("voteladder")
+        Command commandVoteLadder = registry.define("voteladder")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                 .sub(registry.sub("create", "generic_create")
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
@@ -270,6 +270,7 @@ public final class RegistrarMod implements CommandRegistrar {
                             }
                         })
                 );
+        commandVoteLadder.on(context -> context.replySyntax(commandVoteLadder));
     }
 
 }
