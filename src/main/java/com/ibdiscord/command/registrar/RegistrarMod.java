@@ -19,14 +19,25 @@
 package com.ibdiscord.command.registrar;
 
 import com.ibdiscord.command.Command;
-import com.ibdiscord.command.actions.FilterCreate;
-import com.ibdiscord.command.actions.FilterDelete;
-import com.ibdiscord.command.actions.FilterList;
-import com.ibdiscord.command.actions.FilterToggle;
+import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.abstractions.MonitorManage;
+import com.ibdiscord.command.actions.*;
 import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.entries.monitor.MonitorData;
+import com.ibdiscord.data.db.entries.monitor.MonitorMessageData;
+import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
+import com.ibdiscord.utils.UInput;
+import de.arraying.gravity.Gravity;
+import de.arraying.gravity.data.property.Property;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class RegistrarMod implements CommandRegistrar {
 
@@ -47,6 +58,122 @@ public final class RegistrarMod implements CommandRegistrar {
                         .on(new FilterToggle())
                 );
         commandFilter.on(context -> context.replySyntax(commandFilter));
+        Command commandMonitor = registry.define("monitor")
+                .restrict(CommandPermission.role(GuildData.MODERATOR)) // All moderators can use the base command.
+                .sub(registry.sub("toggle")
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(context -> {
+                            Gravity gravity = DataContainer.INSTANCE.getGravity();
+                            MonitorData monitorData = gravity.load(new MonitorData(context.getGuild().getId()));
+                            boolean current = monitorData.get(MonitorData.ENABLED)
+                                    .defaulting(false)
+                                    .asBoolean();
+                            monitorData.set(MonitorData.ENABLED, !current);
+                            gravity.save(monitorData);
+                            context.replyI18n(current ? "success.monitor_disable" : "success.monitor_enable");
+                        })
+                )
+                .sub(registry.sub("userchannel")
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER)) // Manage server only.
+                        .on(context -> {
+                            context.assertArguments(1, "error.missing_channel");
+                            TextChannel channel = context.assertChannel(context.getArguments()[0],
+                                    "error.missing_channel");
+                            Gravity gravity = DataContainer.INSTANCE.getGravity();
+                            MonitorData monitorData = gravity.load(new MonitorData(context.getGuild().getId()));
+                            monitorData.set(MonitorData.USER_CHANNEL, channel.getId());
+                            gravity.save(monitorData);
+                            context.replyI18n("success.done");
+                        })
+                )
+                .sub(registry.sub("user")
+                        .restrict(CommandPermission.role(GuildData.MODERATOR)) // All moderators.
+                        .on(new MonitorManage() {
+                            protected boolean isValidInput(CommandContext context, String input) {
+                                return UInput.getMember(context.getGuild(), input) != null;
+                            }
+
+                            protected void add(CommandContext context, String input) {
+                                Gravity gravity = DataContainer.INSTANCE.getGravity();
+                                MonitorUserData userData =
+                                        gravity.load(new MonitorUserData(context.getGuild().getId()));
+                                //noinspection ConstantConditions
+                                userData.add(UInput.getMember(context.getGuild(), input).getUser().getId());
+                                gravity.save(userData);
+                            }
+
+                            protected void remove(CommandContext context, String input) {
+                                Gravity gravity = DataContainer.INSTANCE.getGravity();
+                                MonitorUserData userData =
+                                        gravity.load(new MonitorUserData(context.getGuild().getId()));
+                                //noinspection ConstantConditions
+                                userData.remove(UInput.getMember(context.getGuild(), input).getUser().getId());
+                                gravity.save(userData);
+                            }
+
+                            protected List<String> list(CommandContext context) {
+                                return DataContainer.INSTANCE.getGravity()
+                                        .load(new MonitorUserData(context.getGuild().getId())).values()
+                                        .stream()
+                                        .map(Property::asString)
+                                        .collect(Collectors.toList());
+                            }
+                        })
+                )
+                .sub(registry.sub("messagechannel")
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER)) // Manage server only.
+                        .on(context -> {
+                            context.assertArguments(1, "error.missing_channel");
+                            TextChannel channel = context.assertChannel(context.getArguments()[0],
+                                    "error.missing_channel");
+                            Gravity gravity = DataContainer.INSTANCE.getGravity();
+                            MonitorData monitorData = gravity.load(new MonitorData(context.getGuild().getId()));
+                            monitorData.set(MonitorData.MESSAGE_CHANNEL, channel.getId());
+                            gravity.save(monitorData);
+                            context.replyI18n("success.done");
+                        })
+                )
+                .sub(registry.sub("message")
+                        .restrict(CommandPermission.role(GuildData.MODERATOR)) // All moderators.
+                        .on(new MonitorManage() {
+                            protected boolean isValidInput(CommandContext context, String input) {
+                                return UInput.isValidRegex(input);
+                            }
+
+                            protected void add(CommandContext context, String input) {
+                                Gravity gravity = DataContainer.INSTANCE.getGravity();
+                                MonitorMessageData messageData =
+                                        gravity.load(new MonitorMessageData(context.getGuild().getId()));
+                                messageData.add(input);
+                                gravity.save(messageData);
+                            }
+
+                            protected void remove(CommandContext context, String input) {
+                                Gravity gravity = DataContainer.INSTANCE.getGravity();
+                                MonitorMessageData messageData =
+                                        gravity.load(new MonitorMessageData(context.getGuild().getId()));
+                                messageData.remove(input);
+                                gravity.save(messageData);
+                            }
+
+                            protected List<String> list(CommandContext context) {
+                                return DataContainer.INSTANCE.getGravity()
+                                        .load(new MonitorMessageData(context.getGuild().getId())).values()
+                                        .stream()
+                                        .map(Property::asString)
+                                        .collect(Collectors.toList());
+                            }
+                        })
+                )
+                .sub(registry.sub("list")
+                        .restrict(CommandPermission.role(GuildData.MODERATOR)) // All moderators.
+                        .on(new MonitorList())
+                )
+                .sub(registry.sub("cleanup")
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER)) // Manage server only.
+                        .on(new MonitorCleanup())
+                );
+        commandMonitor.on(context -> context.replySyntax(commandMonitor));
     }
 
 }

@@ -51,8 +51,8 @@ public enum IBai {
 
     @Getter private LocalConfig config;
     @Getter private CommandRegistry commandRegistry;
-    @Getter Logger logger = LoggerFactory.getLogger(getClass());
-    @Getter private static JDA jda;
+    @Getter private Logger logger = LoggerFactory.getLogger(getClass());
+    @Getter private JDA jda;
 
     /**
      * Entry point of the program.
