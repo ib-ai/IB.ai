@@ -18,6 +18,7 @@
 
 package com.ibdiscord.command.registrar;
 
+import com.ibdiscord.command.actions.Odds;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 
@@ -71,6 +72,9 @@ public final class RegistrarFun implements CommandRegistrar {
                         context.replyI18n("error.generic");
                     }
                 });
+
+        registry.define("odds")
+                .on(new Odds());
     }
 
 }

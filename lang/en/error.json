@@ -47,9 +47,12 @@
   "odds_number": "Please provide an integer greater than zero as the first argument.",
   "odds_user": "Please mention a user to challenge.",
   "permission": "You do not have permission to execute this command.",
-  "pin_channel": "Invalid message ID provided. You must be in the same channel as the message."
+  "pin_channel": "Invalid message ID provided. You must be in the same channel as the message.",
   "prefix": "Invalid Prefix ({0}).",
   "purge_range": "Amount of messages out of range (2-100).",
+  "odds_engaged": "One of you are already engaged in an odds. Use `{0}odds cancel` to cancel pending odds.",
+  "odds_input": "Invalid input! Your guess must be an integer between 1 and {0}.",
+  "odds_pending": "You have no pending odds.",
   "role_empty": "Please mention a role you want to target and the role you want to give.",
   "role_missing": "Please mention a new role to give.",
   "unknown_user": "Unknown user.",

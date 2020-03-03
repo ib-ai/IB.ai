@@ -20,6 +20,8 @@ package com.ibdiscord.odds;
 
 import com.ibdiscord.IBai;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.i18n.LocaleShorthand;
+import com.ibdiscord.i18n.LocaliserHandler;
 import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.UFormatter;
 import net.dv8tion.jda.api.entities.Guild;
@@ -29,17 +31,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class OddsManager {
+public enum OddsManager {
+
+    /**
+     * The singleton instance.
+     */
+    INSTANCE;
 
     /**
      * List of bets between users that are yet to be resolved.
      */
-    private static ArrayList<Bet> pendingBets = new ArrayList<>();
-
-    /**
-     * Private constructor to prevent instantiation of "static" class.
-     */
-    private OddsManager() { }
+    private final ArrayList<Bet> pendingBets = new ArrayList<>();
 
     /**
      * Used to create a new bet between two users.
@@ -50,7 +52,7 @@ public final class OddsManager {
      * @param userB The ID of the second user.
      * @param denominator The 'odds' of the bet being fulfilled.
      */
-    public static void newBet(CommandContext context, String userA, String userB, int denominator) { // TODO: i18n
+    public void newBet(CommandContext context, String userA, String userB, int denominator) {
         boolean userAlreadyEngaged = pendingBets.stream()
                 .anyMatch(bet -> bet.getUserA().equals(userA)
                         || bet.getUserA().equals(userB)
@@ -66,17 +68,14 @@ public final class OddsManager {
                         context.getChannel().getId()
                     )
             );
-            context.replyRaw("New odds have been set! %s and %s, please DM me your guesses between 1 and %d. "
-                            + "If both of you send me the same number, the forfeit must be fulfilled. "
-                            + "Use `%sodds cancel` to cancel.",
+            context.replyI18n("info.odds",
                     context.getMember().getAsMention(),
                     context.getMessage().getMentionedMembers().get(0).getAsMention(),
                     denominator,
                     UDatabase.getPrefix(context.getGuild())
             );
         } else {
-            context.replyRaw("One of you are already engaged in an odds. Use `%sodds cancel` to cancel "
-                + "pending odds.", UDatabase.getPrefix(context.getGuild()));
+            context.replyI18n("error.odds_engaged", UDatabase.getPrefix(context.getGuild()));
         }
     }
 
@@ -87,7 +86,7 @@ public final class OddsManager {
      * @param rawGuess The string sent by the user.
      */
     @SuppressWarnings("ConstantConditions")
-    public static void newGuess(PrivateChannel channel, String userID, String rawGuess) {
+    public void newGuess(PrivateChannel channel, String userID, String rawGuess) {
         int guess = 0;
         boolean valid;
         try {
@@ -102,17 +101,11 @@ public final class OddsManager {
         pendingBets.stream()
                 .filter(bet -> bet.getUserA().equals(userID) || bet.getUserB().equals(userID))
                 .forEach(bet -> {
-                    if(!finalValid) {
-                        channel.sendMessage(String.format("Your guess must be an integer between 1 and %d.",
-                                bet.getProbabilityDenominator())
-                        ).queue();
-                        return;
-                    }
 
-                    if(0 >= finalGuess || finalGuess > bet.getProbabilityDenominator()) {
-                        channel.sendMessage(String.format("Your guess must be between 1 and %d.",
-                                bet.getProbabilityDenominator())
-                        ).queue();
+                    if(!finalValid || finalGuess < 1 || finalGuess > bet.getProbabilityDenominator()) {
+                        channel.sendMessage(LocaliserHandler.INSTANCE.translateWithUser(channel.getUser(),
+                                "error.odds_input",
+                                bet.getProbabilityDenominator())).queue();
                         return;
                     }
 
@@ -127,17 +120,17 @@ public final class OddsManager {
                         String message;
 
                         if(bet.getGuessUserA() == bet.getGuessUserB()) {
-                            message = String.format("ODDS MATCHED! You both guessed %d. Better get it done.)",
+                            message = LocaliserHandler.INSTANCE.translateWithUser(channel.getUser(),
+                                    "success.odds_match",
                                     finalGuess
                             );
                         } else {
-                            message = String.format("ODDS FAILED. %s guessed `%d` and %s guessed `%d`. "
-                                         + "Better luck next time.",
+                            message = LocaliserHandler.INSTANCE.translateWithUser(channel.getUser(),
+                                    "success.odds_failed",
                                     UFormatter.formatMember(guild.getMemberById(bet.getUserA()).getUser()),
                                     bet.getGuessUserA(),
                                     UFormatter.formatMember(guild.getMemberById(bet.getUserB()).getUser()),
-                                    bet.getGuessUserB()
-                            );
+                                    bet.getGuessUserB());
                         }
 
                         assert guild != null;
@@ -161,7 +154,7 @@ public final class OddsManager {
      * @param userID The ID of the user cancelling the bet.
      */
     @SuppressWarnings("ConstantConditions")
-    public static void cancelBet(CommandContext context, String userID) {
+    public void cancelBet(CommandContext context, String userID) {
         // Due to users only being allowed one pending bet at a time,
         // 'priorBet' should always only contain one or zero element.
         List<Bet> priorBet = pendingBets.stream()
@@ -169,13 +162,13 @@ public final class OddsManager {
                 .collect(Collectors.toList());
 
         if(priorBet.isEmpty()) {
-            context.replyRaw("You have no pending odds.");
+            context.replyI18n("error.odds_pending");
         } else {
             pendingBets.removeAll(priorBet);
-            context.replyRaw("Successfully canceled odds between %s and %s.",
-                 UFormatter.formatMember(context.getGuild().getMemberById(priorBet.get(0).getUserA()).getUser()),
-                 UFormatter.formatMember(context.getGuild().getMemberById(priorBet.get(0).getUserB()).getUser())
-            );
+            context.replyI18n("success.odds_cancel",
+                    UFormatter.formatMember(context.getGuild().getMemberById(priorBet.get(0).getUserA()).getUser()),
+                    UFormatter.formatMember(context.getGuild().getMemberById(priorBet.get(0).getUserB()).getUser()));
         }
     }
+
 }

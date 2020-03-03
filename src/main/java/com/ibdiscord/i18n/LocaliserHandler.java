@@ -25,6 +25,7 @@ import com.ibdiscord.data.db.entries.LangData;
 import de.arraying.gravity.Gravity;
 import de.arraying.kotys.JSON;
 import de.arraying.kotys.JSONArray;
+import net.dv8tion.jda.api.entities.User;
 
 import java.io.File;
 import java.io.IOException;
@@ -91,9 +92,20 @@ public enum LocaliserHandler {
      * @return A never null string.
      */
     public String translate(CommandContext context, String key, Object... format) {
+        return translateWithUser(context.getMember().getUser(), key, (Object[]) format);
+    }
+
+    /**
+     * Translates a string to the user's language.
+     * @param user The user
+     * @param key The key.
+     * @param format The formatting variables.
+     * @return A never null string.
+     */
+    public String translateWithUser(User user, String key, Object... format) {
         String fallback = "**Translation error.** If you see this, please report it to a bot developer!";
         try {
-            String language = getUserLanguage(context);
+            String language = getUserLanguage(user);
             String value = translateSpecific(language, key, (Object[]) format); // Try with user language.
             if(value == null) {
                 value = translateSpecific(defaultLanguage, key, (Object[]) format); // Try with default language.
@@ -151,6 +163,7 @@ public enum LocaliserHandler {
         return in;
     }
 
+
     /**
      * Raw method to get a language by code.
      * @param language The language code.
@@ -172,13 +185,13 @@ public enum LocaliserHandler {
 
     /**
      * Gets a user's language, never null.
-     * @param context The command context.
+     * @param user The user.
      * @return The language, "en" by default.
      */
-    private String getUserLanguage(CommandContext context) {
+    private String getUserLanguage(User user) {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         return gravity.load(new LangData())
-                .get(context.getMember().getUser().getId())
+                .get(user.getId())
                 .defaulting(defaultLanguage) // Defaults language used to be English
                 .asString();
     }
