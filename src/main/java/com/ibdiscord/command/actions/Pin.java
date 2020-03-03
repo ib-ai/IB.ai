@@ -40,7 +40,7 @@ public final class Pin implements CommandAction {
      */
     @Override
     public void accept(CommandContext context) {
-        context.assertArguments(1, "error.too_few_args"); // _At least_ one arg.
+        context.assertArguments(1, "error.generic_arg_length"); // _At least_ one arg.
         if(context.getArguments().length == 2) { // Channel is specified by user
             TextChannel channel = context.assertChannel(context.getArguments()[0], "error.reaction_channel");
             String msgID = context.getArguments()[1];
