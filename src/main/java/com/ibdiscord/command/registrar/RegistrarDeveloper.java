@@ -18,14 +18,22 @@
 
 package com.ibdiscord.command.registrar;
 
+import com.ibdiscord.command.actions.Eval;
+import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 
-public class RegistrarDeveloper implements CommandRegistrar {
+public final class RegistrarDeveloper implements CommandRegistrar {
 
+    /**
+     * Registers commands.
+     * @param registry The command registry.
+     */
     @Override
     public void register(CommandRegistry registry) {
-
+        registry.define("eval")
+                .restrict(CommandPermission.developer(CommandPermission.discord()))
+                .on(new Eval());
     }
 
 }

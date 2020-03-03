@@ -49,7 +49,6 @@
   "permission": "You do not have permission to execute this command.",
   "pin_channel": "Invalid message ID provided. You must be in the same channel as the message."
   "prefix": "Invalid Prefix ({0}).",
-  "purge_number": "You did not specify a number.",
   "purge_range": "Amount of messages out of range (2-100).",
   "role_empty": "Please mention a role you want to target and the role you want to give.",
   "role_missing": "Please mention a new role to give.",

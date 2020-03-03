@@ -23,11 +23,6 @@ import lombok.Getter;
 public enum PunishmentType {
 
     /**
-     * A verban warling.
-     */
-    WARN("Warning :raised_hand:", "???"),
-
-    /**
      * A kick.
      */
     KICK("Kick :boot:", "???"),

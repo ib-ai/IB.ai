@@ -31,6 +31,8 @@ import com.ibdiscord.i18n.EmbedBuilderI18n;
 import com.ibdiscord.i18n.Locale;
 import com.ibdiscord.i18n.LocaliserHandler;
 import com.ibdiscord.i18n.StringI18n;
+import com.ibdiscord.input.InputHandler;
+import com.ibdiscord.input.embed.EmbedDescriptionInput;
 import com.ibdiscord.reminder.Reminder;
 import com.ibdiscord.reminder.ReminderHandler;
 import com.ibdiscord.utils.UDatabase;
@@ -47,6 +49,10 @@ import java.util.stream.Collectors;
 
 public final class RegistrarUtil implements CommandRegistrar {
 
+    /**
+     * Registers commands.
+     * @param registry The command registry.
+     */
     @Override
     public void register(CommandRegistry registry) {
         registry.define("avatar")
@@ -55,6 +61,9 @@ public final class RegistrarUtil implements CommandRegistrar {
 
                     context.replyRaw(target.getUser().getEffectiveAvatarUrl() + "?size=1024"); // Nice and big.
                 });
+
+        registry.define("embed")
+                .on(context -> InputHandler.INSTANCE.start(context.getMember(), new EmbedDescriptionInput(), context));
 
         registry.define("help")
                 .on(context -> {

@@ -25,42 +25,98 @@ import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.react.EmoteData;
 import com.ibdiscord.data.db.entries.react.ReactionData;
+import com.ibdiscord.utils.UString;
+import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 public final class RegistrarSys implements CommandRegistrar {
 
+    /**
+     * Registers commands.
+     * @param registry The command registry.
+     */
     @Override
     public void register(CommandRegistry registry) {
-        Command commandTag = registry.define("tag") // Explicitly state it to allow cross referencing.
-                .sub(registry.sub("activate", "tag_activate")
-                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                        .on(new TagActivate())
-                )
+        Command commandCassowary = registry.define("cassowary")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                 .sub(registry.sub("create", "generic_create")
-                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                        .on(new TagCreate())
+                        .on(new CassowaryCreate())
                 )
                 .sub(registry.sub("delete", "generic_delete")
-                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                        .on(new TagDelete())
-                )
-                .sub(registry.sub("disabled", null)
-                        .on(new TagDisabled())
-                )
-                .sub(registry.sub("find", "tag_find")
-                        .on(new TagFind())
+                        .on(new CassowaryDelete())
                 )
                 .sub(registry.sub("list", "generic_list")
-                        .on(new TagList())
+                        .on(new CassowaryList())
                 );
-        commandTag.on(context -> context.replySyntax(commandTag));
+        commandCassowary.on(context -> context.replySyntax(commandCassowary));
+
+        registry.define("log")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .on(new Logging(GuildData.LOGS));
+
+        registry.define("modlog")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .on(new Logging(GuildData.MODLOGS));
+
+        registry.define("moderator")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .on(context -> {
+                        Gravity gravity = DataContainer.INSTANCE.getGravity();
+                        GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
+                        if(context.getArguments().length == 0) {
+                            String permission = guildData.get(GuildData.MODERATOR)
+                                    .defaulting("not set")
+                                    .asString();
+                            context.replyI18n("info.mod_permission", permission);
+                            return;
+                        }
+                        String newValue = UString.concat(context.getArguments(), " ", 0);
+                        guildData.set(GuildData.MODERATOR, newValue);
+                        gravity.save(guildData);
+                        context.replyI18n("success.mod_permission");
+                });
+
+        registry.define("muterole")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .on(context -> {
+                        List<Role> roles = context.getMessage().getMentionedRoles();
+                        if(roles.isEmpty()) {
+                            context.replyI18n("error.mute_role");
+                            return;
+                        }
+                        Gravity gravity = DataContainer.INSTANCE.getGravity();
+                        GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
+                        guildData.set(GuildData.MUTE, roles.get(0).getId());
+                        gravity.save(guildData);
+                        context.replyI18n("success.mute_role");
+                });
+
+        registry.define("prefix")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .on(context -> {
+                        context.assertArguments(1, "error.generic_arg_length");
+                        String prefixNew = context.getArguments()[0];
+                        if(Arrays.stream(new String[]{"/", "$", "#", "+", "*", "?"}).anyMatch(prefixNew::equals)) {
+                            context.replyI18n("error.prefix", prefixNew);
+                            return;
+                        }
+
+                        GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
+                        guildData.set(GuildData.PREFIX, prefixNew);
+                        DataContainer.INSTANCE.getGravity().save(guildData);
+                        context.replyI18n("success.prefix", prefixNew);
+                });
 
         Command commandReact = registry.define("react")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
@@ -99,18 +155,49 @@ public final class RegistrarSys implements CommandRegistrar {
                 );
         commandReact.on(context -> context.replySyntax(commandReact));
 
-        Command commandCassowary = registry.define("cassowary")
+        registry.define("roleswap")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .on(context -> {
+                    List<Role> roles = context.getMessage().getMentionedRoles();
+                    if(roles.isEmpty()) {
+                        context.replyI18n("error.swap_empty");
+                        return;
+                    } else if(roles.size() == 1) {
+                        context.replyI18n("error.swap_missing");
+                        return;
+                    }
+
+                    List<Member> members = context.getGuild().getMembersWithRoles(roles.get(0));
+                    members.forEach(member ->
+                            context.getGuild().modifyMemberRoles(member,
+                                    roles.subList(1,2),
+                                    roles.subList(0,1)).queue());
+                    context.replyI18n("success.swap_role", members.size());
+                });
+
+        Command commandTag = registry.define("tag") // Explicitly state it to allow cross referencing.
+                .sub(registry.sub("activate", "tag_activate")
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new TagActivate())
+                )
                 .sub(registry.sub("create", "generic_create")
-                        .on(new CassowaryCreate())
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new TagCreate())
                 )
                 .sub(registry.sub("delete", "generic_delete")
-                        .on(new CassowaryDelete())
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new TagDelete())
+                )
+                .sub(registry.sub("disabled", null)
+                        .on(new TagDisabled())
+                )
+                .sub(registry.sub("find", "tag_find")
+                        .on(new TagFind())
                 )
                 .sub(registry.sub("list", "generic_list")
-                        .on(new CassowaryList())
+                        .on(new TagList())
                 );
-        commandCassowary.on(context -> context.replySyntax(commandCassowary));
+        commandTag.on(context -> context.replySyntax(commandTag));
     }
 
 }

@@ -22,15 +22,57 @@ import com.ibdiscord.command.actions.Pin;
 import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.utils.UString;
+import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.api.Permission;
 
 public final class RegistrarHelper implements CommandRegistrar {
 
+    /**
+     * Registers commands.
+     * @param registry The command registry.
+     */
     @Override
     public void register(CommandRegistry registry) {
+        registry.define("helper")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .on(context -> {
+                        Gravity gravity = DataContainer.INSTANCE.getGravity();
+                        GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
+                        if(context.getArguments().length == 0) {
+                            String permission = guildData.get(GuildData.HELPER)
+                                    .defaulting("not set")
+                                    .asString();
+                            context.replyI18n("info.helper_permission", permission);
+                            return;
+                        }
+                        String newValue = UString.concat(context.getArguments(), " ", 0);
+                        guildData.set(GuildData.HELPER, newValue);
+                        gravity.save(guildData);
+                        context.replyI18n("success.helper_permission");
+                });
+
         registry.define("pin")
                 .restrict(CommandPermission.role(GuildData.HELPER))
                 .on(new Pin());
+
+        registry.define("unpin")
+                .restrict(CommandPermission.role(GuildData.HELPER))
+                .on(context -> {
+                        context.assertArguments(1, "error.generic_arg_length");
+                        long id = context.assertLong(context.getArguments()[0],
+                                null,
+                                null,
+                                "error.pin_channel");
+
+                        context.getChannel().unpinMessageById(id).queue(success ->
+                                        context.replyI18n("success.done"),
+                                error ->
+                                        context.replyI18n("error.pin_channel")
+                        );
+                });
     }
 
 }
