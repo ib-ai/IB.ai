@@ -120,9 +120,10 @@ public final class EmbedRawCommand extends Command {
             for (int i = 0; i < fields.length(); i++) {
                 JSONArray tuple = fields.array(i);
 
-                if (tuple.length() < 2)
+                if (tuple.length() < 2) {
                     continue;
-
+                }
+                
                 String field = tuple.string(0);
                 String value = tuple.string(1);
                 if(field.length() > MessageEmbed.TITLE_MAX_LENGTH) {
