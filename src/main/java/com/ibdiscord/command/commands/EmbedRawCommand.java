@@ -66,7 +66,7 @@ public final class EmbedRawCommand extends Command {
 
         StringBuilder jsonBuilder = new StringBuilder();
         for (int i = 1; i < context.getArguments().length; i++) {
-            jsonBuilder.append(context.getArguments()[i]);
+            jsonBuilder.append(context.getArguments()[i]).append(" ");
         }
 
         JSON embed;
@@ -123,7 +123,7 @@ public final class EmbedRawCommand extends Command {
                 if (tuple.length() < 2) {
                     continue;
                 }
-                
+
                 String field = tuple.string(0);
                 String value = tuple.string(1);
                 if(field.length() > MessageEmbed.TITLE_MAX_LENGTH) {
