@@ -38,6 +38,7 @@ public enum CommandCollection {
     COIN_FLIP(new CoinFlipCommand()),
     DAD_JOKE(new DadJokeCommand()),
     EMBED(new EmbedCommand()),
+    EMBED_RAW(new EmbedRawCommand()),
     EVAL(new EvalCommand()),
     EXPIRE(new ExpireCommand()),
     FILTER(new FilterCommand()),
