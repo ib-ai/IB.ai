@@ -67,6 +67,7 @@
   "filter_delete": ["delete", "d", "remove", "r", "absolutelydemolish"],
   "filter_list": ["list", "l", "ls"],
   "filter_toggle": ["toggle"],
+  "filter_notify": ["notify"],
   "cassowary": ["cassowary"],
   "cassowary_create": ["create", "c", "add", "a", "new", "make"],
   "cassowary_delete": ["delete", "d", "remove", "r"],

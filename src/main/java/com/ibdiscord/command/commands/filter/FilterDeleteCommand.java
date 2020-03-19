@@ -22,7 +22,7 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.permissions.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.FilterData;
+import com.ibdiscord.data.db.entries.filter.FilterData;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.Permission;

@@ -36,10 +36,11 @@ public final class FilterCommand extends Command {
                 Set.of(new FilterCreateCommand(),
                         new FilterDeleteCommand(),
                         new FilterListCommand(),
-                        new FilterToggleCommand()
+                        new FilterToggleCommand(),
+                        new FilterNotifyCommand()
                 )
         );
-        this.correctUsage = "filter <create/delete/list> [message/page]";
+        this.correctUsage = "filter <create/delete/list/notify> [message/page]";
     }
 
     /**

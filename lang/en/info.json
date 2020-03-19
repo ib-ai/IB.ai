@@ -44,5 +44,7 @@
   "tag_enabled": "The tag has been enabled.",
   "tag_disabled": "The tag has been disabled.",
   "case_number": "Case #{0}:",
-  "punished_user": "{0} punished {1}"
+  "punished_user": "{0} punished {1}",
+  "filter_enabled": "The filter's notification has been enabled.",
+  "filter_disabled": "The filter's notification has been disabled."
 }
