@@ -19,11 +19,13 @@
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
+import com.ibdiscord.command.Command;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.filter.FilterData;
 import com.ibdiscord.data.db.entries.filter.FilterNotifyData;
 import com.ibdiscord.data.db.entries.monitor.MonitorData;
+import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -49,6 +51,18 @@ public final class FilterListener extends ListenerAdapter {
             return;
         }
         String message = event.getMessage().getContentRaw();
+        String prefix = UDatabase.getPrefix(event.getGuild());
+
+        if(event.getMessage().getContentRaw().startsWith(prefix)) {
+            String messageSub = message.substring(prefix.length()).replaceAll(" +", " ");
+            String[] arguments = messageSub.split(" ");
+            String commandName = arguments[0].toLowerCase();
+            Command command = Command.find(null, commandName);
+            if(command != null && command.getName().equalsIgnoreCase("filter")) {
+                return;
+            }
+        }
+
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         GuildData guildData = gravity.load(new GuildData(event.getGuild().getId()));
         FilterData filterData = gravity.load(new FilterData(event.getGuild().getId()));
