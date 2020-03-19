@@ -15,7 +15,7 @@
   "swap_role": "The roles have been swapped for {0} users.",
   "eval": "**Output:**``` {0} ```",
   "logging": "The channel has been set to: {0}.",
-  "filer_add": "The filter has been added.",
+  "filter_add": "The filter has been added.",
   "filter_delete": "The filter has been deleted.",
   "filter_disable": "The filter has been disabled.",
   "filter_enable": "The filter has been enabled.",
