@@ -110,7 +110,7 @@ public final class FilterListener extends ListenerAdapter {
                     String description = String.format(
                             "\"%s\", sent in **%s**",
                             event.getMessage().getContentRaw(),
-                            event.getChannel().getName()
+                            event.getChannel().getAsMention()
                     );
 
                     description = description.length() > 2000 ? description.substring(0, 2000) : description;
