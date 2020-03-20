@@ -29,6 +29,7 @@ import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -95,16 +96,28 @@ public final class FilterListener extends ListenerAdapter {
                         );
                         return;
                     }
+
+                    String title = String.format(
+                            "%s (ID: %s)",
+                            event.getMessage().getAuthor().getAsTag(),
+                            event.getMessage().getAuthor().getId()
+                    );
+
+                    if (title.length() > MessageEmbed.TITLE_MAX_LENGTH) {
+                        title = title.substring(0, MessageEmbed.TITLE_MAX_LENGTH);
+                    }
+
                     String description = String.format(
                             "\"%s\", sent in **%s**",
                             event.getMessage().getContentRaw(),
                             event.getChannel().getName()
                     );
+
                     description = description.length() > 2000 ? description.substring(0, 2000) : description;
                     EmbedBuilder embedBuilder = new EmbedBuilder()
                             .setColor(Color.MAGENTA)
                             .setAuthor("Filter was triggered!")
-                            .setTitle(event.getMessage().getAuthor().getAsTag())
+                            .setTitle(title)
                             .setDescription(description);
                     monitorChannel.sendMessage(embedBuilder.build()).queue();
                     if (!filterNotifyData.contains(match.get().pattern())) {
