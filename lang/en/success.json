@@ -6,7 +6,7 @@
   "done": "Consider it done.",
   "eval": "**Output:**``` {0} ```",
   "expire": "The expiration has been scheduled.",
-  "filer_add": "The filter has been added.",
+  "filter_add": "The filter has been added.",
   "filter_delete": "The filter has been deleted.",
   "filter_disable": "The filter has been disabled.",
   "filter_enable": "The filter has been enabled.",
