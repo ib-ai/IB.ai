@@ -131,6 +131,8 @@ public final class RegistrarMod implements CommandRegistrar {
                 )
                 .sub(registry.sub("toggle", "generic_toggle")
                         .on(new FilterToggle())
+                ).sub(registry.sub("notify", "notify")
+                        .on(new FilterNotify())
                 );
         commandFilter.on(context -> context.replySyntax(commandFilter));
 

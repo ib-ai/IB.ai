@@ -1,4 +1,4 @@
-/* Copyright 2017-2020 Arraying
+/* Copyright 2020 Ray Clark
  *
  * This file is part of IB.ai.
  *
@@ -21,25 +21,32 @@ package com.ibdiscord.command.actions;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.filter.FilterData;
-import com.ibdiscord.utils.UString;
-import de.arraying.gravity.Gravity;
+import com.ibdiscord.data.db.entries.filter.FilterNotifyData;
 
-public final class FilterDelete implements CommandAction {
+import java.util.List;
+
+public final class FilterNotify implements CommandAction {
 
     /**
-     * Deletes a filtered value.
+     * Toggles the activated status of a command.
      * @param context The command context.
      */
     @Override
     public void accept(CommandContext context) {
         context.assertArguments(1, "error.generic_syntax_arg");
-        String input = UString.concat(context.getArguments(), " ", 0);
-        Gravity gravity = DataContainer.INSTANCE.getGravity();
-        FilterData filterData = gravity.load(new FilterData(context.getGuild().getId()));
-        filterData.remove(input);
-        gravity.save(filterData);
-        context.replyI18n("success.filter_delete");
+        List<String> data = context.assertQuotes(null, "error.missing_data");
+        String trigger = context.assertRegex(data.get(0), "error.filter");
+
+        FilterNotifyData filterNotifyData = DataContainer.INSTANCE.getGravity()
+                .load(new FilterNotifyData(context.getGuild().getId()));
+        if(filterNotifyData.contains(trigger)) {
+            filterNotifyData.remove(trigger);
+            context.replyI18n("info.filter_enabled");
+        } else {
+            filterNotifyData.add(trigger);
+            context.replyI18n("info.filter_disabled");
+        }
+        DataContainer.INSTANCE.getGravity().save(filterNotifyData);
     }
 
 }

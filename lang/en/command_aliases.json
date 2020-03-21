@@ -23,6 +23,7 @@
   "monitor_cleanup": ["cleanup", "springcleaning", "springclean"],
   "muterole": ["muterole", "setmuterole"],
   "note": ["note", "notes"],
+  "notify": ["notify"],
   "odds": ["odds", "odd", "wtfarethebloodyoddsgoodsir"],
   "odds_cancel": ["cancel", "c"],
   "ping": ["ping", "pong", "latency", "dingdong"],

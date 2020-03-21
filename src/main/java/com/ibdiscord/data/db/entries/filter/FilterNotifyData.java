@@ -1,4 +1,4 @@
-/* Copyright 2018-2020 Arraying
+/* Copyright 2020 Ray Clark
  *
  * This file is part of IB.ai.
  *
@@ -16,13 +16,13 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.data.db.entries;
+package com.ibdiscord.data.db.entries.filter;
 
 import de.arraying.gravity.data.types.TypeSet;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public final class FilterData extends TypeSet {
+public final class FilterNotifyData extends TypeSet {
 
     private final String guild;
 
@@ -32,7 +32,7 @@ public final class FilterData extends TypeSet {
      */
     @Override
     protected String getUniqueIdentifier() {
-        return "filter_" + this.guild;
+        return "filter_notify_" + guild;
     }
 
 }

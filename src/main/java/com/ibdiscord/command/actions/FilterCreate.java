@@ -21,7 +21,7 @@ package com.ibdiscord.command.actions;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.FilterData;
+import com.ibdiscord.data.db.entries.filter.FilterData;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 

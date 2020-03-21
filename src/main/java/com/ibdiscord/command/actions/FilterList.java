@@ -21,7 +21,7 @@ package com.ibdiscord.command.actions;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.command.abstractions.PaginatedCommand;
 import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.FilterData;
+import com.ibdiscord.data.db.entries.filter.FilterData;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UString;

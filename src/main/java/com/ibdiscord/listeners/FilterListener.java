@@ -19,18 +19,23 @@
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
+import com.ibdiscord.command.Command;
 import com.ibdiscord.data.db.DataContainer;
-import com.ibdiscord.data.db.entries.FilterData;
+import com.ibdiscord.data.db.entries.filter.FilterData;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.entries.filter.FilterNotifyData;
 import com.ibdiscord.data.db.entries.monitor.MonitorData;
+import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.Color;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public final class FilterListener extends ListenerAdapter {
@@ -47,18 +52,31 @@ public final class FilterListener extends ListenerAdapter {
             return;
         }
         String message = event.getMessage().getContentRaw();
+        String prefix = UDatabase.getPrefix(event.getGuild());
+
+        if(event.getMessage().getContentRaw().startsWith(prefix)) {
+            String messageSub = message.substring(prefix.length()).replaceAll(" +", " ");
+            String[] arguments = messageSub.split(" ");
+            String commandName = arguments[0].toLowerCase();
+            Command command = IBai.INSTANCE.getCommandRegistry().query(commandName);
+            if(command != null && command.getName().equalsIgnoreCase("filter")) {
+                return;
+            }
+        }
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         GuildData guildData = gravity.load(new GuildData(event.getGuild().getId()));
         FilterData filterData = gravity.load(new FilterData(event.getGuild().getId()));
+        FilterNotifyData filterNotifyData = gravity.load(new FilterNotifyData(event.getGuild().getId()));
         if(!guildData.get(GuildData.FILTERING).defaulting(false).asBoolean()) {
             return;
         }
-        if(filterData.values().stream()
+        Optional<Pattern> match = filterData.values().stream()
                 .map(it -> filterCache.compute(event.getGuild().getIdLong(),
                         it.asString(),
                         Pattern.compile(it.asString()))
-                )
-                .anyMatch(it -> it.matcher(message).matches())) {
+                ).filter(it -> it.matcher(message).matches())
+                .findFirst();
+        if(match.isPresent()) {
             event.getMessage().delete().queue(success -> {
                     event.getAuthor().openPrivateChannel().queue(dm -> {
                         String send = String.format("The following message has been automatically flagged and "
@@ -77,19 +95,31 @@ public final class FilterListener extends ListenerAdapter {
                         );
                         return;
                     }
+                    String title = String.format(
+                            "%s (ID: %s)",
+                            event.getAuthor().getAsTag(),
+                            event.getAuthor().getId()
+                    );
+
+                    if (title.length() > MessageEmbed.TITLE_MAX_LENGTH) {
+                        title = title.substring(0, MessageEmbed.TITLE_MAX_LENGTH);
+                    }
+
                     String description = String.format(
                             "\"%s\", sent in **%s**",
                             event.getMessage().getContentRaw(),
-                            event.getChannel().getName()
+                            event.getChannel().getAsMention()
                     );
                     description = description.length() > 2000 ? description.substring(0, 2000) : description;
                     EmbedBuilder embedBuilder = new EmbedBuilder()
                             .setColor(Color.MAGENTA)
                             .setAuthor("Filter was triggered!")
-                            .setTitle(event.getMessage().getAuthor().getAsTag())
+                            .setTitle(title)
                             .setDescription(description);
                     monitorChannel.sendMessage(embedBuilder.build()).queue();
-                    monitorChannel.sendMessage("@here").queue();
+                    if (!filterNotifyData.contains(match.get().pattern())) {
+                        monitorChannel.sendMessage("@here").queue();
+                    }
                 }
             );
         }

@@ -4,6 +4,8 @@
   "entry": "Entry #",
   "entry_list": "Here is a list of entries.",
   "filtered_phrases": "Here is a list of regular expressions for filtered phrases.",
+  "filter_disabled": "The filter's notification has been disabled.",
+  "filter_enabled": "The filter's notification has been enabled.",
   "helper_permission": "The helper permission is currently: {0}",
   "intro_dev1": "Development:",
   "intro_dev2": "IB.ai is a [FOSS]({0}) project developed the community.\n Credit to the following minions for developing me:\n {1} \n\n Please consider [donating](https://paypal.me/libreresources) if you appreciate their efforts. Donations go directly back into the bot and other server projects, paying for server fees",
