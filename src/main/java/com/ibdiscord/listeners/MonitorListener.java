@@ -29,6 +29,7 @@ import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -100,10 +101,21 @@ public final class MonitorListener extends ListenerAdapter {
             );
             return;
         }
+
+        String title = String.format(
+                "%s (ID: %s)",
+                message.getAuthor().getAsTag(),
+                message.getAuthor().getId()
+        );
+
+        if (title.length() > MessageEmbed.TITLE_MAX_LENGTH) {
+            title = title.substring(0, MessageEmbed.TITLE_MAX_LENGTH);
+        }
+
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setColor(Color.RED)
                 .setAuthor("Monitor Trigger")
-                .setTitle(message.getAuthor().getAsTag())
+                .setTitle(title)
                 .setDescription(message.getContentRaw())
                 .addField("Utilities", "[21 Jump Street](" + message.getJumpUrl() + ")", false);
         textChannel.sendMessage(embedBuilder.build()).queue();
