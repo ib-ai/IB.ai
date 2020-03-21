@@ -20,6 +20,7 @@ package com.ibdiscord.command.registrar;
 
 import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
+import com.ibdiscord.command.Option;
 import com.ibdiscord.command.actions.LangList;
 import com.ibdiscord.command.actions.ReminderList;
 import com.ibdiscord.command.registry.CommandRegistrar;
@@ -38,13 +39,20 @@ import com.ibdiscord.reminder.ReminderHandler;
 import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
+import de.arraying.kotys.JSON;
+import de.arraying.kotys.JSONArray;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
 import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public final class RegistrarUtil implements CommandRegistrar {
@@ -64,6 +72,118 @@ public final class RegistrarUtil implements CommandRegistrar {
 
         registry.define("embed")
                 .on(context -> InputHandler.INSTANCE.start(context.getMember(), new EmbedDescriptionInput(), context));
+
+        registry.define("embedraw")
+                .on(context -> {
+                    context.assertArguments(1, "error.missing_channel");
+                    if (context.getMessage().getMentionedChannels().size() < 1) {
+                        context.replyI18n("error.missing_channel");
+                        return;
+                    }
+                    context.assertArguments(2, "error.missing_data");
+                    StringBuilder jsonBuilder = new StringBuilder();
+                    for (int i = 1; i < context.getArguments().length; i++) {
+                        jsonBuilder.append(context.getArguments()[i]).append(" ");
+                    }
+
+                    JSON embed;
+
+                    try {
+                        embed = new JSON(jsonBuilder.toString());
+                    } catch (IllegalStateException e) {
+                        context.replyI18n("error.missing_data");
+                        return;
+                    }
+
+                    EmbedBuilder builder = new EmbedBuilder();
+
+                    if (embed.has("description")) {
+                        String description = embed.string("description");
+                        if(description.length() > MessageEmbed.TEXT_MAX_LENGTH) {
+                            description = description.substring(0, MessageEmbed.TEXT_MAX_LENGTH);
+                        }
+                        builder.setDescription(description);
+                    }
+
+                    if (embed.has("colour")) {
+                        try {
+                            Color color = Color.decode(embed.string("colour"));
+                            builder.setColor(color);
+                        } catch(Exception exception) {
+                            context.replyI18n("error.invalid_colour");
+                            return;
+                        }
+                    }
+
+                    if (embed.has("image_url")) {
+                        try {
+                            String image = embed.string("image_url");
+                            new URL(image);
+                            builder.setImage(image);
+                        } catch(MalformedURLException exception) {
+                            context.replyI18n("error.invalid_url");
+                            return;
+                        }
+                    }
+
+                    if (embed.has("fields")) {
+                        JSONArray fields = embed.array("fields");
+
+                        if (fields.length() > 20) {
+                            context.replyI18n("error.exception");
+                            return;
+                        }
+
+                        for (int i = 0; i < fields.length(); i++) {
+                            JSONArray tuple = fields.array(i);
+
+                            if (tuple.length() < 2) {
+                                continue;
+                            }
+
+                            String field = tuple.string(0);
+                            String value = tuple.string(1);
+                            if(field.length() > MessageEmbed.TITLE_MAX_LENGTH) {
+                                field = field.substring(0, MessageEmbed.TITLE_MAX_LENGTH);
+                            }
+                            if(value.length() > MessageEmbed.VALUE_MAX_LENGTH) {
+                                value = value.substring(0, MessageEmbed.VALUE_MAX_LENGTH);
+                            }
+                            builder.addField(field, value, false);
+                        }
+                    }
+
+                    if (builder.isEmpty()) {
+                        context.replyI18n("error.missing_data");
+                        return;
+                    }
+
+                    TextChannel target = context.getMessage().getMentionedChannels().get(0);
+                    if(!Objects.requireNonNull(context.getMessage().getMember())
+                            .hasPermission(target, Permission.MESSAGE_WRITE, Permission.MESSAGE_EMBED_LINKS)) {
+                        context.replyI18n("error.missing_channel_permissions");
+                        return;
+                    }
+
+                    if (!context.getOptions().stream()
+                            .anyMatch(it -> it.getName().equalsIgnoreCase("update"))) {
+                        target.sendMessage(builder.build()).queue();
+                    } else {
+                        try {
+                            for (Option option : context.getOptions()) {
+                                if (option.getName().equalsIgnoreCase("update")) {
+                                    long id = Long.valueOf(option.getValue());
+                                    target.retrieveMessageById(id)
+                                            .queue(success -> target.editMessageById(id, builder.build()).queue(),
+                                                    failure -> context.replyI18n("error.pin_channel"));
+                                    break;
+                                }
+                            }
+                        } catch(NumberFormatException exception) {
+                            return;
+                        }
+                    }
+                });
 
         registry.define("help")
                 .on(context -> {
