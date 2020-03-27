@@ -55,4 +55,13 @@ public final class UFormatter {
         return user.getAsTag();
     }
 
+    /**
+     * Formats a user to a user mention.
+     * @param user The user.
+     * @return The user's mention.
+     */
+    public static String formatMemberMention(User user) {
+        return user.getAsMention();
+    }
+
 }

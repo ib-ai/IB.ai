@@ -165,7 +165,7 @@ public final class GuildListener extends ListenerAdapter {
                             redacted = true;
                         }
                         Punishment punishment = new Punishment(null,
-                                UFormatter.formatMember(user),
+                                UFormatter.formatMemberMention(user),
                                 user.getId(),
                                 UFormatter.formatMember(staff),
                                 staff.getId(),
