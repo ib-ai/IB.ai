@@ -39,19 +39,19 @@ public final class RegistrarHelper implements CommandRegistrar {
         registry.define("helper")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                 .on(context -> {
-                        Gravity gravity = DataContainer.INSTANCE.getGravity();
-                        GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
-                        if(context.getArguments().length == 0) {
-                            String permission = guildData.get(GuildData.HELPER)
-                                    .defaulting("not set")
-                                    .asString();
-                            context.replyI18n("info.helper_permission", permission);
-                            return;
-                        }
-                        String newValue = UString.concat(context.getArguments(), " ", 0);
-                        guildData.set(GuildData.HELPER, newValue);
-                        gravity.save(guildData);
-                        context.replyI18n("success.helper_permission");
+                    Gravity gravity = DataContainer.INSTANCE.getGravity();
+                    GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
+                    if(context.getArguments().length == 0) {
+                        String permission = guildData.get(GuildData.HELPER)
+                                .defaulting("not set")
+                                .asString();
+                        context.replyI18n("info.helper_permission", permission);
+                        return;
+                    }
+                    String newValue = UString.concat(context.getArguments(), " ", 0);
+                    guildData.set(GuildData.HELPER, newValue);
+                    gravity.save(guildData);
+                    context.replyI18n("success.helper_permission");
                 });
 
         registry.define("pin")
@@ -61,17 +61,17 @@ public final class RegistrarHelper implements CommandRegistrar {
         registry.define("unpin")
                 .restrict(CommandPermission.role(GuildData.HELPER))
                 .on(context -> {
-                        context.assertArguments(1, "error.generic_arg_length");
-                        long id = context.assertLong(context.getArguments()[0],
-                                null,
-                                null,
-                                "error.pin_channel");
+                    context.assertArguments(1, "error.generic_arg_length");
+                    long id = context.assertLong(context.getArguments()[0],
+                            null,
+                            null,
+                            "error.pin_channel");
 
-                        context.getChannel().unpinMessageById(id).queue(success ->
-                                        context.replyI18n("success.done"),
-                                error ->
-                                        context.replyI18n("error.pin_channel")
-                        );
+                    context.getChannel().unpinMessageById(id).queue(success ->
+                                    context.replyI18n("success.done"),
+                        error ->
+                                    context.replyI18n("error.pin_channel")
+                    );
                 });
     }
 

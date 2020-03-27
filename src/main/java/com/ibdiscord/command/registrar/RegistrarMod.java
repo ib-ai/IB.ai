@@ -72,50 +72,50 @@ public final class RegistrarMod implements CommandRegistrar {
         registry.define("blacklist")
                 .restrict(CommandPermission.discord(Permission.BAN_MEMBERS))
                 .on(context -> {
-                        context.assertArguments(1, "error.blacklist_id");
-                        long id = context.assertLong(context.getArguments()[0],
-                                null,
-                                null,
-                                "error.blacklist_id");
-                        if(context.getGuild().getMemberById(id) != null) { // Don't ban present users.
-                            context.replyI18n("error.blacklist_present");
-                            return;
-                        }
-                        context.getGuild().ban(String.valueOf(id), 0).reason("Blacklisted.").queue(
-                            success -> context.replyI18n("success.blacklist"),
-                            fail -> context.replyI18n("error.blacklist_fail")
-                        );
+                    context.assertArguments(1, "error.blacklist_id");
+                    long id = context.assertLong(context.getArguments()[0],
+                            null,
+                            null,
+                            "error.blacklist_id");
+                    if(context.getGuild().getMemberById(id) != null) { // Don't ban present users.
+                        context.replyI18n("error.blacklist_present");
+                        return;
+                    }
+                    context.getGuild().ban(String.valueOf(id), 0).reason("Blacklisted.").queue(
+                        success -> context.replyI18n("success.blacklist"),
+                        fail -> context.replyI18n("error.blacklist_fail")
+                    );
                 });
 
         registry.define("expire")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {
-                        context.assertArguments(1, "error.expire_case");
-                        context.assertArguments(2, "error.expire_duration");
-                        Gravity gravity = DataContainer.INSTANCE.getGravity();
-                        String guildId = context.getGuild().getId();
-                        String caseNumber = context.getArguments()[0];
-                        long expires = context.assertDuration(context.getArguments()[1], "error.expire_duration");
-                        long delay = expires - System.currentTimeMillis();
-                        if(delay <= 0) {
-                            context.replyI18n("error.expire_expired");
-                            return;
-                        }
-                        PunishmentsData list = gravity.load(new PunishmentsData(guildId));
-                        if(!list.contains(caseNumber)) {
-                            context.replyI18n("error.expire_case");
-                            return;
-                        }
-                        ExpiryData expiryData = gravity.load(new ExpiryData(guildId));
-                        Punishment punishment = Punishment.of(context.getGuild(), caseNumber);
-                        ScheduledFuture<?> scheduled = PunishmentExpiry.INSTANCE.getFor(caseNumber);
-                        if(scheduled != null) {
-                            scheduled.cancel(true);
-                        }
-                        PunishmentExpiry.INSTANCE.schedule(context.getGuild(), caseNumber, delay, punishment);
-                        expiryData.set(caseNumber, expires);
-                        gravity.save(expiryData);
-                        context.replyI18n("success.expire");
+                    context.assertArguments(1, "error.expire_case");
+                    context.assertArguments(2, "error.expire_duration");
+                    Gravity gravity = DataContainer.INSTANCE.getGravity();
+                    String guildId = context.getGuild().getId();
+                    String caseNumber = context.getArguments()[0];
+                    long expires = context.assertDuration(context.getArguments()[1], "error.expire_duration");
+                    long delay = expires - System.currentTimeMillis();
+                    if(delay <= 0) {
+                        context.replyI18n("error.expire_expired");
+                        return;
+                    }
+                    PunishmentsData list = gravity.load(new PunishmentsData(guildId));
+                    if(!list.contains(caseNumber)) {
+                        context.replyI18n("error.expire_case");
+                        return;
+                    }
+                    ExpiryData expiryData = gravity.load(new ExpiryData(guildId));
+                    Punishment punishment = Punishment.of(context.getGuild(), caseNumber);
+                    ScheduledFuture<?> scheduled = PunishmentExpiry.INSTANCE.getFor(caseNumber);
+                    if(scheduled != null) {
+                        scheduled.cancel(true);
+                    }
+                    PunishmentExpiry.INSTANCE.schedule(context.getGuild(), caseNumber, delay, punishment);
+                    expiryData.set(caseNumber, expires);
+                    gravity.save(expiryData);
+                    context.replyI18n("success.expire");
                 });
 
         Command commandFilter = registry.define("filter")
@@ -139,7 +139,7 @@ public final class RegistrarMod implements CommandRegistrar {
         registry.define("find")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {
-                        context.assertArguments(1, "error.generic_arg_length");
+                    context.assertArguments(1, "error.generic_arg_length");
                     String guild = context.getGuild().getId();
                     String compare = context.getArguments()[0];
                     Gravity gravity = DataContainer.INSTANCE.getGravity();
@@ -168,8 +168,8 @@ public final class RegistrarMod implements CommandRegistrar {
                         Punishment punishment = entry.getValue().getPropertyA();
                         embedBuilder.addField(
                                 context.__(context, "info.case_number", entry.getValue().getPropertyB().toString()),
-                                context.__(context, "info.punished_user", punishment.getStaffDisplay(), punishment.getUserDisplay()),
-                                false
+                                context.__(context, "info.punished_user", punishment.getStaffDisplay(),
+                                        punishment.getUserDisplay()), false
                         );
                     });
                     embedBuilder.setFooter(context.__(context, "info.paginated",
@@ -198,70 +198,71 @@ public final class RegistrarMod implements CommandRegistrar {
         registry.define("lookup")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {
-                        context.assertArguments(1, "error.lookup_noexist");
-                        Guild guild = context.getGuild();
-                        String caseNumber = context.getArguments()[0];
-                        Gravity gravity = DataContainer.INSTANCE.getGravity();
-                        PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
-                        if(!punishmentList.contains(caseNumber)) {
-                            context.replyI18n("error.lookup_noexist");
-                            return;
-                        }
-                        long caseId = context.assertLong(caseNumber,
-                                null,
-                                null,
-                                "error.lookup_convert");
-                        Punishment punishment = Punishment.of(context.getGuild(), caseId);
-                        context.replyRaw(punishment.redacting(false)
-                                .getLogPunishment(context.getGuild(), caseId));
+                    context.assertArguments(1, "error.lookup_noexist");
+                    Guild guild = context.getGuild();
+                    String caseNumber = context.getArguments()[0];
+                    Gravity gravity = DataContainer.INSTANCE.getGravity();
+                    PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
+                    if(!punishmentList.contains(caseNumber)) {
+                        context.replyI18n("error.lookup_noexist");
+                        return;
+                    }
+                    long caseId = context.assertLong(caseNumber,
+                            null,
+                            null,
+                            "error.lookup_convert");
+                    Punishment punishment = Punishment.of(context.getGuild(), caseId);
+                    context.replyRaw(punishment.redacting(false)
+                            .getLogPunishment(context.getGuild(), caseId));
                 });
 
         registry.define("note")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {
-                        context.assertArguments(1, "error.note_empty");
-                        Member member = context.assertMember(context.getArguments()[0], "error.note_invalid");
-                        Gravity gravity = DataContainer.INSTANCE.getGravity();
-                        NoteData noteData = gravity.load(new NoteData(context.getGuild().getId(), member.getUser().getId()));
-                        if(context.getArguments().length == 1) {
-                            EmbedBuilder embedBuilder = new EmbedBuilder();
-                            embedBuilder.setDescription(context.__(context, "info.note"));
-                            noteData.values().stream()
-                                    .map(it -> it.defaulting("N/A:N/A").toString())
-                                    .forEach(it -> {
-                                        String user;
-                                        String data;
-                                        int index = it.indexOf(":");
-                                        if(index < 0) {
-                                            user = "???";
-                                            data = it;
-                                        } else {
-                                            user = it.substring(0, index);
-                                            data = it.substring(index);
-                                            if(data.length() > 1) {
-                                                data = data.substring(1);
-                                            }
+                    context.assertArguments(1, "error.note_empty");
+                    Member member = context.assertMember(context.getArguments()[0], "error.note_invalid");
+                    Gravity gravity = DataContainer.INSTANCE.getGravity();
+                    NoteData noteData = gravity.load(new NoteData(context.getGuild().getId(),
+                            member.getUser().getId()));
+                    if(context.getArguments().length == 1) {
+                        EmbedBuilder embedBuilder = new EmbedBuilder();
+                        embedBuilder.setDescription(context.__(context, "info.note"));
+                        noteData.values().stream()
+                                .map(it -> it.defaulting("N/A:N/A").toString())
+                                .forEach(it -> {
+                                    String user;
+                                    String data;
+                                    int index = it.indexOf(":");
+                                    if(index < 0) {
+                                        user = "???";
+                                        data = it;
+                                    } else {
+                                        user = it.substring(0, index);
+                                        data = it.substring(index);
+                                        if(data.length() > 1) {
+                                            data = data.substring(1);
                                         }
-                                        embedBuilder.addField(context.__(context, "info.note_author", user),
-                                                data,
-                                                false);
-                                    });
-                            context.replyEmbed(embedBuilder.build());
-                        } else {
-                            String note = UString.concat(context.getArguments(), " ", 1);
-                            if(note.length() > MessageEmbed.VALUE_MAX_LENGTH) {
-                                context.replyI18n("error.note_long", MessageEmbed.VALUE_MAX_LENGTH);
-                                return;
-                            }
-                            if(noteData.size() >= 25) {
-                                context.replyI18n("error.note_full");
-                                return;
-                            }
-                            String data = context.getMember().getUser().getId() + ":" + note;
-                            noteData.add(data);
-                            gravity.save(noteData);
-                            context.replyI18n("success.note");
+                                    }
+                                    embedBuilder.addField(context.__(context, "info.note_author", user),
+                                            data,
+                                            false);
+                                });
+                        context.replyEmbed(embedBuilder.build());
+                    } else {
+                        String note = UString.concat(context.getArguments(), " ", 1);
+                        if(note.length() > MessageEmbed.VALUE_MAX_LENGTH) {
+                            context.replyI18n("error.note_long", MessageEmbed.VALUE_MAX_LENGTH);
+                            return;
                         }
+                        if(noteData.size() >= 25) {
+                            context.replyI18n("error.note_full");
+                            return;
+                        }
+                        String data = context.getMember().getUser().getId() + ":" + note;
+                        noteData.add(data);
+                        gravity.save(noteData);
+                        context.replyI18n("success.note");
+                    }
                 });
 
         Command commandMonitor = registry.define("monitor")
@@ -384,67 +385,67 @@ public final class RegistrarMod implements CommandRegistrar {
         registry.define("purge")
                 .restrict(CommandPermission.discord(Permission.MESSAGE_MANAGE))
                 .on(context -> {
-                        context.assertArguments(1, "error.generic_arg_length");
-                        int amount = context.assertInt(context.getArguments()[0],
-                                2,
-                                100,
-                                "error.purge_range");
-                        context.getChannel().getHistory().retrievePast(amount).queue(it ->
-                                ((TextChannel) context.getChannel()).deleteMessages(it).queue(jollyGood ->
-                                                context.replyI18n("success.done"),
-                                        bloodyHell -> // Rawr, XD.
-                                                context.replyRaw("I tried to hard, and got so far, " +
-                                                        "but in the end, it didn't even purge.")
-                                )
-                        );
+                    context.assertArguments(1, "error.generic_arg_length");
+                    int amount = context.assertInt(context.getArguments()[0],
+                            2,
+                            100,
+                            "error.purge_range");
+                    context.getChannel().getHistory().retrievePast(amount).queue(it ->
+                            ((TextChannel) context.getChannel()).deleteMessages(it).queue(jollyGood ->
+                                            context.replyI18n("success.done"),
+                                bloodyHell -> // Rawr, XD.
+                                            context.replyRaw("I tried to hard, and got so far, "
+                                                    + "but in the end, it didn't even purge.")
+                            )
+                    );
                 });
 
 
         registry.define("reason")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {
-                        context.assertArguments(1, "error.lookup_noexist");
-                        Guild guild = context.getGuild();
-                        String caseNumber = context.getArguments()[0];
-                        String reason = UString.concat(context.getArguments(), " ", 1);
-                        Gravity gravity = DataContainer.INSTANCE.getGravity();
-                        PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
-                        if(!punishmentList.contains(caseNumber)) {
-                            context.replyI18n("error.lookup_noexist");
-                            return;
-                        }
-                        long caseId = context.assertLong(caseNumber,
-                                null,
-                                null,
-                                "error.lookup_convert");
-                        Punishment punishment = Punishment.of(context.getGuild(), caseId);
-                        punishment.setReason(reason);
-                        PunishmentData punishmentData = gravity.load(new PunishmentData(guild.getId(), caseId));
-                        PunishmentHandler punishmentHandler = new PunishmentHandler(guild, punishment);
-                        TextChannel channel = punishmentHandler.getLogChannel();
-                        if(channel == null) {
-                            context.replyI18n("error.reason_logging");
-                            return;
-                        }
-                        boolean redacted = context.getOptions().stream()
-                                .anyMatch(it -> it.getName().equalsIgnoreCase("redacted") || it.getName()
-                                        .equalsIgnoreCase("redact"));
-                        IBai.INSTANCE.getLogger().info("Redacting: " + redacted);
-                        punishmentData.set(REASON, reason);
-                        punishmentData.set(REDACTED, redacted);
-                        punishment.redacting(redacted);
-                        gravity.save(punishmentData);
-                        channel.editMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong(),
-                                punishment.getLogPunishment(guild, caseId)).queue(
-                                outstandingMove -> {
-                                    punishmentData.set(REASON, reason);
-                                    context.replyI18n("success.reason");
-                                },
-                                error -> {
-                                    context.replyI18n("error.reason");
-                                    error.printStackTrace();
-                                }
-                        );
+                    context.assertArguments(1, "error.lookup_noexist");
+                    Guild guild = context.getGuild();
+                    String caseNumber = context.getArguments()[0];
+                    String reason = UString.concat(context.getArguments(), " ", 1);
+                    Gravity gravity = DataContainer.INSTANCE.getGravity();
+                    PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
+                    if(!punishmentList.contains(caseNumber)) {
+                        context.replyI18n("error.lookup_noexist");
+                        return;
+                    }
+                    long caseId = context.assertLong(caseNumber,
+                            null,
+                            null,
+                            "error.lookup_convert");
+                    Punishment punishment = Punishment.of(context.getGuild(), caseId);
+                    punishment.setReason(reason);
+                    PunishmentData punishmentData = gravity.load(new PunishmentData(guild.getId(), caseId));
+                    PunishmentHandler punishmentHandler = new PunishmentHandler(guild, punishment);
+                    TextChannel channel = punishmentHandler.getLogChannel();
+                    if(channel == null) {
+                        context.replyI18n("error.reason_logging");
+                        return;
+                    }
+                    boolean redacted = context.getOptions().stream()
+                            .anyMatch(it -> it.getName().equalsIgnoreCase("redacted") || it.getName()
+                                    .equalsIgnoreCase("redact"));
+                    IBai.INSTANCE.getLogger().info("Redacting: " + redacted);
+                    punishmentData.set(REASON, reason);
+                    punishmentData.set(REDACTED, redacted);
+                    punishment.redacting(redacted);
+                    gravity.save(punishmentData);
+                    channel.editMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong(),
+                            punishment.getLogPunishment(guild, caseId)).queue(
+                            outstandingMove -> {
+                                punishmentData.set(REASON, reason);
+                                context.replyI18n("success.reason");
+                            },
+                            error -> {
+                                context.replyI18n("error.reason");
+                                error.printStackTrace();
+                            }
+                    );
                 });
 
         registry.define("vote")

@@ -46,7 +46,7 @@ public final class Logging implements CommandAction {
      * @param context The command context.
      */
     @Override
-    public final void accept(CommandContext context) {
+    public void accept(CommandContext context) {
         TextChannel channel;
         if(context.getMessage().getMentionedChannels().isEmpty()) {
             channel = null;

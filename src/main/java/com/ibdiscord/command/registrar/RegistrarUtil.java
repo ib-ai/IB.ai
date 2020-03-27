@@ -175,7 +175,7 @@ public final class RegistrarUtil implements CommandRegistrar {
                                     long id = Long.valueOf(option.getValue());
                                     target.retrieveMessageById(id)
                                             .queue(success -> target.editMessageById(id, builder.build()).queue(),
-                                                    failure -> context.replyI18n("error.pin_channel"));
+                                                failure -> context.replyI18n("error.pin_channel"));
                                     break;
                                 }
                             }

@@ -20,7 +20,6 @@ package com.ibdiscord.odds;
 
 import com.ibdiscord.IBai;
 import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.i18n.LocaleShorthand;
 import com.ibdiscord.i18n.LocaliserHandler;
 import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.UFormatter;

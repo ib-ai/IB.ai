@@ -72,50 +72,51 @@ public final class RegistrarSys implements CommandRegistrar {
         registry.define("moderator")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                 .on(context -> {
-                        Gravity gravity = DataContainer.INSTANCE.getGravity();
-                        GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
-                        if(context.getArguments().length == 0) {
-                            String permission = guildData.get(GuildData.MODERATOR)
-                                    .defaulting("not set")
-                                    .asString();
-                            context.replyI18n("info.mod_permission", permission);
-                            return;
-                        }
-                        String newValue = UString.concat(context.getArguments(), " ", 0);
-                        guildData.set(GuildData.MODERATOR, newValue);
-                        gravity.save(guildData);
-                        context.replyI18n("success.mod_permission");
+                    Gravity gravity = DataContainer.INSTANCE.getGravity();
+                    GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
+                    if(context.getArguments().length == 0) {
+                        String permission = guildData.get(GuildData.MODERATOR)
+                                .defaulting("not set")
+                                .asString();
+                        context.replyI18n("info.mod_permission", permission);
+                        return;
+                    }
+                    String newValue = UString.concat(context.getArguments(), " ", 0);
+                    guildData.set(GuildData.MODERATOR, newValue);
+                    gravity.save(guildData);
+                    context.replyI18n("success.mod_permission");
                 });
 
         registry.define("muterole")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                 .on(context -> {
-                        List<Role> roles = context.getMessage().getMentionedRoles();
-                        if(roles.isEmpty()) {
-                            context.replyI18n("error.mute_role");
-                            return;
-                        }
-                        Gravity gravity = DataContainer.INSTANCE.getGravity();
-                        GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
-                        guildData.set(GuildData.MUTE, roles.get(0).getId());
-                        gravity.save(guildData);
-                        context.replyI18n("success.mute_role");
+                    List<Role> roles = context.getMessage().getMentionedRoles();
+                    if(roles.isEmpty()) {
+                        context.replyI18n("error.mute_role");
+                        return;
+                    }
+                    Gravity gravity = DataContainer.INSTANCE.getGravity();
+                    GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
+                    guildData.set(GuildData.MUTE, roles.get(0).getId());
+                    gravity.save(guildData);
+                    context.replyI18n("success.mute_role");
                 });
 
         registry.define("prefix")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                 .on(context -> {
-                        context.assertArguments(1, "error.generic_arg_length");
-                        String prefixNew = context.getArguments()[0];
-                        if(Arrays.stream(new String[]{"/", "$", "#", "+", "*", "?"}).anyMatch(prefixNew::equals)) {
-                            context.replyI18n("error.prefix", prefixNew);
-                            return;
-                        }
+                    context.assertArguments(1, "error.generic_arg_length");
+                    String prefixNew = context.getArguments()[0];
+                    if(Arrays.stream(new String[]{"/", "$", "#", "+", "*", "?"}).anyMatch(prefixNew::equals)) {
+                        context.replyI18n("error.prefix", prefixNew);
+                        return;
+                    }
 
-                        GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(context.getGuild().getId()));
-                        guildData.set(GuildData.PREFIX, prefixNew);
-                        DataContainer.INSTANCE.getGravity().save(guildData);
-                        context.replyI18n("success.prefix", prefixNew);
+                    GuildData guildData = DataContainer.INSTANCE.getGravity().load(
+                            new GuildData(context.getGuild().getId()));
+                    guildData.set(GuildData.PREFIX, prefixNew);
+                    DataContainer.INSTANCE.getGravity().save(guildData);
+                    context.replyI18n("success.prefix", prefixNew);
                 });
 
         Command commandReact = registry.define("react")
