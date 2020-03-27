@@ -21,6 +21,7 @@
   "mod_permission": "The moderator permission has been updated.",
   "monitor_disable": "Monitoring disabled.",
   "monitor_enable": "Monitoring enabled.",
+  "mute_role": "The role has been set.",
   "note": "The note has been added.",
   "odds_cancel": "Successfully canceled odds between {0} and {1}",
   "odds_failed": "Odds failed. {0} guessed `{1}` and {2} guessed `{3}`. Better luck next time.",
