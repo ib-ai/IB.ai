@@ -163,7 +163,7 @@ public final class MessageListener extends ListenerAdapter {
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         // Presently event is used for users to submit 'odds' guesses.
         String rawMessage = event.getMessage().getContentRaw();
-        OddsManager.newGuess(event.getChannel(), event.getAuthor().getId(), rawMessage);
+        OddsManager.INSTANCE.newGuess(event.getChannel(), event.getAuthor().getId(), rawMessage);
     }
 
     /**
