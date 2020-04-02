@@ -46,7 +46,7 @@ public final class LocalSubjects {
             String[] components = set.split(",");
             long id;
             try {
-                id = Integer.valueOf(components[1]);
+                id = Long.valueOf(components[1]);
             } catch(ArrayIndexOutOfBoundsException | NumberFormatException ignored) {
                 id = 0L;
             }
