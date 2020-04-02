@@ -5,30 +5,6 @@
       "language-code": "en",
       "flag": ":flag_gb:",
       "encoding": "UTF-8"
-    },
-    {
-      "language": "Spanish",
-      "language-code": "es",
-      "flag": ":flag_es:",
-      "encoding": "UTF-8"
-    },
-    {
-      "language": "German",
-      "language-code": "de",
-      "flag": ":flag_de:",
-      "encoding": "UTF-8"
-    },
-    {
-      "language": "Japanese",
-      "language-code": "ja",
-      "flag": ":flag_jp:",
-      "encoding": "UTF-8"
-    },
-    {
-      "language": "Chinese (Simplified)",
-      "language-code": "zh-sc",
-      "flag": ":flag_cn:",
-      "encoding": "UTF-8"
     }
   ]
 }

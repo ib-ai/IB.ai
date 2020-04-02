@@ -63,7 +63,7 @@ public final class Eval implements CommandAction {
         String response = UString.stripMassMentions(out.toString());
         if(response.length() > 2000) {
             context.getChannel().sendFile(response.getBytes(), "output_past_threshold.txt")
-                    .queue(null, error -> context.replyI18n("error.generic"));
+                    .queue(null, error -> context.replyI18n("error.eval_file"));
             return;
         }
         context.replyI18n("success.eval", response);

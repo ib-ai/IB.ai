@@ -24,16 +24,16 @@ import lombok.Getter;
 import java.util.HashSet;
 import java.util.Set;
 
+@SuppressWarnings("WeakerAccess")
 public final class LocalSubjects {
 
-    @Getter private Set<Tuple<String, Long>> subjects;
+    @Getter private Set<Tuple<String, Long>> subjects = new HashSet<>();
 
     /**
      * Creates an empty subject set.
      */
     LocalSubjects() {
-        subjects = new HashSet<>();
-    }
+    } // I literally have to declare it like this because of checkstyle, otherwise it won't compile. Bruh.
 
 
     /**

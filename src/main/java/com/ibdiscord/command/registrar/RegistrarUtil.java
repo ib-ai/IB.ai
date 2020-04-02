@@ -65,7 +65,7 @@ public final class RegistrarUtil implements CommandRegistrar {
     public void register(CommandRegistry registry) {
         registry.define("avatar")
                 .on(context -> {
-                    Member target = context.assertMemberArgument("error.user_404");
+                    Member target = context.assertMemberArgument("error.unknown_user");
 
                     context.replyRaw(target.getUser().getEffectiveAvatarUrl() + "?size=1024"); // Nice and big.
                 });
@@ -165,8 +165,8 @@ public final class RegistrarUtil implements CommandRegistrar {
                         return;
                     }
 
-                    if (!context.getOptions().stream()
-                            .anyMatch(it -> it.getName().equalsIgnoreCase("update"))) {
+                    if (context.getOptions().stream()
+                            .noneMatch(it -> it.getName().equalsIgnoreCase("update"))) {
                         target.sendMessage(builder.build()).queue();
                     } else {
                         try {
@@ -180,7 +180,7 @@ public final class RegistrarUtil implements CommandRegistrar {
                                 }
                             }
                         } catch(NumberFormatException exception) {
-                            return;
+                            exception.printStackTrace();
                         }
                     }
                 });
@@ -353,7 +353,7 @@ public final class RegistrarUtil implements CommandRegistrar {
 
         registry.define("userinfo")
                 .on(context -> {
-                    Member target = context.assertMemberArgument("error.user_404");
+                    Member target = context.assertMemberArgument("error.unknown_user");
                     User user = target.getUser();
                     int joinPosition = context.getGuild().getMembers().stream()
                             .sorted((o1, o2) -> {
@@ -409,7 +409,7 @@ public final class RegistrarUtil implements CommandRegistrar {
 
         registry.define("userroles")
                 .on(context -> {
-                    Member target = context.assertMemberArgument("error.user_404");
+                    Member target = context.assertMemberArgument("error.unknown_user");
 
                     context.replyI18n("info.user_roles", target.getRoles().stream()
                             .map(Role::getName)

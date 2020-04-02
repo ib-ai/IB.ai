@@ -45,7 +45,5 @@
   "user_registered": "Registered",
   "user_roles": "This user has the following roles: `{0}`.",
   "user_status": "Status",
-  "vc_region": "Voice Region",
-  "warned_they": "The user has been warned.",
-  "warned_you": "You have been warned on {0} for: {1}"
+  "vc_region": "Voice Region"
 }
