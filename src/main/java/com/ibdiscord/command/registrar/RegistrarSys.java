@@ -28,7 +28,6 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.react.EmoteData;
 import com.ibdiscord.data.db.entries.react.ReactionData;
-import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Emote;
@@ -71,21 +70,7 @@ public final class RegistrarSys implements CommandRegistrar {
 
         registry.define("moderator")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                .on(context -> {
-                    Gravity gravity = DataContainer.INSTANCE.getGravity();
-                    GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
-                    if(context.getArguments().length == 0) {
-                        String permission = guildData.get(GuildData.MODERATOR)
-                                .defaulting("not set")
-                                .asString();
-                        context.replyI18n("info.mod_permission", permission);
-                        return;
-                    }
-                    String newValue = UString.concat(context.getArguments(), " ", 0);
-                    guildData.set(GuildData.MODERATOR, newValue);
-                    gravity.save(guildData);
-                    context.replyI18n("success.mod_permission");
-                });
+                .on(new Roleing(GuildData.MODERATOR, "mod_permission"));
 
         registry.define("muterole")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))

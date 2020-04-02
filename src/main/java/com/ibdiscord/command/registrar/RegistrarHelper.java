@@ -19,13 +19,12 @@
 package com.ibdiscord.command.registrar;
 
 import com.ibdiscord.command.actions.Pin;
+import com.ibdiscord.command.actions.Roleing;
 import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
-import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
-import com.ibdiscord.utils.UString;
-import de.arraying.gravity.Gravity;
+
 import net.dv8tion.jda.api.Permission;
 
 public final class RegistrarHelper implements CommandRegistrar {
@@ -38,21 +37,7 @@ public final class RegistrarHelper implements CommandRegistrar {
     public void register(CommandRegistry registry) {
         registry.define("helper")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                .on(context -> {
-                    Gravity gravity = DataContainer.INSTANCE.getGravity();
-                    GuildData guildData = gravity.load(new GuildData(context.getGuild().getId()));
-                    if(context.getArguments().length == 0) {
-                        String permission = guildData.get(GuildData.HELPER)
-                                .defaulting("not set")
-                                .asString();
-                        context.replyI18n("info.helper_permission", permission);
-                        return;
-                    }
-                    String newValue = UString.concat(context.getArguments(), " ", 0);
-                    guildData.set(GuildData.HELPER, newValue);
-                    gravity.save(guildData);
-                    context.replyI18n("success.helper_permission");
-                });
+                .on(new Roleing(GuildData.HELPER, "helper_permission"));
 
         registry.define("pin")
                 .restrict(CommandPermission.role(GuildData.HELPER))

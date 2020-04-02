@@ -517,7 +517,7 @@ public final class RegistrarMod implements CommandRegistrar {
                             protected void handle(CommandContext context, VoteLadderData ladderData) {
                                 context.assertArguments(2, "error.ladder_format");
                                 long time = context.assertDuration(context.getArguments()[1],
-                                        "error.lader_format");
+                                        "error.ladder_format");
                                 ladderData.set(VoteLadderData.TIMEOUT, time);
                                 context.replyI18n("success.ladder_specify");
                             }
@@ -528,7 +528,7 @@ public final class RegistrarMod implements CommandRegistrar {
                         .on(new VoteLadderManage() {
                             protected void handle(CommandContext context, VoteLadderData ladderData) {
                                 context.assertArguments(2, "error.missing_number");
-                                int result = context.assertInt(context.getArguments()[2],
+                                int result = context.assertInt(context.getArguments()[1],
                                         null,
                                         null,
                                         "error.missing_number");

@@ -34,5 +34,5 @@
   "tag_done": "Consider it done: `{0}` -> `{1}`.",
   "tag_remove": "The tag has been removed.",
   "threshold_update": "The threshold has been updated.",
-  "vote_create": "Created vote #"
+  "vote_create": "Created vote #{0}"
 }
