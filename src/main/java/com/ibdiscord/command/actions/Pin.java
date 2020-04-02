@@ -18,9 +18,11 @@
 
 package com.ibdiscord.command.actions;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.utils.UJSON;
+import com.ibdiscord.utils.objects.Tuple;
 import de.arraying.kotys.JSON;
 import de.arraying.kotys.JSONArray;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -29,10 +31,18 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class Pin implements CommandAction {
 
-    private final List<String> subjectChannels = this.getSubjectChannels();
+    private final List<Long> subjectChannels;
+
+    /**
+     * Populates the subject channels.
+     */
+    public Pin() {
+        subjectChannels = getSubjectChannels();
+    }
 
     /**
      * Pins a message in its channel.
@@ -45,7 +55,7 @@ public final class Pin implements CommandAction {
             TextChannel channel = context.assertChannel(context.getArguments()[0], "error.reaction_channel");
             String msgID = context.getArguments()[1];
             context.assertID(msgID, "error.reaction_message");
-            if(!subjectChannels.contains(channel.getId())) {
+            if(!subjectChannels.contains(channel.getIdLong())) {
                 context.replyI18n("error.subject_channel");
                 return;
             }
@@ -53,7 +63,7 @@ public final class Pin implements CommandAction {
             context.replyI18n("success.done");
         } else { // Channel is unspecified. Uses channel the user issued the command from.
             context.assertID(context.getArguments()[0], "error.pin_channel");
-            if(!subjectChannels.contains(context.getChannel().getId())) {
+            if(!subjectChannels.contains(context.getChannel().getIdLong())) {
                 context.replyI18n("error.subject_channel");
                 return;
             }
@@ -82,18 +92,9 @@ public final class Pin implements CommandAction {
      * Gets the list of subject channels containing ID strings.
      * @return The String list of subject channel IDs.
      */
-    private List<String> getSubjectChannels() {
-        List<String> listOfChannelIDs = new ArrayList<>();
-        try {
-            JSON penis = UJSON.retrieveJSONFromFile("/IB.ai/lang/subject_channels.json");
-            JSONArray channels = penis.array("channels");
-            for(int i = 0; i < channels.length(); i++) {
-                JSON jsonObj = channels.json(i);
-                listOfChannelIDs.add(jsonObj.string("id"));
-            }
-        } catch(IOException exception) {
-            exception.printStackTrace();
-        }
-        return listOfChannelIDs;
+    private List<Long> getSubjectChannels() {
+        return IBai.INSTANCE.getConfig().getSubjects().getSubjects().stream()
+                .map(Tuple::getPropertyB)
+                .collect(Collectors.toList());
     }
 }

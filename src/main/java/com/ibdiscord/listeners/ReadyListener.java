@@ -19,9 +19,6 @@
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
-import com.ibdiscord.api.APICaller;
-import com.ibdiscord.api.Route;
-import com.ibdiscord.api.result.BodyResultHandler;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.punish.ExpiryData;
 import com.ibdiscord.data.db.entries.reminder.ReminderData;
@@ -115,14 +112,6 @@ public final class ReadyListener extends ListenerAdapter {
                 System.exit(1);
             }
         );
-        long now = System.currentTimeMillis();
-        boolean success = APICaller.INSTANCE.dispatch(Route.PING, new BodyResultHandler((status, json) -> {
-            long server = json.large("received");
-            IBai.INSTANCE.getLogger().info("API latency is at {} ms.", server - now);
-        }));
-        if(!success) {
-            IBai.INSTANCE.getLogger().info("API offline.");
-        }
     }
 
 }
