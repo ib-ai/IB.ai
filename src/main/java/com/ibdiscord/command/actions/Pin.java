@@ -21,15 +21,10 @@ package com.ibdiscord.command.actions;
 import com.ibdiscord.IBai;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.utils.UJSON;
 import com.ibdiscord.utils.objects.Tuple;
-import de.arraying.kotys.JSON;
-import de.arraying.kotys.JSONArray;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
