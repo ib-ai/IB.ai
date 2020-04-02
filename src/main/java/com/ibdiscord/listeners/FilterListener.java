@@ -110,6 +110,7 @@ public final class FilterListener extends ListenerAdapter {
                             event.getMessage().getContentRaw(),
                             event.getChannel().getAsMention()
                     );
+
                     description = description.length() > 2000 ? description.substring(0, 2000) : description;
                     EmbedBuilder embedBuilder = new EmbedBuilder()
                             .setColor(Color.MAGENTA)
