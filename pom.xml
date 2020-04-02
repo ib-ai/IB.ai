@@ -91,6 +91,7 @@
                             <mainClass>com.ibdiscord.IBai</mainClass>
                         </manifest>
                     </archive>
+                    <finalName>IB.ai</finalName>
                 </configuration>
             </plugin>
             <plugin>
