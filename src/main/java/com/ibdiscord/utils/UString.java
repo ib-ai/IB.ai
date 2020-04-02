@@ -91,4 +91,57 @@ public final class UString {
                 .replace("`", "\\`");
     }
 
+    /**
+     * Simple truncation of string, using an ellipses to cut a given string input down to a given length.
+     * @param input The string to truncate.
+     * @param length The length to truncate the string to.
+     * @return The truncated string.
+     */
+    public static String truncate(String input, int length) {
+        if(input.length() <= length) { // Roses are red
+            return input;              // Violets are blue
+        }                              // What a fucking oversight
+        String symbol = "...";         // My skills are poo
+        int cutDown = symbol.length() + 1;
+        return input.substring(0, length - cutDown) + symbol;
+    }
+
+    /**
+     * Truncates a string to a given length, inserting a given truncation at the end. Overload for default
+     * ellipses truncation. Examples:
+     *
+     * #("Hello-there-world, 8, 3, TruncationSymbol.ELLIPSES") ->
+     *   "He...rld" (total of 8 length)
+     *
+     * #("Hello-there-world, 5, 0, TruncationSymbol.HYPHEN") ->
+     *   "Hell-" (total of 5 length)
+     *
+     * @param input The string to truncate.
+     * @param length The length to truncate the string to.
+     * @param loopback The number of characters to leave at the end of the truncated string. See example.
+     * @param symbol The TruncationSymbol to use at the end of the truncation.
+     * @return The truncated string.
+     */
+    public static String truncate(String input, int length, int loopback, TruncationSymbol symbol) {
+        if(input.length() <= length) {
+            return input;
+        }
+        String ending;
+        switch (symbol) {
+            case ELLIPSES: ending = "...";
+                break;
+            case HYPHEN: ending = "-";
+                break;
+            case NONE: ending = "";
+                break;
+            default: ending = "...";
+                break;
+        }
+
+        String cap = ending + input.substring(input.length() - loopback);
+        int diff = length - cap.length();
+
+        return input.substring(0, diff) + cap;
+    }
+
 }
