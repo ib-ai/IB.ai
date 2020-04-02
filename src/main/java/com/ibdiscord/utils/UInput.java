@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2018-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -20,6 +20,8 @@ package com.ibdiscord.utils;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,13 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public final class UInput {
+
+    /*
+    * Visual examples:
+    * User mention:    <@!152832260310040576>
+    * Role mention:    <@&665136133176426496>
+    * Channel mention: <#665136115006570507>
+    */
 
     /**
      * The regular expression for a regular user ID.
@@ -36,7 +45,17 @@ public final class UInput {
     /**
      * The regular expression for a mention.
      */
-    private static final Pattern MENTION_PATTERN = Pattern.compile("^<@!?\\d{17,20}>$");
+    private static final Pattern MEMBER_MENTION_PATTERN = Pattern.compile("^<@!?\\d{17,20}>$");
+
+    /**
+     * The regular expression for a role.
+     */
+    private static final Pattern ROLE_MENTION_PATTERN = Pattern.compile("^<@&?\\d{17,20}>$");
+
+    /**
+     * The regular expression for a channel.
+     */
+    private static final Pattern CHANNEL_MENTION_PATTERN = Pattern.compile("^<#?\\d{17,20}>$");
 
     /**
      * The regular expression for a username#discriminator combination.
@@ -46,7 +65,7 @@ public final class UInput {
     /**
      * The regular expression for a non-universal quotation mark.
      */
-    private static final Pattern QUOTATION_MARK = Pattern.compile("[“”„”«»]");
+    private static final Pattern QUOTATION_MARK = Pattern.compile("[“”„«»]");
 
     /**
      * Gets the member corresponding to the given user input.
@@ -56,8 +75,8 @@ public final class UInput {
      */
     public static Member getMember(Guild guild, String input) {
         if(ID_PATTERN.matcher(input).find()
-                || MENTION_PATTERN.matcher(input).find()) {
-            return guild.getMemberById(input.replaceAll("\\D", ""));
+                || MEMBER_MENTION_PATTERN.matcher(input).find()) {
+            return guild.getMemberById(input.replaceAll("\\D", "")); // Remove all non-digits.
         } else if(NAME_PATTERN.matcher(input).find()) {
             String name = input.substring(0, input.indexOf("#"));
             String discriminator = input.substring(input.indexOf("#") + 1);
@@ -69,6 +88,51 @@ public final class UInput {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Gets the role corresponding to the given user input.
+     * @param guild The guild.
+     * @param input The input.
+     * @return A Role object, or null if the input is invalid.
+     */
+    public static Role getRole(Guild guild, String input) {
+        if(ID_PATTERN.matcher(input).find()
+                || ROLE_MENTION_PATTERN.matcher(input).find()) {
+            return guild.getRoleById(input.replaceAll("\\D", "")); // Remove all non-digits.
+        } else {
+            return guild.getRoles().stream()
+                    .filter(role -> role.getName().equalsIgnoreCase(input))
+                    .findFirst()
+                    .orElse(null);
+        }
+    }
+
+    /**
+     * Gets the channel corresponding to the given user input.
+     * @param guild The guild.
+     * @param input The input.
+     * @return A TextChannel object, or null if the input is invalid.
+     */
+    public static TextChannel getChannel(Guild guild, String input) {
+        if(ID_PATTERN.matcher(input).find()
+                || CHANNEL_MENTION_PATTERN.matcher(input).find()) {
+            return guild.getTextChannelById(input.replaceAll("\\D", "")); // Remove all non-digits.
+        } else {
+            return guild.getTextChannels().stream()
+                    .filter(channel -> channel.getName().equalsIgnoreCase(input))
+                    .findFirst()
+                    .orElse(null);
+        }
+    }
+
+    /**
+     * Checks whether a String matches the Discord ID pattern.
+     * @param input The value to check.
+     * @return A boolean depicting whether or not the input is a valid Discord ID.
+     */
+    public static boolean isValidID(String input) {
+        return ID_PATTERN.matcher(input).find();
     }
 
     /**

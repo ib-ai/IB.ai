@@ -60,6 +60,8 @@
   "ladder_format": "Ungültige oder zu kurze Dauer.",
   "missing_number": "Bitte gib eine Zahl an.",
   "vote_create": "Konnte die Wahl nicht starten. Ist die Wahlkategorie konfiguriert und sind die Permissions korrekt?",
+  "subject_channel": "You may only pin messages in subject channels.",
+  "too_few_args": "Too few arguments were provided for this command.",
   "tag_input": "Ungültige Eingabe. Der Name und der Wert müssen in Anführungszeichen gesetzt werden.",
   "tag_long_name": "Name zu lang.",
   "tag_long_value": "Wert zu lang.",

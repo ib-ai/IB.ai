@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Jarred Vardy, Arraying
+/* Copyright 2018-2020 Jarred Vardy, Arraying
  *
  * This file is part of IB.ai.
  *
@@ -18,6 +18,7 @@
 
 package com.ibdiscord.listeners;
 
+import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
@@ -103,9 +104,9 @@ public final class MessageListener extends ListenerAdapter {
             return;
         }
         String commandName = arguments[0].toLowerCase();
-        Command command = Command.find(null, commandName);
+        Command command = IBai.INSTANCE.getCommandRegistry().query(commandName);
         if(command != null) {
-            command.preprocess(context);
+            command.processAndExecute(context);
         }
     }
 
@@ -162,7 +163,7 @@ public final class MessageListener extends ListenerAdapter {
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         // Presently event is used for users to submit 'odds' guesses.
         String rawMessage = event.getMessage().getContentRaw();
-        OddsManager.newGuess(event.getChannel(), event.getAuthor().getId(), rawMessage);
+        OddsManager.INSTANCE.newGuess(event.getChannel(), event.getAuthor().getId(), rawMessage);
     }
 
     /**

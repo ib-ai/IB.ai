@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2018-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -149,7 +149,7 @@ public final class VoteEntry {
                 long channel = ladderData.get(VoteLadderData.CHANNEL)
                         .defaulting(0)
                         .asLong();
-                TextChannel textChannel = IBai.getJda().getTextChannelById(channel);
+                TextChannel textChannel = IBai.INSTANCE.getJda().getTextChannelById(channel);
                 String text;
                 if(yes > no) {
                     text = "passed";

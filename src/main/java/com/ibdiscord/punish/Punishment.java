@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2018-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -102,10 +102,11 @@ public final class Punishment {
      * @return The message.
      */
     public String getLogPunishment(Guild guild, long caseNumber) {
-        String modLog = String.format("**Case: #%d | %s**\n**Offender: **%s (ID: %s)\n**Moderator: **%s "
+        String modLog = String.format("**Case: #%d | %s**\n**Offender: **%s (User: %s, ID: %s)\n**Moderator: **%s "
                         + "(ID: %s)\n**Reason: **%s",
                 caseNumber,
                 type.getDisplayInitial(),
+                getSensitiveField(getMention()),
                 getSensitiveField(userDisplay),
                 getSensitiveField(userId),
                 staffDisplay,
@@ -123,8 +124,9 @@ public final class Punishment {
      */
     @SuppressWarnings("WeakerAccess")
     public String getLogRevocation() {
-        return String.format("**%s**\n**Pardoned: **%s (ID: %s)\n**Moderator: **%s (ID: %s)",
+        return String.format("**%s**\n**Pardoned: **%s (User: %s, ID: %s)\n**Moderator: **%s (ID: %s)",
                 type.getDisplayRevocation(),
+                getMention(),
                 userDisplay,
                 userId,
                 staffDisplay,
@@ -148,6 +150,14 @@ public final class Punishment {
      */
     private String getDefaultReason(Guild guild, long caseNumber) {
         return String.format(DEFAULT_REASON, UDatabase.getPrefix(guild), caseNumber);
+    }
+
+    /**
+     * Gets the user as a mention.
+     * @return The user mention.
+     */
+    private String getMention() {
+        return String.format("<@%s>", userId);
     }
 
 }

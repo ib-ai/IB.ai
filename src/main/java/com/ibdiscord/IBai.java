@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Jarred Vardy, Ray Clark, Arraying
+/* Copyright 2018-2020 Jarred Vardy, Ray Clark, Arraying
  *
  * This file is part of IB.ai.
  *
@@ -18,17 +18,19 @@
 
 package com.ibdiscord;
 
-import com.ibdiscord.command.Command;
+import com.ibdiscord.command.registry.CommandRegistrar;
+import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.data.LocalConfig;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.exceptions.JavaVersionException;
+import com.ibdiscord.i18n.LocaleException;
+import com.ibdiscord.i18n.LocaliserHandler;
 import com.ibdiscord.listeners.FilterListener;
 import com.ibdiscord.listeners.GuildListener;
 import com.ibdiscord.listeners.MessageListener;
 import com.ibdiscord.listeners.MonitorListener;
 import com.ibdiscord.listeners.ReactionListener;
 import com.ibdiscord.listeners.ReadyListener;
-import com.ibdiscord.localisation.Localiser;
 import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.UJavaVersion;
 import lombok.Getter;
@@ -39,6 +41,8 @@ import net.dv8tion.jda.api.entities.Activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import javax.security.auth.login.LoginException;
 
 public enum IBai {
@@ -49,8 +53,9 @@ public enum IBai {
     INSTANCE;
 
     @Getter private LocalConfig config;
-    @Getter Logger logger = LoggerFactory.getLogger(getClass());
-    @Getter private static JDA jda;
+    @Getter private CommandRegistry commandRegistry;
+    @Getter private Logger logger = LoggerFactory.getLogger(getClass());
+    @Getter private JDA jda;
 
     /**
      * Entry point of the program.
@@ -73,9 +78,17 @@ public enum IBai {
      */
     private void init() {
         config = new LocalConfig();
-        Command.init();
+        commandRegistry = new CommandRegistry();
+        for(CommandRegistrar registrar : CommandRegistrar.KNOWN) {
+            registrar.register(commandRegistry);
+        }
         DataContainer.INSTANCE.connect();
-        Localiser.INSTANCE.init();
+        try {
+            LocaliserHandler.INSTANCE.initialize(new File(config.getLangBase()));
+        } catch(IOException | LocaleException exception) {
+            exception.printStackTrace();
+            return;
+        }
         try {
             jda = new JDABuilder()
                     .setToken(config.getBotToken())

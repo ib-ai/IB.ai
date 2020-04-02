@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2018-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -19,8 +19,8 @@
 package com.ibdiscord.input.embed;
 
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.i18n.LocaleShorthand;
 import com.ibdiscord.input.Input;
-import com.ibdiscord.localisation.ILocalised;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -30,7 +30,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import java.util.Objects;
 
 @AllArgsConstructor
-public final class EmbedChannelInput implements Input, ILocalised {
+public final class EmbedChannelInput implements Input, LocaleShorthand {
 
     private final EmbedBuilder builder;
     private TextChannel channel;

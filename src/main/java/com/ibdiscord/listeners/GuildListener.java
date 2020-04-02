@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2018-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -25,7 +25,6 @@ import com.ibdiscord.data.db.entries.RoleData;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentHandler;
 import com.ibdiscord.punish.PunishmentType;
-import com.ibdiscord.utils.UFormatter;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.audit.AuditLogChange;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
@@ -165,9 +164,9 @@ public final class GuildListener extends ListenerAdapter {
                             redacted = true;
                         }
                         Punishment punishment = new Punishment(null,
-                                UFormatter.formatMember(user),
+                                user.getAsTag(),
                                 user.getId(),
-                                UFormatter.formatMember(staff),
+                                staff.getAsTag(),
                                 staff.getId(),
                                 reason,
                                 redacted

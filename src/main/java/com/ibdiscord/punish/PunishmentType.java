@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2018-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -21,11 +21,6 @@ package com.ibdiscord.punish;
 import lombok.Getter;
 
 public enum PunishmentType {
-
-    /**
-     * A verban warling.
-     */
-    WARN("Warning :raised_hand:", "???"),
 
     /**
      * A kick.

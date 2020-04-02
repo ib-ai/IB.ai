@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Jarred Vardy, Arraying
+/* Copyright 2018-2020 Jarred Vardy, Arraying
  *
  * This file is part of IB.ai.
  *
@@ -74,9 +74,14 @@ public final class LocalConfig {
     @Getter private final String mainDatabasePassword;
 
     /**
-     * API_BASE.
+     * SUBJECTS.
      */
-    @Getter private final String apiBase;
+    @Getter private final LocalSubjects subjects;
+
+    /**
+     * LANGUAGE_BASE.
+     */
+    @Getter private final String langBase;
 
     /**
      * Constructor for the local configuration object.
@@ -86,8 +91,8 @@ public final class LocalConfig {
     public LocalConfig() {
         this.botAuthors = getEnvironment("AUTHORS", raw -> Arrays.asList(raw.split(";")), new ArrayList<>());
         this.developIDs = getEnvironment("DEVELOPERS", raw -> Arrays.stream(raw.split(";"))
-                    .map(Long::valueOf)
-                    .collect(Collectors.toList()),
+                        .map(Long::valueOf)
+                        .collect(Collectors.toList()),
                 new ArrayList<>());
         this.githubLink = getEnvironment("GITHUB", "https://github.com");
         this.botToken = getEnvironment("TOKEN", "");
@@ -96,7 +101,8 @@ public final class LocalConfig {
         this.dbIP = getEnvironment("DATA_HOST", "localhost");
         this.mainDatabaseNum = getEnvironment("DATA_INDEX", Long::valueOf, 0L);
         this.mainDatabasePassword = getEnvironment("DATA_AUTH", null);
-        this.apiBase = getEnvironment("API_BASE", "http://localhost:80");
+        this.subjects = getEnvironment("SUBJECTS", LocalSubjects::new, new LocalSubjects());
+        this.langBase = getEnvironment("LANGUAGE_BASE", "/IB.ai/lang/");
     }
 
     /**

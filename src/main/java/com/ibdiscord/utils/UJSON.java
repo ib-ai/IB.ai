@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Jarred Vardy <jarred.vardy@gmail.com>
+/* Copyright 2018-2020 Jarred Vardy <jarred.vardy@gmail.com>
  *
  * This file is part of IB.ai.
  *
@@ -29,26 +29,21 @@ public final class UJSON {
      * @param relativeFilePath Relative path to JSON file from project root
      * @param charset The charset to use to decode the file.
      * @return JSON object corresponding to file at desired location.
+     * @throws IOException When there is an I/O error.
      */
-    public static JSON retrieveJSONFromFile(String relativeFilePath, String charset) {
+    public static JSON retrieveJSONFromFile(String relativeFilePath, String charset)
+            throws IOException {
         StringBuilder jsonBuilder = new StringBuilder();
-        try {
-            //BufferedReader reader = new BufferedReader(new FileReader(relativeFilePath));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(new File(relativeFilePath)),
-                    charset
-            ));
-            String line = reader.readLine();
-            while(line != null) {
-                jsonBuilder.append(line);
-                line = reader.readLine();
-            }
-            reader.close();
-            System.out.println("Loading using charset " + charset);
-        } catch(IOException ex) {
-            ex.printStackTrace();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                new FileInputStream(new File(relativeFilePath)),
+                charset
+        ));
+        String line = reader.readLine();
+        while(line != null) {
+            jsonBuilder.append(line);
+            line = reader.readLine();
         }
-
+        reader.close();
         return new JSON(jsonBuilder.toString());
     }
 
@@ -56,8 +51,10 @@ public final class UJSON {
      * Alias to {@link #retrieveJSONFromFile(String, String)} with default UTF-8 encoding.
      * @param relativeFilePath Relatie path to JSON file from project root.
      * @return JSON object corresponding to file at desired location.
+     * @throws IOException When there is an I/O error.
      */
-    public static JSON retrieveJSONFromFile(String relativeFilePath) {
+    public static JSON retrieveJSONFromFile(String relativeFilePath)
+            throws IOException {
         return retrieveJSONFromFile(relativeFilePath, "UTF-8");
     }
 

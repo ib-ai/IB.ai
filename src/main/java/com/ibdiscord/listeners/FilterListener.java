@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2018-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -34,7 +34,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -58,12 +58,11 @@ public final class FilterListener extends ListenerAdapter {
             String messageSub = message.substring(prefix.length()).replaceAll(" +", " ");
             String[] arguments = messageSub.split(" ");
             String commandName = arguments[0].toLowerCase();
-            Command command = Command.find(null, commandName);
+            Command command = IBai.INSTANCE.getCommandRegistry().query(commandName);
             if(command != null && command.getName().equalsIgnoreCase("filter")) {
                 return;
             }
         }
-
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         GuildData guildData = gravity.load(new GuildData(event.getGuild().getId()));
         FilterData filterData = gravity.load(new FilterData(event.getGuild().getId()));
@@ -96,11 +95,10 @@ public final class FilterListener extends ListenerAdapter {
                         );
                         return;
                     }
-
                     String title = String.format(
                             "%s (ID: %s)",
-                            event.getMessage().getAuthor().getAsTag(),
-                            event.getMessage().getAuthor().getId()
+                            event.getAuthor().getAsTag(),
+                            event.getAuthor().getId()
                     );
 
                     if (title.length() > MessageEmbed.TITLE_MAX_LENGTH) {

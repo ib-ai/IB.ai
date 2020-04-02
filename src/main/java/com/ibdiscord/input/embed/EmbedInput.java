@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Arraying
+/* Copyright 2018-2020 Arraying
  *
  * This file is part of IB.ai.
  *
@@ -19,11 +19,11 @@
 package com.ibdiscord.input.embed;
 
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.i18n.LocaleShorthand;
 import com.ibdiscord.input.Input;
-import com.ibdiscord.localisation.ILocalised;
 import net.dv8tion.jda.api.EmbedBuilder;
 
-public abstract class EmbedInput implements Input, ILocalised {
+public abstract class EmbedInput implements Input, LocaleShorthand {
 
     final EmbedBuilder builder;
     Input successor;

@@ -1,4 +1,4 @@
-/* Copyright 2019 Arraying
+/* Copyright 2017-2020 Arraying
  *
  * This file is part of IB.ai.
  *

@@ -1,4 +1,4 @@
-/* Copyright 2017-2019 Jarred Vardy
+/* Copyright 2018-2020 Jarred Vardy
  *
  * This file is part of IB.ai.
  *

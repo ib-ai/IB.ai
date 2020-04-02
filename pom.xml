@@ -8,7 +8,7 @@
     <!-- Document properties -->
     <groupId>com.ibdiscord</groupId>
     <artifactId>IB.ai</artifactId>
-    <version>3.4.30</version>
+    <version>4.0.0</version>
 
     <name>IB.ai</name>
     <url>http://www.ibdiscord.com</url>
@@ -26,7 +26,6 @@
     <packaging>jar</packaging>
 
     <build>
-        <finalName>IB.ai</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -180,7 +179,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.0.0_45</version>
+            <version>4.1.1_127</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -231,6 +230,5 @@
             <version>16.0.1</version>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
 </project>

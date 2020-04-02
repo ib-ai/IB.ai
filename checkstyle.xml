@@ -4,7 +4,7 @@
         "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <!--
-    Copyright 2017-2019 Jarred Vardy
+    Copyright 2018-2020 Jarred Vardy
 
     This file is part of IB.ai.
 
@@ -64,7 +64,7 @@
         </module>
         <module name="AvoidStarImport">
             <property name="excludes" value="java.io,java.net,java.lang.Math, java.util.concurrent, java.awt, com.ibdiscord.data.db.entries.punish.PunishmentData,
-                                            com.ibdiscord.command.commands, net.dv8tion.jda.api.entities, java.util"/>
+                                            com.ibdiscord.command.actions, net.dv8tion.jda.api.entities, java.util"/>
             <property name="allowClassImports" value="false"/>
             <property name="allowStaticMemberImports" value="false"/>
         </module>
