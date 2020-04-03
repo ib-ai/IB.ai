@@ -23,9 +23,11 @@ import com.ibdiscord.command.Command;
 import com.ibdiscord.command.Option;
 import com.ibdiscord.command.actions.LangList;
 import com.ibdiscord.command.actions.ReminderList;
+import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.GuildUserData;
 import com.ibdiscord.data.db.entries.LangData;
 import com.ibdiscord.i18n.EmbedBuilderI18n;
@@ -71,9 +73,11 @@ public final class RegistrarUtil implements CommandRegistrar {
                 });
 
         registry.define("embed")
+                .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> InputHandler.INSTANCE.start(context.getMember(), new EmbedDescriptionInput(), context));
 
         registry.define("embedraw")
+                .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {
                     context.assertArguments(1, "error.missing_channel");
                     if (context.getMessage().getMentionedChannels().size() < 1) {
