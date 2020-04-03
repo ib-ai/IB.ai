@@ -163,15 +163,15 @@ public final class RegistrarSys implements CommandRegistrar {
 
         Command commandTag = registry.define("tag") // Explicitly state it to allow cross referencing.
                 .sub(registry.sub("activate", "tag_activate")
-                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .restrict(CommandPermission.role(GuildData.MODERATOR))
                         .on(new TagActivate())
                 )
                 .sub(registry.sub("create", "generic_create")
-                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .restrict(CommandPermission.role(GuildData.MODERATOR))
                         .on(new TagCreate())
                 )
                 .sub(registry.sub("delete", "generic_delete")
-                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .restrict(CommandPermission.role(GuildData.MODERATOR))
                         .on(new TagDelete())
                 )
                 .sub(registry.sub("disabled", null)
