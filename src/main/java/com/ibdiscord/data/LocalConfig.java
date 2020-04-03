@@ -79,6 +79,11 @@ public final class LocalConfig {
     @Getter private final LocalSubjects subjects;
 
     /**
+     * SENSITIVE_ROLES.
+     */
+    @Getter private final List<Long> sensitiveRoles;
+
+    /**
      * LANGUAGE_BASE.
      */
     @Getter private final String langBase;
@@ -103,6 +108,14 @@ public final class LocalConfig {
         this.mainDatabasePassword = getEnvironment("DATA_AUTH", null);
         this.subjects = getEnvironment("SUBJECTS", LocalSubjects::new, new LocalSubjects());
         this.langBase = getEnvironment("LANGUAGE_BASE", "/IB.ai/lang/");
+        this.sensitiveRoles = getEnvironment("SENSITIVE_ROLES", raw -> {
+            if(!(raw == null || raw.isEmpty())) {
+                return Arrays.stream(raw.split(";"))
+                        .map(Long::valueOf)
+                        .collect(Collectors.toList());
+            }
+            return new ArrayList<>();
+        }, new ArrayList<>());
     }
 
     /**

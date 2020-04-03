@@ -33,4 +33,4 @@ COPY --from=builder /IB.ai/target/ ./target
 
 # Running bot. Uses version from pom.xml to call artifact file name.
 CMD VERSION="$(grep -oP -m 1 '(?<=<version>).*?(?=</version>)' /IB.ai/pom.xml)" && \
-    java -jar /IB.ai/target/IB.ai-$VERSION.jar
+    java -jar /IB.ai/target/IB.ai.jar

@@ -73,7 +73,10 @@ public final class GuildListener extends ListenerAdapter {
         List<Role> roles = roleData.values().stream()
                 .map(it -> member.getGuild().getRoleById(it.defaulting(0L).asLong()))
                 .filter(Objects::nonNull)
-                .filter(it -> highest == null || it.getPosition() < highest.getPosition())
+                .filter(it -> highest == null || it.getPosition() < highest.getPosition()) // Avoid permission error
+                .filter(it -> IBai.INSTANCE.getConfig().getSensitiveRoles().stream()
+                        .noneMatch(sensitive -> it.getIdLong() == sensitive) // Do not give sensitive roles back
+                )
                 .collect(Collectors.toList());
         roles.addAll(member.getRoles());
         member.getGuild().modifyMemberRoles(member, roles).queue();
