@@ -26,6 +26,8 @@
   "odds_cancel": "Successfully canceled odds between {0} and {1}",
   "odds_failed": "Odds failed. {0} guessed `{1}` and {2} guessed `{3}`. Better luck next time.",
   "odds_match": "Odds matched! You both guessed {0}. Better get it done.",
+  "opt_in": "You will now be able to see the channel.",
+  "opt_out": "You will no longer be able to see the channel.",
   "prefix": "The prefix has been updated to ({0}).",
   "reason": "The reason has been updated.",
   "reminder_delete": "The reminder has been deleted!",

@@ -19,8 +19,10 @@
 package com.ibdiscord.listeners;
 
 import com.ibdiscord.IBai;
+import com.ibdiscord.command.actions.Opt;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.entries.OptData;
 import com.ibdiscord.data.db.entries.RoleData;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentHandler;
@@ -30,10 +32,7 @@ import net.dv8tion.jda.api.audit.AuditLogChange;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
 import net.dv8tion.jda.api.audit.AuditLogKey;
 import net.dv8tion.jda.api.audit.TargetType;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.GuildUnbanEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
@@ -63,6 +62,15 @@ public final class GuildListener extends ListenerAdapter {
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         Member member = event.getMember();
         Gravity gravity = DataContainer.INSTANCE.getGravity();
+
+        OptData optData = gravity.load(new OptData(member.getGuild().getId(), member.getUser().getId()));
+        optData.values().stream()
+                .map(it -> it.defaulting(0).asLong())
+                .map(it -> member.getGuild().getGuildChannelById(it))
+                .filter(Objects::nonNull)
+                .filter(it -> it.getType() == ChannelType.TEXT)
+                .forEach(it -> Opt.override(it, member, false));
+
         RoleData roleData = gravity.load(new RoleData(member.getGuild().getId(), member.getUser().getId()));
         if(roleData == null) {
             return;

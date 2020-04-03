@@ -89,11 +89,28 @@ public final class LocalConfig {
     @Getter private final String langBase;
 
     /**
+     * OPT_CATEGORIES.
+     */
+    @Getter private final List<Long> optCategories;
+
+    /**
+     * OPT_BLACKLIST.
+     */
+    @Getter private final List<Long> optBlacklist;
+
+    /**
      * Constructor for the local configuration object.
      * Sets all of the class properties to their corresponding environment
      * variable.
      */
     public LocalConfig() {
+        final Function<String, List<Long>> lambdaMapId = data -> { // Final to comply with checkstyle.
+            if(!(data == null || data.isEmpty())) {
+                return Arrays.stream(data.split(";")).map(Long::valueOf).collect(Collectors.toList());
+            }
+            return new ArrayList<>();
+        };
+
         this.botAuthors = getEnvironment("AUTHORS", raw -> Arrays.asList(raw.split(";")), new ArrayList<>());
         this.developIDs = getEnvironment("DEVELOPERS", raw -> Arrays.stream(raw.split(";"))
                         .map(Long::valueOf)
@@ -108,14 +125,9 @@ public final class LocalConfig {
         this.mainDatabasePassword = getEnvironment("DATA_AUTH", null);
         this.subjects = getEnvironment("SUBJECTS", LocalSubjects::new, new LocalSubjects());
         this.langBase = getEnvironment("LANGUAGE_BASE", "/IB.ai/lang/");
-        this.sensitiveRoles = getEnvironment("SENSITIVE_ROLES", raw -> {
-            if(!(raw == null || raw.isEmpty())) {
-                return Arrays.stream(raw.split(";"))
-                        .map(Long::valueOf)
-                        .collect(Collectors.toList());
-            }
-            return new ArrayList<>();
-        }, new ArrayList<>());
+        this.sensitiveRoles = getEnvironment("SENSITIVE_ROLES", lambdaMapId, new ArrayList<>());
+        this.optCategories = getEnvironment("OPT_CATEGORIES", lambdaMapId, new ArrayList<>());
+        this.optBlacklist = getEnvironment("OPT_BLACKLIST", lambdaMapId, new ArrayList<>());
     }
 
     /**

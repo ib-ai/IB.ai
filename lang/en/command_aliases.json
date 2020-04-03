@@ -27,6 +27,7 @@
   "note": ["note", "notes"],
   "odds": ["odds", "odd", "wtfarethebloodyoddsgoodsir"],
   "odds_cancel": ["cancel", "c"],
+  "opt": ["optout", "optin"],
   "ping": ["ping", "pong", "latency", "dingdong"],
   "prefix": ["prefix", "setprefix"],
   "purge": ["purge", "clear", "prune", "deletebrowserhistory"],

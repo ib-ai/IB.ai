@@ -18,15 +18,13 @@
 
 package com.ibdiscord.utils;
 
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import java.util.stream.Stream;
 
 public final class UInput {
 
@@ -123,6 +121,32 @@ public final class UInput {
                     .filter(channel -> channel.getName().equalsIgnoreCase(input))
                     .findFirst()
                     .orElse(null);
+        }
+    }
+
+    /**
+     * Gets a guild channel corresponding to the given user input.
+     * @param guild The guild.
+     * @param input The input.
+     * @param strictVoiceText True to only allow text/voice channels, false otherwise.
+     * @return A GuildChannel object, or null if the input is invalid.
+     */
+    public static GuildChannel getChannelGuild(Guild guild, String input, boolean strictVoiceText) {
+        TextChannel textChannel = getChannel(guild, input);
+        if(textChannel != null) {
+            return textChannel;
+        }
+        if(ID_PATTERN.matcher(input).find()) {
+            return guild.getGuildChannelById(input.replaceAll("\\D", ""));
+        } else {
+            Stream<GuildChannel> stream = guild.getChannels().stream()
+                .filter(channel -> channel.getName().equalsIgnoreCase(input));
+            if(strictVoiceText) {
+                // This only looks for voice channels because of a text channel has been found this conditional
+                // will not be called in the first place.
+                stream = stream.filter(channel -> channel.getType() == ChannelType.VOICE);
+            }
+            return stream.findFirst().orElse(null);
         }
     }
 

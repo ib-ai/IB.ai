@@ -29,6 +29,7 @@
   "number_online": "Currently Online",
   "number_roles": "# of Roles",
   "odds": "New odds have been set! {0} and {1}, please DM me your guesses between 1 and {2}. If both of you send me the same number, the forfeit must be fulfilled. Use `{3}odds cancel` to cancel.",
+  "opt": "You currently have opt-outs for the following channels: `{0}`. Please mention a channel in order to toggle an opt-out for it.",
   "owner": "Owner",
   "paginated": "Page {0}/{1}",
   "punished_user": "{0} punished {1}",
