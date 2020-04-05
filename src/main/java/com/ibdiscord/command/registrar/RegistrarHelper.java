@@ -23,9 +23,15 @@ import com.ibdiscord.command.actions.Roleing;
 import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
+import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 
+import com.ibdiscord.data.db.entries.HelperMessageData;
+import com.ibdiscord.utils.UEmbed;
+import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 public final class RegistrarHelper implements CommandRegistrar {
 
@@ -38,6 +44,36 @@ public final class RegistrarHelper implements CommandRegistrar {
         registry.define("helper")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                 .on(new Roleing(GuildData.HELPER, "helper_permission"));
+
+        registry.define("helpermessage")
+                .restrict(CommandPermission.discord(Permission.MANAGE_ROLES))
+                .on(context -> {
+                    context.assertArguments(2, "error.generic_arg_length");
+                    if (context.getMessage().getMentionedChannels().size() < 1) {
+                        context.replyI18n("error.missing_channel");
+                        return;
+                    }
+                    TextChannel channel = context.getMessage().getMentionedChannels().get(0);
+                    Role role = UInput.getRole(context.getGuild(), context.getArguments()[0]);
+                    if (role == null) {
+                        context.replyI18n("error.missing_roleid");
+                        return;
+                    }
+
+
+
+                    channel.sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), role))
+                            .queue(success -> {
+                                HelperMessageData helperMessageData = DataContainer.INSTANCE.getGravity().load(
+                                    new HelperMessageData(context.getGuild().getId())
+                                );
+                                helperMessageData.set(role.getId(),
+                                        String.format("%s,%s",channel.getId(), success.getId()));
+                                DataContainer.INSTANCE.getGravity().save(helperMessageData);
+                            },
+                                fail -> context.replyI18n("error.pin_channel"));
+
+                });
 
         registry.define("pin")
                 .restrict(CommandPermission.role(GuildData.HELPER))

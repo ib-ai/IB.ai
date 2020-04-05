@@ -22,11 +22,14 @@ import com.ibdiscord.IBai;
 import com.ibdiscord.command.actions.Opt;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.entries.HelperMessageData;
 import com.ibdiscord.data.db.entries.OptData;
 import com.ibdiscord.data.db.entries.RoleData;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentHandler;
 import com.ibdiscord.punish.PunishmentType;
+import com.ibdiscord.utils.UEmbed;
+import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.audit.AuditLogChange;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
@@ -113,6 +116,7 @@ public final class GuildListener extends ListenerAdapter {
      */
     @Override
     public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent event) {
+        updateHelperMessages(event.getGuild(), event.getRoles());
         queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong());
     }
 
@@ -122,6 +126,7 @@ public final class GuildListener extends ListenerAdapter {
      */
     @Override
     public void onGuildMemberRoleRemove(GuildMemberRoleRemoveEvent event) {
+        updateHelperMessages(event.getGuild(), event.getRoles());
         queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong());
     }
 
@@ -257,4 +262,27 @@ public final class GuildListener extends ListenerAdapter {
         return true;
     }
 
+    /**
+     * Updates the Helper Messages if someone is helpered or unhelpered.
+     */
+    private void updateHelperMessages(Guild guild, List<Role> roles) {
+        HelperMessageData helperMessageData = DataContainer.INSTANCE.getGravity().load(
+                new HelperMessageData(guild.getId())
+        );
+
+        roles.forEach(role -> {
+            if (helperMessageData.getKeys().contains(role.getId())) {
+                String[] ids = helperMessageData.get(role.getId()).asString().split(",");
+                System.out.println(helperMessageData.get(role.getId()).asString());
+                if (ids.length < 2) {
+                    return;
+                }
+                TextChannel channel = UInput.getChannel(guild, ids[0]);
+                if (channel == null) {
+                    return;
+                }
+                channel.editMessageById(ids[1], UEmbed.helperMessageEmbed(guild, role)).queue();
+            }
+        });
+    }
 }
