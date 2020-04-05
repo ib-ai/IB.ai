@@ -59,7 +59,7 @@ public final class TagFind implements CommandAction {
             }
         }
 
-        boolean escape = context.getOptions().contains("escape");
+        boolean escape = context.getOptions().stream().anyMatch(it -> it.getName().toLowerCase().equals("escape"));
         pagination.page(page).forEach(entry ->
             tags.append(String.format((escape ? "`%s`" : "%s"), entry.getValue())).append(", "));
 
