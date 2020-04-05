@@ -58,7 +58,7 @@ public final class TagFind implements CommandAction {
                 // Ignored
             }
         }
-        pagination.page(page).forEach(entry -> tags.append(UString.escapeFormatting(entry.getValue())).append(", "));
+        pagination.page(page).forEach(entry -> tags.append(String.format("`%s`", entry.getValue())).append(", "));
         if (tags.length() == 0) {
             embedBuilder.addField(
                     context.__(context, "error.tag_404"),
@@ -68,7 +68,7 @@ public final class TagFind implements CommandAction {
         } else {
             embedBuilder.addField(
                     context.__(context, "info.tag_list_similar"),
-                    String.format("`%s`", tags.substring(0, tags.length() - 4)),
+                    UString.truncate(tags.substring(0, tags.length()), 512),
                     false
             );
             embedBuilder.setFooter(
