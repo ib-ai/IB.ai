@@ -216,7 +216,7 @@ public final class UInput {
      */
     public static String escapeLinebreakInQuotations(String input) {
         StringBuilder string = new StringBuilder(input);
-        QUOTATION.matcher(string.toString()).results().forEach(matchResult ->
+        QUOTATION.matcher(string.toString()).results().sorted((m1, m2) -> m2.end() - m1.end()).forEach(matchResult ->
                 string.replace(matchResult.start(), matchResult.end(),
                         matchResult.group().replaceAll("\n", "\\\\n")));
         return string.toString();
