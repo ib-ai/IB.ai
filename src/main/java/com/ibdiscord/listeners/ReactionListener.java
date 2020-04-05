@@ -149,7 +149,7 @@ public final class ReactionListener extends ListenerAdapter {
             }
             if(rolesToAdd.contains(preIBRole) && userRoles.stream()
                     .anyMatch(role -> role.getName().equals("NSFW"))) {
-                return;
+                rolesToRemove.add(nsfwRole);
             }
         } catch(Exception ex) {
             // ignored
