@@ -59,9 +59,14 @@ public final class TagFind implements CommandAction {
             }
         }
 
-        boolean escape = context.getOptions().stream().anyMatch(it -> it.getName().equalsIgnoreCase("escape"));
-        pagination.page(page).forEach(entry ->
-            tags.append(String.format((escape ? "`%s`" : "%s"), entry.getValue())).append(", "));
+        pagination.page(page).forEach(entry -> {
+            if (context.getOptions().stream().anyMatch(it -> it.getName().equalsIgnoreCase("escape"))) {
+                tags.append(String.format("`%s`", entry.getValue()));
+            } else {
+                tags.append(UString.escapeFormatting(entry.getValue()));
+            }
+            tags.append(", ");
+        });
 
         if (tags.length() == 0) {
             embedBuilder.addField(

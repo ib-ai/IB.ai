@@ -24,6 +24,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.tag.TagData;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
+import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -55,13 +56,17 @@ public final class TagList extends PaginatedCommand<String> {
     @Override
     protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
         TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
-        String value = tagData.get(page.getValue()).asString();
-        boolean escape = context.getOptions().stream().anyMatch(it -> it.getName().equalsIgnoreCase("escape"));
-        embedBuilder.addField(
-                String.format((escape ? "`%s`" : "%s"), UString.truncate(page.getValue(), 510)),
-                UString.truncate(value, 510),
-                false
-        );
+
+        String key = page.getValue();
+        String value = UString.truncate(tagData.get(key).asString(), 512);
+
+        if (context.getOptions().stream().anyMatch(it -> it.getName().equalsIgnoreCase("escape"))) {
+            key = String.format("`%s`", UString.truncate(key, 510));
+        } else {
+            key = UString.escapeFormatting(key);
+        }
+
+        embedBuilder.addField(key, value, false);
     }
 
     /**
