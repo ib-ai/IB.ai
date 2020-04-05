@@ -37,7 +37,7 @@ public final class TagDelete implements CommandAction {
         List<String> names = context.assertQuotes(1, "error.tag_quotation");
         TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
         names.forEach(tag -> {
-            tagData.unset(names.get(0));
+            tagData.unset(tag);
             context.replyI18n("success.tag_remove");
         });
         DataContainer.INSTANCE.getGravity().save(tagData);
