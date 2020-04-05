@@ -58,7 +58,11 @@ public final class TagFind implements CommandAction {
                 // Ignored
             }
         }
-        pagination.page(page).forEach(entry -> tags.append(String.format("`%s`", entry.getValue())).append(", "));
+
+        boolean escape = context.getOptions().contains("escape");
+        pagination.page(page).forEach(entry ->
+            tags.append(String.format((escape ? "`%s`" : "%s"), entry.getValue())).append(", "));
+
         if (tags.length() == 0) {
             embedBuilder.addField(
                     context.__(context, "error.tag_404"),
