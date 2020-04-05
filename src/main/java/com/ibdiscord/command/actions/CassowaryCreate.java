@@ -55,11 +55,16 @@ public final class CassowaryCreate implements CommandAction {
             context.replyI18n("error.cassowary_id");
         }
 
-        CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData());
+        CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData(
+                context.getGuild().getId()
+        ));
         cassowariesData.add(label);
         DataContainer.INSTANCE.getGravity().save(cassowariesData);
 
-        CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(label));
+        CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(
+                context.getGuild().getId(),
+                label
+        ));
         roleIDs.forEach(cassowaryData::add);
         DataContainer.INSTANCE.getGravity().save(cassowaryData);
 

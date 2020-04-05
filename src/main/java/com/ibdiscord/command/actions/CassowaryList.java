@@ -37,9 +37,14 @@ public final class CassowaryList extends PaginatedCommand<String> {
 
     @Override
     protected Pagination<String> getPagination(CommandContext context) {
-        List<String> values = DataContainer.INSTANCE.getGravity().load(new CassowariesData()).contents().stream()
+        List<String> values = DataContainer.INSTANCE.getGravity().load(new CassowariesData(
+                context.getGuild().getId()
+        )).contents().stream()
                 .map(Property::asString)
-                .map(cas -> cas + " " + DataContainer.INSTANCE.getGravity().load(new CassowaryData(cas)).contents()
+                .map(cas -> cas + " " + DataContainer.INSTANCE.getGravity().load(new CassowaryData(
+                        context.getGuild().getId(),
+                        cas
+                )).contents()
                         .stream()
                         // lol
                         .map(id -> id + "(" + Objects.requireNonNull(context.getGuild().getRoleById(id.asString()))

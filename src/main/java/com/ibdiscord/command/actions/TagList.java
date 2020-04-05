@@ -24,7 +24,6 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.tag.TagData;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
-import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.api.EmbedBuilder;
 

@@ -39,11 +39,14 @@ public final class CassowaryDelete implements CommandAction {
 
         String label = data.get(0);
 
-        CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData());
+        CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData(
+                context.getGuild().getId()
+        ));
+
         cassowariesData.remove(label);
         DataContainer.INSTANCE.getGravity().save(cassowariesData);
 
-        DataContainer.INSTANCE.getGravity().load(new CassowaryData(label)).delete();
+        DataContainer.INSTANCE.getGravity().load(new CassowaryData(context.getGuild().getId(), label)).delete();
 
         context.replyI18n("success.done");
     }

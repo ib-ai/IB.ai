@@ -155,10 +155,11 @@ public final class ReactionListener extends ListenerAdapter {
             // ignored
         }
 
-        CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData());
+        CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData(guild.getId()));
         for(Property cassowariesProp : cassowariesData.contents()) {
 
             CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(
+                    guild.getId(),
                     cassowariesProp.asString())
             );
             boolean containsRoleToAdd = !Collections.disjoint(cassowaryData.contents().stream()

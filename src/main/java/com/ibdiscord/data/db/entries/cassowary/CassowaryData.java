@@ -24,11 +24,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public final class CassowaryData extends TypeList {
 
+    private final String guild;
     private final String label;
 
     @Override
     protected String getUniqueIdentifier() {
-        return "cassowary_" + label;
+        return "cassowary_" + this.guild + "_" + this.label;
     }
 
 }

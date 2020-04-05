@@ -19,12 +19,16 @@
 package com.ibdiscord.data.db.entries.cassowary;
 
 import de.arraying.gravity.data.types.TypeList;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public final class CassowariesData extends TypeList {
+
+    private final String guild;
 
     @Override
     protected String getUniqueIdentifier() {
-        return "cassowaries";
+        return "cassowaries_" + this.guild;
     }
 
 }
