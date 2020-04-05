@@ -30,8 +30,11 @@ import com.ibdiscord.data.db.entries.HelperMessageData;
 import com.ibdiscord.utils.UEmbed;
 import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.util.concurrent.RejectedExecutionException;
 
 public final class RegistrarHelper implements CommandRegistrar {
 
@@ -60,19 +63,30 @@ public final class RegistrarHelper implements CommandRegistrar {
                         return;
                     }
 
+                    HelperMessageData helperMessageData = DataContainer.INSTANCE.getGravity().load(
+                            new HelperMessageData(context.getGuild().getId())
+                    );
 
+                    if (helperMessageData.getKeys().contains(role.getId())) {
+                        String[] ids = helperMessageData.get(role.getId()).asString().split(",");
+                        if (ids.length == 2) {
+                            TextChannel channelOld = UInput.getChannel(context.getGuild(), ids[0]);
+                            if (channelOld != null) {
+                                channelOld.deleteMessageById(ids[1]).queue();
+                            }
+                        }
+                    }
 
-                    channel.sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), role))
-                            .queue(success -> {
-                                HelperMessageData helperMessageData = DataContainer.INSTANCE.getGravity().load(
-                                    new HelperMessageData(context.getGuild().getId())
-                                );
-                                helperMessageData.set(role.getId(),
-                                        String.format("%s,%s",channel.getId(), success.getId()));
-                                DataContainer.INSTANCE.getGravity().save(helperMessageData);
-                            },
-                                fail -> context.replyI18n("error.pin_channel"));
-
+                    try {
+                        Message message = channel.sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), role))
+                                .complete();
+                        helperMessageData.set(role.getId(), String.format("%s,%s", channel.getId(), message.getId()));
+                        DataContainer.INSTANCE.getGravity().save(helperMessageData);
+                        message.pin().queue();
+                    } catch (RejectedExecutionException e) {
+                        context.replyI18n("error.pin_channel");
+                        return;
+                    }
                 });
 
         registry.define("pin")
