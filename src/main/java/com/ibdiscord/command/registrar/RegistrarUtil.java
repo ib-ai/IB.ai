@@ -40,6 +40,7 @@ import com.ibdiscord.input.embed.EmbedDescriptionInput;
 import com.ibdiscord.reminder.Reminder;
 import com.ibdiscord.reminder.ReminderHandler;
 import com.ibdiscord.utils.UDatabase;
+import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import de.arraying.kotys.JSON;
@@ -86,15 +87,11 @@ public final class RegistrarUtil implements CommandRegistrar {
                         return;
                     }
                     context.assertArguments(2, "error.missing_data");
-                    StringBuilder jsonBuilder = new StringBuilder();
-                    for (int i = 1; i < context.getArguments().length; i++) {
-                        jsonBuilder.append(context.getArguments()[i]).append(" ");
-                    }
-
+                    String json = UInput.escapeLinebreakInQuotations(UString.concat(context.getArguments(), " ", 1));
                     JSON embed;
 
                     try {
-                        embed = new JSON(jsonBuilder.toString());
+                        embed = new JSON(json.toString());
                     } catch (IllegalStateException e) {
                         context.replyI18n("error.missing_data");
                         return;
@@ -174,18 +171,14 @@ public final class RegistrarUtil implements CommandRegistrar {
                             .noneMatch(it -> it.getName().equalsIgnoreCase("update"))) {
                         target.sendMessage(builder.build()).queue();
                     } else {
-                        try {
-                            for (Option option : context.getOptions()) {
-                                if (option.getName().equalsIgnoreCase("update")) {
-                                    long id = Long.valueOf(option.getValue());
-                                    target.retrieveMessageById(id)
-                                            .queue(success -> target.editMessageById(id, builder.build()).queue(),
-                                                failure -> context.replyI18n("error.pin_channel"));
-                                    break;
-                                }
+                        for (Option option : context.getOptions()) {
+                            if (option.getName().equalsIgnoreCase("update")) {
+                                long id = UString.toLong(option.getValue());
+                                target.retrieveMessageById(id)
+                                        .queue(success -> target.editMessageById(id, builder.build()).queue(),
+                                            failure -> context.replyI18n("error.pin_channel"));
+                                break;
                             }
-                        } catch(NumberFormatException exception) {
-                            exception.printStackTrace();
                         }
                     }
                 });

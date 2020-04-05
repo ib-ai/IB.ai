@@ -66,6 +66,11 @@ public final class UInput {
     private static final Pattern QUOTATION_MARK = Pattern.compile("[“”„«»]");
 
     /**
+     * The regular expression for a (universal) quotation.
+     */
+    private static final Pattern QUOTATION = Pattern.compile("[\"“”„«»][^“”„«»\"]*[“”„«»\"]");
+
+    /**
      * Gets the member corresponding to the given user input.
      * @param guild The guild.
      * @param input The input.
@@ -202,6 +207,19 @@ public final class UInput {
         } catch(PatternSyntaxException exception) {
             return false;
         }
+    }
+
+    /**
+     * Escapes newline characters found within quotations only.
+     * @param input The string to escape.
+     * @return Escaped string.
+     */
+    public static String escapeLinebreakInQuotations(String input) {
+        StringBuilder string = new StringBuilder(input);
+        QUOTATION.matcher(string.toString()).results().forEach(matchResult ->
+                string.replace(matchResult.start(), matchResult.end(),
+                        matchResult.group().replaceAll("\n", "\\\\n")));
+        return string.toString();
     }
 
 }
