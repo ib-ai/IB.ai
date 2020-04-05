@@ -273,7 +273,6 @@ public final class GuildListener extends ListenerAdapter {
         roles.forEach(role -> {
             if (helperMessageData.getKeys().contains(role.getId())) {
                 String[] ids = helperMessageData.get(role.getId()).asString().split(",");
-                System.out.println(helperMessageData.get(role.getId()).asString());
                 if (ids.length < 2) {
                     return;
                 }
