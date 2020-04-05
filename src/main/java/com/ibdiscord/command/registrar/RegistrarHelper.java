@@ -18,23 +18,17 @@
 
 package com.ibdiscord.command.registrar;
 
+import com.ibdiscord.command.actions.HelperMessageCreate;
+import com.ibdiscord.command.actions.HelperMessageDelete;
+import com.ibdiscord.command.actions.HelperMessageList;
 import com.ibdiscord.command.actions.Pin;
 import com.ibdiscord.command.actions.Roleing;
 import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
-import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
 
-import com.ibdiscord.data.db.entries.HelperMessageData;
-import com.ibdiscord.utils.UEmbed;
-import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
-
-import java.util.concurrent.RejectedExecutionException;
 
 public final class RegistrarHelper implements CommandRegistrar {
 
@@ -49,45 +43,14 @@ public final class RegistrarHelper implements CommandRegistrar {
                 .on(new Roleing(GuildData.HELPER, "helper_permission"));
 
         registry.define("helpermessage")
-                .restrict(CommandPermission.discord(Permission.MANAGE_ROLES))
-                .on(context -> {
-                    context.assertArguments(2, "error.generic_arg_length");
-                    if (context.getMessage().getMentionedChannels().size() < 1) {
-                        context.replyI18n("error.missing_channel");
-                        return;
-                    }
-                    TextChannel channel = context.getMessage().getMentionedChannels().get(0);
-                    Role role = UInput.getRole(context.getGuild(), context.getArguments()[0]);
-                    if (role == null) {
-                        context.replyI18n("error.missing_roleid");
-                        return;
-                    }
-
-                    HelperMessageData helperMessageData = DataContainer.INSTANCE.getGravity().load(
-                            new HelperMessageData(context.getGuild().getId())
-                    );
-
-                    if (helperMessageData.getKeys().contains(role.getId())) {
-                        String[] ids = helperMessageData.get(role.getId()).asString().split(",");
-                        if (ids.length == 2) {
-                            TextChannel channelOld = UInput.getChannel(context.getGuild(), ids[0]);
-                            if (channelOld != null) {
-                                channelOld.deleteMessageById(ids[1]).queue();
-                            }
-                        }
-                    }
-
-                    try {
-                        Message message = channel.sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), role))
-                                .complete();
-                        helperMessageData.set(role.getId(), String.format("%s,%s", channel.getId(), message.getId()));
-                        DataContainer.INSTANCE.getGravity().save(helperMessageData);
-                        message.pin().queue();
-                    } catch (RejectedExecutionException e) {
-                        context.replyI18n("error.pin_channel");
-                        return;
-                    }
-                });
+                .sub(registry.sub("create", "generic_create")
+                        .restrict(CommandPermission.discord(Permission.MANAGE_ROLES))
+                        .on(new HelperMessageCreate()))
+                .sub(registry.sub("delete", "generic_delete")
+                        .restrict(CommandPermission.discord(Permission.MANAGE_ROLES))
+                        .on(new HelperMessageDelete()))
+                .sub(registry.sub("list", "generic_list")
+                        .on(new HelperMessageList()));
 
         registry.define("pin")
                 .restrict(CommandPermission.role(GuildData.HELPER))

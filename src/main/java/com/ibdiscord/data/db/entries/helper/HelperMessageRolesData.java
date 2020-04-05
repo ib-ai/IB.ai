@@ -16,13 +16,13 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.data.db.entries;
+package com.ibdiscord.data.db.entries.helper;
 
-import de.arraying.gravity.data.types.TypeMap;
+import de.arraying.gravity.data.types.TypeSet;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public final class HelperMessageData extends TypeMap {
+public final class HelperMessageRolesData extends TypeSet {
 
     private final String guild;
 

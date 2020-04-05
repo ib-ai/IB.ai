@@ -22,14 +22,14 @@ import com.ibdiscord.IBai;
 import com.ibdiscord.command.actions.Opt;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
-import com.ibdiscord.data.db.entries.HelperMessageData;
 import com.ibdiscord.data.db.entries.OptData;
 import com.ibdiscord.data.db.entries.RoleData;
+import com.ibdiscord.data.db.entries.helper.HelperMessageData;
+import com.ibdiscord.data.db.entries.helper.HelperMessageRolesData;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentHandler;
 import com.ibdiscord.punish.PunishmentType;
 import com.ibdiscord.utils.UEmbed;
-import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.audit.AuditLogChange;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
@@ -266,21 +266,24 @@ public final class GuildListener extends ListenerAdapter {
      * Updates the Helper Messages if someone is helpered or unhelpered.
      */
     private void updateHelperMessages(Guild guild, List<Role> roles) {
-        HelperMessageData helperMessageData = DataContainer.INSTANCE.getGravity().load(
-                new HelperMessageData(guild.getId())
+        HelperMessageRolesData helperMessageRolesData = DataContainer.INSTANCE.getGravity().load(
+                new HelperMessageRolesData(guild.getId())
         );
 
         roles.forEach(role -> {
-            if (helperMessageData.getKeys().contains(role.getId())) {
-                String[] ids = helperMessageData.get(role.getId()).asString().split(",");
-                if (ids.length < 2) {
-                    return;
-                }
-                TextChannel channel = UInput.getChannel(guild, ids[0]);
-                if (channel == null) {
-                    return;
-                }
-                channel.editMessageById(ids[1], UEmbed.helperMessageEmbed(guild, role)).queue();
+            if (helperMessageRolesData.contains(role.getId())) {
+                HelperMessageData helperMessageData = DataContainer.INSTANCE.getGravity().load(
+                        new HelperMessageData(guild.getId(), role.getId())
+                );
+
+                helperMessageData.getKeys().stream().forEach(channelId -> {
+                    TextChannel channel = guild.getTextChannelById(channelId);
+                    if (channel == null) {
+                        return;
+                    }
+                    channel.editMessageById(helperMessageData.get(channelId).asString(),
+                            UEmbed.helperMessageEmbed(guild, role)).queue();
+                });
             }
         });
     }
