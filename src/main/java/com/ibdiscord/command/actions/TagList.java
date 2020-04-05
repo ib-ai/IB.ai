@@ -56,9 +56,9 @@ public final class TagList extends PaginatedCommand<String> {
     protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
         TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
         String value = tagData.get(page.getValue()).asString();
-        embedBuilder.addField(UString.escapeFormatting(
-                page.getValue()),
-                String.format("`%s`", UString.truncate(value, 510)),
+        embedBuilder.addField(
+                String.format("`%s`", UString.truncate(page.getValue(), 510)),
+                UString.truncate(value, 510),
                 false
         );
     }
