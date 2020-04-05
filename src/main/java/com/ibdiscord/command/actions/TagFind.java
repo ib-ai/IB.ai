@@ -68,7 +68,7 @@ public final class TagFind implements CommandAction {
         } else {
             embedBuilder.addField(
                     context.__(context, "info.tag_list_similar"),
-                    tags.substring(0, tags.length() - 2),
+                    String.format("`%s`", tags.substring(0, tags.length() - 4)),
                     false
             );
             embedBuilder.setFooter(
