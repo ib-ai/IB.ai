@@ -58,7 +58,7 @@ public final class TagList extends PaginatedCommand<String> {
         String value = tagData.get(page.getValue()).asString();
         embedBuilder.addField(UString.escapeFormatting(
                 page.getValue()),
-                String.format("`%s`", UString.truncate(value, 512)),
+                String.format("`%s`", UString.truncate(value, 510)),
                 false
         );
     }
