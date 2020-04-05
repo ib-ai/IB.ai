@@ -78,16 +78,16 @@ public enum IBai {
      */
     private void init() {
         config = new LocalConfig();
-        commandRegistry = new CommandRegistry();
-        for(CommandRegistrar registrar : CommandRegistrar.KNOWN) {
-            registrar.register(commandRegistry);
-        }
         DataContainer.INSTANCE.connect();
         try {
             LocaliserHandler.INSTANCE.initialize(new File(config.getLangBase()));
         } catch(IOException | LocaleException exception) {
             exception.printStackTrace();
             return;
+        }
+        commandRegistry = new CommandRegistry();
+        for(CommandRegistrar registrar : CommandRegistrar.KNOWN) {
+            registrar.register(commandRegistry);
         }
         try {
             jda = new JDABuilder()
