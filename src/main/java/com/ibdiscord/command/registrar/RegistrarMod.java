@@ -382,24 +382,44 @@ public final class RegistrarMod implements CommandRegistrar {
                 );
         commandMonitor.on(context -> context.replySyntax(commandMonitor));
 
-        registry.define("purge")
-                .restrict(CommandPermission.discord(Permission.MESSAGE_MANAGE))
-                .on(context -> {
-                    context.assertArguments(1, "error.generic_arg_length");
-                    int amount = context.assertInt(context.getArguments()[0],
-                            2,
-                            100,
-                            "error.purge_range");
-                    context.getChannel().getHistory().retrievePast(amount).queue(it ->
-                            ((TextChannel) context.getChannel()).deleteMessages(it).queue(jollyGood ->
-                                            context.replyI18n("success.done"),
-                                bloodyHell -> // Rawr, XD.
-                                            context.replyRaw("I tried to hard, and got so far, "
-                                                    + "but in the end, it didn't even purge.")
-                            )
-                    );
-                });
-
+        Command commandPurge = registry.define("purge")
+                .sub(registry.sub("message", null)
+                    .restrict(CommandPermission.discord(Permission.MESSAGE_MANAGE))
+                    .on(context -> {
+                        context.assertArguments(1, "error.generic_arg_length");
+                        int amount = context.assertInt(context.getArguments()[0],
+                                2,
+                                100,
+                                "error.purge_range");
+                        context.getChannel().getHistory().retrievePast(amount).queue(it ->
+                                ((TextChannel) context.getChannel()).deleteMessages(it).queue(jollyGood ->
+                                                context.replyI18n("success.done"),
+                                    bloodyHell -> // Rawr, XD.
+                                                context.replyRaw("I tried to hard, and got so far, "
+                                                        + "but in the end, it didn't even purge.")
+                                )
+                        );
+                    }))
+                .sub(registry.sub("react", "react")
+                    .restrict(CommandPermission.discord(Permission.MESSAGE_MANAGE))
+                    .on(context -> {
+                        context.assertArguments(3, "error.generic_arg_length");
+                        if (context.getMessage().getMentionedChannels().size() < 1) {
+                            context.replyI18n("error.missing_channel");
+                            return;
+                        }
+                        TextChannel channel = context.getMessage().getMentionedChannels().get(0);
+                        Message message;
+                        try {
+                            message = channel.retrieveMessageById(context.getArguments()[1]).complete();
+                        } catch (IllegalArgumentException e) {
+                            context.replyI18n("error.reaction_message");
+                            return;
+                        }
+                        message.clearReactions(context.getArguments()[2]).queue();
+                        context.replyI18n("success.done");
+                    }));
+        commandPurge.on(context -> context.replySyntax(commandPurge));
 
         registry.define("reason")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
