@@ -416,7 +416,11 @@ public final class RegistrarMod implements CommandRegistrar {
                             context.replyI18n("error.reaction_message");
                             return;
                         }
-                        message.clearReactions(context.getArguments()[2]).queue();
+                        if (context.getMessage().getEmotes().size() == 0) {
+                            message.clearReactions(context.getArguments()[2]).queue();
+                        } else {
+                            message.clearReactions(context.getMessage().getEmotes().get(0)).queue();
+                        }
                         context.replyI18n("success.done");
                     }));
         commandPurge.on(context -> context.replySyntax(commandPurge));
