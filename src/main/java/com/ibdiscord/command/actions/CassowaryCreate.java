@@ -1,4 +1,4 @@
-/* Copyright 2017-2020 Jarred Vardy, Arraying
+/* Copyright 2017-2020 Jarred Vardy <vardy@riseup.net>, Arraying
  *
  * This file is part of IB.ai.
  *
