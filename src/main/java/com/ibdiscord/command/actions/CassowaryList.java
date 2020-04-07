@@ -23,6 +23,7 @@ import com.ibdiscord.command.abstractions.PaginatedCommand;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
 import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
+import com.ibdiscord.data.db.entries.cassowary.CassowaryPenguinData;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UString;
@@ -37,17 +38,20 @@ public final class CassowaryList extends PaginatedCommand<String> {
 
     @Override
     protected Pagination<String> getPagination(CommandContext context) {
+        CassowaryPenguinData cassowaryPenguins = DataContainer.INSTANCE.getGravity()
+                .load(new CassowaryPenguinData(context.getGuild().getId()));
         List<String> values = DataContainer.INSTANCE.getGravity().load(new CassowariesData(
                 context.getGuild().getId()
         )).values().stream()
                 .map(Property::asString)
-                .map(cas -> cas + " " + DataContainer.INSTANCE.getGravity().load(new CassowaryData(
-                        context.getGuild().getId(),
-                        cas
+                .map(cas -> cas + (cassowaryPenguins.values().contains(cas) ? " [penguin] " : " ") +
+                        DataContainer.INSTANCE.getGravity().load(new CassowaryData(
+                            context.getGuild().getId(),
+                            cas
                 )).values()
                         .stream()
                         // lol
-                        .map(id -> id + "(" + Objects.requireNonNull(context.getGuild().getRoleById(id.asString()))
+                        .map(id -> id + " (" + Objects.requireNonNull(context.getGuild().getRoleById(id.asString()))
                                 .getName() + ")")
                         .collect(Collectors.toSet())
                         .toString())

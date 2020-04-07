@@ -23,6 +23,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
 import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
+import com.ibdiscord.data.db.entries.cassowary.CassowaryPenguinData;
 
 import java.util.List;
 
@@ -42,9 +43,14 @@ public final class CassowaryDelete implements CommandAction {
         CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData(
                 context.getGuild().getId()
         ));
-
         cassowariesData.remove(label);
         DataContainer.INSTANCE.getGravity().save(cassowariesData);
+
+        CassowaryPenguinData cassowaryPenguins = DataContainer.INSTANCE.getGravity().load(new CassowaryPenguinData(
+                context.getGuild().getId()
+        ));
+        cassowaryPenguins.remove(label);
+        DataContainer.INSTANCE.getGravity().save(cassowaryPenguins);
 
         DataContainer.INSTANCE.getGravity().load(new CassowaryData(context.getGuild().getId(), label)).delete();
 
