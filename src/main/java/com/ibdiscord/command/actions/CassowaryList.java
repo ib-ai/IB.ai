@@ -44,8 +44,8 @@ public final class CassowaryList extends PaginatedCommand<String> {
                 context.getGuild().getId()
         )).values().stream()
                 .map(Property::asString)
-                .map(cas -> cas + (cassowaryPenguins.values().contains(cas) ? " [penguin] " : " ") +
-                        DataContainer.INSTANCE.getGravity().load(new CassowaryData(
+                .map(cas -> cas + (cassowaryPenguins.values().contains(cas) ? " [penguin] " : " ")
+                        + DataContainer.INSTANCE.getGravity().load(new CassowaryData(
                             context.getGuild().getId(),
                             cas
                 )).values()
