@@ -564,10 +564,11 @@ public final class RegistrarMod implements CommandRegistrar {
         commandVoteLadder.on(context -> context.replySyntax(commandVoteLadder));
 
         registry.define("update")
-                .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .sub(registry.sub("set", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                         .on(new Logging(GuildData.UPDATES)))
                 .sub(registry.sub("add", null)
+                        .restrict(CommandPermission.role(GuildData.MODERATOR))
                         .on(context -> {
                             List<String> updates = context.assertQuotes(1, "error.missing_data");
                             GuildData guildData = DataContainer.INSTANCE.getGravity()
@@ -623,6 +624,7 @@ public final class RegistrarMod implements CommandRegistrar {
                             context.replyI18n("success.done");
                         }))
                 .sub(registry.sub("delete", null)
+                        .restrict(CommandPermission.role(GuildData.MODERATOR))
                         .on(context -> {
                             context.assertArguments(1, "error.missing_messageid");
                             GuildData guildData = DataContainer.INSTANCE.getGravity()
