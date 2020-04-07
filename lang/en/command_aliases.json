@@ -16,6 +16,7 @@
   "expire": ["expire", "expiry"],
   "find": ["find", "lookupuser"],
   "helper": ["helper", "sethelper"],
+  "helperlist": ["helperlist", "hl"],
   "lang": ["lang", "language", "l10n", "i18n"],
   "lang_set": ["set", "s", "ispeak"],
   "log": ["log", "setlog"],

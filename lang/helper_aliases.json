@@ -1,0 +1,12 @@
+{
+  "473479887173451787": ["bio","biology"],
+  "473479585552400394": ["econ", "economics"],
+  "473479338734387218": ["ell", "english_lang_lit"],
+  "473479436625510411": ["fll", "foreign_lang_lit"],
+  "473479778343845899": ["geo", "geography"],
+  "473479822132379679": ["history"],
+  "473479937538654209": ["chem", "chemistry"],
+  "473479961450250241": ["csi", "comp_sci", "computer_sci"],
+  "473480046536032256": ["phys", "physics"],
+  "473480094191714304": ["math", "maths", "mathematics"]
+}

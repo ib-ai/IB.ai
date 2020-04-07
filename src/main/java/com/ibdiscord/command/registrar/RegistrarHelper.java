@@ -18,11 +18,7 @@
 
 package com.ibdiscord.command.registrar;
 
-import com.ibdiscord.command.actions.HelperMessageCreate;
-import com.ibdiscord.command.actions.HelperMessageDelete;
-import com.ibdiscord.command.actions.HelperMessageList;
-import com.ibdiscord.command.actions.Pin;
-import com.ibdiscord.command.actions.Roleing;
+import com.ibdiscord.command.actions.*;
 import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
@@ -51,6 +47,9 @@ public final class RegistrarHelper implements CommandRegistrar {
                         .on(new HelperMessageDelete()))
                 .sub(registry.sub("list", "generic_list")
                         .on(new HelperMessageList()));
+
+        registry.define("helperlist")
+                .on(new HelperList());
 
         registry.define("pin")
                 .restrict(CommandPermission.role(GuildData.HELPER))
