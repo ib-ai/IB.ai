@@ -18,7 +18,13 @@
 
 package com.ibdiscord.command.registrar;
 
-import com.ibdiscord.command.actions.*;
+import com.ibdiscord.command.actions.HelperMessageCreate;
+import com.ibdiscord.command.actions.HelperMessageDelete;
+import com.ibdiscord.command.actions.HelperMessageList;
+import com.ibdiscord.command.actions.Pin;
+import com.ibdiscord.command.actions.Roleing;
+import com.ibdiscord.command.actions.HelperList;
+
 import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
