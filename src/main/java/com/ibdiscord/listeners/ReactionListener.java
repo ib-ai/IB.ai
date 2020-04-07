@@ -156,13 +156,13 @@ public final class ReactionListener extends ListenerAdapter {
         }
 
         CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData(guild.getId()));
-        for(Property cassowariesProp : cassowariesData.contents()) {
+        for(Property cassowariesProp : cassowariesData.values()) {
 
             CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(
                     guild.getId(),
                     cassowariesProp.asString())
             );
-            boolean containsRoleToAdd = !Collections.disjoint(cassowaryData.contents().stream()
+            boolean containsRoleToAdd = !Collections.disjoint(cassowaryData.values().stream()
                     .map(Property::asString)
                             .collect(Collectors.toSet()),
                     rolesToAdd.stream()
@@ -172,7 +172,7 @@ public final class ReactionListener extends ListenerAdapter {
             // if a role that is about to be added to the user is a member of the cassowary
             if(containsRoleToAdd) {
                 // for each role ID inside the cassowary,
-                for(Property cassowaryProp : cassowaryData.contents()) {
+                for(Property cassowaryProp : cassowaryData.values()) {
                     // for each role the user has
                     for(Role userRole : member.getRoles()) {
                         if(cassowaryProp.asString().equals(userRole.getId())) {

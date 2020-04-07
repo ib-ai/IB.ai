@@ -18,11 +18,11 @@
 
 package com.ibdiscord.data.db.entries.cassowary;
 
-import de.arraying.gravity.data.types.TypeList;
+import de.arraying.gravity.data.types.TypeSet;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public final class CassowariesData extends TypeList {
+public final class CassowariesData extends TypeSet {
 
     private final String guild;
 
