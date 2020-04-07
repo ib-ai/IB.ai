@@ -53,9 +53,9 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
@@ -562,6 +562,102 @@ public final class RegistrarMod implements CommandRegistrar {
                         })
                 );
         commandVoteLadder.on(context -> context.replySyntax(commandVoteLadder));
+
+        registry.define("update")
+                .restrict(CommandPermission.role(GuildData.MODERATOR))
+                .sub(registry.sub("set", null)
+                        .on(new Logging(GuildData.UPDATES)))
+                .sub(registry.sub("add", null)
+                        .on(context -> {
+                            List<String> updates = context.assertQuotes(1, "error.missing_data");
+                            GuildData guildData = DataContainer.INSTANCE.getGravity()
+                                    .load(new GuildData(context.getGuild().getId()));
+                            TextChannel channel = context.getGuild()
+                                    .getTextChannelById(guildData.get(GuildData.UPDATES).defaulting(0L).asLong());
+                            if (channel == null) {
+                                context.replyI18n("error.reason_logging");
+                                return;
+                            }
+                            String newUpdates = updates.stream()
+                                    .map(s -> String.format("- %s", s))
+                                    .collect(Collectors.joining("\n"));
+
+                            GregorianCalendar cal = new GregorianCalendar();
+                            if (channel.hasLatestMessage()) {
+                                Message message = channel.retrieveMessageById(channel.getLatestMessageId()).complete();
+                                LocalDate messageDate = message.getTimeCreated().toLocalDate();
+                                if (message.getAuthor().isBot()
+                                        && cal.get(GregorianCalendar.DAY_OF_YEAR) == messageDate.getDayOfYear()) {
+                                    StringBuilder builder = new StringBuilder(message.getContentRaw());
+                                    builder.append("\n").append(newUpdates);
+                                    message.editMessage(builder.toString()).queue();
+                                    context.replyI18n("success.done");
+                                    return;
+                                }
+                            }
+
+                            StringBuilder builder = new StringBuilder();
+                            builder.append("**");
+                            int dayOfMonth = cal.get(GregorianCalendar.DAY_OF_MONTH);
+                            builder.append(dayOfMonth);
+                            switch (dayOfMonth % 10) {
+                                case 1:
+                                    builder.append("st");
+                                    break;
+                                case 2:
+                                    builder.append("nd");
+                                    break;
+                                case 3:
+                                    builder.append("rd");
+                                    break;
+                                default:
+                                    builder.append("th");
+                            }
+                            builder.append(" of ");
+                            SimpleDateFormat formatter = new SimpleDateFormat("MMMM, YYYY");
+                            formatter.setCalendar(cal);
+                            builder.append(formatter.format(cal.getTime()));
+                            builder.append("**\n");
+                            builder.append(newUpdates);
+                            channel.sendMessage(builder.toString()).queue();
+                            context.replyI18n("success.done");
+                        }))
+                .sub(registry.sub("delete", null)
+                        .on(context -> {
+                            context.assertArguments(1, "error.missing_messageid");
+                            GuildData guildData = DataContainer.INSTANCE.getGravity()
+                                    .load(new GuildData(context.getGuild().getId()));
+                            TextChannel channel = context.getGuild()
+                                    .getTextChannelById(guildData.get(GuildData.UPDATES).defaulting(0L).asLong());
+                            if (channel == null) {
+                                context.replyI18n("error.reason_logging");
+                                return;
+                            }
+                            Message message = channel.retrieveMessageById(context.getArguments()[0]).complete();
+                            if (message == null) {
+                                context.replyI18n("error.pin_channel");
+                                return;
+                            }
+                            context.assertArguments(2, "error.missing_number");
+                            int index = context.assertInt(context.getArguments()[1], 1, Integer.MAX_VALUE,
+                                    "error.missing_number");
+                            String[] entries = message.getContentRaw().split("\n");
+                            if (entries.length <= index) {
+                                context.replyI18n("error.invalid_data");
+                                return;
+                            }
+
+                            StringBuilder builder = new StringBuilder();
+                            for (int i = 0; i < entries.length; i++) {
+                                if (i == index) {
+                                    continue;
+                                }
+
+                                builder.append(entries[i]).append("\n");
+                            }
+                            message.editMessage(builder.substring(0, builder.length())).queue();
+                            context.replyI18n("success.done");
+                        }));
     }
 
 }
