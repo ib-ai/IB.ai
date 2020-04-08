@@ -584,9 +584,9 @@ public final class RegistrarMod implements CommandRegistrar {
                                     .collect(Collectors.joining("\n"));
 
                             GregorianCalendar cal = new GregorianCalendar();
-                            MessageHistory history = channel.getHistory();
+                            List<Message> history = channel.getHistory().retrievePast(1).complete();
                             if (!history.isEmpty()) {
-                                Message message = history.getRetrievedHistory().get(0);
+                                Message message = history.get(0);
                                 LocalDate messageDate = message.getTimeCreated().toLocalDate();
                                 if (message.getAuthor().isBot()
                                         && cal.get(GregorianCalendar.DAY_OF_YEAR) == messageDate.getDayOfYear()) {
@@ -650,15 +650,19 @@ public final class RegistrarMod implements CommandRegistrar {
                                 return;
                             }
 
-                            StringBuilder builder = new StringBuilder();
-                            for (int i = 0; i < entries.length; i++) {
-                                if (i == index) {
-                                    continue;
-                                }
+                            if (entries.length - 1 == 1) {
+                                message.delete().queue();
+                            } else {
+                                StringBuilder builder = new StringBuilder();
+                                for (int i = 0; i < entries.length; i++) {
+                                    if (i == index) {
+                                        continue;
+                                    }
 
-                                builder.append(entries[i]).append("\n");
+                                    builder.append(entries[i]).append("\n");
+                                }
+                                message.editMessage(builder.substring(0, builder.length())).queue();
                             }
-                            message.editMessage(builder.substring(0, builder.length())).queue();
                             context.replyI18n("success.done");
                         }));
     }
