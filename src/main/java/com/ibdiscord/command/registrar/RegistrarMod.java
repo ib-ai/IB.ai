@@ -584,8 +584,9 @@ public final class RegistrarMod implements CommandRegistrar {
                                     .collect(Collectors.joining("\n"));
 
                             GregorianCalendar cal = new GregorianCalendar();
-                            if (channel.hasLatestMessage()) {
-                                Message message = channel.retrieveMessageById(channel.getLatestMessageId()).complete();
+                            MessageHistory history = channel.getHistory();
+                            if (!history.isEmpty()) {
+                                Message message = history.getRetrievedHistory().get(0);
                                 LocalDate messageDate = message.getTimeCreated().toLocalDate();
                                 if (message.getAuthor().isBot()
                                         && cal.get(GregorianCalendar.DAY_OF_YEAR) == messageDate.getDayOfYear()) {
