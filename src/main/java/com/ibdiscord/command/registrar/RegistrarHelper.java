@@ -1,4 +1,4 @@
-/* Copyright 2018-2020 Jarred Vardy
+/* Copyright 2018-2020 Jarred Vardy <vardy@riseup.net>
  *
  * This file is part of IB.ai.
  *
@@ -18,12 +18,12 @@
 
 package com.ibdiscord.command.registrar;
 
+import com.ibdiscord.command.actions.HelperList;
 import com.ibdiscord.command.actions.HelperMessageCreate;
 import com.ibdiscord.command.actions.HelperMessageDelete;
 import com.ibdiscord.command.actions.HelperMessageList;
 import com.ibdiscord.command.actions.Pin;
 import com.ibdiscord.command.actions.Roleing;
-import com.ibdiscord.command.actions.HelperList;
 
 import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.command.registry.CommandRegistrar;

@@ -25,12 +25,14 @@ import com.ibdiscord.utils.UEmbed;
 import com.ibdiscord.utils.UJSON;
 import de.arraying.kotys.JSON;
 import de.arraying.kotys.JSONArray;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class HelperList implements CommandAction {
 
@@ -44,11 +46,37 @@ public final class HelperList implements CommandAction {
      */
     @Override
     public void accept(CommandContext context) {
-        String channel = context.getChannel().getId();
+        MessageChannel channelMessage = context.getChannel();
         String desiredRole;
+        if (context.getArguments().length < 1) {
+
+            List<Role> allRoles = context.getGuild().getRoles();
+            AtomicBoolean roleInChannel = new AtomicBoolean(false);
+
+            allRoles.forEach(role -> {
+                if (role.hasPermission((GuildChannel) channelMessage, Permission.MESSAGE_MANAGE)) {
+                    String[] words = role.getName().split(" ");
+                    for (int i = 0; i < words.length; i++) {
+                        if ((words[i].toLowerCase().equals(" helper") || words[i].toLowerCase().equals("helper"))
+                                && i == 1) {
+                            roleInChannel.set(true);
+
+                            Role roleFinal = context.getGuild().getRoleById(role.getId());
+                            Message message = context.getMessage().getTextChannel()
+                                    .sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal))
+                                    .complete();
+                        }
+                    }
+                }
+            });
+
+            if (!roleInChannel.get()) {
+                context.replyI18n("error.helper_list_channel");
+            }
+        }
+
         if (context.getArguments().length == 1) {
             desiredRole = context.getArguments()[0];
-            System.out.println(context.getArguments()[0]);
 
             try {
                 JSON json = UJSON.retrieveJSONFromFile(helperAliases.getPath());
@@ -64,9 +92,10 @@ public final class HelperList implements CommandAction {
                 }).findFirst().orElse(null);
 
                 if (aliasKey == null) {
-                    context.replyI18n("error.generic_arg_length");
+                    context.replyI18n("error.helper_list_incorrect");
+                    return;
                 }
-                Role role = context.getGuild().getRoleById(aliasKey.toString());
+                Role role = context.getGuild().getRoleById(aliasKey);
                 Message message = context.getMessage().getTextChannel()
                         .sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), role))
                         .complete();

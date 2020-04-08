@@ -1,4 +1,4 @@
-/* Copyright 2017-2020 Jarred Vardy, Arraying
+/* Copyright 2017-2020 Jarred Vardy <vardy@riseup.net>, Arraying
  *
  * This file is part of IB.ai.
  *
@@ -23,6 +23,7 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
 import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
+import com.ibdiscord.data.db.entries.cassowary.CassowaryPenguinData;
 import com.ibdiscord.utils.UString;
 
 import java.util.ArrayList;
@@ -60,6 +61,14 @@ public final class CassowaryCreate implements CommandAction {
         ));
         cassowariesData.add(label);
         DataContainer.INSTANCE.getGravity().save(cassowariesData);
+
+        if(context.getOptions().stream().anyMatch(it -> it.getName().equalsIgnoreCase("penguin"))) {
+            CassowaryPenguinData cassowaryPenguins = DataContainer.INSTANCE.getGravity().load(new CassowaryPenguinData(
+                    context.getGuild().getId()
+            ));
+            cassowaryPenguins.add(label);
+            DataContainer.INSTANCE.getGravity().save(cassowaryPenguins);
+        }
 
         CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(
                 context.getGuild().getId(),

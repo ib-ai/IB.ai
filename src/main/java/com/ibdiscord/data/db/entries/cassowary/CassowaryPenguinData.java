@@ -1,4 +1,4 @@
-/* Copyright 2018-2020 Jarred Vardy <vardy@riseup.net>
+/* Copyright 2017-2020 Jarred Vardy <vardy@riseup.net>
  *
  * This file is part of IB.ai.
  *
@@ -16,14 +16,18 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.utils.objects;
+package com.ibdiscord.data.db.entries.cassowary;
 
-import lombok.Data;
+import de.arraying.gravity.data.types.TypeSet;
+import lombok.AllArgsConstructor;
 
-@Data
-public final class Tuple<A, B> {
+@AllArgsConstructor
+public class CassowaryPenguinData extends TypeSet {
 
-    private final A propertyA;
-    private final B propertyB;
+    private final String guild;
 
+    @Override
+    protected String getUniqueIdentifier() {
+        return "cassowary_penguins_" + guild;
+    }
 }

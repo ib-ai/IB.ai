@@ -1,4 +1,4 @@
-/* Copyright 2018-2020 Jarred Vardy
+/* Copyright 2018-2020 Jarred Vardy <vardy@riseup.net>
  *
  * This file is part of IB.ai.
  *
@@ -18,11 +18,11 @@
 
 package com.ibdiscord.data.db.entries.cassowary;
 
-import de.arraying.gravity.data.types.TypeList;
+import de.arraying.gravity.data.types.TypeSet;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public final class CassowaryData extends TypeList {
+public final class CassowaryData extends TypeSet {
 
     private final String guild;
     private final String label;

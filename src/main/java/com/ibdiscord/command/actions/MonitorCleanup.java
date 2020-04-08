@@ -1,4 +1,4 @@
-/* Copyright 2017-2020 Jarred Vardy <jarred.vardy@gmail.com>
+/* Copyright 2017-2020 Jarred Vardy <vardy@riseup.net>
  *
  * This file is part of IB.ai.
  *

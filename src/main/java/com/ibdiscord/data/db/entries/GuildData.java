@@ -35,6 +35,11 @@ public final class GuildData extends TypeMap {
     public static final String MODLOGS = "modlogs";
 
     /**
+     * The modlogs key for Redis.
+     */
+    public static final String UPDATES = "updates";
+
+    /**
      * The mute role key.
      */
     public static final String MUTE = "mute_role";

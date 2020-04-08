@@ -17,6 +17,8 @@
   "expire_duration": "The duration provided is invalid.",
   "expire_expired": "That time has already passed.",
   "filter": "The filter you provided is an invalid regular expression. Did you forget to escape any special characters?",
+  "helper_list_incorrect": "The helper you specified does not exist. Please check your parameters.",
+  "helper_list_channel": "There is no helper assigned to this channel. Please run this command in a subject channel or specify the subject.",
   "invalid_colour": "Invalid format. Please use hex, for example: `#123456`.",
   "invalid_data": "The data provided is invalid (e.g. not a proper user).",
   "invalid_url": "Invalid url.",

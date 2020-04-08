@@ -3,7 +3,7 @@ FROM maven:latest AS builder
 
 LABEL "repository"="https://github.com/ib-ai/IB.ai/"
 LABEL "homepage"="https://discord.gg/IBO/"
-LABEL "maintainer"="Jarred Vardy <jarred.vardy@gmail.com>"
+LABEL "maintainer"="Jarred Vardy <vardy@riseup.net>"
 
 WORKDIR /IB.ai/
 
