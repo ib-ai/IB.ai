@@ -21,14 +21,13 @@ package com.ibdiscord.command.actions;
 import com.ibdiscord.IBai;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class Shorten implements CommandAction {
 
@@ -40,27 +39,33 @@ public class Shorten implements CommandAction {
     public void accept(CommandContext context) {
         context.assertArguments(1, "error.generic_arg_length");
 
-        String url = context.getArguments()[0];
-        String payload = String.format("data={\"page\":%s}", url);
-        StringEntity entity = new StringEntity(payload,
-                ContentType.APPLICATION_FORM_URLENCODED);
-
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        HttpPost request = new HttpPost("https://ibpp.me/function/shorten");
-        //HttpPost request = new HttpPost(IBai.INSTANCE.getConfig().getShortUrl());
-        request.setEntity(entity);
-
-        HttpResponse response = null;
+        StringBuilder response = new StringBuilder();
         try {
-            response = httpClient.execute(request);
+            //URL url = new URL(IBai.INSTANCE.getConfig().getShortUrl());
+            URL url = new URL("hhttps://ibpp.me/function/shorten");
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+            try(OutputStream os = con.getOutputStream()) {
+                String urlToShorten = context.getArguments()[0];
+                String payload = String.format("data={\"page\":%s}", urlToShorten);
+
+                byte[] input = payload.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+            try(BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+            }
         } catch (IOException ex) {
             context.replyRaw("Something went wrong with the POST request. Report to Pants.");
         }
 
-        if(response != null) {
-            context.replyRaw(String.format("<%s>", response));
-        } else {
-            context.replyRaw("Something went wrong with the POST request. Report to Pants.");
-        }
+        context.replyRaw(String.format("%s", response.toString()));
     }
 }
