@@ -42,7 +42,7 @@ public class Shorten implements CommandAction {
         StringBuilder response = new StringBuilder();
         try {
             //URL url = new URL(IBai.INSTANCE.getConfig().getShortUrl());
-            URL url = new URL("hhttps://ibpp.me/function/shorten");
+            URL url = new URL("https://ibpp.me/function/shorten");
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -63,8 +63,8 @@ public class Shorten implements CommandAction {
                 }
             }
         } catch (IOException ex) {
-            context.replyRaw("Something went wrong with the POST request. Report to Pants.");
-            context.replyRaw(ex.toString());
+            context.replyRaw("Something went wrong with the POST request. Report to Pants with"
+                    + " the error message: " + ex.toString());
         }
 
         if(response.toString() != "") {
