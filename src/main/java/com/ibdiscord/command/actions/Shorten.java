@@ -64,8 +64,11 @@ public class Shorten implements CommandAction {
             }
         } catch (IOException ex) {
             context.replyRaw("Something went wrong with the POST request. Report to Pants.");
+            context.replyRaw(ex.toString());
         }
 
-        context.replyRaw(String.format("%s", response.toString()));
+        if(response.toString() != "") {
+            context.replyRaw(String.format("%s", response.toString()));
+        }
     }
 }
