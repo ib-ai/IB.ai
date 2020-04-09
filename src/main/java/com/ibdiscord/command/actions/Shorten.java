@@ -67,7 +67,7 @@ public class Shorten implements CommandAction {
                     + " the error message: " + ex.toString());
         }
 
-        if(response.toString() != "") {
+        if(!response.toString().equals("")) {
             context.replyRaw(String.format("%s", response.toString()));
         }
     }
