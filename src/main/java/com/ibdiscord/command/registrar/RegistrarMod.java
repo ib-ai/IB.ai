@@ -87,6 +87,10 @@ public final class RegistrarMod implements CommandRegistrar {
                     );
                 });
 
+        registry.define("shorten")
+                .restrict(CommandPermission.role(GuildData.MODERATOR))
+                .on(new Shorten());
+
         registry.define("expire")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {
