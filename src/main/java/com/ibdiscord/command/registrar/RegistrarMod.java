@@ -42,6 +42,7 @@ import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentExpiry;
 import com.ibdiscord.punish.PunishmentHandler;
+import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import com.ibdiscord.utils.objects.Tuple;
@@ -55,6 +56,7 @@ import net.dv8tion.jda.api.entities.*;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
@@ -231,19 +233,33 @@ public final class RegistrarMod implements CommandRegistrar {
                                 .map(it -> it.defaulting("N/A:N/A").toString())
                                 .forEach(it -> {
                                     String user;
+                                    String timestamp;
                                     String data;
                                     int index = it.indexOf(":");
                                     if(index < 0) {
                                         user = "???";
+                                        timestamp = "???";
                                         data = it;
                                     } else {
                                         user = it.substring(0, index);
+                                        int index2 = user.indexOf(",");
+                                        if (index2 < 0) {
+                                            timestamp = "???";
+                                        } else {
+                                            timestamp = user.substring(index2 + 1);
+                                            user = user.substring(0, index2);
+                                        }
+                                        Member author = UInput.getMember(context.getGuild(), user);
+                                        if (author != null) {
+                                            user = UFormatter.formatMember(member.getUser());
+                                        }
+
                                         data = it.substring(index);
                                         if(data.length() > 1) {
                                             data = data.substring(1);
                                         }
                                     }
-                                    embedBuilder.addField(context.__(context, "info.note_author", user),
+                                    embedBuilder.addField(context.__(context, "info.note_author", user, timestamp),
                                             data,
                                             false);
                                 });
@@ -258,7 +274,9 @@ public final class RegistrarMod implements CommandRegistrar {
                             context.replyI18n("error.note_full");
                             return;
                         }
-                        String data = context.getMember().getUser().getId() + ":" + note;
+                        String timestamp = context.getMessage().getTimeCreated().toLocalDate()
+                                .format(DateTimeFormatter.ofPattern("dd/MM/YYYY"));
+                        String data = context.getMember().getUser().getId() + "," + timestamp + ":" + note;
                         noteData.add(data);
                         gravity.save(noteData);
                         context.replyI18n("success.note");
@@ -597,6 +615,7 @@ public final class RegistrarMod implements CommandRegistrar {
                                     return;
                                 }
                             }
+
 
                             StringBuilder builder = new StringBuilder();
                             builder.append("**");
