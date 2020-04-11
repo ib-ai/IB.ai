@@ -50,11 +50,10 @@ public final class RegistrarHelper implements CommandRegistrar {
                 .sub(registry.sub("delete", "generic_delete")
                         .restrict(CommandPermission.discord(Permission.MANAGE_ROLES))
                         .on(new HelperMessageDelete()))
+                .sub(registry.sub("all", null)
+                        .on(new HelperMessageList()))
                 .sub(registry.sub("list", "generic_list")
-                        .on(new HelperMessageList()));
-
-        registry.define("helperlist")
-                .on(new HelperList());
+                        .on(new HelperList()));
 
         registry.define("pin")
                 .restrict(CommandPermission.role(GuildData.HELPER))
