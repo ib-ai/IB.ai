@@ -59,6 +59,11 @@ public final class LocalConfig {
     @Getter private final String staticPrefix;
 
     /**
+     * LINK SHORTENER URL
+     */
+    @Getter private final String shortUrl;
+
+    /**
      * DATA_HOST.
      */
     @Getter private final String dbIP;
@@ -120,6 +125,7 @@ public final class LocalConfig {
         this.botToken = getEnvironment("TOKEN", "");
         this.botVersion = getEnvironment("VERSION", "BETA");
         this.staticPrefix = getEnvironment("PREFIX", "&");
+        this.shortUrl = getEnvironment("LINK_SHORTENER_URL", "");
         this.dbIP = getEnvironment("DATA_HOST", "localhost");
         this.mainDatabaseNum = getEnvironment("DATA_INDEX", Long::valueOf, 0L);
         this.mainDatabasePassword = getEnvironment("DATA_AUTH", null);
