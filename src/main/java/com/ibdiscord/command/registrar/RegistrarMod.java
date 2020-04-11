@@ -255,7 +255,7 @@ public final class RegistrarMod implements CommandRegistrar {
                                         }
                                         Member author = UInput.getMember(context.getGuild(), user);
                                         if (author != null) {
-                                            user = UFormatter.formatMember(member.getUser());
+                                            user = UFormatter.formatMember(author.getUser());
                                         }
 
                                         data = it.substring(index);
