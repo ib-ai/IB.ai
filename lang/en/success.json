@@ -12,6 +12,8 @@
   "filter_enable": "The filter has been enabled.",
   "give_role": "The role have been added to {0} users.",
   "help": "Welcome to the IBO Discord Server.",
+  "helper_active": "{0} ({1}) is now considered to be active.",
+  "helper_inactive": "{0} ({1}) is now considered to be inactive.",
   "helper_permission": "The helper permission has been updated.",
   "ladder_create": "The ladder \" {0} \" has been created.",
   "ladder_delete": "The ladder \" {0} \" has been deleted.",

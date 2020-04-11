@@ -33,6 +33,7 @@
   "missing_channelid": "Please provide the channel ID.",
   "missing_data": "Please provide the data.",
   "missing_emojiid": "Please provide the emoji ID.",
+  "missing_memberid": "Please provide the member ID.",
   "missing_messageid": "Please provide the message ID.",
   "missing_number": "Please provide a number.",
   "missing_operation": "Please provide the operation.",
