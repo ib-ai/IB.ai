@@ -59,7 +59,7 @@ public final class LocalConfig {
     @Getter private final String staticPrefix;
 
     /**
-     * LINK SHORTENER URL
+     * LINK SHORTENER URL.
      */
     @Getter private final String shortUrl;
 
