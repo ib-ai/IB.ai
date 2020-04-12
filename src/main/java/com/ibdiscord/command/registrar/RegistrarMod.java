@@ -625,18 +625,22 @@ public final class RegistrarMod implements CommandRegistrar {
                             builder.append("**");
                             int dayOfMonth = cal.get(GregorianCalendar.DAY_OF_MONTH);
                             builder.append(dayOfMonth);
-                            switch (dayOfMonth % 10) {
-                                case 1:
-                                    builder.append("st");
-                                    break;
-                                case 2:
-                                    builder.append("nd");
-                                    break;
-                                case 3:
-                                    builder.append("rd");
-                                    break;
-                                default:
-                                    builder.append("th");
+                            if (dayOfMonth >= 11 && dayOfMonth <= 13) {
+                                builder.append("th");
+                            } else {
+                                switch (dayOfMonth % 10) {
+                                    case 1:
+                                        builder.append("st");
+                                        break;
+                                    case 2:
+                                        builder.append("nd");
+                                        break;
+                                    case 3:
+                                        builder.append("rd");
+                                        break;
+                                    default:
+                                        builder.append("th");
+                                }
                             }
                             builder.append(" of ");
                             SimpleDateFormat formatter = new SimpleDateFormat("MMMM, YYYY");
