@@ -20,25 +20,14 @@ package com.ibdiscord.command.actions;
 
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
-import com.ibdiscord.data.LocalConfig;
 import com.ibdiscord.utils.UEmbed;
-import com.ibdiscord.utils.UJSON;
-import de.arraying.kotys.JSON;
-import de.arraying.kotys.JSONArray;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 public final class HelperList implements CommandAction {
-
-    private LocalConfig config = new LocalConfig();
-
-    private final File helperAliases = new File(config.getLangBase() + "helper_aliases.json");
 
     /**
      * Creates list of helpers.
@@ -46,62 +35,82 @@ public final class HelperList implements CommandAction {
      */
     @Override
     public void accept(CommandContext context) {
+
         MessageChannel channelMessage = context.getChannel();
         String desiredRole;
+
+        List<Role> allRoles = context.getGuild().getRoles();
+
         if (context.getArguments().length < 1) {
 
-            List<Role> allRoles = context.getGuild().getRoles();
-            AtomicBoolean roleInChannel = new AtomicBoolean(false);
+            Long helperIdInChannel = checkHelperRole(allRoles, (GuildChannel) channelMessage, context);
 
-            allRoles.forEach(role -> {
-                if (role.hasPermission((GuildChannel) channelMessage, Permission.MESSAGE_MANAGE)) {
-                    String[] words = role.getName().split(" ");
-                    for (int i = 0; i < words.length; i++) {
-                        if ((words[i].toLowerCase().equals(" helper") || words[i].toLowerCase().equals("helper"))
-                                && i == 1) {
-                            roleInChannel.set(true);
-
-                            Role roleFinal = context.getGuild().getRoleById(role.getId());
-                            Message message = context.getMessage().getTextChannel()
-                                    .sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal))
-                                    .complete();
-                        }
-                    }
-                }
-            });
-
-            if (!roleInChannel.get()) {
+            if (helperIdInChannel == null) {
                 context.replyI18n("error.helper_list_channel");
+                return;
             }
+
+            Role roleFinal = context.getGuild().getRoleById(helperIdInChannel);
+            Message message = context.getMessage().getTextChannel()
+                    .sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal))
+                    .complete();
+            return;
         }
 
         if (context.getArguments().length == 1) {
             desiredRole = context.getArguments()[0];
 
-            try {
-                JSON json = UJSON.retrieveJSONFromFile(helperAliases.getPath());
-                String aliasKey = json.raw().keySet().stream().filter(key -> {
-                    JSONArray aliases = json.array(key);
-                    for(int i = 0; i < aliases.length(); i++) {
-                        String alias = aliases.string(i);
-                        if(alias.equals(desiredRole.toLowerCase())) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }).findFirst().orElse(null);
+            AtomicLong helperRoleInChannel = new AtomicLong();
 
-                if (aliasKey == null) {
-                    context.replyI18n("error.helper_list_incorrect");
-                    return;
+            if (desiredRole.matches("\\d*")) {
+                try {
+                    helperRoleInChannel.set(Long.parseLong(desiredRole));
+                } catch (Exception e) {
+                    context.replyI18n("error.generic");
                 }
-                Role role = context.getGuild().getRoleById(aliasKey);
+
+            } else {
+                try {
+                    TextChannel mentionedChannel = context.getMessage().getMentionedChannels().get(0);
+
+                    Long helperIdInChannel = checkHelperRole(allRoles, mentionedChannel, context);
+
+                    helperRoleInChannel.set(helperIdInChannel);
+
+                } catch (IndexOutOfBoundsException e) {
+                    desiredRole = desiredRole + " Helper";
+                    context.getGuild().getRolesByName(desiredRole, true).forEach(role -> {
+                        helperRoleInChannel.set(Long.parseLong(role.getId()));
+                    });
+
+                }
+            }
+
+            try {
+                Role roleFinal = context.getGuild().getRoleById(helperRoleInChannel.get());
                 Message message = context.getMessage().getTextChannel()
-                        .sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), role))
+                        .sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal))
                         .complete();
-            } catch (RejectedExecutionException | IOException e) {
-                context.replyI18n("error.generic");
+            } catch (IllegalArgumentException e) {
+                context.replyI18n("error.helper_list_incorrect");
             }
         }
+    }
+
+    private Long checkHelperRole(List<Role> allRoles, GuildChannel mentionedChannel, CommandContext context) {
+        Role finalReturnRole = allRoles.stream().filter(role -> {
+            if (role.hasPermission(mentionedChannel, Permission.MESSAGE_MANAGE)) {
+                String[] words = role.getName().split(" ");
+                for (int i = 0; i < words.length; i++) {
+                    if ((words[i].toLowerCase().equals(" helper") || words[i].toLowerCase().equals("helper"))
+                            && i == 1) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }).findFirst().orElse(null);
+
+        return finalReturnRole == null ? null : Long.parseLong(finalReturnRole.getId());
     }
 }
