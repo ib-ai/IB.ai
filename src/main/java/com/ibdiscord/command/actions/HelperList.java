@@ -36,46 +36,38 @@ public final class HelperList implements CommandAction {
         context.assertArguments(1, "error.generic_syntax_arg");
 
         String desiredRole = context.getArguments()[0];
-        String helperRoleInChannel;
+        Role roleFinal;
 
-        Role role = UInput.getRole(context.getGuild(), desiredRole);
+        roleFinal =  UInput.getRole(context.getGuild(), desiredRole);
 
-        if (role != null) {
-            helperRoleInChannel = role.getId();
-        } else {
+        if (roleFinal == null) {
             if (context.getMessage().getMentionedChannels().size() > 0) {
                 TextChannel mentionedChannel = context.getMessage().getMentionedChannels().get(0);
 
-                helperRoleInChannel = checkHelperRole(mentionedChannel);
+                PermissionOverride rolePermissionOverride = mentionedChannel.getRolePermissionOverrides()
+                        .stream().filter(permissionOverride ->
+                                permissionOverride.getRole()
+                                        .getName()
+                                        .toLowerCase()
+                                        .endsWith("helper")).findFirst().orElse(null);
+                
+                if (rolePermissionOverride == null) {
+                    context.replyI18n("error.helper_list_channel");
+                    return;
+                }
+
+                roleFinal = rolePermissionOverride.getRole();
             } else {
                 desiredRole = desiredRole + " Helper";
-                Role roleFinal = context.getGuild().getRolesByName(desiredRole, true).stream()
-                        .findFirst().orElse(null);
+                roleFinal = UInput.getRole(context.getGuild(), desiredRole);
+
                 if (roleFinal == null) {
                     context.replyI18n("error.helper_list_incorrect");
                     return;
                 }
-                helperRoleInChannel = roleFinal.getId();
             }
         }
 
-        if (helperRoleInChannel == null) {
-            context.replyI18n("error.helper_list_channel");
-            return;
-        }
-
-        Role roleFinal = context.getGuild().getRoleById(helperRoleInChannel);
         context.replyEmbed(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal));
-    }
-
-    private String checkHelperRole(GuildChannel mentionedChannel) {
-        PermissionOverride finalReturnRole = mentionedChannel.getRolePermissionOverrides()
-                .stream().filter(permissionOverride ->
-                        permissionOverride.getRole()
-                                .getName()
-                                .toLowerCase()
-                                .endsWith("helper")).findFirst().orElse(null);
-
-        return finalReturnRole == null ? null : finalReturnRole.getId();
     }
 }
