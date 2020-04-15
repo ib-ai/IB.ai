@@ -21,9 +21,8 @@ package com.ibdiscord.command.actions;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.utils.UEmbed;
+import com.ibdiscord.utils.UInput;
 import net.dv8tion.jda.api.entities.*;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public final class HelperList implements CommandAction {
 
@@ -34,59 +33,39 @@ public final class HelperList implements CommandAction {
     @Override
     public void accept(CommandContext context) {
 
-        MessageChannel channelMessage = context.getChannel();
-        String desiredRole;
+        context.assertArguments(1, "error.generic_syntax_arg");
 
-        if (context.getArguments().length < 1) {
+        String desiredRole = context.getArguments()[0];
+        String helperRoleInChannel;
 
-            String helperIdInChannel = checkHelperRole((GuildChannel) channelMessage);
+        Role role = UInput.getRole(context.getGuild(), desiredRole);
 
-            if (helperIdInChannel == null) {
-                context.replyI18n("error.helper_list_channel");
-                return;
+        if (role != null) {
+            helperRoleInChannel = role.getId();
+        } else {
+            if (context.getMessage().getMentionedChannels().size() > 0) {
+                TextChannel mentionedChannel = context.getMessage().getMentionedChannels().get(0);
+
+                helperRoleInChannel = checkHelperRole(mentionedChannel);
+            } else {
+                desiredRole = desiredRole + " Helper";
+                Role roleFinal = context.getGuild().getRolesByName(desiredRole, true).stream()
+                        .findFirst().orElse(null);
+                if (roleFinal == null) {
+                    context.replyI18n("error.helper_list_incorrect");
+                    return;
+                }
+                helperRoleInChannel = roleFinal.getId();
             }
+        }
 
-            Role roleFinal = context.getGuild().getRoleById(helperIdInChannel);
-            context.replyEmbed(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal));
+        if (helperRoleInChannel == null) {
+            context.replyI18n("error.helper_list_channel");
             return;
         }
 
-        if (context.getArguments().length == 1) {
-            desiredRole = context.getArguments()[0];
-
-            AtomicReference<String> helperRoleInChannel = new AtomicReference<>();
-
-            if (desiredRole.matches("\\d*")) {
-                try {
-                    helperRoleInChannel.set(desiredRole);
-                } catch (Exception e) {
-                    context.replyI18n("error.generic");
-                }
-
-            } else {
-                try {
-                    TextChannel mentionedChannel = context.getMessage().getMentionedChannels().get(0);
-
-                    String helperIdInChannel = checkHelperRole(mentionedChannel);
-
-                    helperRoleInChannel.set(helperIdInChannel);
-
-                } catch (IndexOutOfBoundsException e) {
-                    desiredRole = desiredRole + " Helper";
-                    context.getGuild().getRolesByName(desiredRole, true).forEach(role -> {
-                        helperRoleInChannel.set(role.getId());
-                    });
-
-                }
-            }
-
-            try {
-                Role roleFinal = context.getGuild().getRoleById(helperRoleInChannel.get());
-                context.replyEmbed(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal));
-            } catch (IllegalArgumentException e) {
-                context.replyI18n("error.helper_list_incorrect");
-            }
-        }
+        Role roleFinal = context.getGuild().getRoleById(helperRoleInChannel);
+        context.replyEmbed(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal));
     }
 
     private String checkHelperRole(GuildChannel mentionedChannel) {
