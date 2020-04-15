@@ -21,10 +21,8 @@ package com.ibdiscord.command.actions;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.utils.UEmbed;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class HelperList implements CommandAction {
@@ -39,11 +37,9 @@ public final class HelperList implements CommandAction {
         MessageChannel channelMessage = context.getChannel();
         String desiredRole;
 
-        List<Role> allRoles = context.getGuild().getRoles();
-
         if (context.getArguments().length < 1) {
 
-            String helperIdInChannel = checkHelperRole(allRoles, (GuildChannel) channelMessage);
+            String helperIdInChannel = checkHelperRole((GuildChannel) channelMessage);
 
             if (helperIdInChannel == null) {
                 context.replyI18n("error.helper_list_channel");
@@ -71,7 +67,7 @@ public final class HelperList implements CommandAction {
                 try {
                     TextChannel mentionedChannel = context.getMessage().getMentionedChannels().get(0);
 
-                    String helperIdInChannel = checkHelperRole(allRoles, mentionedChannel);
+                    String helperIdInChannel = checkHelperRole(mentionedChannel);
 
                     helperRoleInChannel.set(helperIdInChannel);
 
@@ -93,13 +89,13 @@ public final class HelperList implements CommandAction {
         }
     }
 
-    private String checkHelperRole(List<Role> allRoles, GuildChannel mentionedChannel) {
-        Role finalReturnRole = allRoles.stream().filter(role -> {
-            if (role.hasPermission(mentionedChannel, Permission.MESSAGE_MANAGE)) {
-                return role.getName().toLowerCase().endsWith("helper");
-            }
-            return false;
-        }).findFirst().orElse(null);
+    private String checkHelperRole(GuildChannel mentionedChannel) {
+        PermissionOverride finalReturnRole = mentionedChannel.getRolePermissionOverrides()
+                .stream().filter(permissionOverride ->
+                        permissionOverride.getRole()
+                                .getName()
+                                .toLowerCase()
+                                .endsWith("helper")).findFirst().orElse(null);
 
         return finalReturnRole == null ? null : finalReturnRole.getId();
     }
