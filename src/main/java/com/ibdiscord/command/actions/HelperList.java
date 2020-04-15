@@ -25,7 +25,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class HelperList implements CommandAction {
 
@@ -43,7 +43,7 @@ public final class HelperList implements CommandAction {
 
         if (context.getArguments().length < 1) {
 
-            Long helperIdInChannel = checkHelperRole(allRoles, (GuildChannel) channelMessage, context);
+            String helperIdInChannel = checkHelperRole(allRoles, (GuildChannel) channelMessage);
 
             if (helperIdInChannel == null) {
                 context.replyI18n("error.helper_list_channel");
@@ -51,20 +51,18 @@ public final class HelperList implements CommandAction {
             }
 
             Role roleFinal = context.getGuild().getRoleById(helperIdInChannel);
-            Message message = context.getMessage().getTextChannel()
-                    .sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal))
-                    .complete();
+            context.replyEmbed(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal));
             return;
         }
 
         if (context.getArguments().length == 1) {
             desiredRole = context.getArguments()[0];
 
-            AtomicLong helperRoleInChannel = new AtomicLong();
+            AtomicReference<String> helperRoleInChannel = new AtomicReference<>();
 
             if (desiredRole.matches("\\d*")) {
                 try {
-                    helperRoleInChannel.set(Long.parseLong(desiredRole));
+                    helperRoleInChannel.set(desiredRole);
                 } catch (Exception e) {
                     context.replyI18n("error.generic");
                 }
@@ -73,14 +71,14 @@ public final class HelperList implements CommandAction {
                 try {
                     TextChannel mentionedChannel = context.getMessage().getMentionedChannels().get(0);
 
-                    Long helperIdInChannel = checkHelperRole(allRoles, mentionedChannel, context);
+                    String helperIdInChannel = checkHelperRole(allRoles, mentionedChannel);
 
                     helperRoleInChannel.set(helperIdInChannel);
 
                 } catch (IndexOutOfBoundsException e) {
                     desiredRole = desiredRole + " Helper";
                     context.getGuild().getRolesByName(desiredRole, true).forEach(role -> {
-                        helperRoleInChannel.set(Long.parseLong(role.getId()));
+                        helperRoleInChannel.set(role.getId());
                     });
 
                 }
@@ -88,29 +86,21 @@ public final class HelperList implements CommandAction {
 
             try {
                 Role roleFinal = context.getGuild().getRoleById(helperRoleInChannel.get());
-                Message message = context.getMessage().getTextChannel()
-                        .sendMessage(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal))
-                        .complete();
+                context.replyEmbed(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal));
             } catch (IllegalArgumentException e) {
                 context.replyI18n("error.helper_list_incorrect");
             }
         }
     }
 
-    private Long checkHelperRole(List<Role> allRoles, GuildChannel mentionedChannel, CommandContext context) {
+    private String checkHelperRole(List<Role> allRoles, GuildChannel mentionedChannel) {
         Role finalReturnRole = allRoles.stream().filter(role -> {
             if (role.hasPermission(mentionedChannel, Permission.MESSAGE_MANAGE)) {
-                String[] words = role.getName().split(" ");
-                for (int i = 0; i < words.length; i++) {
-                    if ((words[i].toLowerCase().equals(" helper") || words[i].toLowerCase().equals("helper"))
-                            && i == 1) {
-                        return true;
-                    }
-                }
+                return role.getName().toLowerCase().endsWith("helper");
             }
             return false;
         }).findFirst().orElse(null);
 
-        return finalReturnRole == null ? null : Long.parseLong(finalReturnRole.getId());
+        return finalReturnRole == null ? null : finalReturnRole.getId();
     }
 }
