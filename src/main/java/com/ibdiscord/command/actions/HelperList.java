@@ -36,9 +36,7 @@ public final class HelperList implements CommandAction {
         context.assertArguments(1, "error.generic_syntax_arg");
 
         String desiredRole = context.getArguments()[0];
-        Role roleFinal;
-
-        roleFinal =  UInput.getRole(context.getGuild(), desiredRole);
+        Role roleFinal = UInput.getRole(context.getGuild(), desiredRole);
 
         if (roleFinal == null) {
             if (context.getMessage().getMentionedChannels().size() > 0) {
@@ -50,7 +48,7 @@ public final class HelperList implements CommandAction {
                                         .getName()
                                         .toLowerCase()
                                         .endsWith("helper")).findFirst().orElse(null);
-                
+
                 if (rolePermissionOverride == null) {
                     context.replyI18n("error.helper_list_channel");
                     return;
