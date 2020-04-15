@@ -43,11 +43,11 @@ public final class HelperList implements CommandAction {
                 TextChannel mentionedChannel = context.getMessage().getMentionedChannels().get(0);
 
                 PermissionOverride rolePermissionOverride = mentionedChannel.getRolePermissionOverrides()
-                        .stream().filter(permissionOverride ->
-                                permissionOverride.getRole()
-                                        .getName()
-                                        .toLowerCase()
-                                        .endsWith("helper")).findFirst().orElse(null);
+                        .stream()
+                        .filter(permissionOverride -> permissionOverride.getRole()
+                                .getName().toLowerCase().endsWith("helper"))
+                        .findFirst()
+                        .orElse(null);
 
                 if (rolePermissionOverride == null) {
                     context.replyI18n("error.helper_list_channel");
