@@ -22,12 +22,12 @@ import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.helper.HelperInactiveData;
-import com.ibdiscord.utils.UString;
+import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public class HelperInactive implements CommandAction {
 
@@ -37,9 +37,6 @@ public class HelperInactive implements CommandAction {
      */
     @Override
     public void accept(CommandContext context) {
-
-        long memberId;
-        AtomicBoolean helperRole = new AtomicBoolean(false);
 
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         HelperInactiveData helperInactiveData = gravity.load(new HelperInactiveData(context.getGuild().getId()));
@@ -51,72 +48,50 @@ public class HelperInactive implements CommandAction {
             StringBuilder allInactiveHelpers = new StringBuilder();
 
             helperInactiveData.values().forEach(helperId -> {
-                Member helper = context.getGuild().getMemberById(helperId.asLong());
-                StringBuilder allHelperRoles = new StringBuilder();
-                helper.getRoles().forEach(role -> {
-                    String[] words = role.getName().split(" ");
-                    for (int i = 0; i < words.length; i++) {
-                        if ((words[i].toLowerCase().equals(" helper") || words[i].toLowerCase().equals("helper"))
-                                && i == 1) {
-                            allHelperRoles.append(role.getName()).append(", ");
-                        }
-                    }
-                });
-                String value = UString.truncate(allHelperRoles.substring(0, allHelperRoles.length() - 2), 512);
+                Member helper = context.getGuild().getMemberById(helperId.asString());
+
+                String roles = helper.getRoles().stream()
+                        .map(role -> role.getName())
+                        .filter(roleName -> roleName.toLowerCase().endsWith("helper"))
+                        .collect(Collectors.joining(", "));
+
                 allInactiveHelpers.append(String.format("<@%s>", helperId))
-                        .append(" (").append(value).append(") ").append("\n");
+                        .append(" (").append(roles).append(") ").append("\n");
             });
 
             inactiveHelperList.setDescription(allInactiveHelpers);
-            context.getChannel().sendMessage(inactiveHelperList.build()).queue();
+            context.replyEmbed(inactiveHelperList.build());
             return;
         }
 
-        try {
-            memberId = Long.valueOf(context.getArguments()[0]);
-        } catch(NumberFormatException exception) {
+        Member member = UInput.getMember(context.getGuild(), context.getArguments()[0]);
+
+        if (member == null) {
             context.replyI18n("error.reaction_invalidid");
             return;
         }
 
-        try {
+        String roles = member.getRoles().stream()
+                .map(role -> role.getName())
+                .filter(roleName -> roleName.toLowerCase().endsWith("helper"))
+                .collect(Collectors.joining(", "));
 
-            StringBuilder allHelperRoles = new StringBuilder();
-
-            context.getGuild().getMemberById(memberId).getRoles().forEach(role -> {
-                String[] words = role.getName().split(" ");
-                for (int i = 0; i < words.length; i++) {
-                    if ((words[i].toLowerCase().equals(" helper") || words[i].toLowerCase().equals("helper"))
-                            && i == 1) {
-
-                        allHelperRoles.append(role.getName()).append(", ");
-                        helperRole.set(true);
-
-                    }
-                }
-            });
-
-            if (!helperRole.get()) {
-                context.replyI18n("error.helper_list_incorrect");
-                return;
-            }
-
-            String value = UString.truncate(allHelperRoles.substring(0, allHelperRoles.length() - 2), 512);
-
-            if (!helperInactiveData.contains(memberId)) {
-                helperInactiveData.add(memberId);
-                context.replyI18n("success.helper_inactive",
-                        String.format("<@%s>", memberId), value);
-            } else {
-                helperInactiveData.remove(memberId);
-                context.replyI18n("success.helper_active",
-                        String.format("<@%s>", memberId), value);
-            }
-
-            gravity.save(helperInactiveData);
-
-        } catch (NullPointerException e) {
+        if (roles.isEmpty()) {
             context.replyI18n("error.helper_list_incorrect");
+            return;
         }
+
+        if (!helperInactiveData.contains(member.getId())) {
+            helperInactiveData.add(member.getId());
+            context.replyI18n("success.helper_inactive",
+                    String.format("<@%s>", member.getId()), roles);
+        } else {
+            helperInactiveData.remove(member.getId());
+            context.replyI18n("success.helper_active",
+                    String.format("<@%s>", member.getId()), roles);
+        }
+
+        gravity.save(helperInactiveData);
+
     }
 }
