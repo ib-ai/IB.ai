@@ -1,7 +1,7 @@
 {
   "generic": "Oops, something went wrong.",
   "generic_arg_length": "Too few arguments were provided for this command.",
-  "generic_syntax_arg": "Please provide arguments for the sub-command",
+  "generic_syntax_arg": "Please provide arguments for the sub-command.",
   "generic_syntax_sub": "Unknown syntax. Available sub-commands: {0}.",
   "generic_suggest_perms": "An error occurred, are the perms set up properly?",
 
