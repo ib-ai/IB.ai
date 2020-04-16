@@ -22,14 +22,15 @@ import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.helper.HelperInactiveData;
+import com.ibdiscord.i18n.LocaleShorthand;
 import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 
 import java.util.stream.Collectors;
 
-public class HelperInactive implements CommandAction {
+public class HelperInactive implements CommandAction, LocaleShorthand {
 
     /**
      * Sets helper as inactive.
@@ -41,29 +42,6 @@ public class HelperInactive implements CommandAction {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         HelperInactiveData helperInactiveData = gravity.load(new HelperInactiveData(context.getGuild().getId()));
 
-        if (context.getArguments().length < 1) {
-            EmbedBuilder inactiveHelperList = new EmbedBuilder();
-            inactiveHelperList.setTitle("List Of Inactive Helpers");
-
-            StringBuilder allInactiveHelpers = new StringBuilder();
-
-            helperInactiveData.values().forEach(helperId -> {
-                Member helper = context.getGuild().getMemberById(helperId.asString());
-
-                String roles = helper.getRoles().stream()
-                        .map(role -> role.getName())
-                        .filter(roleName -> roleName.toLowerCase().endsWith("helper"))
-                        .collect(Collectors.joining(", "));
-
-                allInactiveHelpers.append(String.format("<@%s>", helperId))
-                        .append(" (").append(roles).append(") ").append("\n");
-            });
-
-            inactiveHelperList.setDescription(allInactiveHelpers);
-            context.replyEmbed(inactiveHelperList.build());
-            return;
-        }
-
         Member member = UInput.getMember(context.getGuild(), context.getArguments()[0]);
 
         if (member == null) {
@@ -72,7 +50,7 @@ public class HelperInactive implements CommandAction {
         }
 
         String roles = member.getRoles().stream()
-                .map(role -> role.getName())
+                .map(Role::getName)
                 .filter(roleName -> roleName.toLowerCase().endsWith("helper"))
                 .collect(Collectors.joining(", "));
 
