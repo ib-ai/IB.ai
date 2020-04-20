@@ -23,7 +23,6 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.helper.HelperInactiveData;
 import com.ibdiscord.pagination.Pagination;
-import com.ibdiscord.utils.UEmbed;
 import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
@@ -53,49 +52,7 @@ public final class HelperList implements CommandAction {
                     .map(Property::toString)
                     .collect(Collectors.toList());
 
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle("List Of Inactive Helpers");
-
-            Pagination<String> pagination = new Pagination<>(helperIds, 10);
-
-            int page = 1;
-            if(context.getArguments().length >= 2) {
-                try {
-                    page = Integer.parseInt(context.getArguments()[1]);
-                } catch (NumberFormatException ex) {
-                    // Ignored
-                }
-            }
-
-            pagination.page(page).forEach(entry -> {
-                Member member = context.getGuild().getMemberById(entry.getValue());
-
-                String embedFieldTitle = (String.format("%s (%s)", member.getUser().getAsTag(), entry.getValue()));
-
-                String roles = member.getRoles().stream()
-                        .filter(role -> role.getName().toLowerCase().endsWith("helper"))
-                        .map(Role::getAsMention)
-                        .collect(Collectors.joining(", "));
-
-                embedBuilder.addField(
-                        embedFieldTitle,
-                        roles,
-                        false
-                );
-            });
-
-            if (embedBuilder.getFields().size() == 0) {
-                embedBuilder.setDescription(
-                        context.__(context, "error.helper_404")
-                );
-            }
-
-            embedBuilder.setFooter(
-                    context.__(context, "info.paginated",String.valueOf(page), String.valueOf(pagination.total())),
-                    null
-            );
-
-            context.replyEmbed(embedBuilder.build());
+            paginateEmbed(context, helperIds, null,true);
             return;
         }
 
@@ -130,6 +87,65 @@ public final class HelperList implements CommandAction {
             }
         }
 
-        context.replyEmbed(UEmbed.helperMessageEmbed(context.getGuild(), roleFinal));
+        List<String> helperIds = context.getGuild().getMembersWithRoles(roleFinal).stream()
+                .map(Member::getId)
+                .collect(Collectors.toList());
+
+        paginateEmbed(context, helperIds, roleFinal, false);
+    }
+
+    private void paginateEmbed(CommandContext context, List<String> helpers, Role role, boolean inactive) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+
+        if (!inactive) {
+            StringBuilder helpersString = new StringBuilder();
+
+            String subject = role.getName().split("Helper")[0].trim();
+            embedBuilder.setTitle(String.format("Helper for %s", subject));
+            helpers.forEach(member -> helpersString.append(String.format("<@%s>", member)).append("\n"));
+            embedBuilder.addField("Your subject helpers for this subject are:", helpersString.toString(), false);
+        } else {
+            embedBuilder.setTitle("List Of Inactive Helpers");
+            Pagination<String> pagination = new Pagination<>(helpers, 10);
+
+            int page = 1;
+            if(context.getArguments().length >= 2) {
+                try {
+                    page = Integer.parseInt(context.getArguments()[1]);
+                } catch (NumberFormatException ex) {
+                    // Ignored
+                }
+            }
+
+            pagination.page(page).forEach(entry -> {
+                Member member = context.getGuild().getMemberById(entry.getValue());
+
+                String embedFieldTitle = (String.format("%s (%s)", member.getUser().getAsTag(), entry.getValue()));
+
+                String roles = member.getRoles().stream()
+                        .filter(memberRole -> memberRole.getName().toLowerCase().endsWith("helper"))
+                        .map(Role::getAsMention)
+                        .collect(Collectors.joining(", "));
+
+                embedBuilder.addField(
+                        embedFieldTitle,
+                        roles,
+                        false
+                );
+            });
+
+            if (embedBuilder.getFields().size() == 0) {
+                embedBuilder.setDescription(
+                        context.__(context, "error.helper_404")
+                );
+            }
+
+            embedBuilder.setFooter(
+                    context.__(context, "info.paginated",String.valueOf(page), String.valueOf(pagination.total())),
+                    null
+            );
+        }
+
+        context.replyEmbed(embedBuilder.build());
     }
 }

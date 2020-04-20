@@ -39,6 +39,8 @@ public class HelperInactive implements CommandAction, LocaleShorthand {
     @Override
     public void accept(CommandContext context) {
 
+        context.assertArguments(1, "generic_syntax_arg");
+
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         HelperInactiveData helperInactiveData = gravity.load(new HelperInactiveData(context.getGuild().getId()));
 
