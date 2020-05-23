@@ -1,8 +1,8 @@
 {
-  "embed_channel": "Which channel should the embed be sent in?",
-  "embed_colour": "Please provide the colour in hex format (e.g. `#123456`). Use `skip` to skip this.",
-  "embed_description": "Please type the description of the embed. Use `skip` to skip this.",
-  "embed_field": "You are now adding another field. Please use the following format: `\"Title\" \"Value\"`. You can type `done` to complete the embed.",
-  "embed_image": "Please provide the URL for the image you would like to display. Use `skip` to skip this.",
-  "embed_replace": "Should this embed replace any existing message in that channel? If yes, type the message ID, otherwise type anything else."
+  "embed_channel": "इस एम्बेड को किस चैनल में भेजना है?",
+  "embed_colour": "कृपया रंग को हेक्स फॉर्मेट में डालिए (e.g. `#123456`)। इसे स्किप करने के लिए `skip` का उपयोग करिए।",
+  "embed_description": "कृपया एम्बेड का विवरण डालिए। इसे स्किप करने के लिए `skip` का उपयोग करिए।",
+  "embed_field": "अब आप एक और फ़ील्ड डाल रहे हैं। कृपया निम्नलिखित फॉर्मेट का उपयोग कीजिए: `\"शीर्षक\" \"मूल्य\"`। आप `done` डाल कर एम्बेड खतम कर सकते हैं।",
+  "embed_image": "कृपया उस तस्वीर के लिए URL प्रदान करें जिसे आप प्रदर्शित करना चाहते हैं। इसे स्किप करने के लिए `skip` का उपयोग करिए।",
+  "embed_replace": "क्या यह एम्बेड इस चैनल में किसी मौजूदा संदेश को बदलेगा? अगर हाँ, उस संदेश का ID डालिए, नहीं तो और कुछ भी डालिए।"
 }
