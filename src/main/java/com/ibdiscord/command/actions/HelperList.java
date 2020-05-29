@@ -87,6 +87,11 @@ public final class HelperList implements CommandAction {
             }
         }
 
+        if (!roleFinal.getName().toLowerCase().endsWith("helper")) {
+            context.replyI18n("error.helper_list_incorrect");
+            return;
+        }
+
         List<String> helperIds = context.getGuild().getMembersWithRoles(roleFinal).stream()
                 .map(Member::getId)
                 .collect(Collectors.toList());
