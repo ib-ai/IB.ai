@@ -40,7 +40,6 @@ public final class RegistrarHelper implements CommandRegistrar {
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                         .on(new Roleing(GuildData.HELPER, "helper_permission")))
                 .sub(registry.sub("list", "generic_list")
-                        .restrict(CommandPermission.discord(Permission.MANAGE_ROLES))
                         .on(new HelperList()))
                 .sub(registry.sub("inactive", null)
                         .restrict(CommandPermission.discord(Permission.MANAGE_ROLES))
