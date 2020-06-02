@@ -494,6 +494,10 @@ public final class RegistrarMod implements CommandRegistrar {
                     );
                 });
 
+        registry.define("history")
+                .restrict(CommandPermission.role(GuildData.MODERATOR))
+                .on(new History());
+
         registry.define("vote")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {
