@@ -24,6 +24,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.helper.HelperInactiveData;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UInput;
+import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -56,7 +57,7 @@ public final class HelperList implements CommandAction {
             return;
         }
 
-        String desiredRole = context.getArguments()[0];
+        String desiredRole = UString.concat(context.getArguments(), " ", 0);
         Role roleFinal = UInput.getRole(context.getGuild(), desiredRole);
 
         if (roleFinal == null) {
