@@ -18,7 +18,6 @@
 
 package com.ibdiscord.command.actions;
 
-import com.ibdiscord.IBai;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
@@ -62,15 +61,16 @@ public final class History implements CommandAction {
                 .map(Property::asLong)
                 .collect(Collectors.toList());
 
-        IBai.INSTANCE.getLogger().info(caseIds.toString());
-
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(String.format("History Of %s",
-                member == null ? context.getArguments()[0] : member.getUser().getAsTag()));
         caseIds.forEach((caseId) -> {
             Punishment punishment = Punishment.of(guild, caseId);
             PunishmentData punishmentData = gravity.load(new PunishmentData(guild.getId(), caseId));
             PunishmentHandler punishmentHandler = new PunishmentHandler(guild, punishment);
+
+            embedBuilder.setTitle(String.format("History Of %s",
+                    member != null ? member.getUser().getAsTag()
+                            : !punishment.isRedacted() ? punishment.getUserDisplay()
+                            : context.getArguments()[0]));
 
             TextChannel channel = punishmentHandler.getLogChannel();
             if(channel == null) {
@@ -85,7 +85,8 @@ public final class History implements CommandAction {
             embedBuilder.addField(String.format("Case %s (%s) - By %s", caseId,
                     message.getTimeCreated().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),
                     punishment.getStaffDisplay()),
-                    punishment.getReason(), false);
+                    String.format("%s - %s", punishment.getType().getDisplayInitial(),
+                            punishment.getReason()), false);
         });
         context.replyEmbed(embedBuilder.build());
     }
