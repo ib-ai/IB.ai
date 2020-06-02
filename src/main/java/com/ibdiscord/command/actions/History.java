@@ -54,7 +54,7 @@ public final class History implements CommandAction {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
 
-        Member member = context.getGuild().getMemberById(context.getArguments()[0]);
+        Member member = guild.getMemberById(context.getArguments()[0]);
 
         List<Long> caseIds = punishmentList.values().stream()
                 .filter(caseId -> Punishment.of(guild, caseId).getUserId().equals(context.getArguments()[0]))
