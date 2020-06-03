@@ -39,9 +39,9 @@ public final class TagFind implements CommandAction {
      */
     @Override
     public void accept(CommandContext context) {
-        context.assertArguments(1, "error.generic_syntax_arg");
+        List<String> quotes = context.assertQuotes(1, "error.generic_syntax_arg");
         String guild = context.getGuild().getId();
-        String compare = UInput.extractQuotedStrings(context.getArguments()).get(0).toLowerCase();
+        String compare = quotes.get(0).toLowerCase();
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         List<String> matches = gravity.load(new TagData(guild)).getKeys().stream()
                 .map(String::toLowerCase)
@@ -59,8 +59,9 @@ public final class TagFind implements CommandAction {
             }
         }
 
+        boolean escape = context.getOptions().stream().anyMatch(it -> it.getName().equalsIgnoreCase("escape"));
         pagination.page(page).forEach(entry -> {
-            if (context.getOptions().stream().anyMatch(it -> it.getName().equalsIgnoreCase("escape"))) {
+            if (escape) {
                 tags.append(String.format("`%s`", entry.getValue()));
             } else {
                 tags.append(UString.escapeFormatting(entry.getValue()));
@@ -77,7 +78,7 @@ public final class TagFind implements CommandAction {
         } else {
             embedBuilder.addField(
                     context.__(context, "info.tag_list_similar"),
-                    UString.truncate(tags.substring(0, tags.length()), 512),
+                    UString.truncate(tags.substring(0, tags.length() - 1), 512),
                     false
             );
             embedBuilder.setFooter(
