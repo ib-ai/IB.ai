@@ -23,7 +23,6 @@ import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.tag.TagData;
 import com.ibdiscord.pagination.Pagination;
-import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -78,7 +77,7 @@ public final class TagFind implements CommandAction {
         } else {
             embedBuilder.addField(
                     context.__(context, "info.tag_list_similar"),
-                    UString.truncate(tags.substring(0, tags.length() - 1), 512),
+                    UString.truncate(tags.substring(0, tags.length() - 2), 512),
                     false
             );
             embedBuilder.setFooter(
