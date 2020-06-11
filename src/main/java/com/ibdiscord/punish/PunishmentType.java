@@ -35,7 +35,12 @@ public enum PunishmentType {
     /**
      * A ban.
      */
-    BAN("Ban :hammer:", "Unban :angel:");
+    BAN("Ban :hammer:", "Unban :angel:"),
+
+    /**
+     * An unknown.
+     */
+    UNKNOWN("???", "???");
 
     @Getter private final String displayInitial;
     @Getter private final String displayRevocation;

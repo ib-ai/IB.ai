@@ -53,7 +53,7 @@ public final class Punishment {
     public static Punishment of(Guild guild, Object caseNumber) {
         PunishmentData data = DataContainer.INSTANCE.getGravity().load(new PunishmentData(guild.getId(), caseNumber));
         return new Punishment(
-                PunishmentType.valueOf(data.get(TYPE).asString()),
+                fromString(data.get(TYPE).asString()),
                 data.get(USER_DISPLAY).asString(),
                 data.get(USER_ID).asString(),
                 data.get(STAFF_DISPLAY).asString(),
@@ -61,6 +61,19 @@ public final class Punishment {
                 data.get(REASON).asString(),
                 data.get(REDACTED).defaulting(false).asBoolean()
         );
+    }
+
+    /**
+     * Catches exception and returns unknown PunishmentType.
+     * @param string The punishment type as string.
+     * @return A valid punishment type.
+     */
+    public static PunishmentType fromString(String string) {
+        try {
+            return PunishmentType.valueOf(string.toUpperCase());
+        } catch (IllegalArgumentException exception) {
+            return PunishmentType.UNKNOWN;
+        }
     }
 
     /**
