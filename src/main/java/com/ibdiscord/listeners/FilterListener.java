@@ -29,9 +29,9 @@ import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
@@ -44,86 +44,106 @@ public final class FilterListener extends ListenerAdapter {
 
     /**
      * Receives a guild message and checks if it violates the chat filter.
+     *
      * @param event The event.
      */
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if(event.getAuthor().isBot()) {
+        handleFilter(event.getMessage());
+    }
+
+    /**
+     * When a message is updated.
+     * @param event The event.
+     */
+    @Override
+    public void onGuildMessageUpdate(GuildMessageUpdateEvent event) {
+        handleFilter(event.getMessage());
+    }
+
+    /**
+     * Handles filtering messages.
+     * @param messageObject The JDA message object
+     */
+    public void handleFilter(Message messageObject) {
+        Guild guild = messageObject.getGuild();
+        User author = messageObject.getAuthor();
+        if (author.isBot()) {
             return;
         }
-        String message = event.getMessage().getContentRaw();
-        String prefix = UDatabase.getPrefix(event.getGuild());
+        String message = messageObject.getContentRaw();
+        String prefix = UDatabase.getPrefix(guild);
 
-        if(event.getMessage().getContentRaw().startsWith(prefix)) {
+        if (messageObject.getContentRaw().startsWith(prefix)) {
             String messageSub = message.substring(prefix.length()).replaceAll(" +", " ");
             String[] arguments = messageSub.split(" ");
             String commandName = arguments[0].toLowerCase();
             Command command = IBai.INSTANCE.getCommandRegistry().query(commandName);
-            if(command != null && command.getName().equalsIgnoreCase("filter")) {
+            if (command != null && command.getName().equalsIgnoreCase("filter")) {
                 return;
             }
         }
+
         Gravity gravity = DataContainer.INSTANCE.getGravity();
-        GuildData guildData = gravity.load(new GuildData(event.getGuild().getId()));
-        FilterData filterData = gravity.load(new FilterData(event.getGuild().getId()));
-        FilterNotifyData filterNotifyData = gravity.load(new FilterNotifyData(event.getGuild().getId()));
-        if(!guildData.get(GuildData.FILTERING).defaulting(false).asBoolean()) {
+        GuildData guildData = gravity.load(new GuildData(guild.getId()));
+        FilterData filterData = gravity.load(new FilterData(guild.getId()));
+        FilterNotifyData filterNotifyData = gravity.load(new FilterNotifyData(guild.getId()));
+        if (!guildData.get(GuildData.FILTERING).defaulting(false).asBoolean()) {
             return;
         }
         Optional<Pattern> match = filterData.values().stream()
-                .map(it -> filterCache.compute(event.getGuild().getIdLong(),
+                .map(it -> filterCache.compute(guild.getIdLong(),
                         it.asString(),
                         Pattern.compile(it.asString()))
                 ).filter(it -> it.matcher(message).matches())
                 .findFirst();
-        if(match.isPresent()) {
-            event.getMessage().delete().queue(success -> {
-                    event.getAuthor().openPrivateChannel().queue(dm -> {
-                        String send = String.format("The following message has been automatically flagged and "
-                                + "removed from %s:\n\n%s", event.getGuild().getName(), message);
-                        send = send.length() > 2000 ? send.substring(0, 2000) : send;
-                        dm.sendMessage(send).queue();
-                    });
-                    MonitorData monitorData = gravity.load(new MonitorData(event.getGuild().getId()));
-                    TextChannel monitorChannel = event.getGuild().getTextChannelById(
-                            monitorData.get(MonitorData.MESSAGE_CHANNEL).defaulting(0).asLong()
+        if (match.isPresent()) {
+            messageObject.delete().queue(success -> {
+                author.openPrivateChannel().queue(dm -> {
+                    String send = String.format("The following message has been automatically flagged and "
+                            + "removed from %s:\n\n%s", guild.getName(), message);
+                    send = send.length() > 2000 ? send.substring(0, 2000) : send;
+                    dm.sendMessage(send).queue();
+                });
+                MonitorData monitorData = gravity.load(new MonitorData(guild.getId()));
+                TextChannel monitorChannel = guild.getTextChannelById(
+                        monitorData.get(MonitorData.MESSAGE_CHANNEL).defaulting(0).asLong()
+                );
+                if (monitorChannel == null) {
+                    IBai.INSTANCE.getLogger().info("Monitor channel not found: %s sent %s",
+                            author.getAsTag(),
+                            messageObject.getContentRaw()
                     );
-                    if(monitorChannel == null) {
-                        IBai.INSTANCE.getLogger().info("Monitor channel not found: %s sent %s",
-                                event.getAuthor().getAsTag(),
-                                event.getMessage().getContentRaw()
-                        );
-                        return;
-                    }
-                    String title = String.format(
-                            "%s (ID: %s)",
-                            event.getAuthor().getAsTag(),
-                            event.getAuthor().getId()
-                    );
-
-                    if (title.length() > MessageEmbed.TITLE_MAX_LENGTH) {
-                        title = title.substring(0, MessageEmbed.TITLE_MAX_LENGTH);
-                    }
-
-                    String description = String.format(
-                            "\"%s\", sent in **%s**",
-                            event.getMessage().getContentRaw(),
-                            event.getChannel().getAsMention()
-                    );
-
-                    description = description.length() > 2000 ? description.substring(0, 2000) : description;
-                    EmbedBuilder embedBuilder = new EmbedBuilder()
-                            .setColor(Color.MAGENTA)
-                            .setAuthor("Filter was triggered!")
-                            .setTitle(title)
-                            .setDescription(description);
-                    monitorChannel.sendMessage(embedBuilder.build()).queue();
-                    if (!filterNotifyData.contains(match.get().pattern())) {
-                        monitorChannel.sendMessage("@here").queue();
-                    }
+                    return;
                 }
-            );
+                String title = String.format(
+                        "%s (ID: %s)",
+                        author.getAsTag(),
+                        author.getId()
+                );
+
+                if (title.length() > MessageEmbed.TITLE_MAX_LENGTH) {
+                    title = title.substring(0, MessageEmbed.TITLE_MAX_LENGTH);
+                }
+
+                String description = String.format(
+                        "\"%s\", sent in **%s**",
+                        messageObject.getContentRaw(),
+                        messageObject.getTextChannel().getAsMention()
+                );
+
+                description = description.length() > 2000 ? description.substring(0, 2000) : description;
+                EmbedBuilder embedBuilder = new EmbedBuilder()
+                        .setColor(Color.MAGENTA)
+                        .setAuthor("Filter was triggered!")
+                        .setTitle(title)
+                        .setDescription(description);
+                monitorChannel.sendMessage(embedBuilder.build()).queue();
+                if (!filterNotifyData.contains(match.get().pattern())) {
+                    monitorChannel.sendMessage("@here").queue();
+                }
+            });
         }
     }
-
 }
+
