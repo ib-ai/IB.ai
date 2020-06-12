@@ -34,7 +34,6 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,16 +47,15 @@ public final class History implements CommandAction {
      */
     @Override
     public void accept(CommandContext context) {
-        context.assertArguments(1, "error.generic_syntax_arg");
+        context.assertArguments(1, "error.missing_member");
+        Member member = context.assertMemberArgument("error.note_invalid");
 
         Guild guild = context.getGuild();
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
 
-        Member member = guild.getMemberById(context.getArguments()[0]);
-
         List<Long> caseIds = punishmentList.values().stream()
-                .filter(caseId -> Punishment.of(guild, caseId).getUserId().equals(context.getArguments()[0]))
+                .filter(caseId -> Punishment.of(guild, caseId).getUserId().equals(member.getId()))
                 .map(Property::asLong)
                 .collect(Collectors.toList());
 
@@ -82,8 +80,14 @@ public final class History implements CommandAction {
                     .retrieveMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong())
                     .complete();
 
+            String date = "???";
+
+            if (message != null) {
+                date = message.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/YYY"));
+            }
+
             embedBuilder.addField(String.format("Case %s (%s) - By %s", caseId,
-                    message.getTimeCreated().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)),
+                    date,
                     punishment.getStaffDisplay()),
                     String.format("%s - %s", punishment.getType().getDisplayInitial(),
                             punishment.getReason()), false);
