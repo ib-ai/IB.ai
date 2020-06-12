@@ -32,6 +32,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -84,9 +85,8 @@ public final class History implements CommandAction {
                         .retrieveMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong())
                         .complete();
                 date = message.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/YYY"));
-            } catch(Exception e) {
-                //Test Code will remove and replace later.
-                context.replyRaw(e.getMessage());
+            } catch(ErrorResponseException e) {
+                //Empty, do nothing
             }
 
             embedBuilder.addField(String.format("Case %s (%s) - By %s", caseId,
