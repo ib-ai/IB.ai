@@ -47,7 +47,7 @@ public final class History implements CommandAction {
      */
     @Override
     public void accept(CommandContext context) {
-        context.assertArguments(1, "error.missing_member");
+        context.assertArguments(1, "error.missing_memberid");
         Member member = context.assertMemberArgument("error.note_invalid");
 
         Guild guild = context.getGuild();
@@ -57,6 +57,7 @@ public final class History implements CommandAction {
         List<Long> caseIds = punishmentList.values().stream()
                 .filter(caseId -> Punishment.of(guild, caseId).getUserId().equals(member.getId()))
                 .map(Property::asLong)
+                .sorted()
                 .collect(Collectors.toList());
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -76,14 +77,16 @@ public final class History implements CommandAction {
                 return;
             }
 
-            Message message  = channel
-                    .retrieveMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong())
-                    .complete();
-
             String date = "???";
 
-            if (message != null) {
+            try {
+                Message message = channel
+                        .retrieveMessageById(punishmentData.get(MESSAGE).defaulting(0L).asLong())
+                        .complete();
                 date = message.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/YYY"));
+            } catch(Exception e) {
+                //Test Code will remove and replace later.
+                context.replyRaw(e.getMessage());
             }
 
             embedBuilder.addField(String.format("Case %s (%s) - By %s", caseId,
