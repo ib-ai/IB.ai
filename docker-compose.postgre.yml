@@ -1,0 +1,66 @@
+version: '3.4'
+
+services:
+
+  # The Java bot process -- uses Dockerfile in ./docker/
+  # Will attempt to restart 3 times.
+  bot:
+    image: ib.ai
+    restart: on-failure:3
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file:
+      - bot.env
+    depends_on:
+      - db
+
+  # Redis database
+  # Running on port 6379, on a failure it will restart itself
+  # Connect via the URL 'redis://db:6379'
+  db:
+    restart: always
+    image: redis
+    volumes:
+      - db-data:/data
+
+  postgredb:
+    restart: always
+    image: postgres
+    volumes:
+      - postgre-data:/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=ibo@discord.com
+      - PGADMIN_DEFAULT_PASSWORD=ibodiscord
+      - PGADMIN_LISTEN_PORT=80
+    ports:
+      - "80:80"
+    volumes:
+      - pgadmin-data:/data
+    tty: true
+    links:
+      - "postgredb:pgsql-server"
+  
+  # Automated backup of Redis image to S3 object storage
+#  backup:
+#    image: pants1/docker-volume-backup
+#    restart: on-failure
+#    env_file:
+#     - backup.env
+#    volumes:
+#     - /var/lib/docker/volumes/:/HostVolumeData
+#    depends_on:
+#     - db
+
+volumes:
+  # Database persistence
+  db-data:
+  postgre-data:
+  pgadmin-data:
