@@ -383,11 +383,11 @@ public final class RegistrarUtil implements CommandRegistrar {
                                     new StringI18n(null, target.getEffectiveName()),
                                     true
                             )
-                            .addField(new StringI18n("info.user_status"),
+                            .addField(new StringI18n("info.user_online"),
                                     new StringI18n(null, target.getOnlineStatus().toString()),
                                     true
                             )
-                            .addField(new StringI18n("info.user_game"),
+                            .addField(new StringI18n("info.user_status"),
                                     new StringI18n(null, activity == null ? "-" : activity.getName()),
                                     true
                             )
