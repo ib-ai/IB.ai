@@ -56,6 +56,8 @@ public final class MonitorCleanup implements CommandAction {
         for(String userToClean : monitoredUsers) {
             removeUser(context, userToClean);
         }
+
+        context.replyI18n("success.done");
     }
 
     /**

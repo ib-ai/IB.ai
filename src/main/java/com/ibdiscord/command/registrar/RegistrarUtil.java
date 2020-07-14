@@ -170,12 +170,15 @@ public final class RegistrarUtil implements CommandRegistrar {
                     if (context.getOptions().stream()
                             .noneMatch(it -> it.getName().equalsIgnoreCase("update"))) {
                         target.sendMessage(builder.build()).queue();
+                        context.replyI18n("success.done");
                     } else {
                         for (Option option : context.getOptions()) {
                             if (option.getName().equalsIgnoreCase("update")) {
                                 long id = UString.toLong(option.getValue());
                                 target.retrieveMessageById(id)
-                                        .queue(success -> target.editMessageById(id, builder.build()).queue(),
+                                        .queue(success -> target.editMessageById(id, builder.build())
+                                                        .queue(success2 -> context.replyI18n("success.done"),
+                                                            failure2 -> context.replyI18n("error.generic")),
                                             failure -> context.replyI18n("error.pin_channel"));
                                 break;
                             }

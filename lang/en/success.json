@@ -34,6 +34,8 @@
   "reason": "The reason has been updated.",
   "reminder_delete": "The reminder has been deleted!",
   "reminder_schedule": "The reminder has been scheduled!",
+  "roll": "You rolled {0}.",
+  "roll_stats": "You rolled {0}.\nSum: {1}, Mean: {2}, Stdev: {3}",
   "swap_role": "The roles have been swapped for {0} users.",
   "tag_done": "Consider it done: `{0}` -> `{1}`.",
   "tag_remove": "The tag has been removed.",

@@ -43,11 +43,12 @@ public final class UEmbed {
 
         builder.addField(
                 "*What are 'subject helpers'?*",
-                "Subject helpers, or simply \"helpers\", are members who volunteer their time and expertise to "
+                String.format(
+                        "Subject helpers, or simply \"helpers\", are members who volunteer their time and expertise to "
                         + "help fellow members with certain subjects. You can contact the Helpers for this subject by "
-                        + "tagging the [subject helper role] role. Please wait 15mins after your question is posted "
+                        + "tagging the %s role. Please wait 15 minutes after your question is posted "
                         + "before doing so, though. Most channels & helpers are fairly active anyway, so you should "
-                        + "see your question(s) answered before then, whether by a helper or someone else.",
+                        + "see your question(s) answered before then, whether by a helper or someone else.", subject),
                 false
         );
 
