@@ -73,6 +73,7 @@ public final class HelperMessageCreate implements CommandAction {
             DataContainer.INSTANCE.getGravity().save(helperMessageRolesData);
             DataContainer.INSTANCE.getGravity().save(helperMessageData);
             message.pin().queue();
+            context.replyI18n("success.done");
         } catch (RejectedExecutionException e) {
             context.replyI18n("error.pin_channel");
         }

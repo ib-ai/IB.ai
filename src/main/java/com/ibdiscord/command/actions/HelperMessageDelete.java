@@ -73,5 +73,6 @@ public final class HelperMessageDelete implements CommandAction {
             DataContainer.INSTANCE.getGravity().save(helperMessageRolesData);
             DataContainer.INSTANCE.getGravity().save(helperMessageData);
         }
+        context.replyI18n("success.done");
     }
 }
