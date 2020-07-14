@@ -21,6 +21,8 @@ package com.ibdiscord.command.registrar;
 import com.ibdiscord.command.actions.Odds;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
+import com.ibdiscord.utils.UString;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -78,7 +80,6 @@ public final class RegistrarFun implements CommandRegistrar {
 
         registry.define("roll")
                 .on(context -> {
-                    // This could probably run into some issues with overflow or long message, but eh its for fun.
                     int number = 1;
                     int sides = 6;
 
@@ -104,11 +105,8 @@ public final class RegistrarFun implements CommandRegistrar {
                     StringBuilder builder = new StringBuilder();
                     Random rand = new Random();
 
-                    int sum = 0;
+                    long sum = 0;
                     double var = 0;
-
-                    //TODO: IN18 support
-                    builder.append("You rolled ");
 
                     for (int i = 0; i < number; i++) {
                         int value = rand.nextInt(sides) + 1;
@@ -120,16 +118,15 @@ public final class RegistrarFun implements CommandRegistrar {
                         }
                     }
 
-                    builder.append(".");
-
+                    String roll = UString.truncate(builder.toString(), Message.MAX_CONTENT_LENGTH / 2);
                     if (context.getOptions().stream().anyMatch(it -> it.getName().equalsIgnoreCase("stats"))) {
                         double mean = ((double) sum) / number;
                         var = var / number - mean * mean;
 
-                        builder.append("\n").append(String.format("Sum: %d, Mean: %.3f, Stdev: %.3f", sum, mean, Math.sqrt(var)));
+                        context.replyI18n("success.roll_stats", roll, sum, String.format("%.3f", mean), String.format("%.3f", Math.sqrt(var)));
+                    } else {
+                        context.replyI18n("success.roll", roll);
                     }
-
-                    context.replyRaw(builder.toString());
                 });
     }
 
