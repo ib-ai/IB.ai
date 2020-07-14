@@ -58,10 +58,6 @@
             <property name="message"
                       value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>
         </module>
-        <module name="LineLength">
-            <property name="max" value="120"/>
-            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
-        </module>
         <module name="AvoidStarImport">
             <property name="excludes" value="java.io,java.net,java.lang.Math, java.util.concurrent, java.awt, com.ibdiscord.data.db.entries.punish.PunishmentData,
                                             com.ibdiscord.command.actions, net.dv8tion.jda.api.entities, java.util"/>
