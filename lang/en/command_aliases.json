@@ -34,6 +34,7 @@
   "reminder": ["reminder", "remindme", "remind"],
   "react": ["reaction", "reactionroles", "rr"],
   "roleswap": ["roleswap", "swaproles"],
+  "roll": ["roll", "diceroll"],
   "serverinfo": ["serverinfo", "guildinfo", "si"],
   "tag": ["tag", "tags"],
   "tag_find": ["find", "f", "lookup"],
