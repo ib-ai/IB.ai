@@ -75,6 +75,62 @@ public final class RegistrarFun implements CommandRegistrar {
 
         registry.define("odds")
                 .on(new Odds());
+
+        registry.define("roll")
+                .on(context -> {
+                    // This could probably run into some issues with overflow or long message, but eh its for fun.
+                    int number = 1;
+                    int sides = 6;
+
+                    if (context.getArguments().length > 0) {
+                        try {
+                            String[] dice = context.getArguments()[0].split("d");
+                            number = Integer.parseInt(dice[0]);
+                            sides = Integer.parseInt(dice[1]);
+
+                            if (number < 1) {
+                                number = 1;
+                            }
+
+                            if (sides < 1) {
+                                sides = 1;
+                            }
+                        } catch (NumberFormatException e) {
+                            number = 1;
+                            sides = 6;
+                        }
+                    }
+
+                    StringBuilder builder = new StringBuilder();
+                    Random rand = new Random();
+
+                    int sum = 0;
+                    double var = 0;
+
+                    //TODO: IN18 support
+                    builder.append("You rolled ");
+
+                    for (int i = 0; i < number; i++) {
+                        int value = rand.nextInt(sides) + 1;
+                        sum += value;
+                        var += value * value;
+                        builder.append(value);
+                        if (i < number - 1) {
+                            builder.append(", ");
+                        }
+                    }
+
+                    builder.append(".");
+
+                    if (context.getOptions().stream().anyMatch(it -> it.getName().equalsIgnoreCase("stats"))) {
+                        double mean = ((double) sum) / number;
+                        var = var / number - mean * mean;
+
+                        builder.append("\n").append(String.format("Sum: %d, Mean: %.3f, Stdev: %.3f", sum, mean, Math.sqrt(var)));
+                    }
+
+                    context.replyRaw(builder.toString());
+                });
     }
 
 }
