@@ -95,7 +95,7 @@ public final class FilterListener extends ListenerAdapter {
         Optional<Matcher> match = filterData.values().stream()
                 .map(it -> filterCache.compute(guild.getIdLong(),
                         it.asString(),
-                        Pattern.compile(it.asString()))
+                        Pattern.compile(it.asString(), Pattern.CASE_INSENSITIVE))
                 )
                 .map(it -> it.matcher(message))
                 .filter(it -> it.find())
