@@ -54,6 +54,7 @@ public final class CassowaryCreate implements CommandAction {
 
         if(invalidIDs) {
             context.replyI18n("error.cassowary_id");
+            return;
         }
 
         CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData(
@@ -88,8 +89,7 @@ public final class CassowaryCreate implements CommandAction {
      */
     private static boolean validateRoleID(String roleID, CommandContext context) {
         try {
-            context.getGuild().getRoleById(roleID);
-            return false;
+            return context.getGuild().getRoleById(roleID) == null;
         } catch(Exception ex) {
             return true;
         }

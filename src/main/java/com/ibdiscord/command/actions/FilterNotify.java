@@ -22,8 +22,7 @@ import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.filter.FilterNotifyData;
-
-import java.util.List;
+import com.ibdiscord.utils.UString;
 
 public final class FilterNotify implements CommandAction {
 
@@ -34,8 +33,7 @@ public final class FilterNotify implements CommandAction {
     @Override
     public void accept(CommandContext context) {
         context.assertArguments(1, "error.generic_syntax_arg");
-        List<String> data = context.assertQuotes(null, "error.missing_data");
-        String trigger = context.assertRegex(data.get(0), "error.filter");
+        String trigger = context.assertRegex(UString.concat(context.getArguments(), " ", 0), "error.filter");
 
         FilterNotifyData filterNotifyData = DataContainer.INSTANCE.getGravity()
                 .load(new FilterNotifyData(context.getGuild().getId()));

@@ -38,14 +38,12 @@ import com.ibdiscord.data.db.entries.punish.PunishmentData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import com.ibdiscord.data.db.entries.voting.VoteLadderData;
 import com.ibdiscord.data.db.entries.voting.VoteLaddersData;
-import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.punish.Punishment;
 import com.ibdiscord.punish.PunishmentExpiry;
 import com.ibdiscord.punish.PunishmentHandler;
 import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
-import com.ibdiscord.utils.objects.Tuple;
 import com.ibdiscord.vote.VoteEntry;
 import com.ibdiscord.vote.VoteLadder;
 import de.arraying.gravity.Gravity;
@@ -53,6 +51,7 @@ import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -137,52 +136,10 @@ public final class RegistrarMod implements CommandRegistrar {
                 )
                 .sub(registry.sub("toggle", "generic_toggle")
                         .on(new FilterToggle())
-                ).sub(registry.sub("notify", "notify")
+                ).sub(registry.sub("notify", "generic_notify")
                         .on(new FilterNotify())
                 );
         commandFilter.on(context -> context.replySyntax(commandFilter));
-
-        registry.define("find")
-                .restrict(CommandPermission.role(GuildData.MODERATOR))
-                .on(context -> {
-                    context.assertArguments(1, "error.generic_arg_length");
-                    String guild = context.getGuild().getId();
-                    String compare = context.getArguments()[0];
-                    Gravity gravity = DataContainer.INSTANCE.getGravity();
-                    List<Tuple<Punishment, Long>> punishments = new ArrayList<>();
-                    long max = gravity.load(new PunishmentsData(guild)).size();
-                    for(long i = 1; i <= max; i++) {
-                        Punishment punishment = Punishment.of(context.getGuild(), i);
-                        if((punishment.getUserId() != null
-                                && punishment.getUserId().equalsIgnoreCase(compare))
-                                || (punishment.getStaffId() != null
-                                && punishment.getStaffId().equalsIgnoreCase(compare))) {
-                            punishments.add(new Tuple<>(punishment, i));
-                        }
-                    }
-                    EmbedBuilder embedBuilder = new EmbedBuilder();
-                    Pagination<Tuple<Punishment, Long>> pagination = new Pagination<>(punishments, 20);
-                    int page = 1;
-                    if(context.getArguments().length >= 2) {
-                        try {
-                            page = Integer.valueOf(context.getArguments()[1]);
-                        } catch(NumberFormatException ex) {
-                            // Ignored
-                        }
-                    }
-                    pagination.page(page).forEach(entry -> {
-                        Punishment punishment = entry.getValue().getPropertyA();
-                        embedBuilder.addField(
-                                context.__(context, "info.case_number", entry.getValue().getPropertyB().toString()),
-                                context.__(context, "info.punished_user", punishment.getStaffDisplay(),
-                                        punishment.getUserDisplay()), false
-                        );
-                    });
-                    embedBuilder.setFooter(context.__(context, "info.paginated",
-                            String.valueOf(page),
-                            String.valueOf(pagination.total())), null);
-                    context.replyEmbed(embedBuilder.build());
-                });
 
         registry.define("giverole")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
@@ -593,10 +550,14 @@ public final class RegistrarMod implements CommandRegistrar {
                 .sub(registry.sub("set", null)
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                         .on(new Logging(GuildData.UPDATES)))
-                .sub(registry.sub("add", null)
+                .sub(registry.sub("create", "generic_create")
                         .restrict(CommandPermission.role(GuildData.MODERATOR))
                         .on(context -> {
-                            List<String> updates = context.assertQuotes(1, "error.missing_data");
+                            context.assertArguments(1, "error.missing_data");
+                            List<String> updates = UInput.extractQuotedStrings(context.getArguments());
+                            if (updates.isEmpty()) {
+                                updates.add(UString.concat(context.getArguments(), " ", 0));
+                            }
                             GuildData guildData = DataContainer.INSTANCE.getGravity()
                                     .load(new GuildData(context.getGuild().getId()));
                             TextChannel channel = context.getGuild()
@@ -655,7 +616,7 @@ public final class RegistrarMod implements CommandRegistrar {
                             channel.sendMessage(builder.toString()).queue();
                             context.replyI18n("success.done");
                         }))
-                .sub(registry.sub("delete", null)
+                .sub(registry.sub("delete", "generic_delete")
                         .restrict(CommandPermission.role(GuildData.MODERATOR))
                         .on(context -> {
                             context.assertArguments(1, "error.missing_messageid");
@@ -667,8 +628,14 @@ public final class RegistrarMod implements CommandRegistrar {
                                 context.replyI18n("error.reason_logging");
                                 return;
                             }
-                            Message message = channel.retrieveMessageById(context.getArguments()[0]).complete();
-                            if (message == null) {
+                            Message message;
+                            try {
+                                message = channel.retrieveMessageById(context.getArguments()[0]).complete();
+                                if (message == null) {
+                                    context.replyI18n("error.pin_channel");
+                                    return;
+                                }
+                            } catch(ErrorResponseException e) {
                                 context.replyI18n("error.pin_channel");
                                 return;
                             }
