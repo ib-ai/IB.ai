@@ -29,9 +29,9 @@ import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UString;
 import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Role;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public final class CassowaryList extends PaginatedCommand<String> {
@@ -51,8 +51,10 @@ public final class CassowaryList extends PaginatedCommand<String> {
                 )).values()
                         .stream()
                         // lol
-                        .map(id -> id + " (" + Objects.requireNonNull(context.getGuild().getRoleById(id.asString()))
-                                .getName() + ")")
+                        .map(id -> {
+                            Role role = context.getGuild().getRoleById(id.asString());
+                            return id + (role != null ? " (" + role.getName() + ")" : "");
+                        })
                         .collect(Collectors.toSet())
                         .toString())
                 .collect(Collectors.toList());
