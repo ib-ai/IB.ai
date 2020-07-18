@@ -2,7 +2,7 @@
   "generic_create": ["create", "c", "make", "new", "add", "a"],
   "generic_delete": ["delete", "d", "remove", "r"],
   "generic_list": ["list", "ls", "l"],
-  "generic_notify": ["notify"],
+  "generic_notify": ["notify", "notification"],
   "generic_toggle": ["toggle", "t", "switch"],
 
   "avatar": ["avatar", "av"],
