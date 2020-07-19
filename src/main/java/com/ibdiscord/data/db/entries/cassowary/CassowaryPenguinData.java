@@ -18,11 +18,11 @@
 
 package com.ibdiscord.data.db.entries.cassowary;
 
-import de.arraying.gravity.data.types.TypeSet;
+import de.arraying.gravity.data.types.TypeMap;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class CassowaryPenguinData extends TypeSet {
+public class CassowaryPenguinData extends TypeMap {
 
     private final String guild;
 
