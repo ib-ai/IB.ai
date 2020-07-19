@@ -41,7 +41,7 @@ public final class CassowaryCreate implements CommandAction {
         context.assertArguments(3, "error.generic_syntax_arg");
         List<String> data = context.assertQuotes(1, "error.generic_syntax_arg");
 
-        String label = data.get(0);
+        String label = data.get(0).toLowerCase();
 
         String allArgs = UString.concat(context.getArguments(), " ", 0);
         String argsWithoutLabel = allArgs.replace(label, "")

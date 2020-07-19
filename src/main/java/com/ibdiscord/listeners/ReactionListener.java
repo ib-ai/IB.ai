@@ -159,8 +159,8 @@ public final class ReactionListener extends ListenerAdapter {
 
             // if a role that is about to be added to the user is a member of the cassowary
             if(containsRoleToAdd) {
-                if(cassowaryPenguins.getKeys().contains(cassowaryLabel)) { // Handle as penguin-cassowary
-                    String anchorRoleID = cassowaryPenguins.get(cassowaryLabel).asString();
+                if(cassowaryPenguins.getKeys().contains(cassowaryLabel.toLowerCase())) { // Handle as penguin-cassowary
+                    String anchorRoleID = cassowaryPenguins.get(cassowaryLabel.toLowerCase()).asString();
                     Collection<String> cassoRolesSansAnchor = cassowaryData.values().stream()
                             .map(Property::asString)
                             .filter(id -> !id.equals(anchorRoleID))
