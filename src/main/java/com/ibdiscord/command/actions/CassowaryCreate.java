@@ -67,7 +67,7 @@ public final class CassowaryCreate implements CommandAction {
             CassowaryPenguinData cassowaryPenguins = DataContainer.INSTANCE.getGravity().load(new CassowaryPenguinData(
                     context.getGuild().getId()
             ));
-            cassowaryPenguins.add(label);
+            cassowaryPenguins.set(label, roleIDs.get(0));
             DataContainer.INSTANCE.getGravity().save(cassowaryPenguins);
         }
 
