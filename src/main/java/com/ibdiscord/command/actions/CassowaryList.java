@@ -52,8 +52,8 @@ public final class CassowaryList extends PaginatedCommand<String> {
         CassowaryPenguinData cassowaryPenguins = DataContainer.INSTANCE.getGravity().load(new CassowaryPenguinData(context.getGuild().getId()));
 
         String cas = page.getValue();
-        boolean penguin = cassowaryPenguins.getKeys().contains(cas);
-        String anchorID = penguin ? cassowaryPenguins.get(cas).asString() : "";
+        boolean penguin = cassowaryPenguins.getKeys().contains(cas.toLowerCase());
+        String anchorID = penguin ? cassowaryPenguins.get(cas.toLowerCase()).asString() : "";
 
         String key = String.format("%s%s", cas, penguin ? " [penguin]" : "");
 

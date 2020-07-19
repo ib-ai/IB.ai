@@ -36,7 +36,7 @@ public final class CassowaryDelete implements CommandAction {
     public void accept(CommandContext context) {
         context.assertArguments(1, "error.generic_syntax_arg");
 
-        String label = UString.concat(context.getArguments(), " ", 0);
+        String label = UString.concat(context.getArguments(), " ", 0).toLowerCase();
 
         CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData(
                 context.getGuild().getId()
