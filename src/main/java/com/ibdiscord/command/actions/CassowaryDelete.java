@@ -47,7 +47,7 @@ public final class CassowaryDelete implements CommandAction {
         CassowaryPenguinData cassowaryPenguins = DataContainer.INSTANCE.getGravity().load(new CassowaryPenguinData(
                 context.getGuild().getId()
         ));
-        cassowaryPenguins.remove(label);
+        cassowaryPenguins.unset(label);
         DataContainer.INSTANCE.getGravity().save(cassowaryPenguins);
 
         CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(context.getGuild().getId(), label));
