@@ -28,6 +28,7 @@ import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
+import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 
@@ -44,10 +45,11 @@ public final class MonitorList extends PaginatedCommand<String> {
     @Override
     protected Pagination<String> getPagination(CommandContext context) {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
-        List<String> a = gravity.load(new MonitorUserData(context.getGuild().getId())).values().stream()
-                .map(it -> {
-                    String id = it.asString();
-
+        List<String> a = gravity.load(new MonitorUserData(context.getGuild().getId())).values()
+                .stream()
+                .map(Property::asString)
+                .sorted()
+                .map(id -> {
                     String formatted = String.format("User: %s", id);
 
                     Member member = UInput.getMember(context.getGuild(), id);
@@ -59,8 +61,11 @@ public final class MonitorList extends PaginatedCommand<String> {
                 })
                 .collect(Collectors.toList());
 
-        List<String> b = gravity.load(new MonitorMessageData(context.getGuild().getId())).values().stream()
-                .map(it -> String.format("Regex: %s", it.asString()))
+        List<String> b = gravity.load(new MonitorMessageData(context.getGuild().getId())).values()
+                .stream()
+                .map(Property::asString)
+                .sorted()
+                .map(it -> String.format("Regex: %s", it))
                 .collect(Collectors.toList());
         a.addAll(b);
 
