@@ -25,8 +25,11 @@ import com.ibdiscord.data.db.entries.monitor.MonitorMessageData;
 import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
+import com.ibdiscord.utils.UFormatter;
+import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,12 +45,25 @@ public final class MonitorList extends PaginatedCommand<String> {
     protected Pagination<String> getPagination(CommandContext context) {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         List<String> a = gravity.load(new MonitorUserData(context.getGuild().getId())).values().stream()
-                .map(it -> "User: " + it)
+                .map(it -> {
+                    String id = it.asString();
+
+                    String formatted = String.format("User: %s", id);
+
+                    Member member = UInput.getMember(context.getGuild(), id);
+                    if (member != null) {
+                        formatted = String.format("%s (%s)", formatted, UFormatter.formatMember(member.getUser()));
+                    }
+
+                    return formatted;
+                })
                 .collect(Collectors.toList());
+
         List<String> b = gravity.load(new MonitorMessageData(context.getGuild().getId())).values().stream()
-                .map(it -> "Regex: " + it)
+                .map(it -> String.format("Regex: %s", it.asString()))
                 .collect(Collectors.toList());
         a.addAll(b);
+
         return new Pagination<>(a, 10);
     }
 

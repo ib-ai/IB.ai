@@ -69,7 +69,7 @@ public final class FilterListener extends ListenerAdapter {
     public void handleFilter(Message messageObject) {
         Guild guild = messageObject.getGuild();
         User author = messageObject.getAuthor();
-        if (author.isBot()) {
+        if (author.getId().equals(guild.getSelfMember().getId())) {
             return;
         }
         String message = messageObject.getContentRaw();
