@@ -22,6 +22,7 @@ import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.data.LocalConfig;
 import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.DataContainerPostgres;
 import com.ibdiscord.exceptions.JavaVersionException;
 import com.ibdiscord.i18n.LocaleException;
 import com.ibdiscord.i18n.LocaliserHandler;
@@ -79,6 +80,7 @@ public enum IBai {
     private void init() {
         config = new LocalConfig();
         DataContainer.INSTANCE.connect();
+        DataContainerPostgres.INSTANCE.connect();
         try {
             LocaliserHandler.INSTANCE.initialize(new File(config.getLangBase()));
         } catch(IOException | LocaleException exception) {
