@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.EnumSet;
 
 public enum DataContainerPostgres {
 
@@ -50,7 +51,21 @@ public enum DataContainerPostgres {
         try {
             Connection conn = DriverManager.getConnection("jdbc:postgresql://postgredb/ibai", username, password);
             System.out.println("Connected to the PostgreSQL server successfully.");
-            
+
+            Statement statement = conn.createStatement();
+
+            EnumSet.allOf(SQLQuery.class).forEach(query -> {
+                if (query.name().startsWith("CREATE_")) {
+                    try {
+                        statement.addBatch(query.toString());
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            });
+
+            statement.executeBatch();
+            statement.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
