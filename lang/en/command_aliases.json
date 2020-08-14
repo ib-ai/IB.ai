@@ -8,6 +8,7 @@
   "avatar": ["avatar", "av"],
   "blacklist": ["blacklist", "hackban"],
   "cassowary": ["cassowary", "casso"],
+  "channelorder": ["channelorder", "co"],
   "coinflip": ["coinflip", "flip", "headsortails", "coin"],
   "dadjoke": ["dadjoke", "dad", "dadj", "daddy"],
   "embed": ["embed", "embeds", "fancystuff"],
