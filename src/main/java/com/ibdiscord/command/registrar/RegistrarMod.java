@@ -88,6 +88,15 @@ public final class RegistrarMod implements CommandRegistrar {
                     );
                 });
 
+        registry.define("channelorder")
+                .restrict(CommandPermission.role(GuildData.MODERATOR))
+                .sub(registry.sub("snapshot", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new ChannelOrderSnapshot()))
+                .sub(registry.sub("rollback", null)
+                        .restrict(CommandPermission.role(GuildData.MODERATOR))
+                        .on(new ChannelOrderRollback()));
+
         registry.define("shorten")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(new Shorten());
