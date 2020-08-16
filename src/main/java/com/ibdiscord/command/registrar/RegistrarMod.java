@@ -88,7 +88,7 @@ public final class RegistrarMod implements CommandRegistrar {
                     );
                 });
 
-        registry.define("channelorder")
+        Command commandChannelOrder = registry.define("channelorder")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .sub(registry.sub("snapshot", null)
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
@@ -96,6 +96,7 @@ public final class RegistrarMod implements CommandRegistrar {
                 .sub(registry.sub("rollback", null)
                         .restrict(CommandPermission.role(GuildData.MODERATOR))
                         .on(new ChannelOrderRollback()));
+        commandChannelOrder.on(context -> context.replySyntax(commandChannelOrder));
 
         registry.define("shorten")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
