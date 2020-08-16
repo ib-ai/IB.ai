@@ -22,12 +22,10 @@ import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.ChannelData;
-import com.ibdiscord.utils.UPermission;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.ISnowflake;
-import net.dv8tion.jda.api.entities.Member;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,21 +53,15 @@ public final class ChannelOrderSnapshot implements CommandAction {
         );
         voiceChannelData.getKeys().forEach(voiceChannelData::unset);
 
-        Member selfMember = context.getGuild().getSelfMember();
-
         context.getGuild().getCategories().forEach(category -> {
 
             List<GuildChannel> textChannels = category.getTextChannels().size() < 1 ? null :
-                    category.modifyTextChannelPositions().getCurrentOrder().stream()
-                            .filter(channel -> UPermission.canMoveChannel(selfMember, channel))
-                            .collect(Collectors.toList());
+                    category.modifyTextChannelPositions().getCurrentOrder();
 
             List<GuildChannel> voiceChannels = category.getVoiceChannels().size() < 1 ? null :
-                    category.modifyVoiceChannelPositions().getCurrentOrder().stream()
-                            .filter(channel -> UPermission.canMoveChannel(selfMember, channel))
-                            .collect(Collectors.toList());
+                    category.modifyVoiceChannelPositions().getCurrentOrder();
 
-            if (textChannels != null && !textChannels.isEmpty()) {
+            if (textChannels != null) {
                 textChannelData.set(category.getId(), textChannels.stream()
                         .map(ISnowflake::getId)
                         .collect(Collectors.joining(",")));
@@ -82,7 +74,7 @@ public final class ChannelOrderSnapshot implements CommandAction {
                             .collect(Collectors.joining(", ")), false);
             }
 
-            if (voiceChannels != null && !voiceChannels.isEmpty()) {
+            if (voiceChannels != null) {
                 voiceChannelData.set(category.getId(), voiceChannels.stream()
                         .map(ISnowflake::getId)
                         .collect(Collectors.joining(",")));
