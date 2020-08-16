@@ -64,7 +64,9 @@ public final class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if(!event.getAuthor().isBot() && event.getMessage().getMentionedMembers().size() == 0) {
+        if(!event.getAuthor().isBot()
+                && event.getMessage().getMentionedMembers().size() == 0
+                && event.getMessage().getMentionedRoles().size() == 0) {
             repeater(event);
         }
         messageCache.put(event.getMessageIdLong(), new MinimalMessage(event.getAuthor().getIdLong(),
