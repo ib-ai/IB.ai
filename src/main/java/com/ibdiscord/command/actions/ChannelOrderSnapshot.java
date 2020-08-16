@@ -44,16 +44,20 @@ public final class ChannelOrderSnapshot implements CommandAction {
         embedBuilder.setTitle("Order Of Channels");
 
         Gravity gravity = DataContainer.INSTANCE.getGravity();
+
+        ChannelData textChannelData = gravity.load(
+                new ChannelData(context.getGuild().getId(), "text")
+        );
+        textChannelData.getKeys().forEach(textChannelData::unset);
+
+        ChannelData voiceChannelData = gravity.load(
+                new ChannelData(context.getGuild().getId(), "voice")
+        );
+        voiceChannelData.getKeys().forEach(voiceChannelData::unset);
+
         Member selfMember = context.getGuild().getSelfMember();
 
         context.getGuild().getCategories().forEach(category -> {
-            ChannelData textChannelData = gravity.load(
-                    new ChannelData(context.getGuild().getId(), "text")
-            );
-
-            ChannelData voiceChannelData = gravity.load(
-                    new ChannelData(context.getGuild().getId(), "voice")
-            );
 
             List<GuildChannel> textChannels = category.getTextChannels().size() < 1 ? null :
                     category.modifyTextChannelPositions().getCurrentOrder().stream()
