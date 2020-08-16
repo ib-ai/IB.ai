@@ -22,9 +22,12 @@ import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.ChannelData;
+import com.ibdiscord.utils.UPermission;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.ISnowflake;
+import net.dv8tion.jda.api.entities.Member;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +44,7 @@ public final class ChannelOrderSnapshot implements CommandAction {
         embedBuilder.setTitle("Order Of Channels");
 
         Gravity gravity = DataContainer.INSTANCE.getGravity();
+        Member selfMember = context.getGuild().getSelfMember();
 
         context.getGuild().getCategories().forEach(category -> {
             ChannelData textChannelData = gravity.load(
@@ -51,47 +55,40 @@ public final class ChannelOrderSnapshot implements CommandAction {
                     new ChannelData(context.getGuild().getId(), "voice")
             );
 
-            List<String> textChannels = category.getTextChannels().size() < 1 ? null :
-                    category.modifyTextChannelPositions().getCurrentOrder()
-                    .stream()
-                    .map(ISnowflake::getId)
-                    .collect(Collectors.toList());
-
-            List<String> voiceChannels = category.getVoiceChannels().size() < 1 ? null :
-                    category.modifyVoiceChannelPositions().getCurrentOrder()
-                            .stream()
-                            .map(ISnowflake::getId)
+            List<GuildChannel> textChannels = category.getTextChannels().size() < 1 ? null :
+                    category.modifyTextChannelPositions().getCurrentOrder().stream()
+                            .filter(channel -> UPermission.canMoveChannel(selfMember, channel))
                             .collect(Collectors.toList());
 
-            if (textChannels != null) {
-                StringBuilder textStrings = new StringBuilder();
+            List<GuildChannel> voiceChannels = category.getVoiceChannels().size() < 1 ? null :
+                    category.modifyVoiceChannelPositions().getCurrentOrder().stream()
+                            .filter(channel -> UPermission.canMoveChannel(selfMember, channel))
+                            .collect(Collectors.toList());
 
-                textChannelData.set(category.getId(), textChannels);
+            if (textChannels != null && !textChannels.isEmpty()) {
+                textChannelData.set(category.getId(), textChannels.stream()
+                        .map(ISnowflake::getId)
+                        .collect(Collectors.joining(",")));
 
                 gravity.save(textChannelData);
 
-                textChannels.forEach(guildChannel -> {
-                    textStrings.append(context.getGuild().getGuildChannelById(guildChannel).getName()).append(", ");
-                });
-
                 embedBuilder.addField(String.format("Text Channels (%s)",
-                        category.getName()), textStrings.toString(), false);
+                        category.getName()), textChannels.stream()
+                            .map(GuildChannel::getName)
+                            .collect(Collectors.joining(", ")), false);
             }
 
-
-            if (voiceChannels != null) {
-                StringBuilder voiceStrings = new StringBuilder();
-
-                voiceChannelData.set(category.getId(), voiceChannels);
+            if (voiceChannels != null && !voiceChannels.isEmpty()) {
+                voiceChannelData.set(category.getId(), voiceChannels.stream()
+                        .map(ISnowflake::getId)
+                        .collect(Collectors.joining(",")));
 
                 gravity.save(voiceChannelData);
 
-                voiceChannels.forEach(guildChannel -> {
-                    voiceStrings.append(context.getGuild().getGuildChannelById(guildChannel).getName()).append(", ");
-                });
-
                 embedBuilder.addField(String.format("Voice Channels (%s)",
-                        category.getName()), voiceStrings.toString(), false);
+                        category.getName()), voiceChannels.stream()
+                            .map(GuildChannel::getName)
+                            .collect(Collectors.joining(", ")), false);
             }
         });
 
