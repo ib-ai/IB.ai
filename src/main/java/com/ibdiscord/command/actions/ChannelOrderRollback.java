@@ -37,38 +37,51 @@ public final class ChannelOrderRollback implements CommandAction {
     @Override
     public void accept(CommandContext context) {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
-        Member selfMember = context.getGuild().getSelfMember();
 
         ChannelData textChannelData = gravity.load(new ChannelData(context.getGuild().getId(), "text"));
         ChannelData voiceChannelData = gravity.load(new ChannelData(context.getGuild().getId(), "voice"));
 
-        textChannelData.getKeys().forEach(categoryId -> {
-            Category category = context.getGuild().getCategoryById(categoryId);
-            String[] textChannels = textChannelData.get(categoryId).toString()
-                    .split(",");
+        if (context.getArguments().length > 0) {
+            String identifier = context.getArguments()[0];
+            String textChannels = textChannelData.get(identifier).defaulting("").toString();
+            String voiceChannels = voiceChannelData.get(identifier).defaulting("").toString();
 
-            for (int i = 0; i < textChannels.length; i++) {
-                TextChannel channel = UInput.getChannel(context.getGuild(), textChannels[i]);
-                if (channel != null && UPermission.canMoveChannel(selfMember, channel)) {
-                    channel.getManager().setParent(category).setPosition(i).queue();
-                }
-            }
-        });
+            reorder(context, identifier, textChannels);
+            reorder(context, identifier, voiceChannels);
+        } else {
+            textChannelData.getKeys().forEach(categoryId -> {
+                reorder(context, categoryId, textChannelData.get(categoryId).toString());
+            });
 
-        voiceChannelData.getKeys().forEach(categoryId -> {
-            Category category = context.getGuild().getCategoryById(categoryId);
-            String[] voiceChannels = voiceChannelData.get(categoryId).toString()
-                    .split(",");
-
-            for (int i = 0; i < voiceChannels.length; i++) {
-                VoiceChannel channel = (VoiceChannel) UInput.getChannelGuild(context.getGuild(), voiceChannels[i], true);
-                if (channel != null && UPermission.canMoveChannel(selfMember, channel)) {
-                    channel.getManager().setParent(category).setPosition(i).queue();
-                }
-            }
-        });
+            voiceChannelData.getKeys().forEach(categoryId -> {
+                reorder(context, categoryId, voiceChannelData.get(categoryId).toString());
+            });
+        }
 
         context.replyI18n("success.done");
     }
-}
 
+    /**
+     * Private function to handle reorder.
+     * @param context The command context.
+     * @param identifier The category identifier.
+     * @param channelList List of channels as string.
+     */
+    private void reorder(CommandContext context, String identifier, String channelList) {
+        Category category = UInput.getCategory(context.getGuild(), identifier);
+        Member selfMember = context.getGuild().getSelfMember();
+        String[] channels = channelList.split(",");
+
+        if (category == null) {
+            context.replyI18n("error.category_invalid");
+            return;
+        }
+
+        for (int i = 0; i < channels.length; i++) {
+            GuildChannel channel = UInput.getChannelGuild(context.getGuild(), channels[i], false);
+            if (channel != null && UPermission.canMoveChannel(selfMember, channel)) {
+                channel.getManager().setParent(category).setPosition(i).queue();
+            }
+        }
+    }
+}

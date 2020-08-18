@@ -130,6 +130,24 @@ public final class UInput {
     }
 
     /**
+     * Gets the category corresponding to the given user input.
+     * @param guild The guild.
+     * @param input The input.
+     * @return A Category object, or null if the input is invalid.
+     */
+    public static Category getCategory(Guild guild, String input) {
+        if(ID_PATTERN.matcher(input).find()
+                || CHANNEL_MENTION_PATTERN.matcher(input).find()) {
+            return guild.getCategoryById(input.replaceAll("\\D", "")); // Remove all non-digits.
+        } else {
+            return guild.getCategories().stream()
+                    .filter(category -> category.getName().equalsIgnoreCase(input))
+                    .findFirst()
+                    .orElse(null);
+        }
+    }
+
+    /**
      * Gets a guild channel corresponding to the given user input.
      * @param guild The guild.
      * @param input The input.
