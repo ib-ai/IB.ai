@@ -22,8 +22,10 @@ import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.ChannelData;
+import com.ibdiscord.utils.UInput;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.ISnowflake;
 
@@ -38,10 +40,30 @@ public final class ChannelOrderSnapshot implements CommandAction {
      */
     @Override
     public void accept(CommandContext context) {
+        if (context.getArguments().length > 0) {
+            snapshot(context, context.getArguments()[0]);
+        } else {
+            context.getGuild().getCategories().forEach(category -> {
+                snapshot(context, category.getId());
+            });
+        }
+    }
+
+    /**
+     * Private function to handle snapshot.
+     * @param context The command context.
+     * @param identifier The category identifier.
+     */
+    private void snapshot(CommandContext context, String identifier) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Order Of Channels");
-
+        Category category = UInput.getCategory(context.getGuild(), identifier);
         Gravity gravity = DataContainer.INSTANCE.getGravity();
+
+        if (category == null) {
+            context.replyI18n("error.category_invalid");
+            return;
+        }
 
         ChannelData textChannelData = gravity.load(
                 new ChannelData(context.getGuild().getId(), "text")
@@ -53,40 +75,37 @@ public final class ChannelOrderSnapshot implements CommandAction {
         );
         voiceChannelData.getKeys().forEach(voiceChannelData::unset);
 
-        context.getGuild().getCategories().forEach(category -> {
+        List<GuildChannel> textChannels = category.getTextChannels().size() < 1 ? null :
+                category.modifyTextChannelPositions().getCurrentOrder();
 
-            List<GuildChannel> textChannels = category.getTextChannels().size() < 1 ? null :
-                    category.modifyTextChannelPositions().getCurrentOrder();
+        List<GuildChannel> voiceChannels = category.getVoiceChannels().size() < 1 ? null :
+                category.modifyVoiceChannelPositions().getCurrentOrder();
 
-            List<GuildChannel> voiceChannels = category.getVoiceChannels().size() < 1 ? null :
-                    category.modifyVoiceChannelPositions().getCurrentOrder();
+        if (textChannels != null) {
+            textChannelData.set(category.getId(), textChannels.stream()
+                    .map(ISnowflake::getId)
+                    .collect(Collectors.joining(",")));
 
-            if (textChannels != null) {
-                textChannelData.set(category.getId(), textChannels.stream()
-                        .map(ISnowflake::getId)
-                        .collect(Collectors.joining(",")));
+            gravity.save(textChannelData);
 
-                gravity.save(textChannelData);
+            embedBuilder.addField(String.format("Text Channels (%s)",
+                    category.getName()), textChannels.stream()
+                    .map(GuildChannel::getName)
+                    .collect(Collectors.joining(", ")), false);
+        }
 
-                embedBuilder.addField(String.format("Text Channels (%s)",
-                        category.getName()), textChannels.stream()
-                            .map(GuildChannel::getName)
-                            .collect(Collectors.joining(", ")), false);
-            }
+        if (voiceChannels != null) {
+            voiceChannelData.set(category.getId(), voiceChannels.stream()
+                    .map(ISnowflake::getId)
+                    .collect(Collectors.joining(",")));
 
-            if (voiceChannels != null) {
-                voiceChannelData.set(category.getId(), voiceChannels.stream()
-                        .map(ISnowflake::getId)
-                        .collect(Collectors.joining(",")));
+            gravity.save(voiceChannelData);
 
-                gravity.save(voiceChannelData);
-
-                embedBuilder.addField(String.format("Voice Channels (%s)",
-                        category.getName()), voiceChannels.stream()
-                            .map(GuildChannel::getName)
-                            .collect(Collectors.joining(", ")), false);
-            }
-        });
+            embedBuilder.addField(String.format("Voice Channels (%s)",
+                    category.getName()), voiceChannels.stream()
+                    .map(GuildChannel::getName)
+                    .collect(Collectors.joining(", ")), false);
+        }
 
         context.replyEmbed(embedBuilder.build());
     }
