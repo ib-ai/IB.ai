@@ -43,15 +43,11 @@ public final class ChannelOrderRollback implements CommandAction {
 
         if (context.getArguments().length > 0) {
             String identifier = context.getArguments()[0];
-            String textChannels = textChannelData.get(identifier).toString();
-            String voiceChannels = voiceChannelData.get(identifier).toString();
+            String textChannels = textChannelData.get(identifier).defaulting("").toString();
+            String voiceChannels = voiceChannelData.get(identifier).defaulting("").toString();
 
-            if (textChannels != null) {
-                reorder(context, identifier, textChannels);
-            }
-            if (voiceChannels != null) {
-                reorder(context, identifier, voiceChannels);
-            }
+            reorder(context, identifier, textChannels);
+            reorder(context, identifier, voiceChannels);
         } else {
             textChannelData.getKeys().forEach(categoryId -> {
                 reorder(context, categoryId, textChannelData.get(categoryId).toString());
