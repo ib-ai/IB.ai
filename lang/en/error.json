@@ -30,6 +30,7 @@
   "lang_command": "'{0}' is not a supported language. Use {1}lang to see a list of supported languages.",
   "lookup_convert": "Internal error converting long.",
   "lookup_noexist": "That case does not exist!",
+  "missing_categoryid": "Please provide the category ID.",
   "missing_channel": "Please mention a channel!",
   "missing_channel_permissions": "You do not have access to that channel.",
   "missing_channelid": "Please provide the channel ID.",

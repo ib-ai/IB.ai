@@ -68,12 +68,10 @@ public final class ChannelOrderSnapshot implements CommandAction {
         ChannelData textChannelData = gravity.load(
                 new ChannelData(context.getGuild().getId(), "text")
         );
-        textChannelData.getKeys().forEach(textChannelData::unset);
 
         ChannelData voiceChannelData = gravity.load(
                 new ChannelData(context.getGuild().getId(), "voice")
         );
-        voiceChannelData.getKeys().forEach(voiceChannelData::unset);
 
         List<GuildChannel> textChannels = category.getTextChannels().size() < 1 ? null :
                 category.modifyTextChannelPositions().getCurrentOrder();
