@@ -95,7 +95,10 @@ public final class RegistrarMod implements CommandRegistrar {
                         .on(new ChannelOrderSnapshot()))
                 .sub(registry.sub("rollback", null)
                         .restrict(CommandPermission.role(GuildData.MODERATOR))
-                        .on(new ChannelOrderRollback()));
+                        .on(new ChannelOrderRollback()))
+                .sub(registry.sub("list", "generic_list")
+                        .restrict(CommandPermission.role(GuildData.MODERATOR))
+                        .on(new ChannelOrderList()));
         commandChannelOrder.on(context -> context.replySyntax(commandChannelOrder));
 
         registry.define("shorten")

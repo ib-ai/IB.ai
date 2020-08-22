@@ -18,6 +18,10 @@
 
 package com.ibdiscord.utils;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public final class UString {
 
     /**
@@ -60,6 +64,19 @@ public final class UString {
         } catch(IllegalArgumentException exception) {
             return null;
         }
+    }
+
+    /**
+     * Checks if list of strings is empty.
+     * @param input The string list.
+     * @param delimiter The delimiter.
+     * @return Empty list if error, otherwise split list.
+     */
+    public static List<String> listExplode(String input, String delimiter) {
+        if (input != null && !input.isEmpty()) {
+            return Arrays.asList(input.split(delimiter));
+        }
+        return Collections.emptyList();
     }
 
     /**
