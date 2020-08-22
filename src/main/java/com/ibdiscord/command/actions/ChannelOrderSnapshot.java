@@ -29,6 +29,7 @@ import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.ISnowflake;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,29 +42,28 @@ public final class ChannelOrderSnapshot implements CommandAction {
     @Override
     public void accept(CommandContext context) {
         if (context.getArguments().length > 0) {
-            snapshot(context, context.getArguments()[0]);
+            Category category = UInput.getCategory(context.getGuild(), context.getArguments()[0]);
+
+            if (category == null) {
+                context.replyI18n("error.category_invalid");
+                return;
+            }
+
+            snapshot(context, Collections.singletonList(category));
         } else {
-            context.getGuild().getCategories().forEach(category -> {
-                snapshot(context, category.getId());
-            });
+            snapshot(context, context.getGuild().getCategories());
         }
     }
 
     /**
      * Private function to handle snapshot.
      * @param context The command context.
-     * @param identifier The category identifier.
+     * @param categoryList List of category objects.
      */
-    private void snapshot(CommandContext context, String identifier) {
+    private void snapshot(CommandContext context, List<Category> categoryList) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Order Of Channels");
-        Category category = UInput.getCategory(context.getGuild(), identifier);
         Gravity gravity = DataContainer.INSTANCE.getGravity();
-
-        if (category == null) {
-            context.replyI18n("error.category_invalid");
-            return;
-        }
 
         ChannelData textChannelData = gravity.load(
                 new ChannelData(context.getGuild().getId(), "text")
@@ -73,37 +73,44 @@ public final class ChannelOrderSnapshot implements CommandAction {
                 new ChannelData(context.getGuild().getId(), "voice")
         );
 
-        List<GuildChannel> textChannels = category.getTextChannels().size() < 1 ? null :
-                category.modifyTextChannelPositions().getCurrentOrder();
-
-        List<GuildChannel> voiceChannels = category.getVoiceChannels().size() < 1 ? null :
-                category.modifyVoiceChannelPositions().getCurrentOrder();
-
-        if (textChannels != null) {
-            textChannelData.set(category.getId(), textChannels.stream()
-                    .map(ISnowflake::getId)
-                    .collect(Collectors.joining(",")));
-
-            gravity.save(textChannelData);
-
-            embedBuilder.addField(String.format("Text Channels (%s)",
-                    category.getName()), textChannels.stream()
-                    .map(GuildChannel::getName)
-                    .collect(Collectors.joining(", ")), false);
+        if (categoryList.size() > 1) {
+            textChannelData.getKeys().forEach(textChannelData::unset);
+            voiceChannelData.getKeys().forEach(voiceChannelData::unset);
         }
 
-        if (voiceChannels != null) {
-            voiceChannelData.set(category.getId(), voiceChannels.stream()
-                    .map(ISnowflake::getId)
-                    .collect(Collectors.joining(",")));
+        categoryList.forEach(category -> {
+            List<GuildChannel> textChannels = category.getTextChannels().size() < 1 ? null :
+                    category.modifyTextChannelPositions().getCurrentOrder();
 
-            gravity.save(voiceChannelData);
+            List<GuildChannel> voiceChannels = category.getVoiceChannels().size() < 1 ? null :
+                    category.modifyVoiceChannelPositions().getCurrentOrder();
 
-            embedBuilder.addField(String.format("Voice Channels (%s)",
-                    category.getName()), voiceChannels.stream()
-                    .map(GuildChannel::getName)
-                    .collect(Collectors.joining(", ")), false);
-        }
+            if (textChannels != null) {
+                textChannelData.set(category.getId(), textChannels.stream()
+                        .map(ISnowflake::getId)
+                        .collect(Collectors.joining(",")));
+
+                gravity.save(textChannelData);
+
+                embedBuilder.addField(String.format("Text Channels (%s)",
+                        category.getName()), textChannels.stream()
+                        .map(GuildChannel::getName)
+                        .collect(Collectors.joining(", ")), false);
+            }
+
+            if (voiceChannels != null) {
+                voiceChannelData.set(category.getId(), voiceChannels.stream()
+                        .map(ISnowflake::getId)
+                        .collect(Collectors.joining(",")));
+
+                gravity.save(voiceChannelData);
+
+                embedBuilder.addField(String.format("Voice Channels (%s)",
+                        category.getName()), voiceChannels.stream()
+                        .map(GuildChannel::getName)
+                        .collect(Collectors.joining(", ")), false);
+            }
+        });
 
         context.replyEmbed(embedBuilder.build());
     }
