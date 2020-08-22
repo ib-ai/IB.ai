@@ -69,11 +69,12 @@ public final class UString {
     /**
      * Checks if list of strings is empty.
      * @param input The string list.
+     * @param delimiter The delimiter.
      * @return Empty list if error, otherwise split list.
      */
-    public static List<String> listEmpty(String input) {
+    public static List<String> listExplode(String input, String delimiter) {
         if (input != null && !input.isEmpty()) {
-            return Arrays.asList(input.split(","));
+            return Arrays.asList(input.split(delimiter));
         }
         return Collections.emptyList();
     }

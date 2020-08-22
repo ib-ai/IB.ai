@@ -54,12 +54,12 @@ public class ChannelOrderList implements CommandAction {
         ChannelData textChannelData = gravity.load(
                 new ChannelData(context.getGuild().getId(), "text")
         );
-        List<String> textChannels = UString.listEmpty(textChannelData.get(category.getId()).toString());
+        List<String> textChannels = UString.listExplode(textChannelData.get(category.getId()).toString(), ",");
 
         ChannelData voiceChannelData = gravity.load(
                 new ChannelData(context.getGuild().getId(), "voice")
         );
-        List<String> voiceChannels = UString.listEmpty(voiceChannelData.get(category.getId()).toString());
+        List<String> voiceChannels = UString.listExplode(voiceChannelData.get(category.getId()).toString(), ",");
 
         if (!textChannels.isEmpty()) {
             embedBuilder.addField("Text Channels", textChannels.stream()
