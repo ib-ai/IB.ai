@@ -20,7 +20,7 @@
   "list_cassowary": "List of cassowaries by label.",
   "mod_permission": "The moderator permission is currently: {0}.",
   "mute_role": "The new role has been set.",
-  "note": "Here are the notes for the user.",
+  "note": "Here are the notes for {0}.",
   "note_author": "Entry by {0} (on {1}):",
   "number": "#{0}",
   "number_bots": "# of Bots",

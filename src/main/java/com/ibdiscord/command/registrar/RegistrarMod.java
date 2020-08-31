@@ -202,7 +202,7 @@ public final class RegistrarMod implements CommandRegistrar {
                             member.getUser().getId()));
                     if(context.getArguments().length == 1) {
                         EmbedBuilder embedBuilder = new EmbedBuilder();
-                        embedBuilder.setDescription(context.__(context, "info.note"));
+                        embedBuilder.setDescription(context.__(context, "info.note", member.getAsMention()));
                         noteData.values().stream()
                                 .map(it -> it.defaulting("N/A:N/A").toString())
                                 .forEach(it -> {
