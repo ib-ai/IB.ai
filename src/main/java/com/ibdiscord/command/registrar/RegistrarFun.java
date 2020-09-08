@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public final class RegistrarFun implements CommandRegistrar {
 
@@ -73,6 +74,22 @@ public final class RegistrarFun implements CommandRegistrar {
                         exception.printStackTrace();
                         context.replyI18n("error.generic");
                     }
+                });
+
+        registry.define("catpic")
+                .on(context -> {
+                    ThreadLocalRandom random = ThreadLocalRandom.current();
+                    context.replyRaw("https://api.thecatapi.com/v1/images/search?format=src" + "&"
+                            + random.nextInt() + "="
+                            + random.nextInt());
+                });
+
+        registry.define("dogpic")
+                .on(context -> {
+                    ThreadLocalRandom random = ThreadLocalRandom.current();
+                    context.replyRaw("https://api.thedogapi.com/v1/images/search?format=src" + "&"
+                            + random.nextInt() + "="
+                            + random.nextInt());
                 });
 
         registry.define("odds")
