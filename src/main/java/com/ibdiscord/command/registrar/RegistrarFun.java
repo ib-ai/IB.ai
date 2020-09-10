@@ -18,19 +18,26 @@
 
 package com.ibdiscord.command.registrar;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.ibdiscord.animal.Animal;
 import com.ibdiscord.command.actions.Odds;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.api.entities.Message;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public final class RegistrarFun implements CommandRegistrar {
 
@@ -78,18 +85,36 @@ public final class RegistrarFun implements CommandRegistrar {
 
         registry.define("catpic")
                 .on(context -> {
-                    ThreadLocalRandom random = ThreadLocalRandom.current();
-                    context.replyRaw("https://api.thecatapi.com/v1/images/search?format=src" + "&"
-                            + random.nextInt() + "="
-                            + random.nextInt());
+                    try {
+                        URL url = new URL("https://api.thecatapi.com/v1/images/search");
+                        OkHttpClient http = context.getJda().getHttpClient();
+                        Request request = new Request.Builder().url(url).build();
+                        Response response = http.newCall(request).execute();
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<Animal>>() { }.getType();
+                        List<Animal> catList = gson.fromJson(response.body().string(), listType);
+                        context.replyRaw(catList.get(0).getUrl());
+                    } catch(IOException exception) {
+                        exception.printStackTrace();
+                        context.replyI18n("error.generic");
+                    }
                 });
 
         registry.define("dogpic")
                 .on(context -> {
-                    ThreadLocalRandom random = ThreadLocalRandom.current();
-                    context.replyRaw("https://api.thedogapi.com/v1/images/search?format=src" + "&"
-                            + random.nextInt() + "="
-                            + random.nextInt());
+                    try {
+                        URL url = new URL("https://api.thedogapi.com/v1/images/search");
+                        OkHttpClient http = context.getJda().getHttpClient();
+                        Request request = new Request.Builder().url(url).build();
+                        Response response = http.newCall(request).execute();
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<Animal>>() { }.getType();
+                        List<Animal> dogList = gson.fromJson(response.body().string(), listType);
+                        context.replyRaw(dogList.get(0).getUrl());
+                    } catch(IOException exception) {
+                        exception.printStackTrace();
+                        context.replyI18n("error.generic");
+                    }
                 });
 
         registry.define("odds")
