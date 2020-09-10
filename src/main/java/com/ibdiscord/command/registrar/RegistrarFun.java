@@ -21,7 +21,9 @@ package com.ibdiscord.command.registrar;
 import com.ibdiscord.command.actions.Odds;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
+import com.ibdiscord.utils.UJSON;
 import com.ibdiscord.utils.UString;
+import de.arraying.kotys.JSONArray;
 import net.dv8tion.jda.api.entities.Message;
 
 import java.io.BufferedReader;
@@ -71,6 +73,36 @@ public final class RegistrarFun implements CommandRegistrar {
 
                     } catch(IOException exception) {
                         exception.printStackTrace();
+                        context.replyI18n("error.generic");
+                    }
+                });
+
+        registry.define("catpic")
+                .on(context -> {
+                    try {
+                        URL url = new URL("https://api.thecatapi.com/v1/images/search");
+                        JSONArray array = UJSON.retrieveJSONArrayFromURL(context, url);
+                        if (array.length() == 0) {
+                            return;
+                        }
+
+                        context.replyRaw(array.json(0).string("url"));
+                    } catch(IOException exception) {
+                        context.replyI18n("error.generic");
+                    }
+                });
+
+        registry.define("dogpic")
+                .on(context -> {
+                    try {
+                        URL url = new URL("https://api.thedogapi.com/v1/images/search");
+                        JSONArray array = UJSON.retrieveJSONArrayFromURL(context, url);
+                        if (array.length() == 0) {
+                            return;
+                        }
+
+                        context.replyRaw(array.json(0).string("url"));
+                    } catch(IOException exception) {
                         context.replyI18n("error.generic");
                     }
                 });

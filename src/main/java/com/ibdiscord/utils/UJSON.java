@@ -18,9 +18,15 @@
 
 package com.ibdiscord.utils;
 
+import com.ibdiscord.command.CommandContext;
 import de.arraying.kotys.JSON;
+import de.arraying.kotys.JSONArray;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.*;
+import java.net.URL;
 
 public final class UJSON {
 
@@ -49,13 +55,28 @@ public final class UJSON {
 
     /**
      * Alias to {@link #retrieveJSONFromFile(String, String)} with default UTF-8 encoding.
-     * @param relativeFilePath Relatie path to JSON file from project root.
+     * @param relativeFilePath Relative path to JSON file from project root.
      * @return JSON object corresponding to file at desired location.
      * @throws IOException When there is an I/O error.
      */
     public static JSON retrieveJSONFromFile(String relativeFilePath)
             throws IOException {
         return retrieveJSONFromFile(relativeFilePath, "UTF-8");
+    }
+
+    /**
+     * Extracts array from given URL.
+     * @param context The command context.
+     * @param url Url containing JSON.
+     * @return JSONArray containing array from URL.
+     * @throws IOException When there is an I/O error.
+     */
+    public static JSONArray retrieveJSONArrayFromURL(CommandContext context, URL url)
+        throws IOException {
+        OkHttpClient http = context.getJda().getHttpClient();
+        Request request = new Request.Builder().url(url).build();
+        Response response = http.newCall(request).execute();
+        return new JSONArray(response.body().string());
     }
 
 }
