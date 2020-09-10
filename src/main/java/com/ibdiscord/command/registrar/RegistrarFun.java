@@ -88,7 +88,6 @@ public final class RegistrarFun implements CommandRegistrar {
 
                         context.replyRaw(array.json(0).string("url"));
                     } catch(IOException exception) {
-                        exception.printStackTrace();
                         context.replyI18n("error.generic");
                     }
                 });
@@ -104,7 +103,6 @@ public final class RegistrarFun implements CommandRegistrar {
 
                         context.replyRaw(array.json(0).string("url"));
                     } catch(IOException exception) {
-                        exception.printStackTrace();
                         context.replyI18n("error.generic");
                     }
                 });
