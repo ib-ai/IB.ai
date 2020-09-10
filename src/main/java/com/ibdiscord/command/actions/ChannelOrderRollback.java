@@ -24,6 +24,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.ChannelData;
 import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UPermission;
+import com.ibdiscord.utils.UString;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.entities.*;
 
@@ -42,12 +43,19 @@ public final class ChannelOrderRollback implements CommandAction {
         ChannelData voiceChannelData = gravity.load(new ChannelData(context.getGuild().getId(), "voice"));
 
         if (context.getArguments().length > 0) {
-            String identifier = context.getArguments()[0];
-            String textChannels = textChannelData.get(identifier).defaulting("").toString();
-            String voiceChannels = voiceChannelData.get(identifier).defaulting("").toString();
+            String identifier = UString.concat(context.getArguments(), " ", 0).toLowerCase();
+            Category category = UInput.getCategory(context.getGuild(), identifier);
 
-            reorder(context, identifier, textChannels);
-            reorder(context, identifier, voiceChannels);
+            if (category == null) {
+                context.replyI18n("error.category_invalid");
+                return;
+            }
+
+            String textChannels = textChannelData.get(category.getId()).defaulting("").toString();
+            String voiceChannels = voiceChannelData.get(category.getId()).defaulting("").toString();
+
+            reorder(context, category.getId(), textChannels);
+            reorder(context, category.getId(), voiceChannels);
         } else {
             textChannelData.getKeys().forEach(categoryId -> {
                 reorder(context, categoryId, textChannelData.get(categoryId).toString());
@@ -64,23 +72,18 @@ public final class ChannelOrderRollback implements CommandAction {
     /**
      * Private function to handle reorder.
      * @param context The command context.
-     * @param identifier The category identifier.
+     * @param categoryId The category ID.
      * @param channelList List of channels as string.
      */
-    private void reorder(CommandContext context, String identifier, String channelList) {
-        Category category = UInput.getCategory(context.getGuild(), identifier);
+    private void reorder(CommandContext context, String categoryId, String channelList) {
         Member selfMember = context.getGuild().getSelfMember();
         String[] channels = channelList.split(",");
-
-        if (category == null) {
-            context.replyI18n("error.category_invalid");
-            return;
-        }
 
         for (int i = 0; i < channels.length; i++) {
             GuildChannel channel = UInput.getChannelGuild(context.getGuild(), channels[i], false);
             if (channel != null && UPermission.canMoveChannel(selfMember, channel)) {
-                channel.getManager().setParent(category).setPosition(i).queue();
+                channel.getManager().setParent(context.getGuild().getCategoryById(categoryId))
+                        .setPosition(i).queue();
             }
         }
     }
