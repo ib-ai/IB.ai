@@ -55,7 +55,6 @@ public final class Pin implements CommandAction {
                 return;
             }
             togglePin(context, channel, context.getArguments()[1]);
-            context.replyI18n("success.done");
         } else { // Channel is unspecified. Uses channel the user issued the command from.
             context.assertID(context.getArguments()[0], "error.pin_channel");
             if(!subjectChannels.contains(context.getChannel().getIdLong())) {
@@ -63,7 +62,6 @@ public final class Pin implements CommandAction {
                 return;
             }
             togglePin(context, context.getChannel(), context.getArguments()[0]);
-            context.replyI18n("success.done");
         }
     }
 
@@ -75,11 +73,20 @@ public final class Pin implements CommandAction {
      */
     private void togglePin(CommandContext context, MessageChannel channel, String messageID) {
         if(channel.retrieveMessageById(messageID).complete().isPinned()) {
-            channel.unpinMessageById(messageID)
-                    .queue(null, err -> context.replyI18n("error.pin_channel"));
+            channel.unpinMessageById(messageID).queue(
+                success -> context.replyI18n("success.done"),
+                error -> context.replyI18n("error.pin_channel"));
         } else {
-            channel.pinMessageById(messageID)
-                    .queue(null, err -> context.replyI18n("error.pin_channel"));
+            channel.retrievePinnedMessages().queue(pins -> {
+                if (pins.size() == 50) {
+                    context.replyI18n("error.pin_max");
+                    return;
+                }
+                channel.pinMessageById(messageID).queue(
+                    success -> context.replyI18n("success.done"),
+                    error -> context.replyI18n("error.pin_channel")
+                );
+            });
         }
     }
 
