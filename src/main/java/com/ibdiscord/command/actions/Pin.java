@@ -54,16 +54,28 @@ public final class Pin implements CommandAction {
                 context.replyI18n("error.subject_channel");
                 return;
             }
-            togglePin(context, channel, context.getArguments()[1]);
-            context.replyI18n("success.done");
+            context.getChannel().retrievePinnedMessages().queue(pins -> {
+                if (pins.size() == 50) {
+                    context.replyI18n("error.pin_max");
+                } else {
+                    togglePin(context, channel, context.getArguments()[1]);
+                    context.replyI18n("success.done");
+                }
+            });
         } else { // Channel is unspecified. Uses channel the user issued the command from.
             context.assertID(context.getArguments()[0], "error.pin_channel");
             if(!subjectChannels.contains(context.getChannel().getIdLong())) {
                 context.replyI18n("error.subject_channel");
                 return;
             }
-            togglePin(context, context.getChannel(), context.getArguments()[0]);
-            context.replyI18n("success.done");
+            context.getChannel().retrievePinnedMessages().queue(pins -> {
+                if (pins.size() == 50) {
+                    context.replyI18n("error.pin_max");
+                } else {
+                    togglePin(context, context.getChannel(), context.getArguments()[0]);
+                    context.replyI18n("success.done");
+                }
+            });
         }
     }
 
