@@ -1,0 +1,6 @@
+V5:
+ - Postgres
+ - Punishment overhaul
+ - Strip out fluff
+ - Discuss any features that may be bloat, strip out
+ - Remove language files besides English from i18n
