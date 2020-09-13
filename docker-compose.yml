@@ -23,29 +23,6 @@ services:
     image: redis
     volumes:
       - db-data:/data
-
-  postgredb:
-    restart: always
-    image: postgres
-    volumes:
-      - postgre-data:/data
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=password
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=ibo@discord.com
-      - PGADMIN_DEFAULT_PASSWORD=ibo
-      - PGADMIN_LISTEN_PORT=80
-    ports:
-      - "80:80"
-    volumes:
-      - pgadmin-data:/data
-    links:
-      - "postgredb:pgsql-server"
   
   # Automated backup of Redis image to S3 object storage
 #  backup:
@@ -61,5 +38,3 @@ services:
 volumes:
   # Database persistence
   db-data:
-  postgre-data:
-  pgadmin-data:
