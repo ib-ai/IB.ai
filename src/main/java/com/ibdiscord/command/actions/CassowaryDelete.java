@@ -24,8 +24,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.cassowary.CassowariesData;
 import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
 import com.ibdiscord.data.db.entries.cassowary.CassowaryPenguinData;
-
-import java.util.List;
+import com.ibdiscord.utils.UString;
 
 public final class CassowaryDelete implements CommandAction {
 
@@ -35,10 +34,9 @@ public final class CassowaryDelete implements CommandAction {
      */
     @Override
     public void accept(CommandContext context) {
-        context.assertArguments(3, "error.generic_syntax_arg");
-        List<String> data = context.assertQuotes(1, "error.generic_syntax_arg");
+        context.assertArguments(1, "error.generic_syntax_arg");
 
-        String label = data.get(0);
+        String label = UString.concat(context.getArguments(), " ", 0).toLowerCase();
 
         CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData(
                 context.getGuild().getId()
@@ -49,10 +47,12 @@ public final class CassowaryDelete implements CommandAction {
         CassowaryPenguinData cassowaryPenguins = DataContainer.INSTANCE.getGravity().load(new CassowaryPenguinData(
                 context.getGuild().getId()
         ));
-        cassowaryPenguins.remove(label);
+        cassowaryPenguins.unset(label);
         DataContainer.INSTANCE.getGravity().save(cassowaryPenguins);
 
-        DataContainer.INSTANCE.getGravity().load(new CassowaryData(context.getGuild().getId(), label)).delete();
+        CassowaryData cassowaryData = DataContainer.INSTANCE.getGravity().load(new CassowaryData(context.getGuild().getId(), label));
+        cassowaryData.delete();
+        DataContainer.INSTANCE.getGravity().save(cassowaryData);
 
         context.replyI18n("success.done");
     }

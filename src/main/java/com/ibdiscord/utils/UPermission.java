@@ -1,4 +1,4 @@
-/* Copyright 2018-2020 Jarred Vardy <vardy@riseup.net>
+/* Copyright 2020 Ray Clark
  *
  * This file is part of IB.ai.
  *
@@ -16,15 +16,21 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.command.actions;
+package com.ibdiscord.utils;
 
-import com.ibdiscord.command.CommandAction;
-import com.ibdiscord.command.CommandContext;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Member;
 
-public final class MassGiveRole implements CommandAction {
+public final class UPermission {
 
-    @Override
-    public void accept(CommandContext context) {
-
+    /**
+     * Checks if the given user can move the given channel.
+     * @param member The member in question.
+     * @param channel The channel in question.
+     * @return A boolean for is the user can move the channel.
+     */
+    public static boolean canMoveChannel(Member member, GuildChannel channel) {
+        return member.hasPermission(channel, Permission.MANAGE_CHANNEL) && member.hasPermission(channel, Permission.VIEW_CHANNEL);
     }
 }

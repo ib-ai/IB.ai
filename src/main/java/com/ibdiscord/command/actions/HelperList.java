@@ -58,37 +58,31 @@ public final class HelperList implements CommandAction {
         }
 
         String desiredRole = UString.concat(context.getArguments(), " ", 0);
-        Role roleFinal = UInput.getRole(context.getGuild(), desiredRole);
-
-        if (roleFinal == null) {
-            if (context.getMessage().getMentionedChannels().size() > 0) {
-                TextChannel mentionedChannel = context.getMessage().getMentionedChannels().get(0);
-
-                PermissionOverride rolePermissionOverride = mentionedChannel.getRolePermissionOverrides()
-                        .stream()
-                        .filter(permissionOverride -> permissionOverride.getRole()
-                                .getName().toLowerCase().endsWith("helper"))
-                        .findFirst()
-                        .orElse(null);
-
-                if (rolePermissionOverride == null) {
-                    context.replyI18n("error.helper_list_channel");
-                    return;
-                }
-
-                roleFinal = rolePermissionOverride.getRole();
-            } else {
-                desiredRole = desiredRole + " Helper";
-                roleFinal = UInput.getRole(context.getGuild(), desiredRole);
-
-                if (roleFinal == null) {
-                    context.replyI18n("error.helper_list_incorrect");
-                    return;
-                }
-            }
+        if (!desiredRole.toLowerCase().endsWith("helper")) {
+            desiredRole += " Helper";
         }
 
-        if (!roleFinal.getName().toLowerCase().endsWith("helper")) {
+        Role roleFinal = UInput.getRole(context.getGuild(), desiredRole);
+
+        if (roleFinal == null && context.getMessage().getMentionedChannels().size() > 0) {
+            TextChannel mentionedChannel = context.getMessage().getMentionedChannels().get(0);
+
+            PermissionOverride rolePermissionOverride = mentionedChannel.getRolePermissionOverrides()
+                    .stream()
+                    .filter(permissionOverride -> permissionOverride.getRole()
+                            .getName().toLowerCase().endsWith("helper"))
+                    .findFirst()
+                    .orElse(null);
+
+            if (rolePermissionOverride == null) {
+                context.replyI18n("error.helper_list_channel");
+                return;
+            }
+
+            roleFinal = rolePermissionOverride.getRole();
+        }
+
+        if (roleFinal == null || !roleFinal.getName().toLowerCase().endsWith("helper")) {
             context.replyI18n("error.helper_list_incorrect");
             return;
         }

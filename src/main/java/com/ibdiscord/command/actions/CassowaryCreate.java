@@ -41,7 +41,7 @@ public final class CassowaryCreate implements CommandAction {
         context.assertArguments(3, "error.generic_syntax_arg");
         List<String> data = context.assertQuotes(1, "error.generic_syntax_arg");
 
-        String label = data.get(0);
+        String label = data.get(0).toLowerCase();
 
         String allArgs = UString.concat(context.getArguments(), " ", 0);
         String argsWithoutLabel = allArgs.replace(label, "")
@@ -54,6 +54,7 @@ public final class CassowaryCreate implements CommandAction {
 
         if(invalidIDs) {
             context.replyI18n("error.cassowary_id");
+            return;
         }
 
         CassowariesData cassowariesData = DataContainer.INSTANCE.getGravity().load(new CassowariesData(
@@ -66,7 +67,7 @@ public final class CassowaryCreate implements CommandAction {
             CassowaryPenguinData cassowaryPenguins = DataContainer.INSTANCE.getGravity().load(new CassowaryPenguinData(
                     context.getGuild().getId()
             ));
-            cassowaryPenguins.add(label);
+            cassowaryPenguins.set(label, roleIDs.get(0));
             DataContainer.INSTANCE.getGravity().save(cassowaryPenguins);
         }
 
@@ -88,8 +89,7 @@ public final class CassowaryCreate implements CommandAction {
      */
     private static boolean validateRoleID(String roleID, CommandContext context) {
         try {
-            context.getGuild().getRoleById(roleID);
-            return false;
+            return context.getGuild().getRoleById(roleID) == null;
         } catch(Exception ex) {
             return true;
         }

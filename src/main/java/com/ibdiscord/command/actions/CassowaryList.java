@@ -26,48 +26,63 @@ import com.ibdiscord.data.db.entries.cassowary.CassowaryData;
 import com.ibdiscord.data.db.entries.cassowary.CassowaryPenguinData;
 import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
-import com.ibdiscord.utils.UString;
 import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Role;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public final class CassowaryList extends PaginatedCommand<String> {
 
     @Override
     protected Pagination<String> getPagination(CommandContext context) {
-        CassowaryPenguinData cassowaryPenguins = DataContainer.INSTANCE.getGravity()
-                .load(new CassowaryPenguinData(context.getGuild().getId()));
         List<String> values = DataContainer.INSTANCE.getGravity().load(new CassowariesData(
                 context.getGuild().getId()
-        )).values().stream()
+        )).values()
+                .stream()
                 .map(Property::asString)
-                .map(cas -> cas + (cassowaryPenguins.values().contains(cas) ? " [penguin] " : " ")
-                        + DataContainer.INSTANCE.getGravity().load(new CassowaryData(
-                            context.getGuild().getId(),
-                            cas
-                )).values()
-                        .stream()
-                        // lol
-                        .map(id -> id + " (" + Objects.requireNonNull(context.getGuild().getRoleById(id.asString()))
-                                .getName() + ")")
-                        .collect(Collectors.toSet())
-                        .toString())
                 .collect(Collectors.toList());
+
         return new Pagination<>(values, 15);
     }
 
     @Override
     protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
-        embedBuilder.addField(String.format(
-                "#%d", page.getNumber()), UString.escapeFormatting(page.getValue()), false
-        );
+        CassowaryPenguinData cassowaryPenguins = DataContainer.INSTANCE.getGravity().load(new CassowaryPenguinData(context.getGuild().getId()));
+
+        String cas = page.getValue();
+        boolean penguin = cassowaryPenguins.getKeys().contains(cas.toLowerCase());
+        String anchorID = penguin ? cassowaryPenguins.get(cas.toLowerCase()).asString() : "";
+
+        String key = String.format("%s%s", cas, penguin ? " [penguin]" : "");
+
+        String roles = DataContainer.INSTANCE.getGravity().load(new CassowaryData(context.getGuild().getId(), cas))
+                .values()
+                .stream()
+                .map(Property::asString)
+                .map(id -> {
+                    String formatted = id;
+
+                    Role role = context.getGuild().getRoleById(id);
+                    if (role != null) {
+                        formatted = String.format("%s (%s)", formatted, role.getName());
+                    }
+
+                    if (id.equals(anchorID)) {
+                        formatted = String.format("**%s**", formatted);
+                    }
+
+                    return formatted;
+                })
+                .collect(Collectors.joining(", "));
+
+        embedBuilder.addField(key, roles, false);
     }
 
     @Override
     protected void tweak(CommandContext context, EmbedBuilder embedBuilder) {
         embedBuilder.setDescription(__(context, "info.list_cassowary")); // Can't use i18n embed builder here.
     }
+
 }

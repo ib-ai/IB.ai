@@ -101,6 +101,7 @@ public final class GuildListener extends ListenerAdapter {
      */
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
+        updateHelperMessages(event.getGuild(), event.getMember().getRoles());
         queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong());
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         RoleData roleData = gravity.load(new RoleData(event.getGuild().getId(), event.getMember().getUser().getId()));

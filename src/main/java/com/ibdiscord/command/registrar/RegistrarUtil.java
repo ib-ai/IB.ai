@@ -170,12 +170,15 @@ public final class RegistrarUtil implements CommandRegistrar {
                     if (context.getOptions().stream()
                             .noneMatch(it -> it.getName().equalsIgnoreCase("update"))) {
                         target.sendMessage(builder.build()).queue();
+                        context.replyI18n("success.done");
                     } else {
                         for (Option option : context.getOptions()) {
                             if (option.getName().equalsIgnoreCase("update")) {
                                 long id = UString.toLong(option.getValue());
                                 target.retrieveMessageById(id)
-                                        .queue(success -> target.editMessageById(id, builder.build()).queue(),
+                                        .queue(success -> target.editMessageById(id, builder.build())
+                                                        .queue(success2 -> context.replyI18n("success.done"),
+                                                            failure2 -> context.replyI18n("error.generic")),
                                             failure -> context.replyI18n("error.pin_channel"));
                                 break;
                             }
@@ -383,11 +386,11 @@ public final class RegistrarUtil implements CommandRegistrar {
                                     new StringI18n(null, target.getEffectiveName()),
                                     true
                             )
-                            .addField(new StringI18n("info.user_status"),
+                            .addField(new StringI18n("info.user_online"),
                                     new StringI18n(null, target.getOnlineStatus().toString()),
                                     true
                             )
-                            .addField(new StringI18n("info.user_game"),
+                            .addField(new StringI18n("info.user_status"),
                                     new StringI18n(null, activity == null ? "-" : activity.getName()),
                                     true
                             )

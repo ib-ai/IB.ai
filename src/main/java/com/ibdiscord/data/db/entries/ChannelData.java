@@ -1,4 +1,4 @@
-/* Copyright 2017-2020 Jarred Vardy <vardy@riseup.net>
+/* Copyright 2020 Nathaneal Varghese
  *
  * This file is part of IB.ai.
  *
@@ -16,18 +16,22 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.data.db.entries.cassowary;
+package com.ibdiscord.data.db.entries;
 
 import de.arraying.gravity.data.types.TypeMap;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
-public class CassowaryPenguinData extends TypeMap {
+@RequiredArgsConstructor
+public final class ChannelData extends TypeMap {
 
-    private final String guild;
+    private final String guildid;
+    private final String channeltype;
 
-    @Override
+    /**
+     * Gets the identifier.
+     * @return The identifier.
+     */
     protected String getUniqueIdentifier() {
-        return "cassowary_penguins_" + guild;
+        return "channeldata_" + guildid + "_" + channeltype;
     }
 }

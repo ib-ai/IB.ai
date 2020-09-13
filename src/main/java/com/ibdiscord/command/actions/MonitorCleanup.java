@@ -22,8 +22,6 @@ import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
-import com.ibdiscord.utils.UInput;
-import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.entities.Member;
 
@@ -54,21 +52,12 @@ public final class MonitorCleanup implements CommandAction {
         monitoredUsers.removeAll(guildMemberIDs);
 
         for(String userToClean : monitoredUsers) {
-            removeUser(context, userToClean);
+            monitorUserData.remove(userToClean);
         }
-    }
 
-    /**
-     * Removes the user from the monitor.
-     * @param context The command context.
-     * @param user The input.
-     */
-    private void removeUser(CommandContext context, String user) {
-        Gravity gravity = DataContainer.INSTANCE.getGravity();
-        MonitorUserData userData = gravity.load(new MonitorUserData(context.getGuild().getId()));
-        //noinspection ConstantConditions
-        userData.remove(UInput.getMember(context.getGuild(), user).getUser().getId());
-        gravity.save(userData);
+        DataContainer.INSTANCE.getGravity().save(monitorUserData);
+
+        context.replyI18n("success.done");
     }
 
 }

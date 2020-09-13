@@ -11,12 +11,13 @@ Bug fixes and optimisations are also greatly appreciated!
 
 # VCS
 
-1) Create a new branch. Label it appropriately.
+1) Create a new branch (and fork if applicable). Label it appropriately.
 2) Make the changes on that branch.
-3) Commit to and push the branch.
-4) Create a PR.
+3) Commit to and push the changes.
+4) Create a PR from your branch to master.
+5) A maintainer will then review your PR.
 
-If you have questions, please ask a developer.
+If you have questions, please ask a maintainer.
 
 # Code
 

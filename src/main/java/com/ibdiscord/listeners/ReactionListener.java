@@ -159,34 +159,35 @@ public final class ReactionListener extends ListenerAdapter {
 
             // if a role that is about to be added to the user is a member of the cassowary
             if(containsRoleToAdd) {
-                if(cassowaryPenguins.contains(cassowaryLabel)) { // Handle as penguin-cassowary
+                if(cassowaryPenguins.getKeys().contains(cassowaryLabel.toLowerCase())) { // Handle as penguin-cassowary
+                    String anchorRoleID = cassowaryPenguins.get(cassowaryLabel.toLowerCase()).asString();
                     Collection<String> cassoRolesSansAnchor = cassowaryData.values().stream()
                             .map(Property::asString)
-                            .filter(id -> !id.equals(cassowariesData.values().toArray()[0]))
+                            .filter(id -> !id.equals(anchorRoleID))
                             .collect(Collectors.toSet());
                     List<Role> userRoles = member.getRoles();
                     boolean userHasCassowaryRoleSansAnchor = !Collections.disjoint(cassoRolesSansAnchor,
                             userRoles.stream()
                                 .map(ISnowflake::getId)
                                 .collect(Collectors.toSet()));
-                    boolean userHasAnchorRole =  userRoles.contains(cassowariesData.values().toArray()[0].toString());
+                    boolean userHasAnchorRole =  userRoles.stream().anyMatch(role -> role.getId().equals(anchorRoleID));
                     boolean containsRoleToAddSansAnchor = !Collections.disjoint(cassoRolesSansAnchor,
                             rolesToAdd.stream()
                                     .map(ISnowflake::getId)
                                     .collect(Collectors.toSet()));
 
-                    // If the user is trying to add the 'safe' (anchor) role in a penguin, and they have any of the
-                    // other roles in the penguin, remove all other roles from them as well as add the anchor role.
-                    if(rolesToAdd.contains(cassowariesData.values().toArray()[0].toString())
-                            && userHasCassowaryRoleSansAnchor) {
-                        rolesToRemove.addAll(cassoRolesSansAnchor.stream()
-                                .map(id -> guild.getRoleById(id))
-                                .collect(Collectors.toSet()));
-                    }
                     // If the user has the anchor role already and is trying to add one of the other roles in the
                     // penguin, return and don't assign any roles.
                     if(userHasAnchorRole && containsRoleToAddSansAnchor) {
                         return;
+                    }
+
+                    // If the user is trying to add the 'safe' (anchor) role in a penguin, and they have any of the
+                    // other roles in the penguin, remove all other roles from them as well as add the anchor role.
+                    if(rolesToAdd.stream().anyMatch(role -> role.getId().equals(anchorRoleID)) && userHasCassowaryRoleSansAnchor) {
+                        rolesToRemove.addAll(cassoRolesSansAnchor.stream()
+                                .map(id -> guild.getRoleById(id))
+                                .collect(Collectors.toSet()));
                     }
                 } else { // Handle as cassowary
                     // for each role ID inside the cassowary,

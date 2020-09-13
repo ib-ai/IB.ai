@@ -21,6 +21,10 @@ package com.ibdiscord.command.registrar;
 import com.ibdiscord.command.actions.Odds;
 import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
+import com.ibdiscord.utils.UJSON;
+import com.ibdiscord.utils.UString;
+import de.arraying.kotys.JSONArray;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -73,8 +77,89 @@ public final class RegistrarFun implements CommandRegistrar {
                     }
                 });
 
+        registry.define("catpic")
+                .on(context -> {
+                    try {
+                        URL url = new URL("https://api.thecatapi.com/v1/images/search");
+                        JSONArray array = UJSON.retrieveJSONArrayFromURL(context, url);
+                        if (array.length() == 0) {
+                            return;
+                        }
+
+                        context.replyRaw(array.json(0).string("url"));
+                    } catch(IOException exception) {
+                        context.replyI18n("error.generic");
+                    }
+                });
+
+        registry.define("dogpic")
+                .on(context -> {
+                    try {
+                        URL url = new URL("https://api.thedogapi.com/v1/images/search");
+                        JSONArray array = UJSON.retrieveJSONArrayFromURL(context, url);
+                        if (array.length() == 0) {
+                            return;
+                        }
+
+                        context.replyRaw(array.json(0).string("url"));
+                    } catch(IOException exception) {
+                        context.replyI18n("error.generic");
+                    }
+                });
+
         registry.define("odds")
                 .on(new Odds());
+
+        registry.define("roll")
+                .on(context -> {
+                    int number = 1;
+                    int sides = 6;
+
+                    if (context.getArguments().length > 0) {
+                        try {
+                            String[] dice = context.getArguments()[0].split("d");
+                            number = Integer.parseInt(dice[0]);
+                            sides = Integer.parseInt(dice[1]);
+
+                            if (number < 1) {
+                                number = 1;
+                            }
+
+                            if (sides < 1) {
+                                sides = 1;
+                            }
+                        } catch (NumberFormatException e) {
+                            number = 1;
+                            sides = 6;
+                        }
+                    }
+
+                    StringBuilder builder = new StringBuilder();
+                    Random rand = new Random();
+
+                    long sum = 0;
+                    double var = 0;
+
+                    for (int i = 0; i < number; i++) {
+                        int value = rand.nextInt(sides) + 1;
+                        sum += value;
+                        var += value * value;
+                        builder.append(value);
+                        if (i < number - 1) {
+                            builder.append(", ");
+                        }
+                    }
+
+                    String roll = UString.truncate(builder.toString(), Message.MAX_CONTENT_LENGTH / 2);
+                    if (context.getOptions().stream().anyMatch(it -> it.getName().equalsIgnoreCase("stats"))) {
+                        double mean = ((double) sum) / number;
+                        var = var / number - mean * mean;
+
+                        context.replyI18n("success.roll_stats", roll, sum, String.format("%.3f", mean), String.format("%.3f", Math.sqrt(var)));
+                    } else {
+                        context.replyI18n("success.roll", roll);
+                    }
+                });
     }
 
 }

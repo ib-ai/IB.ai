@@ -36,6 +36,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
 import java.util.Optional;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class FilterListener extends ListenerAdapter {
@@ -68,7 +69,7 @@ public final class FilterListener extends ListenerAdapter {
     public void handleFilter(Message messageObject) {
         Guild guild = messageObject.getGuild();
         User author = messageObject.getAuthor();
-        if (author.isBot()) {
+        if (author.getId().equals(guild.getSelfMember().getId())) {
             return;
         }
         String message = messageObject.getContentRaw();
@@ -91,17 +92,25 @@ public final class FilterListener extends ListenerAdapter {
         if (!guildData.get(GuildData.FILTERING).defaulting(false).asBoolean()) {
             return;
         }
-        Optional<Pattern> match = filterData.values().stream()
+        Optional<Matcher> match = filterData.values().stream()
                 .map(it -> filterCache.compute(guild.getIdLong(),
                         it.asString(),
-                        Pattern.compile(it.asString()))
-                ).filter(it -> it.matcher(message).matches())
+                        Pattern.compile(it.asString(), Pattern.CASE_INSENSITIVE))
+                )
+                .map(it -> it.matcher(message))
+                .filter(it -> it.find())
                 .findFirst();
         if (match.isPresent()) {
             messageObject.delete().queue(success -> {
+                StringBuilder builder = new StringBuilder(message);
+                builder.insert(match.get().end(), "**");
+                builder.insert(match.get().start(), "**");
                 author.openPrivateChannel().queue(dm -> {
-                    String send = String.format("The following message has been automatically flagged and "
-                            + "removed from %s:\n\n%s", guild.getName(), message);
+                    String send = String.format("The following message has been flagged and deleted for potentially "
+                            + "breaking the rules on %s (offending phrase bolded):\n\n%s"
+                            + "\n\n If you believe you haven't broken any rules, or have any other questions or concerns "
+                            + "regarding this, you can contact the staff team for clarification by DMing the ModMail bot, "
+                            + "at the top of the sidebar on the server.", guild.getName(), builder.toString());
                     send = send.length() > 2000 ? send.substring(0, 2000) : send;
                     dm.sendMessage(send).queue();
                 });
