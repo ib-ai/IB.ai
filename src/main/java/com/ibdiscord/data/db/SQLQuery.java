@@ -31,6 +31,7 @@ public enum SQLQuery {
      * Declaring enums.
      */
     CREATE_TYPE_PUNISHMENT_TYPE("CREATE TYPE punishment_type AS ENUM ('KICK', 'MUTE', 'BAN', 'UNKNOWN');"),
+    CREATE_TYPE_CHANNEL_TYPE("CREATE TYPE channel_type AS ENUM ('TEXT', 'VOICE');"),
 
     /**
      * Creating server tables.
@@ -53,6 +54,10 @@ public enum SQLQuery {
             + "filter_id SERIAL PRIMARY KEY,"
             + "trigger TEXT,"
             + "notify BOOLEAN);"),
+    CREATE_TABLE_SERVER_SNAPSHOT("CREATE TABLE IF NOT EXISTS server.snapshot ("
+            + "category_id BIGINT PRIMARY KEY,"
+            + "type CHANNEL_TYPE,"
+            + "channel_list TEXT[]);"),
     CREATE_TABLE_SERVER_CASSOWARY("CREATE TABLE IF NOT EXISTS server.cassowary ("
             + "cassowary_id SERIAL PRIMARY KEY,"
             + "label TEXT,"
