@@ -9,7 +9,7 @@ services:
     restart: on-failure:3
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: dev.Dockerfile
     env_file:
       - bot.env
     depends_on:
@@ -23,17 +23,6 @@ services:
     image: redis
     volumes:
       - db-data:/data
-  
-  # Automated backup of Redis image to S3 object storage
-  backup:
-    image: pants1/docker-volume-backup
-    restart: on-failure
-    env_file:
-     - backup.env
-    volumes:
-     - /var/lib/docker/volumes/:/HostVolumeData
-    depends_on:
-     - db
 
 volumes:
   # Database persistence

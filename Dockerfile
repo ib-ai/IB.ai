@@ -1,36 +1,18 @@
-# Using maven base image for building with maven.
-FROM maven:latest AS builder
-
-LABEL "repository"="https://github.com/ib-ai/IB.ai/"
-LABEL "homepage"="https://discord.gg/IBO/"
-LABEL "maintainer"="Jarred Vardy <vardy@riseup.net>"
-
-WORKDIR /IB.ai/
-
-# Resolve maven dependencies
-COPY pom.xml .
-COPY checkstyle.xml .
-RUN mvn dependency:go-offline
-
-# Build from source into ./target/*.jar
-COPY src ./src
-RUN mvn -e -B package
-
 # Using Java JDK 10 base image
 FROM openjdk:10
 
-WORKDIR /IB.ai/
+# Metadata
+LABEL "repository"="https://github.com/ib-ai/IB.ai/"
+LABEL "homepage"="https://discord.gg/IBO/"
 
-# Copying maven dependencies from builder image to prevent re-downloads
-COPY --from=builder /root/.m2 /root/.m2
+WORKDIR /IB.ai/
 
 # Add language files
 COPY lang ./lang
 
-# Copying artifacts from maven (builder) build stage
-COPY --from=builder /IB.ai/pom.xml .
-COPY --from=builder /IB.ai/target/ ./target
+# Download the latest binary from the CI
+ADD https://ci.arraying.de/job/ib-ai/lastSuccessfulBuild/artifact/target/IB.ai.jar .
 
-# Running bot. Uses version from pom.xml to call artifact file name.
-CMD VERSION="$(grep -oP -m 1 '(?<=<version>).*?(?=</version>)' /IB.ai/pom.xml)" && \
-    java -jar /IB.ai/target/IB.ai.jar
+# Run the jar as a CMD so it can be overwritten in the run
+# Could be useful for overwriting start parameters to, for example, restrict memory usage
+CMD ["java", "-jar", "IB.ai.jar"]
