@@ -12,8 +12,8 @@ Bug fixes and optimisations are also greatly appreciated!
 # VCS
 
 1) Create a new branch (and fork if applicable). Label it appropriately.
-2) Make the changes on that branch.
-3) Commit to and push the changes.
+2) Make the changes on that branch. Make sure to test these changes thoroughly.
+3) Commit to and push the changes, once you are sure the code is functional.
 4) Create a PR from your branch to master.
 5) A maintainer will then review your PR.
 
@@ -26,7 +26,6 @@ If you have questions, please ask a maintainer.
 * Use Java-style braces (moustache-bois).
 This means that the opening brace is on the same line, but the closing brace is on a new line.
 There must be a space before an opening brace.
-* Do not use a space between a keyword and the opening parentheses `if(that)` rather than `if (that)`.
 * For methods that return `this`, chain them on a new line, as shown below:
 ![Formatting](https://i.imgur.com/7kZPU4O.png)
 * For long methods, feel free to split the statement over multiple statements, with one parameter per line.
