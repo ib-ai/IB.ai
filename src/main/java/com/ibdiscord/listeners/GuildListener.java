@@ -71,7 +71,7 @@ public final class GuildListener extends ListenerAdapter {
                 .map(it -> it.defaulting(0).asLong())
                 .map(it -> member.getGuild().getGuildChannelById(it))
                 .filter(Objects::nonNull)
-                .filter(it -> it.getType() == ChannelType.TEXT)
+                .filter(it -> it.getType() == ChannelType.TEXT || it.getType() == ChannelType.VOICE)
                 .forEach(it -> Opt.override(it, member, false));
 
         RoleData roleData = gravity.load(new RoleData(member.getGuild().getId(), member.getUser().getId()));
