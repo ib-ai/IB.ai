@@ -199,7 +199,9 @@ public final class MessageListener extends ListenerAdapter {
                 channel.getPropertyB().add(event.getMessage().getContentRaw());
                 if(channel.getPropertyB().stream().allMatch(channel.getPropertyB().get(0)::equals)
                         && channel.getPropertyB().size() == 4) {
-                    event.getChannel().sendMessage(event.getMessage().getContentRaw()).queue();
+                    String message = event.getMessage().getContentRaw();
+                    message = message.replace("@", "@\u200B");
+                    event.getChannel().sendMessage(message).queue();
                     ArrayList<String> msgs = channel.getPropertyB();
                     channel.getPropertyB().removeAll(msgs);
                 }
