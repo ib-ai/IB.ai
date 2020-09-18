@@ -28,7 +28,6 @@ import com.ibdiscord.data.db.entries.tag.TagData;
 import com.ibdiscord.input.InputHandler;
 import com.ibdiscord.odds.OddsManager;
 import com.ibdiscord.utils.UDatabase;
-import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.objects.ExpiringCache;
 import com.ibdiscord.utils.objects.GuildedCache;
 import com.ibdiscord.utils.objects.MinimalMessage;
