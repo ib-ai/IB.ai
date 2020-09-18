@@ -28,6 +28,7 @@ import com.ibdiscord.data.db.entries.tag.TagData;
 import com.ibdiscord.input.InputHandler;
 import com.ibdiscord.odds.OddsManager;
 import com.ibdiscord.utils.UDatabase;
+import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.objects.ExpiringCache;
 import com.ibdiscord.utils.objects.GuildedCache;
 import com.ibdiscord.utils.objects.MinimalMessage;
@@ -199,7 +200,9 @@ public final class MessageListener extends ListenerAdapter {
                 channel.getPropertyB().add(event.getMessage().getContentRaw());
                 if(channel.getPropertyB().stream().allMatch(channel.getPropertyB().get(0)::equals)
                         && channel.getPropertyB().size() == 4) {
-                    event.getChannel().sendMessage(event.getMessage().getContentRaw()).queue();
+                    String message = event.getMessage().getContentRaw();
+                    message = message.replace("@", "@\u200B");
+                    event.getChannel().sendMessage(message).queue();
                     ArrayList<String> msgs = channel.getPropertyB();
                     channel.getPropertyB().removeAll(msgs);
                 }
