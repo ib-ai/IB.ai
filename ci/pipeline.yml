@@ -73,18 +73,22 @@ jobs:
         passed: [build]
       - task: deploy
         privileged: true
+        # Pulls karlkfi/concourse-dcind which spawns a container
+        #   with docker and docker-compose which takes our code as input
+        #   and lets us run arbitrary docker commands on it.
+        #   In this case, we're running our compose (daemonised,
+        #   to not block the the pipeline from ending)
         config:
           platform: linux
           image_resource:
             type: docker-image
             source:
-              repository: docker
-              tag: latest
+              repository: karlkfi/concourse-dcind
+          inputs:
+            - name: git-repo
           run:
-            path: docker-compose.yml
+            path: entrypoint.sh
             args:
-              - -H
-              - socat:1234
-              - up
-              - --build
-              - -d
+              - bash
+              - -ceux
+              - docker-compose -H socat:1234 up --build -d
