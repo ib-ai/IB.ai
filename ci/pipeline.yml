@@ -1,0 +1,90 @@
+---
+resource_types:
+  - name: cogito
+    type: registry-image
+    check_every: 1h
+    source:
+      repository: pix4d/cogito
+
+resources:
+  - name: git-repo
+    type: git
+    source:
+      branch: master
+      username: ((github-username))
+      password: ((github-token))
+      uri: https://github.com/ib-ai/ib.ai
+
+  - name: commit-status
+    type: cogito
+    check_every: 1h
+    source:
+      owner: ib-ai
+      repo: ib.ai
+      access_token: ((github-token))
+
+jobs:
+  # Build and CI
+  - name: build
+    on_success:
+      do:
+        - put: commit-status
+          input: [git-repo]
+          params:
+            state: success
+    on_failure:
+      do:
+        - put: commit-status
+          inputs: [git-repo]
+          params:
+            state: failure
+    on_error:
+      do:
+        - put: commit-status
+          inputs: [git-repo]
+          params:
+            state: error
+    plan:
+      - get: git-repo
+        trigger: true
+      - put: commit-status
+        params:
+          state: pending
+      - task: build
+        privileged: true
+        config:
+          plastform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: vito/oci-build-task
+          inputs:
+            - name: git-repo
+              path: .
+          run:
+            path: build
+
+  # Deploy docker-compose
+  - name: deploy
+    serial: true
+    plan:
+      - get: git-repo
+        trigger: true
+        passed: [build]
+      - task: deploy
+        privileged: true
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: docker
+              tag: latest
+          run:
+            path: docker-compose.yml
+            args:
+              - -H
+              - socat:1234
+              - up
+              - --build
+              - -d
