@@ -11,8 +11,6 @@ resources:
     type: git
     source:
       branch: master
-      username: ((github-username))
-      password: ((github-token))
       uri: https://github.com/ib-ai/ib.ai
 
   - name: commit-status
