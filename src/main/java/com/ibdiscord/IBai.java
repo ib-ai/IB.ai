@@ -90,8 +90,7 @@ public enum IBai {
             registrar.register(commandRegistry);
         }
         try {
-            jda = new JDABuilder()
-                    .setToken(config.getBotToken())
+            jda = JDABuilder.createDefault(config.getBotToken())
                     .setStatus(OnlineStatus.DO_NOT_DISTURB)
                     .setActivity(Activity.playing(String.format("v%s | %shelp",
                             config.getBotVersion(),
