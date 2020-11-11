@@ -21,8 +21,10 @@ package com.ibdiscord.listeners;
 import com.ibdiscord.IBai;
 import com.ibdiscord.command.Command;
 import com.ibdiscord.command.CommandContext;
+import com.ibdiscord.command.permission.CommandPermission;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.entries.ReplyData;
 import com.ibdiscord.data.db.entries.tag.TagActiveData;
 import com.ibdiscord.data.db.entries.tag.TagData;
 import com.ibdiscord.input.InputHandler;
@@ -31,14 +33,10 @@ import com.ibdiscord.utils.UDatabase;
 import com.ibdiscord.utils.objects.ExpiringCache;
 import com.ibdiscord.utils.objects.GuildedCache;
 import com.ibdiscord.utils.objects.MinimalMessage;
-import com.ibdiscord.utils.objects.TupleMutable;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -48,6 +46,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -56,7 +55,7 @@ public final class MessageListener extends ListenerAdapter {
 
     private final GuildedCache<String, Pattern> tagCache = new GuildedCache<>();
     private final ExpiringCache<Long, MinimalMessage> messageCache = new ExpiringCache<>(1, TimeUnit.HOURS);
-    private ArrayList<TupleMutable<String, ArrayList<String>>> recentMessages = new ArrayList<>();
+    private HashMap<String, ArrayList<MinimalMessage>> recentMessages = new HashMap<>();
 
     /**
      * When an message is sent in a guild channel (because DMs are boring).
@@ -64,10 +63,12 @@ public final class MessageListener extends ListenerAdapter {
      */
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        boolean disableReply = disableReply(event);
         if(!event.getAuthor().isBot()
                 && event.getMessage().getMentionedMembers().size() == 0
                 && event.getMessage().getMentionedRoles().size() == 0
-                && !event.getMessage().mentionsEveryone()) {
+                && !event.getMessage().mentionsEveryone()
+                && !disableReply) {
             repeater(event);
         }
         messageCache.put(event.getMessageIdLong(), new MinimalMessage(event.getAuthor().getIdLong(),
@@ -89,18 +90,20 @@ public final class MessageListener extends ListenerAdapter {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         TagData tags = gravity.load(new TagData(event.getGuild().getId()));
         TagActiveData tagActiveData = gravity.load(new TagActiveData(event.getGuild().getId()));
-        for(String key : tags.getKeys()) {
-            if(tagActiveData.contains(key)) {
-                continue;
-            }
-            Pattern pattern = tagCache.compute(event.getGuild().getIdLong(), key, Pattern.compile(key));
-            if(pattern.matcher(message.toLowerCase()).matches()) {
-                event.getChannel().sendMessage(tags.get(key).asString()).queue(null, oops ->
-                        event.getChannel().sendMessage("Oh dear. Something went wrong. Ping a dev with this: "
-                                + oops.getMessage())
-                            .queue()
-                );
-                break;
+        if (!disableReply) {
+            for (String key : tags.getKeys()) {
+                if (tagActiveData.contains(key)) {
+                    continue;
+                }
+                Pattern pattern = tagCache.compute(event.getGuild().getIdLong(), key, Pattern.compile(key));
+                if (pattern.matcher(message.toLowerCase()).matches()) {
+                    event.getChannel().sendMessage(tags.get(key).asString()).queue(null, oops ->
+                            event.getChannel().sendMessage("Oh dear. Something went wrong. Ping a dev with this: "
+                                    + oops.getMessage())
+                                    .queue()
+                    );
+                    break;
+                }
             }
         }
         if(!message.startsWith(prefix)) {
@@ -192,31 +195,45 @@ public final class MessageListener extends ListenerAdapter {
      * @param event Event of when guild message was received.
      */
     private void repeater(GuildMessageReceivedEvent event) {
-        boolean foundChannel = false;
-        for(TupleMutable<String, ArrayList<String>> channel : recentMessages) {
-            if(channel.getPropertyA().equals(event.getChannel().getId())) {
-                foundChannel = true;
-                channel.getPropertyB().add(event.getMessage().getContentRaw());
-                if(channel.getPropertyB().stream().allMatch(channel.getPropertyB().get(0)::equals)
-                        && channel.getPropertyB().size() == 4) {
-                    String message = event.getMessage().getContentRaw();
-                    message = message.replace("@", "@\u200B");
-                    event.getChannel().sendMessage(message).queue();
-                    ArrayList<String> msgs = channel.getPropertyB();
-                    channel.getPropertyB().removeAll(msgs);
+        String channelID = event.getChannel().getId();
+        Long userID = event.getMember().getIdLong();
+        String message = event.getMessage().getContentRaw();
+        if (recentMessages.containsKey(channelID)) {
+            ArrayList<MinimalMessage> messages = recentMessages.get(channelID);
+            if (messages.get(0).getContent().equals(message)) {
+                if (!messages.stream().map(MinimalMessage::getAuthor).anyMatch(userID::equals)) {
+                    messages.add(new MinimalMessage(userID, message));
+                    if (messages.size() >= 4) {
+                        message.replace("@", "@\u200B");
+                        event.getChannel().sendMessage(message).queue();
+                        recentMessages.remove(channelID);
+                    }
                 }
-                if(channel.getPropertyB().size() == 4) {
-                    ArrayList<String> msgs = channel.getPropertyB();
-                    channel.getPropertyB().removeAll(msgs);
-                }
+            } else {
+                recentMessages.remove(channelID);
             }
-        }
-        if(!foundChannel) {
-            ArrayList<String> initList = new ArrayList<>();
-            initList.add(event.getMessage().getContentRaw());
-            String eventChannelId = event.getChannel().getId();
-            TupleMutable<String, ArrayList<String>> initTuple = new TupleMutable<>(eventChannelId, initList);
-            recentMessages.add(initTuple);
+        } else {
+            ArrayList<MinimalMessage> messages = new ArrayList<>();
+            messages.add(new MinimalMessage(userID, message));
+            recentMessages.put(channelID, messages);
         }
     }
+
+    /**
+     * Method to determine if bot should suppress a reply such as a tag or repeat.
+     * Will check if the channel has had replies disabled by command, will override if user is staff.
+     * @param event Event of when guild message was received.
+     * @return Whether to suppress replies (such as tags and repeats).
+     */
+    private boolean disableReply(GuildMessageReceivedEvent event) {
+        if (CommandPermission.role(GuildData.MODERATOR).hasPermission(event.getMember(), event.getChannel())) {
+            return false;
+        }
+
+        Gravity gravity = DataContainer.INSTANCE.getGravity();
+        String channelID = event.getChannel().getId();
+        ReplyData replyData = gravity.load(new ReplyData(event.getGuild().getId()));
+        return replyData.contains(channelID);
+    }
+
 }

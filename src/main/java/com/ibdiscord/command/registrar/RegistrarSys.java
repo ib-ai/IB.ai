@@ -26,14 +26,12 @@ import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.GuildData;
+import com.ibdiscord.data.db.entries.ReplyData;
 import com.ibdiscord.data.db.entries.react.EmoteData;
 import com.ibdiscord.data.db.entries.react.ReactionData;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Emote;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -140,6 +138,28 @@ public final class RegistrarSys implements CommandRegistrar {
                         })
                 );
         commandReact.on(context -> context.replySyntax(commandReact));
+
+        registry.define("reply")
+                .restrict(CommandPermission.role(GuildData.MODERATOR))
+                .on(context -> {
+                    context.assertArguments(1, "error.generic_syntax_arg");
+                    TextChannel channel = context.assertChannel(context.getArguments()[0], "error.missing_channel");
+                    String channelID = channel.getId();
+
+                    Gravity gravity = DataContainer.INSTANCE.getGravity();
+
+                    ReplyData replyData = gravity.load(new ReplyData(context.getGuild().getId()));
+
+                    if(replyData.contains(channelID)) {
+                        replyData.remove(channelID);
+                        context.replyI18n("info.filter_enabled", channel.getAsMention());
+                    } else {
+                        replyData.add(channelID);
+                        context.replyI18n("info.filter_disabled", channel.getAsMention());
+                    }
+
+                    gravity.save(replyData);
+                });
 
         registry.define("roleswap")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
