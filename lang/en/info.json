@@ -34,6 +34,8 @@
   "paginated": "Page {0}/{1}",
   "punished_user": "{0} punished {1}",
   "reminder_list": "Here is a list of your active reminders.",
+  "reply_disabled": "Bot replies have been disabled for {0}.",
+  "reply_enabled": "Bot replies have been enabled for {0}.",
   "supported_langs": "List of available languages. Use `{0}lang set <language>`",
   "tag_disabled": "The tag has been disabled.",
   "tag_enabled": "The tag has been enabled.",
