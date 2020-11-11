@@ -16,13 +16,13 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.data.db.entries.monitor;
+package com.ibdiscord.data.db.entries;
 
 import de.arraying.gravity.data.types.TypeSet;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public final class MonitorMessageData extends TypeSet {
+public final class ReplyData extends TypeSet {
 
     private final String guild;
 
@@ -32,7 +32,7 @@ public final class MonitorMessageData extends TypeSet {
      */
     @Override
     protected String getUniqueIdentifier() {
-        return "monitor_messages_" + guild;
+        return "reply_" + guild;
     }
 
 }
