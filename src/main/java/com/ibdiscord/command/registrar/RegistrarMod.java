@@ -621,7 +621,7 @@ public final class RegistrarMod implements CommandRegistrar {
                                 }
                             }
                             builder.append(" of ");
-                            SimpleDateFormat formatter = new SimpleDateFormat("MMMM, YYYY");
+                            SimpleDateFormat formatter = new SimpleDateFormat("MMMM, yyyy");
                             formatter.setCalendar(cal);
                             builder.append(formatter.format(cal.getTime()));
                             builder.append("**\n");
