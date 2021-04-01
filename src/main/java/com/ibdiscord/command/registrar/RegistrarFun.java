@@ -23,6 +23,7 @@ import com.ibdiscord.command.registry.CommandRegistrar;
 import com.ibdiscord.command.registry.CommandRegistry;
 import com.ibdiscord.utils.UJSON;
 import com.ibdiscord.utils.UString;
+import de.arraying.kotys.JSON;
 import de.arraying.kotys.JSONArray;
 import net.dv8tion.jda.api.entities.Message;
 
@@ -106,6 +107,17 @@ public final class RegistrarFun implements CommandRegistrar {
                         context.replyI18n("error.generic");
                     }
                 });
+
+        registry.define("quack")
+            .on(context -> {
+                try {
+                    URL url = new URL("https://random-d.uk/api/random");
+                    JSON json = UJSON.retrieveJSONFromURL(context, url);
+                    context.replyRaw(json.string("url"));
+                } catch(IOException exception) {
+                    context.replyI18n("error.generic");
+                }
+            });
 
         registry.define("odds")
                 .on(new Odds());
