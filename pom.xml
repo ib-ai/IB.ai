@@ -173,6 +173,11 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>dv8tion</id>
+            <name>m2-dv8tion</name>
+            <url>https://m2.dv8tion.net/releases</url>
+        </repository>
     </repositories>
 
     <!-- Dependency declarations -->
@@ -180,7 +185,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.1.1_127</version>
+            <version>4.2.1_256</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
