@@ -27,6 +27,8 @@ import com.ibdiscord.pagination.Page;
 import com.ibdiscord.pagination.Pagination;
 import com.ibdiscord.utils.UString;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,13 +65,26 @@ public final class HelperMessageList extends PaginatedCommand<String> {
                 new HelperMessageData(context.getGuild().getId(), page.getValue())
         );
 
-        String key = String.format("%s (%s)", context.getGuild().getRoleById(page.getValue()).getName(),
-                page.getValue());
+        Role role = context.getGuild().getRoleById(page.getValue());
+
+        String name = "???";
+        if (role != null) {
+            name = role.getName();
+        }
+
+        String key = String.format("%s (%s)", name, page.getValue());
 
         StringBuilder channels = new StringBuilder();
         helperMessageData.getKeys()
                 .stream()
-                .map(channelId -> context.getGuild().getTextChannelById(channelId).getAsMention())
+                .map(channelId -> {
+                    TextChannel textChannel = context.getGuild().getTextChannelById(channelId);
+                    if (textChannel == null) {
+                        return channelId;
+                    } else {
+                        return textChannel.getAsMention();
+                    }
+                })
                 .sorted(String::compareToIgnoreCase)
                 .forEach(channel -> channels.append(channel).append(", "));
 
