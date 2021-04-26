@@ -152,10 +152,10 @@ public final class RegistrarSys implements CommandRegistrar {
 
                     if(replyData.contains(channelID)) {
                         replyData.remove(channelID);
-                        context.replyI18n("info.filter_enabled", channel.getAsMention());
+                        context.replyI18n("info.reply_enabled", channel.getAsMention());
                     } else {
                         replyData.add(channelID);
-                        context.replyI18n("info.filter_disabled", channel.getAsMention());
+                        context.replyI18n("info.reply_disabled", channel.getAsMention());
                     }
 
                     gravity.save(replyData);
