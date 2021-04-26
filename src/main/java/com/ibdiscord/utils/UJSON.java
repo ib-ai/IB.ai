@@ -65,6 +65,21 @@ public final class UJSON {
     }
 
     /**
+     * Extracts object from given URL.
+     * @param context The command context.
+     * @param url Url containing JSON.
+     * @return JSONArray containing array from URL.
+     * @throws IOException When there is an I/O error.
+     */
+    public static JSON retrieveJSONFromURL(CommandContext context, URL url)
+        throws IOException {
+        OkHttpClient http = context.getJda().getHttpClient();
+        Request request = new Request.Builder().url(url).build();
+        Response response = http.newCall(request).execute();
+        return new JSON(response.body().string());
+    }
+
+    /**
      * Extracts array from given URL.
      * @param context The command context.
      * @param url Url containing JSON.
