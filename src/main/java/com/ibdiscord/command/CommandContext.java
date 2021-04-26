@@ -25,6 +25,7 @@ import com.ibdiscord.utils.UTime;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.HashSet;
@@ -336,7 +337,13 @@ public final class CommandContext implements LocaleShorthand {
      * @param format The formatters.
      */
     public void replyRaw(String message, Object... format) {
-        channel.sendMessageFormat(message, (Object[]) format).queue(null, Throwable::printStackTrace);
+        MessageAction action;
+        if (format.length == 0) {
+            action = channel.sendMessage(message);
+        } else {
+            action = channel.sendMessageFormat(message, (Object[]) format);
+        }
+        action.queue(null, Throwable::printStackTrace);
     }
 
     /**
