@@ -93,7 +93,7 @@ public final class RegistrarMod implements CommandRegistrar {
                 .sub(registry.sub("snapshot", null)
                         .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
                         .on(new ChannelOrderSnapshot()))
-                .sub(registry.sub("rollback", null)
+                .sub(registry.sub("rollback", "rollback")
                         .restrict(CommandPermission.role(GuildData.MODERATOR))
                         .on(new ChannelOrderRollback()))
                 .sub(registry.sub("list", "generic_list")
