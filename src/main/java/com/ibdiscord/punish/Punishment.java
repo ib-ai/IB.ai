@@ -22,6 +22,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.punish.PunishmentData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import com.ibdiscord.utils.UDatabase;
+import com.ibdiscord.utils.UFormatter;
 import de.arraying.gravity.Gravity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -170,7 +171,7 @@ public final class Punishment {
      * @return The user mention.
      */
     private String getMention() {
-        return String.format("<@%s>", userId);
+        return UFormatter.formatMention(userId);
     }
 
 }
