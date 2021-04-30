@@ -38,6 +38,7 @@
   "react": ["reaction", "reactionroles", "rr"],
   "roleswap": ["roleswap", "swaproles"],
   "roll": ["roll", "diceroll"],
+  "rollback": ["r"],
   "serverinfo": ["serverinfo", "guildinfo", "si"],
   "tag": ["tag", "tags"],
   "tag_find": ["find", "f", "lookup"],

@@ -26,6 +26,7 @@ import com.ibdiscord.data.db.entries.filter.FilterData;
 import com.ibdiscord.data.db.entries.filter.FilterNotifyData;
 import com.ibdiscord.data.db.entries.monitor.MonitorData;
 import com.ibdiscord.utils.UDatabase;
+import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -125,20 +126,17 @@ public final class FilterListener extends ListenerAdapter {
                     );
                     return;
                 }
-                String title = String.format(
-                        "%s (ID: %s)",
-                        author.getAsTag(),
-                        author.getId()
-                );
+                String title = UFormatter.formatUserInfo(author);
 
                 if (title.length() > MessageEmbed.TITLE_MAX_LENGTH) {
                     title = title.substring(0, MessageEmbed.TITLE_MAX_LENGTH);
                 }
 
                 String description = String.format(
-                        "\"%s\", sent in **%s**",
+                        "\"%s\", sent in **%s** by %s",
                         messageObject.getContentRaw(),
-                        messageObject.getTextChannel().getAsMention()
+                        messageObject.getTextChannel().getAsMention(),
+                        UFormatter.formatMention(author.getId())
                 );
 
                 description = description.length() > 2000 ? description.substring(0, 2000) : description;

@@ -30,11 +30,13 @@ import com.ibdiscord.data.db.entries.tag.TagData;
 import com.ibdiscord.input.InputHandler;
 import com.ibdiscord.odds.OddsManager;
 import com.ibdiscord.utils.UDatabase;
+import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.objects.ExpiringCache;
 import com.ibdiscord.utils.objects.GuildedCache;
 import com.ibdiscord.utils.objects.MinimalMessage;
 import de.arraying.gravity.Gravity;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
@@ -45,6 +47,7 @@ import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -125,14 +128,15 @@ public final class MessageListener extends ListenerAdapter {
         MinimalMessage message = messageCache.get(event.getMessageIdLong());
         if(message != null) {
             forLogChannel(channel -> {
-                User author = channel.getJDA().getUserById(message.getAuthor());
                 MessageEmbed embed = new EmbedBuilder()
-                        .setAuthor((author == null ? String.valueOf(message.getAuthor()) : author.getAsTag())
-                                + " edited in #" + event.getChannel().getName())
+                        .setAuthor(author(channel.getJDA(), message) + " edited in #" + event.getChannel().getName())
                         .addField("From", message.getContent(), false)
                         .addField("To", event.getMessage().getContentRaw(), false)
-                        .addField("\u200B", "[Click me to jump](" + event.getMessage().getJumpUrl() + ")",
-                                false)
+                        .addField("Utilities", String.format(
+                                "[21 Jump Street](%s)\nUser: %s",
+                                event.getMessage().getJumpUrl(),
+                                UFormatter.formatMention(message.getAuthor())), false)
+                        .setColor(Color.YELLOW)
                         .build();
                 channel.sendMessage(embed).queue();
             }, event);
@@ -151,11 +155,11 @@ public final class MessageListener extends ListenerAdapter {
             return;
         }
         forLogChannel(channel -> {
-            User author = channel.getJDA().getUserById(message.getAuthor());
             MessageEmbed embed = new EmbedBuilder()
-                    .setAuthor((author == null ? String.valueOf(message.getAuthor()) : author.getAsTag())
-                            + " deleted in #" + event.getChannel().getName())
+                    .setAuthor(author(channel.getJDA(), message) + " deleted in #" + event.getChannel().getName())
                     .setDescription(message.getContent())
+                    .addField("Utilities", String.format("User: %s", UFormatter.formatMention(message.getAuthor())), false)
+                    .setColor(Color.RED)
                     .build();
             channel.sendMessage(embed).queue();
         }, event);
@@ -234,6 +238,21 @@ public final class MessageListener extends ListenerAdapter {
         String channelID = event.getChannel().getId();
         ReplyData replyData = gravity.load(new ReplyData(event.getGuild().getId()));
         return replyData.contains(channelID);
+    }
+
+    /**
+     * Method to format the author of a Minimal Message.
+     * @param jda JDA
+     * @param message Minimal Message
+     * @return Formatted String of author.
+     */
+    private String author(JDA jda, MinimalMessage message) {
+        User author = jda.getUserById(message.getAuthor());
+        if (author == null) {
+            return String.valueOf(message.getAuthor());
+        } else {
+            return UFormatter.formatUserInfo(author);
+        }
     }
 
 }

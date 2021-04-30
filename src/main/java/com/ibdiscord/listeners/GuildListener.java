@@ -31,18 +31,25 @@ import com.ibdiscord.punish.PunishmentHandler;
 import com.ibdiscord.punish.PunishmentType;
 import com.ibdiscord.utils.UEmbed;
 import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.audit.AuditLogChange;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
 import net.dv8tion.jda.api.audit.AuditLogKey;
 import net.dv8tion.jda.api.audit.TargetType;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.GuildUnbanEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -100,9 +107,9 @@ public final class GuildListener extends ListenerAdapter {
      * @param event The event instance.
      */
     @Override
-    public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
+    public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
         updateHelperMessages(event.getGuild(), event.getMember().getRoles());
-        queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong());
+        queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong(), ActionType.BAN, ActionType.KICK);
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         RoleData roleData = gravity.load(new RoleData(event.getGuild().getId(), event.getMember().getUser().getId()));
         for(Role role : event.getMember().getRoles()) {
@@ -118,7 +125,7 @@ public final class GuildListener extends ListenerAdapter {
     @Override
     public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent event) {
         updateHelperMessages(event.getGuild(), event.getRoles());
-        queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong());
+        queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong(), ActionType.MEMBER_ROLE_UPDATE);
     }
 
     /**
@@ -128,7 +135,7 @@ public final class GuildListener extends ListenerAdapter {
     @Override
     public void onGuildMemberRoleRemove(GuildMemberRoleRemoveEvent event) {
         updateHelperMessages(event.getGuild(), event.getRoles());
-        queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong());
+        queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong(), ActionType.MEMBER_ROLE_UPDATE);
     }
 
     /**
@@ -137,7 +144,7 @@ public final class GuildListener extends ListenerAdapter {
      */
     @Override
     public void onGuildUnban(GuildUnbanEvent event) {
-        queryAuditLog(event.getGuild(), event.getUser().getIdLong());
+        queryAuditLog(event.getGuild(), event.getUser().getIdLong(), ActionType.UNBAN);
     }
 
     /**
@@ -145,94 +152,99 @@ public final class GuildListener extends ListenerAdapter {
      * @param guild The guild.
      * @param target The target member.
      */
-    private void queryAuditLog(Guild guild, long target) {
+    private void queryAuditLog(Guild guild, long target, ActionType... actionTypes) {
         executorService.schedule(() -> {
             synchronized(mutex) {
-                guild.retrieveAuditLogs().queue(entries -> {
+                guild.retrieveAuditLogs().limit(10).queue(entries -> {
                     if(entries.isEmpty()) {
                         return;
                     }
-                    AuditLogEntry latest = entries.get(0);
-                    IBai.INSTANCE.getLogger().info("Latest audit log: type '{}', target type '{}', target id '{}', "
-                                    + "user {}, options {}",
-                            latest.getType(),
-                            latest.getTargetType(),
-                            latest.getTargetId(),
-                            latest.getUser(),
-                            latest.getOptions());
-                    if(latest.getTargetType() != TargetType.MEMBER
-                            || latest.getTargetIdLong() != target) {
-                        IBai.INSTANCE.getLogger().info("Test 1: {}, Test 2: {}",
-                                (latest.getTargetType() != TargetType.MEMBER),
-                                (latest.getTargetIdLong() != target));
-                        return;
+
+                    for (AuditLogEntry latest : entries) {
+                        if (Arrays.stream(actionTypes).anyMatch(latest.getType()::equals)
+                                && latest.getTargetType() == TargetType.MEMBER
+                                && latest.getTargetIdLong() == target) {
+
+                            IBai.INSTANCE.getLogger().info("Latest audit log: type '{}', target type '{}', target id '{}', "
+                                            + "user {}, options {}",
+                                    latest.getType(),
+                                    latest.getTargetType(),
+                                    latest.getTargetId(),
+                                    latest.getUser(),
+                                    latest.getOptions());
+
+                            guild.getJDA().retrieveUserById(latest.getTargetIdLong()).queue(user -> {
+                                User staff = latest.getUser();
+                                String reason = latest.getReason();
+                                if(user == null
+                                        || staff == null) {
+                                    throw new RuntimeException("user/staff nil");
+                                }
+                                boolean redacted = false;
+                                if(reason != null
+                                        && (reason.toLowerCase().contains("-redacted")
+                                        || reason.toLowerCase().contains("-redact"))) {
+                                    redacted = true;
+                                    reason = reason.replace("-redacted", "").replace("-redact", "");
+                                }
+                                Punishment punishment = new Punishment(null,
+                                        user.getAsTag(),
+                                        user.getId(),
+                                        staff.getAsTag(),
+                                        staff.getId(),
+                                        reason,
+                                        redacted
+                                );
+                                PunishmentHandler handler = new PunishmentHandler(guild, punishment);
+                                switch(latest.getType()) {
+                                    case KICK:
+                                        punishment.setType(PunishmentType.KICK);
+                                        handler.onPunish();
+                                        break;
+                                    case MEMBER_ROLE_UPDATE:
+                                        AuditLogChange rolesAddedRaw = latest.getChangeByKey(AuditLogKey.MEMBER_ROLES_ADD);
+                                        AuditLogChange rolesRemovedRaw = latest.getChangeByKey(AuditLogKey.MEMBER_ROLES_REMOVE);
+                                        if(rolesAddedRaw != null) {
+                                            if(staff.getIdLong() == guild.getJDA().getSelfUser().getIdLong()) {
+                                                IBai.INSTANCE.getLogger().info("Ignored adding role since it was sent by user "
+                                                                + "{} (self)",
+                                                        staff.getIdLong()
+                                                );
+                                                return;
+                                            }
+                                            List<Map<String, String>> roles = rolesAddedRaw.getNewValue();
+                                            if(isNotMute(guild, roles)) {
+                                                return;
+                                            }
+                                            punishment.setType(PunishmentType.MUTE);
+                                            handler.onPunish();
+                                        }
+                                        if(rolesRemovedRaw != null) {
+                                            List<Map<String, String>> roles = rolesRemovedRaw.getNewValue();
+                                            if(isNotMute(guild, roles)) {
+                                                return;
+                                            }
+                                            punishment.setType(PunishmentType.MUTE);
+                                            handler.onRevocation();
+                                        }
+                                        break;
+                                    case BAN:
+                                        punishment.setType(PunishmentType.BAN);
+                                        handler.onPunish();
+                                        break;
+                                    case UNBAN:
+                                        punishment.setType(PunishmentType.BAN);
+                                        handler.onRevocation();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            });
+                            break;
+                        }
                     }
-                    guild.getJDA().retrieveUserById(latest.getTargetIdLong()).queue(user -> {
-                        User staff = latest.getUser();
-                        String reason = latest.getReason();
-                        if(user == null
-                                || staff == null) {
-                            throw new RuntimeException("user/staff nil");
-                        }
-                        boolean redacted = false;
-                        if(reason != null
-                                && (reason.toLowerCase().contains("-redacted")
-                                || reason.toLowerCase().contains("-redact"))) {
-                            redacted = true;
-                        }
-                        Punishment punishment = new Punishment(null,
-                                user.getAsTag(),
-                                user.getId(),
-                                staff.getAsTag(),
-                                staff.getId(),
-                                reason,
-                                redacted
-                        );
-                        PunishmentHandler handler = new PunishmentHandler(guild, punishment);
-                        switch(latest.getType()) {
-                            case KICK:
-                                punishment.setType(PunishmentType.KICK);
-                                handler.onPunish();
-                                break;
-                            case MEMBER_ROLE_UPDATE:
-                                AuditLogChange rolesAddedRaw = latest.getChangeByKey(AuditLogKey.MEMBER_ROLES_ADD);
-                                AuditLogChange rolesRemovedRaw = latest.getChangeByKey(AuditLogKey.MEMBER_ROLES_REMOVE);
-                                if(rolesAddedRaw != null) {
-                                    if(staff.getIdLong() == guild.getJDA().getSelfUser().getIdLong()) {
-                                        IBai.INSTANCE.getLogger().info("Ignored adding role since it was sent by user "
-                                                + "{} (self)",
-                                            staff.getIdLong()
-                                        );
-                                        return;
-                                    }
-                                    List<Map<String, String>> roles = rolesAddedRaw.getNewValue();
-                                    if(isNotMute(guild, roles)) {
-                                        return;
-                                    }
-                                    punishment.setType(PunishmentType.MUTE);
-                                    handler.onPunish();
-                                }
-                                if(rolesRemovedRaw != null) {
-                                    List<Map<String, String>> roles = rolesRemovedRaw.getNewValue();
-                                    if(isNotMute(guild, roles)) {
-                                        return;
-                                    }
-                                    punishment.setType(PunishmentType.MUTE);
-                                    handler.onRevocation();
-                                }
-                                break;
-                            case BAN:
-                                punishment.setType(PunishmentType.BAN);
-                                handler.onPunish();
-                                break;
-                            case UNBAN:
-                                punishment.setType(PunishmentType.BAN);
-                                handler.onRevocation();
-                                break;
-                            default:
-                                break;
-                        }
-                    });
+
+
                 }, error -> {
                         IBai.INSTANCE.getLogger().info("Blimey, there's been an error.");
                         error.printStackTrace();

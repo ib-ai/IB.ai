@@ -23,6 +23,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.data.db.entries.monitor.MonitorData;
 import com.ibdiscord.data.db.entries.monitor.MonitorMessageData;
 import com.ibdiscord.data.db.entries.monitor.MonitorUserData;
+import com.ibdiscord.utils.UFormatter;
 import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
@@ -102,11 +103,7 @@ public final class MonitorListener extends ListenerAdapter {
             return;
         }
 
-        String title = String.format(
-                "%s (ID: %s)",
-                message.getAuthor().getAsTag(),
-                message.getAuthor().getId()
-        );
+        String title = UFormatter.formatUserInfo(message.getAuthor());
 
         if (title.length() > MessageEmbed.TITLE_MAX_LENGTH) {
             title = title.substring(0, MessageEmbed.TITLE_MAX_LENGTH);
@@ -117,7 +114,10 @@ public final class MonitorListener extends ListenerAdapter {
                 .setAuthor("Monitor Trigger")
                 .setTitle(title)
                 .setDescription(message.getContentRaw())
-                .addField("Utilities", "[21 Jump Street](" + message.getJumpUrl() + ")", false);
+                .addField("Utilities", String.format(
+                        "[21 Jump Street](%s)\nUser: %s",
+                        message.getJumpUrl(),
+                        UFormatter.formatMention(message.getAuthor().getId())), false);
         textChannel.sendMessage(embedBuilder.build()).queue();
     }
 
