@@ -55,4 +55,31 @@ public final class UFormatter {
         return user.getAsTag();
     }
 
+    /**
+     * Formats a user's id to a mention.
+     * @param id The user's id
+     * @return The user's mention.
+     */
+    public static String formatMention(long id) {
+        return formatMention(String.valueOf(id));
+    }
+
+    /**
+     * Formats a user's id to a mention.
+     * @param id The user's id
+     * @return The user's mention.
+     */
+    public static String formatMention(String id) {
+        return String.format("<@%s>", id);
+    }
+
+    /**
+     * Formats a user for information output.
+     * @param user The user.
+     * @return The user's name#discrim and id.
+     */
+    public static String formatUserInfo(User user) {
+        return String.format("%s (ID: %s)", user.getAsTag(), user.getId());
+    }
+
 }
