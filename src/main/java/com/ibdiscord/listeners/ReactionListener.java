@@ -48,10 +48,10 @@ public final class ReactionListener extends ListenerAdapter {
         if(event.getMember() == null) {
             return;
         }
-        react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), true);
         if(event.getMember().getUser().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
             return;
         }
+        react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), true);
         switch(event.getReactionEmote().getName()) {
             case "\uD83D\uDC4D": // thumbs up
                 react(event.getMessageIdLong(), (short) 0);
@@ -88,10 +88,10 @@ public final class ReactionListener extends ListenerAdapter {
         if(event.getMember() == null) {
             return;
         }
-        react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), false);
         if(event.getMember().getUser().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
             return;
         }
+        react(event.getMember(), event.getMessageIdLong(), getEmoji(event.getReactionEmote()), false);
         switch(event.getReactionEmote().getName()) {
             case "\uD83D\uDC4D": // thumbs up
                 react(event.getMessageIdLong(), (short) 1);
