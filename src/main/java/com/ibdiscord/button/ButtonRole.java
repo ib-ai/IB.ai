@@ -29,4 +29,6 @@ public final class ButtonRole {
     private final ButtonColour colour;
     private final String name;
     private final String roles;
+    private final int row;
+
 }

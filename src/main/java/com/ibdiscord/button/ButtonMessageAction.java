@@ -37,10 +37,11 @@ public final class ButtonMessageAction extends MessageActionImpl {
      * @param api The API.
      * @param route The route.
      * @param channel The channel.
+     * @param message The message to send.
      * @param buttons The buttons.
      */
-    private ButtonMessageAction(JDA api, Route.CompiledRoute route, MessageChannel channel, List<ButtonRole> buttons) {
-        super(api, route, channel, new StringBuilder().append("Please make a selection:"));
+    private ButtonMessageAction(JDA api, Route.CompiledRoute route, MessageChannel channel, String message, List<ButtonRole> buttons) {
+        super(api, route, channel, new StringBuilder().append(message));
         this.buttons = buttons;
     }
 
@@ -48,12 +49,13 @@ public final class ButtonMessageAction extends MessageActionImpl {
      * Creates a message which has button reactions.
      * This will use one action row.
      * @param channel The channel.
+     * @param message The message to send.
      * @param roles A list of button reaction roles.
      * @return An action, which can be queued.
      */
-    public static ButtonMessageAction create(TextChannel channel, List<ButtonRole> roles) {
+    public static ButtonMessageAction create(TextChannel channel, String message, List<ButtonRole> roles) {
         Route.CompiledRoute route = Route.Messages.SEND_MESSAGE.compile(channel.getId());
-        return new ButtonMessageAction(channel.getJDA(), route, channel, roles);
+        return new ButtonMessageAction(channel.getJDA(), route, channel, message, roles);
     }
 
     /**
@@ -65,22 +67,29 @@ public final class ButtonMessageAction extends MessageActionImpl {
     protected DataObject getJSON() {
         final DataObject dataObject = super.getJSON();
         final DataArray componentsOuter = DataArray.empty();
-        final DataObject actionRow = DataObject.empty();
-        final DataArray componentsInner = DataArray.empty();
-        for (ButtonRole button : buttons) {
-            DataObject clickable = DataObject.empty();
-            clickable.put("type", 2);
-            clickable.put("label", button.getName());
-            clickable.put("style", button.getColour().ordinal() + 1);
-            clickable.put("custom_id", button.getRoles());
-            if (button.getEmoji() != null) {
-                clickable.put("emoji", button.getEmoji().get());
+        for (int i = 0; i < 5; i++) {
+            final DataObject actionRow = DataObject.empty();
+            final DataArray componentsInner = DataArray.empty();
+            for (ButtonRole button : buttons) {
+                if (button.getRow() != i) {
+                    continue;
+                }
+                DataObject clickable = DataObject.empty();
+                clickable.put("type", 2);
+                clickable.put("label", button.getName());
+                clickable.put("style", button.getColour().ordinal() + 1);
+                clickable.put("custom_id", button.getRoles());
+                if (button.getEmoji() != null) {
+                    clickable.put("emoji", button.getEmoji().get());
+                }
+                componentsInner.add(clickable);
             }
-            componentsInner.add(clickable);
+            if (componentsInner.length() > 0) {
+                actionRow.put("type", 1);
+                actionRow.put("components", componentsInner);
+                componentsOuter.add(actionRow);
+            }
         }
-        actionRow.put("type", 1);
-        actionRow.put("components", componentsInner);
-        componentsOuter.add(actionRow);
         dataObject.put("components", componentsOuter);
         return dataObject;
     }
