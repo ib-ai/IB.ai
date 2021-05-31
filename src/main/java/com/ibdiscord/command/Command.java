@@ -92,6 +92,7 @@ public final class Command {
             try {
                 action.accept(context);
             } catch(RuntimeException exception) {
+                exception.printStackTrace();
                 context.replyRaw(exception.getMessage());
             }
             return;

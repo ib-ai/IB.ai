@@ -25,6 +25,7 @@ import com.ibdiscord.data.db.DataContainer;
 import com.ibdiscord.exceptions.JavaVersionException;
 import com.ibdiscord.i18n.LocaleException;
 import com.ibdiscord.i18n.LocaliserHandler;
+import com.ibdiscord.listeners.ButtonListener;
 import com.ibdiscord.listeners.FilterListener;
 import com.ibdiscord.listeners.GuildListener;
 import com.ibdiscord.listeners.MessageListener;
@@ -101,7 +102,9 @@ public enum IBai {
                             config.getBotVersion(),
                             config.getStaticPrefix()))
                     )
-                    .addEventListeners(new FilterListener(),
+                    .setRawEventsEnabled(true)
+                    .addEventListeners(new ButtonListener(),
+                            new FilterListener(),
                             new GuildListener(),
                             new MessageListener(),
                             new MonitorListener(),
