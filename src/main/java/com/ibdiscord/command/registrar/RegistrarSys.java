@@ -139,6 +139,10 @@ public final class RegistrarSys implements CommandRegistrar {
                 );
         commandReact.on(context -> context.replySyntax(commandReact));
 
+        registry.define("buttonroles")
+                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                .on(new ButtonRoles());
+
         registry.define("reply")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {

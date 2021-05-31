@@ -8,6 +8,7 @@
   "blacklist_fail": "Blacklist failed. Is the ID correct and valid?",
   "blacklist_id": "You need to specify a valid number ID.",
   "blacklist_present": "You cannot blacklist someone who is already on the server. If you would like to get rid of them please ban them manually.",
+  "buttonrole_integrity": "One of the integrity constraints were violated. Need a non-empty array, each element consisting of colour (primary|secondary|success|danger), emoji(?), label (80) and a non-empty array of roles. More than 4 roles per element is not allowed.",
   "cassowary_id": "One or more of the role IDs you entered was invalid.",
   "category_invalid":  "The category provided is invalid or does not exist.",
   "embed_field_format": "Please provide the field in the following form: `\"Title\" \"Value\"`",

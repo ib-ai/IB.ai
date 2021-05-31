@@ -1,5 +1,5 @@
 # Using maven base image for building with maven.
-FROM maven:latest AS builder
+FROM maven:3.8.1-openjdk-11 AS builder
 
 LABEL "repository"="https://github.com/ib-ai/IB.ai/"
 LABEL "homepage"="https://discord.gg/IBO/"
@@ -14,7 +14,8 @@ RUN mvn dependency:go-offline
 
 # Build from source into ./target/*.jar
 COPY src ./src
-RUN mvn -e -B package
+# We don't want checkstyle in development...
+RUN mvn -e -B package -Dcheckstyle.skip
 
 # Using Java JDK 10 base image
 FROM openjdk:10
