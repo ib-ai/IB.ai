@@ -12,6 +12,7 @@ services:
       dockerfile: prod.Dockerfile
     env_file:
       - bot.env
+    mem_limit: 1500m
     depends_on:
       - db
 
@@ -21,6 +22,7 @@ services:
   db:
     restart: always
     image: redis
+    mem_limit: 50m
     volumes:
       - db-data:/data
   
