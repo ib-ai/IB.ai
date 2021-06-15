@@ -57,7 +57,7 @@ public final class TagDisabled extends PaginatedCommand<String> {
     @Override
     protected void handle(CommandContext context, EmbedBuilder embedBuilder, Page<String> page) {
         TagData tagData = DataContainer.INSTANCE.getGravity().load(new TagData(context.getGuild().getId()));
-        String value = tagData.get(page.getValue()).asString();
+        String value = tagData.get(page.getValue()).defaulting("Tag no longer exists.").asString();
         embedBuilder.addField(UString.escapeFormatting(page.getValue()), value, false);
     }
 
