@@ -44,6 +44,7 @@ public final class TagDisabled extends PaginatedCommand<String> {
         TagActiveData tagData = DataContainer.INSTANCE.getGravity().load(new TagActiveData(context.getGuild().getId()));
         List<String> entries = tagData.values().stream()
                 .map(Property::asString)
+                .sorted()
                 .collect(Collectors.toList());
         return new Pagination<>(entries, 10);
     }
