@@ -1,0 +1,6 @@
+services:
+  bot:
+    restart: "no"
+    build:
+      context: ./
+      dockerfile: Dockerfile-Dev

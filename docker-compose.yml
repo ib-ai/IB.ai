@@ -1,0 +1,20 @@
+# This is the base Docker Compose. In order to function properly, it needs to be overridden by one of the implementations.
+
+services:
+  bot:
+    restart: always
+    env_file:
+      - bot.env
+    depends_on:
+      - database
+  database:
+    restart: always
+    image: postgres
+    environment:
+      # The database name is derived from the user.
+      - POSTGRES_USER=ibai
+      - POSTGRES_PASSWORD=cranberry
+    volumes:
+      - database:/var/lib/postgresql/data
+volumes:
+  database:

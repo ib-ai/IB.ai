@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "discord.token",
+      "type": "java.lang.String",
+      "description": "The Discord bot token."
+    }
+  ]
+}

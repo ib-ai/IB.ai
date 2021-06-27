@@ -1,0 +1,33 @@
+# Using Maven base image to build.
+FROM maven:latest AS builder
+
+# Define the labels.
+LABEL "repository"="https://github.com/ib-ai/IB.ai/"
+LABEL "homepage"="https://discord.gg/ibo/"
+
+# Create work directory.
+WORKDIR /modmail/
+
+# Resolve dependencies, this is done to enable caching and speeding up builds.
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Build the application.
+COPY src ./src
+RUN mvn -e -B package
+
+# Using OpenJDK 11's runtime for the project.
+FROM openjdk:11
+
+# Create work directory.
+WORKDIR /modmail/
+
+# Copying the dependencies to speed up builds.
+COPY --from=builder /root/.m2 /root/.m2
+
+# Copying artifacts from Maven (builder) build stage.
+COPY --from=builder /modmail/pom.xml .
+COPY --from=builder /modmail/target/ ./target
+
+# Runs the bot. This selects the development Spring profile.
+CMD java -Dspring.profiles.active=dev -jar /modmail/target/Bootstrap.jar
