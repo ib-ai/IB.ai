@@ -1,0 +1,6 @@
+services:
+  bot:
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile-Prod

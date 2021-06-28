@@ -6,7 +6,7 @@ LABEL "repository"="https://github.com/ib-ai/IB.ai/"
 LABEL "homepage"="https://discord.gg/ibo/"
 
 # Create work directory.
-WORKDIR /modmail/
+WORKDIR /bot/
 
 # Resolve dependencies, this is done to enable caching and speeding up builds.
 COPY pom.xml .
@@ -20,14 +20,14 @@ RUN mvn -e -B package
 FROM openjdk:11
 
 # Create work directory.
-WORKDIR /modmail/
+WORKDIR /bot/
 
 # Copying the dependencies to speed up builds.
 COPY --from=builder /root/.m2 /root/.m2
 
 # Copying artifacts from Maven (builder) build stage.
-COPY --from=builder /modmail/pom.xml .
-COPY --from=builder /modmail/target/ ./target
+COPY --from=builder /bot/pom.xml .
+COPY --from=builder /bot/target/ ./target
 
 # Runs the bot. This selects the development Spring profile.
-CMD java -Dspring.profiles.active=dev -jar /modmail/target/Bootstrap.jar
+CMD java -Dspring.profiles.active=dev -jar /bot/target/Bootstrap.jar

@@ -1,0 +1,15 @@
+# Use Java 11 base image.
+FROM openjdk:11
+
+# Define the labels.
+LABEL "repository"="https://github.com/ib-ai/IB.ai/"
+LABEL "homepage"="https://discord.gg/ibo/"
+
+# Create working directory.
+WORKDIR /bot/
+
+# Download the latest binary from the CI
+ADD https://ci.arraying.de/job/ib-ai/lastSuccessfulBuild/artifact/target/Bootstrap.jar .
+
+# Run the bot. This selects the production Spring profile.
+CMD java -Dspring.profiles.active=prod -jar Bootstrap.jar
