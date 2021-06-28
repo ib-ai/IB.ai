@@ -35,7 +35,7 @@ import java.util.List;
  */
 @Slf4j
 @Configuration
-public final class DiscordBotConfig {
+public class DiscordBotConfig {
 
     /**
      * Read the bot token from the environment variable.
