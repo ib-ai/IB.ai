@@ -16,8 +16,9 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.ibai;
+package com.ibdiscord.ibai.unit;
 
+import com.ibdiscord.ibai.Meta;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

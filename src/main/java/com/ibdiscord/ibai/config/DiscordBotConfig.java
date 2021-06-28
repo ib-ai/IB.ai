@@ -35,12 +35,13 @@ import java.util.List;
  */
 @Slf4j
 @Configuration
-public class DiscordBotConfig {
+public final class DiscordBotConfig {
 
     /**
      * Read the bot token from the environment variable.
      */
-    @Value("${discord.token}") private String token;
+    @Value("${discord.token}")
+    private String token;
 
     /**
      * This will construct the client with the given event listeners.
