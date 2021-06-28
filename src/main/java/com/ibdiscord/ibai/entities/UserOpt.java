@@ -26,15 +26,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Represents user roles that will be sticky when the user re-joins the server.
- * Each user may have multiple roles associated with them.
+ * Represents a user opt.
+ * Each user may have multiple opts associated with them.
  */
 @NoArgsConstructor
 @Getter
 @Entity
-@IdClass(UserRole.CompositePK.class)
-@Table(name = "user_roles", indexes = @Index(columnList = "user_id"))
-public final class UserRole {
+@IdClass(UserOpt.CompositePK.class)
+@Table(name = "user_opts", indexes = @Index(columnList = "user_id"))
+public class UserOpt {
 
     /**
      * Composite primary key.
@@ -43,7 +43,7 @@ public final class UserRole {
     @AllArgsConstructor
     public static final class CompositePK implements Serializable {
         private long user;
-        private long role;
+        private long channel;
     }
 
     @Id
@@ -51,17 +51,17 @@ public final class UserRole {
     private long user;
 
     @Id
-    @Column(name = "role_id")
-    private long role;
+    @Column(name = "channel_id")
+    private long channel;
 
     /**
      * Creates an entity.
      * @param user The user ID.
-     * @param role The role ID.
+     * @param channel The channel ID.
      */
-    public UserRole(long user, long role) {
+    public UserOpt(long user, long channel) {
         this.user = user;
-        this.role = role;
+        this.channel = channel;
     }
 
     @Override
@@ -69,16 +69,16 @@ public final class UserRole {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserRole userRole = (UserRole) o;
+        UserOpt userOpt = (UserOpt) o;
 
-        if (user != userRole.user) return false;
-        return role == userRole.role;
+        if (user != userOpt.user) return false;
+        return channel == userOpt.channel;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (user ^ (user >>> 32));
-        result = 31 * result + (int) (role ^ (role >>> 32));
+        result = 31 * result + (int) (channel ^ (channel >>> 32));
         return result;
     }
 }

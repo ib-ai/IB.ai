@@ -16,18 +16,12 @@
  * along with IB.ai. If not, see http://www.gnu.org/licenses/.
  */
 
-package com.ibdiscord.ibai.integration.jpa;
+package com.ibdiscord.ibai.repositories;
+
+import com.ibdiscord.ibai.entities.UserOpt;
 
 /**
- * This class defines a few testing constants.
+ * The repository for all user opts.
  */
-public class JPAConstants {
-
-    public static long USER_1 = 1L;
-    public static long USER_2 = 2L;
-    public static long ROLE_1 = 1L;
-    public static long ROLE_2 = 2L;
-    public static long CHANNEL_1 = 1L;
-    public static long CHANNEL_2 = 2L;
-
+public interface UserOptRepository extends GenericUserSetRepository<UserOpt, UserOpt.CompositePK> {
 }

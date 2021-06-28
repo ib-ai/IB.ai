@@ -19,8 +19,10 @@
 package com.ibdiscord.ibai.integration.jpa;
 
 import com.ibdiscord.ibai.entities.UserJoinOverride;
+import com.ibdiscord.ibai.entities.UserOpt;
 import com.ibdiscord.ibai.entities.UserRole;
 import com.ibdiscord.ibai.repositories.UserJoinOverrideRepository;
+import com.ibdiscord.ibai.repositories.UserOptRepository;
 import com.ibdiscord.ibai.repositories.UserRoleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +53,9 @@ public class JPATest {
     private UserJoinOverrideRepository userJoinOverrideRepository;
 
     @Autowired
+    private UserOptRepository userOptRepository;
+
+    @Autowired
     private UserRoleRepository userRoleRepository;
 
     @Test
@@ -67,6 +73,44 @@ public class JPATest {
     }
 
     @Test
+    void optNonExistent() {
+        assertEquals(0, userOptRepository.findByUser(USER_1).size());
+    }
+
+    @Test
+    void optExistent() {
+        userOptRepository.save(new UserOpt(USER_1, CHANNEL_1));
+        userOptRepository.save(new UserOpt(USER_1, CHANNEL_2));
+        userOptRepository.save(new UserOpt(USER_2, CHANNEL_1));
+        List<UserOpt> opts = Arrays.asList(
+            new UserOpt(USER_1, CHANNEL_1),
+            new UserOpt(USER_1, CHANNEL_2)
+        );
+        assertEquals(opts, userOptRepository.findByUser(USER_1));
+    }
+
+    @Test
+    void optCollision() {
+        // Explicitly make sure that duplicates are treated properly.
+        userOptRepository.save(new UserOpt(USER_1, CHANNEL_1));
+        userOptRepository.save(new UserOpt(USER_1, CHANNEL_1));
+        Iterable<UserOpt> opts = userOptRepository.findAll();
+        Iterator<UserOpt> iterator = opts.iterator();
+        assertTrue(iterator.hasNext());
+        assertEquals(CHANNEL_1, iterator.next().getChannel());
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    void optDelete() {
+        userOptRepository.save(new UserOpt(USER_1, CHANNEL_1));
+        userOptRepository.save(new UserOpt(USER_1, CHANNEL_2));
+        userOptRepository.save(new UserOpt(USER_2, CHANNEL_1));
+        userOptRepository.deleteByUser(USER_1);
+        assertEquals(0, userOptRepository.findByUser(USER_1).size());
+    }
+
+    @Test
     void roleNonExistent() {
         assertEquals(0, userRoleRepository.findByUser(USER_1).size());
     }
@@ -81,6 +125,27 @@ public class JPATest {
             new UserRole(USER_1, ROLE_2)
         );
         assertEquals(roles, userRoleRepository.findByUser(USER_1));
+    }
+
+    @Test
+    void roleCollision() {
+        // Explicitly make sure that duplicates are treated properly.
+        userRoleRepository.save(new UserRole(USER_1, ROLE_1));
+        userRoleRepository.save(new UserRole(USER_1, ROLE_1));
+        Iterable<UserRole> roles = userRoleRepository.findAll();
+        Iterator<UserRole> iterator = roles.iterator();
+        assertTrue(iterator.hasNext());
+        assertEquals(ROLE_1, iterator.next().getRole());
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    void roleDelete() {
+        userRoleRepository.save(new UserRole(USER_1, ROLE_1));
+        userRoleRepository.save(new UserRole(USER_1, ROLE_2));
+        userRoleRepository.save(new UserRole(USER_2, ROLE_1));
+        userRoleRepository.deleteByUser(USER_1);
+        assertEquals(0, userRoleRepository.findByUser(USER_1).size());
     }
 
 }

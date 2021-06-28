@@ -18,10 +18,30 @@
 
 package com.ibdiscord.ibai.repositories;
 
-import com.ibdiscord.ibai.entities.UserRole;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.NoRepositoryBean;
+
+import java.util.List;
 
 /**
- * The repository for all sticky roles.
+ * A generic repository to do find and delete operations in.
+ * This is annotated so that Spring doesn't try to initialize this as an actual repository.
+ * @param <T> The entity.
+ * @param <ID> The primary key.
  */
-public interface UserRoleRepository extends GenericUserSetRepository<UserRole, UserRole.CompositePK> {
+@NoRepositoryBean
+public interface GenericUserSetRepository<T, ID> extends CrudRepository<T, ID> {
+
+    /**
+     * Gets all instances by user.
+     * @param user The user ID.
+     * @return A list of matches.
+     */
+    List<T> findByUser(long user);
+
+    /**
+     * Deletes all instances by user.
+     * @param user The user ID.
+     */
+    void deleteByUser(long user);
 }
