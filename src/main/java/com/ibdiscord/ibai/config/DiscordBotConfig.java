@@ -26,16 +26,31 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 
+/**
+ * Contains all the information related to the Discord client.
+ */
 @Slf4j
 @Configuration
 public class DiscordBotConfig {
 
+    /**
+     * Read the bot token from the environment variable.
+     */
     @Value("${discord.token}") private String token;
 
+    /**
+     * This will construct the client with the given event listeners.
+     * This is not active during testing. As such, the client must be mocked.
+     * @param list A list of event listeners.
+     * @param <T> A generalised event of type T.
+     * @return The discord client.
+     */
     @Bean
+    @Profile("!test")
     public <T extends Event> GatewayDiscordClient client(List<EventListener<T>> list) {
         log.info("Initialized Discord client");
         GatewayDiscordClient client = DiscordClientBuilder.create(token)

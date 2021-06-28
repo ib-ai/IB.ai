@@ -1,6 +1,11 @@
 {
   "properties": [
     {
+      "name": "app.version",
+      "type": "java.lang.String",
+      "description": "The version, directly taken from the pom.xml."
+    },
+    {
       "name": "discord.token",
       "type": "java.lang.String",
       "description": "The Discord bot token."
