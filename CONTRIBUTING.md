@@ -1,34 +1,52 @@
-If you are reading this page, then thank you for your interest in contributing towards the bot.
-We are grateful for any help, however, please ensure you follow the guidelines laid out below
-and ensure that any code you produce for IB.ai is licensed with the GNU GPL v3.
-
 # Contributions
 
-Not all contribution PRs (read below) will be accepted. 
-For ideas as to what to contribute, please refer to the GitHub issues or contact a member of the development team.
+Thank you for your interest in contributing to IB.ai. 
+However, we ask for you to accept our GPLv3 licencing as well as to follow the contribution guidelines laid out below.
+More specifically, please ensure you comply with the formatting and testing guidelines too.
 
-Bug fixes and optimisations are also greatly appreciated!
+### What to Contribute
 
-# VCS
+Please note that not all features or changes will be accepted without prior discussion.
+Obviously this does not extend to bugfixes, but generally, please brainstorm your ideas with the maintainers beforehand, otherwise it is a waste of everyone's time if the changes to do make it.
+The best ways to engage with the development is through GitHub Issues or on the [Discord](https://discord.gg/ibo).
 
-1) Create a new branch (and fork if applicable). Label it appropriately.
-2) Make the changes on that branch.
-3) Commit to and push the changes.
-4) Create a PR from your branch to master.
-5) A maintainer will then review your PR.
+### Setting up the Project
 
-If you have questions, please ask a maintainer.
+IB.ai purely relies on Docker.
+Please ensure that you have [Docker installed](https://docs.docker.com/get-docker/) before you move onto the next steps.
 
-# Code
+By default, IB.ai only allows maintainers to modify any branch on the repository.
+Therefore, it is vital to fork the repository and keep an upstream remote of the `master` branch.
+1. Create a fork (the easiest way to do this is clicking the "Fork" button on GitHub).
+2. Clone the repository (e.g. `git clone https://github.com/YourUsername/IB.ai.git`).
+3. Go into the cloned repository and open up a shell (e.g. `cd IB.ai`).
+4. Add the `master` branch as an upstream: `git remote add upstream https://github.com/ib-ai/IB.ai.git`.
+5. Create a new branch for each of your changes from `master`: `git checkout -b my-branch-name upstream/master` (where `my-branch name` is your branch name).
 
-## Formatting
+### Pushing Changes
+
+Once you made your changes then you can push these and create a pull request.
+1. Commit and push your changes.
+2. Go to your fork, and press the "Pull request" button.
+3. Set the "base fork" to `ib-ai/IB.ai`, "base" to `master`, "head fork" to your fork, and "compare" to your branch.
+4. Create the pull request.
+5. The maintainers will review it and request any specific changes.
+6. Once it is ready, then the version will be updated, and it will be merged into the `master` branch.
+7. The CI and CD will automatically deploy your changes.
+
+# Code Formatting
+
+Any code submitted needs to conform to our coding styles.
+We use [1TBS](https://en.wikipedia.org/wiki/Indentation_style#Variant:_1TBS_(OTBS)) as our indentation style.
+
+### Basic Formatting
 
 * Use Java-style braces (moustache-bois).
 This means that the opening brace is on the same line, but the closing brace is on a new line.
 There must be a space before an opening brace.
 * Do not use a space between a keyword and the opening parentheses `if(that)` rather than `if (that)`.
 * For methods that return `this`, chain them on a new line, as shown below:
-![Formatting](https://i.imgur.com/7kZPU4O.png)
+![Formatting](https://i.imgur.com/7mMjSNI.png)
 * For long methods, feel free to split the statement over multiple statements, with one parameter per line.
 * First, declare all fields.
 Then declare the constructor(s) (public, package-private, protected, private), followed by private methods, package-private methods, protected methods, private methods).
@@ -37,7 +55,7 @@ Then declare the constructor(s) (public, package-private, protected, private), f
 * Leave an empty line between methods.
 * Feel free to use empty lines within methods to group statements.
 
-## Naming conventions
+### Naming conventions
 
 * Packages are to be declared in all `lowercase`. Avoid using multi-word package names, if this is not possible, use `snake_case`.
 * Classes are to be declared in `TitleCase`.
@@ -45,14 +63,14 @@ Then declare the constructor(s) (public, package-private, protected, private), f
 * Variables are to be declared in `camelCase`. They should be be somewhat descriptive. Abbreviations are strongly discouraged.
 Exceptions exist for loop variables (i.e. `for(int i = 0; i < 10; i++) {}`, in this case `i` is perfectly acceptable).
 
-## Access and modification
+### Access and modification
 
 * Use the lowest possible access modifier.
 * Use the `final` modifier on all classes at the end of the inheritance chain.
 * All class fields defined by constructor parameters should be labelled as `private final`, unless not possible due to reflection.
 * Do not label in-method scoped variables as `final` unless (optional) they are required to be effectively final to be used inside a lambda.
 
-## JavaDocs
+### JavaDocs
 
  * Code commenting is required and necessary.
  * Documentation should be in JavaDoc format...
@@ -97,30 +115,8 @@ public class Example {
 }
 ```
 
-## Singletons
+# Testing
 
-* Use an enumeration, with the only field being the value `INSTANCE`.
-  * An example of this is seen in the main `IBai` class.
-* Alternatively, enumerations can be created in the following fashion:
-
-```java
-public final class Singleton {
-
-  private static final Object MUTEX = new Object();
-  private static Singleton instance;
-
-  private Singleton() {}
-
-  public static Singleton getInstance() {
-    if(instance == null) {
-      synchronized(MUTEX) {
-        if(instance == null) {
-          instance = new Singleton();
-        }
-      }
-    }
-    return instance;
-  }
-
-}
-```
+Tests are an important part of development.
+Where applicable, please ensure that you write unit and/or integration tests to test your business logic.
+In any case, please ensure that any new feature or bugfix is verified with a system test (i.e., run the bot manually and see if it works).
