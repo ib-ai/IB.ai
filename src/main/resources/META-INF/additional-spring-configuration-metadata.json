@@ -9,6 +9,11 @@
       "name": "discord.token",
       "type": "java.lang.String",
       "description": "The Discord bot token."
+    },
+    {
+      "name": "discord.server",
+      "type": "java.lang.String",
+      "description": "The server ID of where the bot will operate."
     }
   ]
 }

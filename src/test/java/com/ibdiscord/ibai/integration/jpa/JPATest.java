@@ -18,9 +18,11 @@
 
 package com.ibdiscord.ibai.integration.jpa;
 
+import com.ibdiscord.ibai.entities.GuildSettings;
 import com.ibdiscord.ibai.entities.UserJoinOverride;
 import com.ibdiscord.ibai.entities.UserOpt;
 import com.ibdiscord.ibai.entities.UserRole;
+import com.ibdiscord.ibai.repositories.GuildSettingsRepository;
 import com.ibdiscord.ibai.repositories.UserJoinOverrideRepository;
 import com.ibdiscord.ibai.repositories.UserOptRepository;
 import com.ibdiscord.ibai.repositories.UserRoleRepository;
@@ -50,6 +52,9 @@ import static com.ibdiscord.ibai.integration.jpa.JPAConstants.*;
 public class JPATest {
 
     @Autowired
+    private GuildSettingsRepository guildSettingsRepository;
+
+    @Autowired
     private UserJoinOverrideRepository userJoinOverrideRepository;
 
     @Autowired
@@ -57,6 +62,47 @@ public class JPATest {
 
     @Autowired
     private UserRoleRepository userRoleRepository;
+
+    @Test
+    void guildNonExistent() {
+        assertFalse(guildSettingsRepository.get().isPresent());
+    }
+
+    @Test
+    void guildExistent() {
+        GuildSettings guildSettings = new GuildSettings(
+            "&",
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+        );
+        guildSettingsRepository.save(guildSettings);
+        Optional<GuildSettings> retrieved = guildSettingsRepository.get();
+        assertTrue(retrieved.isPresent());
+        assertEquals("&", retrieved.get().getPrefix());
+    }
+
+    @Test
+    void guildUpdate() {
+        GuildSettings guildSettings = new GuildSettings(
+            "&",
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+        );
+        guildSettingsRepository.save(guildSettings);
+        guildSettings.setStaff(1);
+        guildSettingsRepository.save(guildSettings);
+        Optional<GuildSettings> retrieved = guildSettingsRepository.get();
+        assertTrue(retrieved.isPresent());
+        assertEquals(1, retrieved.get().getStaff());
+    }
 
     @Test
     void overrideNonExistent() {

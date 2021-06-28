@@ -34,7 +34,7 @@ import java.io.Serializable;
 @Entity
 @IdClass(UserOpt.CompositePK.class)
 @Table(name = "user_opts", indexes = @Index(columnList = "user_id"))
-public class UserOpt {
+public final class UserOpt {
 
     /**
      * Composite primary key.
