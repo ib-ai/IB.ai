@@ -58,6 +58,36 @@ We encourage individuals to partake in the development of IB.ai and contribute i
 In order to do so, we've created the [contribution guide](https://github.com/ib-ai/IB.ai/blob/master/CONTRIBUTING.md) for any interested person to read.
 If you have any questions, please ask.
 
+## Modules
+
+IB.ai is mostly modular.
+This means that it is possible to disable specific functionalities if they are not required.
+This can be done by specifying the module name(s) (comma separated) in the `DISABLED_MODULES` environment variable.
+
+| Name | Description | Implemented in v5 |
+| --- | --- | --- |
+| casino | Conflip and rolls. |
+| cassowaries | Mutually exclusive roles |
+| channelorder | Take snapshots of and restore channel order. |
+| buttonroles | Receive roles when clicking buttons. |
+| embed | Create fancy embeds. |
+| filter | Auto-deletes chat messages with the option to notify staff. |
+| fun | Cute animal pictures and dad jokes. | 
+| helper | Tracks the activity and helpers per channel, and introduces helper pins. |
+| info | Avatar showcase, user and server info. |
+| monitor | Listens to potentially disruptive messages, incl. special users. |
+| opts | Opt out of specific channels on user-override basis. |
+| punishments | Logs punishments, provides punishment timeouts and introduces permanent records. |
+| purge | Mass-delete chat messages. |
+| reactionroles | Receive roles when clicking reactions. | 
+| reminder | Reminder functionality. |
+| roles | Swap and mass-give roles. |
+| reply | Repeats a message if the same messages is sent 5x in a row by different users. |
+| stickyrole | Saves roles when users leave the server and re-applies them. |
+| tags | Automatically send responses based off of certain triggers. |
+| updates | Create daily updates.
+| voting | Create and manage democratic votes. |
+
 ## Installation
 
 We do not provide a public version of the bot for everyone to use.

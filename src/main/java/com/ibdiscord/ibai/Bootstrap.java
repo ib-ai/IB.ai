@@ -29,6 +29,14 @@ public class Bootstrap {
      * @param args The runtime arguments.
      */
     public static void main(String[] args) {
+        // Load disabled modules from environment variable.
+        String disabledModules = System.getenv("DISABLED_MODULES");
+        if (disabledModules != null && !disabledModules.isEmpty()) {
+            String[] modules = disabledModules.split(",");
+            for (String module : modules) {
+                System.setProperty("module." + module, "false");
+            }
+        }
         SpringApplication.run(Bootstrap.class, args);
     }
 }
