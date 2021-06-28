@@ -8,8 +8,8 @@ node {
 
     // Packages the source in order to generate a .jar artifact.
     stage('Package') {
-        sh "${mavenHome}/bin/mvn -e -Dcheckstyle.skip=true clean install" // Execute compile command.
-        archiveArtifacts 'target/IB.ai.jar' // Archive artifacts to make available to download.
+        sh "${mavenHome}/bin/mvn -e clean package" // Execute compile command.
+        archiveArtifacts 'target/Bootstrap.jar' // Archive artifacts to make available to download.
     }
 
 }
