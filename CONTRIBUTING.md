@@ -87,7 +87,7 @@ Exceptions exist for loop variables (i.e. `for(int i = 0; i < 10; i++) {}`, in t
  * LICENSE HEADER
  */
 
-package com.discord.etc;
+package com.discord.ibai;
 
 import com.etc;
 
@@ -114,6 +114,26 @@ public class Example {
   }
 }
 ```
+
+# Running
+
+The process of running the development version of the bot differs from the production version.
+In order to compile your changes and run them, you have to select the development profile.
+Then, just build and start the Docker Compose.
+
+For example, running any changes you have made:
+```shell
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml up --build
+```
+
+Because manually specifying two files gets tedious, you have the `compose.sh` script available.
+This shortcuts the `docker-compose` command and initial file specification, as such:
+
+```shell
+./compose.sh up --build
+```
+
+Please note that this script only works for the development profile.
 
 # Testing
 
