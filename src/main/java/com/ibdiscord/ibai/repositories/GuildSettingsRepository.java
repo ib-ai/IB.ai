@@ -19,9 +19,10 @@
 package com.ibdiscord.ibai.repositories;
 
 import com.ibdiscord.ibai.entities.GuildSettings;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * The repository for all guild settings.
  */
-public interface GuildSettingsRepository extends SingularRepository<GuildSettings, Long> {
+public interface GuildSettingsRepository extends CrudRepository<GuildSettings, Long> {
 }

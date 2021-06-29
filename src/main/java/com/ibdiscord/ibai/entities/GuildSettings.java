@@ -21,7 +21,6 @@ package com.ibdiscord.ibai.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,8 +37,9 @@ import javax.persistence.Table;
 @Table(name = "settings")
 public final class GuildSettings {
 
-    @Value("${discord.server}")
-    @Id private long id;
+    @Id
+    @Column(name = "guild_id")
+    private long guild;
 
     @Column(name = "prefix")
     private String prefix;
@@ -64,6 +64,7 @@ public final class GuildSettings {
 
     /**
      * Creates the entity.
+     * @param guild The guild ID.
      * @param prefix The prefix.
      * @param modLog The mod log ID.
      * @param updates The updates ID.
@@ -72,7 +73,8 @@ public final class GuildSettings {
      * @param helper The helper role ID.
      * @param staff The staff role ID.
      */
-    public GuildSettings(String prefix, long modLog, long updates, long logs, long muteRole, long helper, long staff) {
+    public GuildSettings(long guild, String prefix, long modLog, long updates, long logs, long muteRole, long helper, long staff) {
+        this.guild = guild;
         this.prefix = prefix;
         this.modLog = modLog;
         this.updates = updates;
@@ -89,11 +91,11 @@ public final class GuildSettings {
 
         GuildSettings that = (GuildSettings) o;
 
-        return id == that.id;
+        return guild == that.guild;
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (guild ^ (guild >>> 32));
     }
 }

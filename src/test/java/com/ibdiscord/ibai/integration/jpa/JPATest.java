@@ -65,12 +65,13 @@ public class JPATest {
 
     @Test
     void guildNonExistent() {
-        assertFalse(guildSettingsRepository.get().isPresent());
+        assertFalse(guildSettingsRepository.findById(GUILD_1).isPresent());
     }
 
     @Test
     void guildExistent() {
         GuildSettings guildSettings = new GuildSettings(
+            GUILD_1,
             "&",
             -1,
             -1,
@@ -80,7 +81,7 @@ public class JPATest {
             -1
         );
         guildSettingsRepository.save(guildSettings);
-        Optional<GuildSettings> retrieved = guildSettingsRepository.get();
+        Optional<GuildSettings> retrieved = guildSettingsRepository.findById(GUILD_1);
         assertTrue(retrieved.isPresent());
         assertEquals("&", retrieved.get().getPrefix());
     }
@@ -88,6 +89,7 @@ public class JPATest {
     @Test
     void guildUpdate() {
         GuildSettings guildSettings = new GuildSettings(
+            GUILD_1,
             "&",
             -1,
             -1,
@@ -99,7 +101,7 @@ public class JPATest {
         guildSettingsRepository.save(guildSettings);
         guildSettings.setStaff(1);
         guildSettingsRepository.save(guildSettings);
-        Optional<GuildSettings> retrieved = guildSettingsRepository.get();
+        Optional<GuildSettings> retrieved = guildSettingsRepository.findById(GUILD_1);
         assertTrue(retrieved.isPresent());
         assertEquals(1, retrieved.get().getStaff());
     }
