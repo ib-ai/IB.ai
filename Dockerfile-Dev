@@ -1,5 +1,5 @@
 # Using Maven base image to build.
-FROM maven:latest AS builder
+FROM maven:3-openjdk-11 AS builder
 
 # Define the labels.
 LABEL "repository"="https://github.com/ib-ai/IB.ai/"
