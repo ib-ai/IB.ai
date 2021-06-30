@@ -18,14 +18,8 @@
 
 package com.ibdiscord.ibai.integration.jpa;
 
-import com.ibdiscord.ibai.entities.GuildSettings;
-import com.ibdiscord.ibai.entities.UserJoinOverride;
-import com.ibdiscord.ibai.entities.UserOpt;
-import com.ibdiscord.ibai.entities.UserRole;
-import com.ibdiscord.ibai.repositories.GuildSettingsRepository;
-import com.ibdiscord.ibai.repositories.UserJoinOverrideRepository;
-import com.ibdiscord.ibai.repositories.UserOptRepository;
-import com.ibdiscord.ibai.repositories.UserRoleRepository;
+import com.ibdiscord.ibai.entities.*;
+import com.ibdiscord.ibai.repositories.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
@@ -53,6 +47,9 @@ public class JPATest {
 
     @Autowired
     private GuildSettingsRepository guildSettingsRepository;
+
+    @Autowired
+    private TagsRepository tagsRepository;
 
     @Autowired
     private UserJoinOverrideRepository userJoinOverrideRepository;
@@ -192,6 +189,57 @@ public class JPATest {
         userRoleRepository.save(new UserRole(USER_2, ROLE_1));
         userRoleRepository.deleteByUser(USER_1);
         assertEquals(0, userRoleRepository.findByUser(USER_1).size());
+    }
+
+    @Test
+    void tagsNonExistent() {
+        assertEquals(0, tagsRepository.count());
+    }
+
+    @Test
+    void tagsCreate() {
+        Tags.CompositePK pk1 = new Tags.CompositePK(GUILD_1, "name");
+        Tags.CompositePK pk2 = new Tags.CompositePK(GUILD_2, "name");
+        tagsRepository.save(new Tags(GUILD_1, "name", "output"));
+        tagsRepository.save(new Tags(GUILD_1, "different name", "different output"));
+        tagsRepository.save(new Tags(GUILD_2, "name", "abc123"));
+        // to verify if default of boolean disabled is false
+        assertFalse(tagsRepository.findById(pk1).get().isDisabled());
+        assertEquals(3, tagsRepository.count());
+        assertEquals(Optional.of(new Tags(GUILD_2, "name", "abc123")), tagsRepository.findById(pk2));
+    }
+
+    @Test
+    void tagsCollision() {
+        tagsRepository.save(new Tags(GUILD_1, "name", "output"));
+        tagsRepository.save(new Tags(GUILD_1, "name", "different output"));
+        assertEquals(1, tagsRepository.count());
+        Iterable<Tags> tags = tagsRepository.findAll();
+        Iterator<Tags> iterator = tags.iterator();
+        assertTrue(iterator.hasNext());
+        assertEquals(iterator.next().getOutput(), "different output");
+    }
+
+    @Test
+    void tagsDelete() {
+        Tags.CompositePK pk = new Tags.CompositePK(GUILD_1, "name 1");
+        tagsRepository.save(new Tags(GUILD_1, "name 1", "output 1"));
+        tagsRepository.save(new Tags(GUILD_1, "name 2", "output 2"));
+        tagsRepository.save(new Tags(GUILD_2, "name 3", "output 3"));
+        tagsRepository.deleteById(pk);
+        assertEquals(2, tagsRepository.count());
+        assertFalse(tagsRepository.findById(pk).isPresent());
+    }
+
+    @Test
+    void tagsSetDisabled() {
+        tagsRepository.save(new Tags(GUILD_1, "name 1", "output 1", false));
+        tagsRepository.save(new Tags(GUILD_2, "name 3", "output 3"));
+        Tags t = tagsRepository.findById(new Tags.CompositePK(GUILD_1, "name 1")).get();
+        assertFalse(t.isDisabled());
+        t.setDisabled(true);
+        tagsRepository.save(t);
+        assertTrue(tagsRepository.findById(new Tags.CompositePK(GUILD_1, "name 1")).get().isDisabled());
     }
 
 }

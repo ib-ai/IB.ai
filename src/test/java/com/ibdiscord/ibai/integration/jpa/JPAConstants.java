@@ -29,5 +29,7 @@ public class JPAConstants {
     public static long ROLE_2 = 2L;
     public static long CHANNEL_1 = 1L;
     public static long CHANNEL_2 = 2L;
+    public static long GUILD_1 = 1L;
+    public static long GUILD_2 = 2L;
 
 }
