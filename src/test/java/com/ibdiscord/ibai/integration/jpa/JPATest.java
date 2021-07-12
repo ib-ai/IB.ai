@@ -46,6 +46,9 @@ import static com.ibdiscord.ibai.integration.jpa.JPAConstants.*;
 public class JPATest {
 
     @Autowired
+    private FilterRepository filterRepository;
+
+    @Autowired
     private GuildSettingsRepository guildSettingsRepository;
 
     @Autowired
@@ -59,6 +62,64 @@ public class JPATest {
 
     @Autowired
     private UserRoleRepository userRoleRepository;
+
+    @Test
+    void filterNonExistent() {
+        assertEquals(0, filterRepository.count());
+    }
+
+    @Test
+    void filterCreate() {
+        filterRepository.save(new Filter(GUILD_1));
+        filterRepository.save(new Filter(GUILD_2, true, false, Arrays.asList(new FilterEntry("value"))));
+        // to verify that default of boolean attributes is false
+        assertFalse(filterRepository.findById(GUILD_1).get().isFiltering());
+        assertFalse(filterRepository.findById(GUILD_1).get().isRemoval());
+        assertEquals(new FilterEntry("value", false), filterRepository.findById(GUILD_2).get().getFilterEntries().get(0));
+        assertEquals(2, filterRepository.count());
+    }
+
+    @Test
+    void filterCollision() {
+        List<FilterEntry> entries = Arrays.asList(new FilterEntry("entry1"), new FilterEntry("entry2"));
+        filterRepository.save(new Filter(GUILD_1));
+        // verifies empty list of filter entries before collision
+        assertEquals(0, filterRepository.findById(GUILD_1).get().getFilterEntries().size());
+        filterRepository.save(new Filter(GUILD_2));
+        filterRepository.save(new Filter(GUILD_1, true, true, entries));
+        assertEquals(2, filterRepository.count());
+        // collision so latest entry should be kept which has list of filter entries with size 2
+        assertEquals(2, filterRepository.findById(GUILD_1).get().getFilterEntries().size());
+    }
+
+    @Test
+    void filterDelete() {
+        filterRepository.save(new Filter(GUILD_1));
+        filterRepository.save(new Filter(GUILD_2));
+        assertEquals(2, filterRepository.count());
+        filterRepository.delete(filterRepository.findById(GUILD_1).get());
+        assertEquals(1, filterRepository.count());
+        assertFalse(filterRepository.findById(GUILD_1).isPresent());
+    }
+
+    @Test
+    void filterEditEntry() {
+        List<FilterEntry> entries = Arrays.asList(new FilterEntry("e1"), new FilterEntry("e2"), new FilterEntry("e3"));
+        filterRepository.save(new Filter(GUILD_1, entries));
+        Filter filter = filterRepository.findById(GUILD_1).get();
+        // first entry edited
+        filter.getFilterEntries().get(0).setNotify(true);
+        // last entry removed
+        filter.getFilterEntries().remove(2);
+        // new entry created and added
+        filter.getFilterEntries().add(new FilterEntry("added entry", true));
+        filterRepository.save(filter);
+        assertEquals(filterRepository.findById(GUILD_1).get().getFilterEntries().size(), 3);
+        // checks that last entry is the added entry (not the original e3 entry that was removed)
+        assertEquals(filterRepository.findById(GUILD_1).get().getFilterEntries().get(2), new FilterEntry("added entry", true));
+        // checks that edited entry is up to date
+        assertTrue(filterRepository.findById(GUILD_1).get().getFilterEntries().get(0).isNotify());
+    }
 
     @Test
     void guildNonExistent() {
@@ -243,5 +304,4 @@ public class JPATest {
         tagsRepository.save(t);
         assertTrue(tagsRepository.findById(new Tags.CompositePK(GUILD_1, "name 1")).get().isDisabled());
     }
-
 }
