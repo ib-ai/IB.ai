@@ -19,7 +19,6 @@
 package com.ibdiscord.i18n;
 
 import com.ibdiscord.command.CommandContext;
-import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
@@ -143,11 +142,10 @@ public final class EmbedBuilderI18n {
 
     /**
      * See parent.
-     * @param type See parent.
      * @return See parent.
      */
-    public boolean isValidLength(AccountType type) {
-        return nest.isValidLength(type);
+    public boolean isValidLength() {
+        return nest.isValidLength();
     }
 
     /**
