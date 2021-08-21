@@ -18,9 +18,6 @@
 
 package com.ibdiscord.command.actions;
 
-import com.ibdiscord.button.ButtonColour;
-import com.ibdiscord.button.ButtonEmoji;
-import com.ibdiscord.button.ButtonMessageAction;
 import com.ibdiscord.button.ButtonRole;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
@@ -28,11 +25,16 @@ import com.ibdiscord.utils.UInput;
 import com.ibdiscord.utils.UString;
 import de.arraying.kotys.JSON;
 import de.arraying.kotys.JSONArray;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.interactions.components.ButtonStyle;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public final class ButtonRoles implements CommandAction {
     @Override
@@ -60,16 +62,22 @@ public final class ButtonRoles implements CommandAction {
         Set<String> known = new HashSet<>();
         for (int i = 1; i < data.length(); i++) {
             JSON entity = data.json(i);
-            ButtonColour colour;
+            ButtonStyle colour;
             try {
-                colour = ButtonColour.valueOf(entity.string("colour").toUpperCase());
+                colour = ButtonStyle.valueOf(entity.string("colour").toUpperCase());
+                if (colour == ButtonStyle.UNKNOWN || colour == ButtonStyle.LINK) {
+                    throw new IllegalArgumentException();
+                }
             } catch (IllegalArgumentException | NullPointerException exception) {
                 context.replyI18n("error.buttonrole_integrity");
                 return;
             }
-            ButtonEmoji emoji = null;
+            Emoji emoji = null;
             if (entity.has("emoji")) {
-                emoji = ButtonEmoji.parse(entity.string("emoji"));
+                String emojiString = entity.string("emoji");
+                if (emojiString != null && !emojiString.trim().isEmpty()) {
+                    emoji = Emoji.fromMarkdown(emojiString.trim());
+                }
             }
             String roles = entity.string("roles");
             if (known.contains(roles)) {
@@ -97,12 +105,33 @@ public final class ButtonRoles implements CommandAction {
             buttons.add(new ButtonRole(emoji, colour, name, roles, row));
             known.add(roles);
         }
-        ButtonMessageAction.create(context.assertChannel(context.getArguments()[0], "error.invalid_data"),
-            message,
-            buttons)
-            .queue(yes -> context.replyI18n("success.done"), no -> {
-                context.replyI18n("error.generic");
-                no.printStackTrace();
-            });
+        TextChannel textChannel = context.assertChannel(context.getArguments()[0], "error.invalid_data");
+        List<ActionRow> actionRows = buttons.stream()
+            .collect(Collectors.groupingBy(ButtonRole::getRow)) // Group the roles by row.
+            .entrySet() // Get each row + entry.
+            .stream()
+            .sorted(Map.Entry.comparingByKey()) // Sort the rows in ascending order
+            .map(Map.Entry::getValue) // Convert to value.
+            .map(values -> { // Convert values to action row.
+                List<Button> buttonList = values.stream() // Get all buttons.
+                    .map(singleButton -> { // Convert to JDA buttons.
+                        return Button.of(
+                            ButtonStyle.valueOf(singleButton.getColour().toString()),
+                            singleButton.getRoles(),
+                            singleButton.getName(),
+                            singleButton.getEmoji()
+                        );
+                    })
+                    .collect(Collectors.toList());
+                return ActionRow.of(buttonList); // Create action row.
+            })
+            .collect(Collectors.toList()); // Collect as list.
+        Message toSend = new MessageBuilder(message)
+            .setActionRows(actionRows)
+            .build();
+        textChannel.sendMessage(toSend).queue(yes -> context.replyI18n("success.done"), no -> {
+            context.replyI18n("error.generic");
+            no.printStackTrace();
+        });
     }
 }

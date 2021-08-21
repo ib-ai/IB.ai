@@ -78,7 +78,6 @@ public final class MessageListener extends ListenerAdapter {
                 event.getMessage().getContentRaw())
         );
         if(event.getAuthor().isBot()
-                || event.getAuthor().isFake()
                 || !event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_WRITE)) {
             return;
         }
