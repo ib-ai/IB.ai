@@ -109,6 +109,7 @@ public final class GuildListener extends ListenerAdapter {
     @Override
     public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
         updateHelperMessages(event.getGuild(), event.getMember().getRoles());
+        IBai.INSTANCE.getLogger().info("Looking for Kick or Ban for user: '{}'", event.getMember().getUser().getIdLong());
         queryAuditLog(event.getGuild(), event.getMember().getUser().getIdLong(), ActionType.BAN, ActionType.KICK);
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         RoleData roleData = gravity.load(new RoleData(event.getGuild().getId(), event.getMember().getUser().getId()));
@@ -157,6 +158,7 @@ public final class GuildListener extends ListenerAdapter {
             synchronized(mutex) {
                 guild.retrieveAuditLogs().limit(10).queue(entries -> {
                     if(entries.isEmpty()) {
+                        IBai.INSTANCE.getLogger().info("No audit logs retrieved.");
                         return;
                     }
 
@@ -165,7 +167,7 @@ public final class GuildListener extends ListenerAdapter {
                                 && latest.getTargetType() == TargetType.MEMBER
                                 && latest.getTargetIdLong() == target) {
 
-                            IBai.INSTANCE.getLogger().info("Latest audit log: type '{}', target type '{}', target id '{}', "
+                            IBai.INSTANCE.getLogger().info("Found audit log: type '{}', target type '{}', target id '{}', "
                                             + "user {}, options {}",
                                     latest.getType(),
                                     latest.getTargetType(),
@@ -178,6 +180,7 @@ public final class GuildListener extends ListenerAdapter {
                                 String reason = latest.getReason();
                                 if(user == null
                                         || staff == null) {
+                                    IBai.INSTANCE.getLogger().info("User or Staff is null");
                                     throw new RuntimeException("user/staff nil");
                                 }
                                 boolean redacted = false;
@@ -229,6 +232,7 @@ public final class GuildListener extends ListenerAdapter {
                                         }
                                         break;
                                     case BAN:
+                                        IBai.INSTANCE.getLogger().info("Handling Ban");
                                         punishment.setType(PunishmentType.BAN);
                                         handler.onPunish();
                                         break;
@@ -239,15 +243,16 @@ public final class GuildListener extends ListenerAdapter {
                                     default:
                                         break;
                                 }
+                            }, error -> {
+                                IBai.INSTANCE.getLogger().info("Could not retrieve user.");
+                                IBai.INSTANCE.getLogger().info(error.getMessage());
                             });
                             break;
                         }
                     }
-
-
                 }, error -> {
-                        IBai.INSTANCE.getLogger().info("Blimey, there's been an error.");
-                        error.printStackTrace();
+                        IBai.INSTANCE.getLogger().info("Blimey, there's been an error in the audit log.");
+                        IBai.INSTANCE.getLogger().error(error.getMessage());
                     }
                 );
             }
