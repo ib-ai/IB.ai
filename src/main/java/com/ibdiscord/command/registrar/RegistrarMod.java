@@ -556,6 +556,20 @@ public final class RegistrarMod implements CommandRegistrar {
                                 context.replyI18n("success.threshold_update");
                             }
                         })
+                )
+                .sub(registry.sub("minimum", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new VoteLadderManage() {
+                            protected void handle(CommandContext context, VoteLadderData ladderData) {
+                                context.assertArguments(2, "error.missing_number");
+                                int result = context.assertInt(context.getArguments()[1],
+                                        null,
+                                        null,
+                                        "error.missing_number");
+                                ladderData.set(VoteLadderData.MIN_UPVOTES, result);
+                                context.replyI18n("success.min_upvote_update");
+                            }
+                        })
                 );
         commandVoteLadder.on(context -> context.replySyntax(commandVoteLadder));
 
