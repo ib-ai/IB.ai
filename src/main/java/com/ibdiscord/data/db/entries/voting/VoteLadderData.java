@@ -35,6 +35,11 @@ public final class VoteLadderData extends TypeMap {
     public static final String THRESHOLD = "threshold";
 
     /**
+     * The minimum yes votes required for a vote to pass.
+     */
+    public static final String MIN_UPVOTES = "min_upvotes";
+
+    /**
      * The timeout until the option with the highest number is selected when there is no pass or fail.
      */
     public static final String TIMEOUT = "timeout";

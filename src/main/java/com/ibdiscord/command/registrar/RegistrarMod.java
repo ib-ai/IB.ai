@@ -538,7 +538,8 @@ public final class RegistrarMod implements CommandRegistrar {
                                 context.assertArguments(2, "error.ladder_format");
                                 long time = context.assertDuration(context.getArguments()[1],
                                         "error.ladder_format");
-                                ladderData.set(VoteLadderData.TIMEOUT, time);
+                                long diff = time - System.currentTimeMillis();
+                                ladderData.set(VoteLadderData.TIMEOUT, diff);
                                 context.replyI18n("success.ladder_specify");
                             }
                         })
@@ -554,6 +555,20 @@ public final class RegistrarMod implements CommandRegistrar {
                                         "error.missing_number");
                                 ladderData.set(VoteLadderData.THRESHOLD, result);
                                 context.replyI18n("success.threshold_update");
+                            }
+                        })
+                )
+                .sub(registry.sub("minimum", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new VoteLadderManage() {
+                            protected void handle(CommandContext context, VoteLadderData ladderData) {
+                                context.assertArguments(2, "error.missing_number");
+                                int result = context.assertInt(context.getArguments()[1],
+                                        null,
+                                        null,
+                                        "error.missing_number");
+                                ladderData.set(VoteLadderData.MIN_UPVOTES, result);
+                                context.replyI18n("success.min_upvote_update");
                             }
                         })
                 );

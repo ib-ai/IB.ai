@@ -145,21 +145,31 @@ public final class VoteEntry {
                     .asInt();
             int threshold = ladderData.get(VoteLadderData.THRESHOLD)
                     .asInt();
+            int minUpvotes = ladderData.get(VoteLadderData.MIN_UPVOTES)
+                    .defaulting(0)
+                    .asInt();
             if(yes >= threshold || no >= threshold || System.currentTimeMillis() > expiry) {
                 long channel = ladderData.get(VoteLadderData.CHANNEL)
                         .defaulting(0)
                         .asLong();
                 TextChannel textChannel = IBai.INSTANCE.getJda().getTextChannelById(channel);
                 String text;
+                String reason = "";
                 if(yes > no) {
-                    text = "passed";
+                    if(yes < minUpvotes) {
+                        text = "failed";
+                        reason = " Did not meet upvote threshold.";
+                    } else {
+                        text = "passed";
+                    }
                 } else if(no > yes) {
                     text = "failed";
+                    reason = " More downvotes than upvotes.";
                 } else {
                     text = "drew";
                 }
                 if(textChannel != null) {
-                    textChannel.sendMessage("Update on vote `"  + ladder + "/" + id + "`: " + text + ".").queue();
+                    textChannel.sendMessage("Update on vote `"  + ladder + "/" + id + "`: " + text + "." + reason).queue();
                 }
                 entry.set(VoteEntryData.FINISHED, true);
                 entry.save(new DataProvider());
