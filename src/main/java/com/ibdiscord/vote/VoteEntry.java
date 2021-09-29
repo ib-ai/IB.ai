@@ -159,9 +159,9 @@ public final class VoteEntry {
                     if(yes < minUpvotes) {
                         text = "failed";
                         reason = " Did not meet upvote threshold.";
-                        return;
+                    } else {
+                        text = "passed";
                     }
-                    text = "passed";
                 } else if(no > yes) {
                     text = "failed";
                     reason = " More downvotes than upvotes.";
