@@ -538,7 +538,8 @@ public final class RegistrarMod implements CommandRegistrar {
                                 context.assertArguments(2, "error.ladder_format");
                                 long time = context.assertDuration(context.getArguments()[1],
                                         "error.ladder_format");
-                                ladderData.set(VoteLadderData.TIMEOUT, time);
+                                long diff = time - System.currentTimeMillis();
+                                ladderData.set(VoteLadderData.TIMEOUT, diff);
                                 context.replyI18n("success.ladder_specify");
                             }
                         })
