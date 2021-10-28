@@ -60,10 +60,11 @@ public final class ButtonListener extends ListenerAdapter {
                 toAdd.add(role);
             }
         }
-        guild.modifyMemberRoles(member, toAdd, new ArrayList<>()).queue(yes -> {
-            event.reply(generateMessage(toAdd.size(), 0))
-                .setEphemeral(true)
-                .queue();
+        event.deferReply(true).queue(deferred -> {
+                guild.modifyMemberRoles(member, toAdd, new ArrayList<>()).queue(yes -> {
+                    event.getHook().sendMessage(generateMessage(toAdd.size(), 0))
+                            .queue();
+                }, Throwable::printStackTrace);
         }, Throwable::printStackTrace);
     }
 
