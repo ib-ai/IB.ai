@@ -56,7 +56,7 @@ public final class MonitorListener extends ListenerAdapter {
             return;
         }
         if(guildChannel.getParent() != null
-                && IBai.INSTANCE.getConfig().getNsaCategories().contains(guildChannel.getParent().getIdLong())) {
+                && IBai.INSTANCE.getConfig().getNsaDenyList().contains(guildChannel.getParent().getIdLong())) {
             return;
         }
         Message message = event.getMessage();

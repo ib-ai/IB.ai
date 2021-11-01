@@ -104,9 +104,9 @@ public final class LocalConfig {
     @Getter private final List<Long> optBlacklist;
 
     /**
-     * NSA_CATEGORIES
+     * NSA_DENYLIST.
      */
-    @Getter private final List<Long> nsaCategories;
+    @Getter private final List<Long> nsaDenyList;
 
     /**
      * Constructor for the local configuration object.
@@ -139,7 +139,7 @@ public final class LocalConfig {
         this.sensitiveRoles = getEnvironment("SENSITIVE_ROLES", lambdaMapId, new ArrayList<>());
         this.optCategories = getEnvironment("OPT_CATEGORIES", lambdaMapId, new ArrayList<>());
         this.optBlacklist = getEnvironment("OPT_BLACKLIST", lambdaMapId, new ArrayList<>());
-        this.nsaCategories = getEnvironment("NSA_CATEGORIES", lambdaMapId, new ArrayList<>());
+        this.nsaDenyList = getEnvironment("NSA_DENYLIST", lambdaMapId, new ArrayList<>());
     }
 
     /**

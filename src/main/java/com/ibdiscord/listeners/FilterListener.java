@@ -75,7 +75,7 @@ public final class FilterListener extends ListenerAdapter {
         }
         GuildChannel guildChannel = guild.getGuildChannelById(messageObject.getChannel().getIdLong());
         if(guildChannel.getParent() != null
-                && IBai.INSTANCE.getConfig().getNsaCategories().contains(guildChannel.getParent().getIdLong())) {
+                && IBai.INSTANCE.getConfig().getNsaDenyList().contains(guildChannel.getParent().getIdLong())) {
             return;
         }
         String message = messageObject.getContentRaw();
