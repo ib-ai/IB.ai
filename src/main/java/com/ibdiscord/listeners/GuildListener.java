@@ -190,6 +190,11 @@ public final class GuildListener extends ListenerAdapter {
                                     redacted = true;
                                     reason = reason.replace("-redacted", "").replace("-redact", "");
                                 }
+                                //Temporary Shorthand for rule 5 bans
+                                if (reason != null && reason.equalsIgnoreCase("-r5")) {
+                                    reason = "Rule 5. Academic Dishonesty is strictly prohibited.";
+                                    redacted = true;
+                                }
                                 Punishment punishment = new Punishment(null,
                                         user.getAsTag(),
                                         user.getId(),
