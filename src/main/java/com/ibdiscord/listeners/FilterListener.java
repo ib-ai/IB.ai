@@ -73,6 +73,11 @@ public final class FilterListener extends ListenerAdapter {
         if (author.getId().equals(guild.getSelfMember().getId())) {
             return;
         }
+        GuildChannel guildChannel = guild.getGuildChannelById(messageObject.getChannel().getIdLong());
+        if(guildChannel.getParent() != null
+                && IBai.INSTANCE.getConfig().getNsaDenyList().contains(guildChannel.getParent().getIdLong())) {
+            return;
+        }
         String message = messageObject.getContentRaw();
         String prefix = UDatabase.getPrefix(guild);
 

@@ -421,9 +421,12 @@ public final class RegistrarMod implements CommandRegistrar {
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {
                     context.assertArguments(1, "error.lookup_noexist");
+                    boolean academicDishonesty = context.getOptions().stream()
+                        .anyMatch(it -> it.getName().equalsIgnoreCase("r5"));
                     Guild guild = context.getGuild();
                     String caseNumber = context.getArguments()[0];
-                    String reason = UString.concat(context.getArguments(), " ", 1);
+                    String reason = academicDishonesty ? 
+                        "Rule 5. Academic Dishonesty is strictly prohibited." : UString.concat(context.getArguments(), " ", 1);
                     Gravity gravity = DataContainer.INSTANCE.getGravity();
                     PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
                     if(!punishmentList.contains(caseNumber)) {
@@ -445,7 +448,7 @@ public final class RegistrarMod implements CommandRegistrar {
                     }
                     boolean redacted = context.getOptions().stream()
                             .anyMatch(it -> it.getName().equalsIgnoreCase("redacted") || it.getName()
-                                    .equalsIgnoreCase("redact"));
+                                    .equalsIgnoreCase("redact")) || academicDishonesty;
                     IBai.INSTANCE.getLogger().info("Redacting: " + redacted);
                     punishmentData.set(REASON, reason);
                     punishmentData.set(REDACTED, redacted);
