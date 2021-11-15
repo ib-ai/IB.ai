@@ -76,19 +76,12 @@ public final class ButtonRoles implements CommandAction {
             if (entity.has("emoji")) {
                 String emojiString = entity.string("emoji");
                 if (emojiString != null && !emojiString.trim().isEmpty()) {
-                    try {
+                    String[] emojiData = emojiString.split(" ");
+                    if (emojiData.length == 2) {
+                        emoji = Emoji.fromEmote(emojiData[0], Long.parseLong(emojiData[1]), false);
+                    } else {
                         emoji = Emoji.fromMarkdown(emojiString.trim());
-                    } catch (IllegalArgumentException e) {
-
                     }
-
-                    if (emoji == null) {
-                        String[] emojiData = emojiString.split(" ");
-                        if (emojiData.length == 2) {
-                            emoji = Emoji.fromEmote(emojiData[0], Long.parseLong(emojiData[1]), false);
-                        }
-                    }
-
                 }
             }
             String roles = entity.string("roles");
