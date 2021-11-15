@@ -34,6 +34,7 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Button;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -148,7 +149,7 @@ public final class RegistrarSys implements CommandRegistrar {
                         .on(new ButtonRoles()))
                 .sub(registry.sub("delete", "generic_delete")
                         .on(context -> {
-                            context.assertArguments(3, "error.generic_arg_length");
+                            context.assertArguments(4, "error.generic_arg_length");
                             if (context.getMessage().getMentionedChannels().size() < 1) {
                                 context.replyI18n("error.missing_channel");
                                 return;
@@ -156,8 +157,13 @@ public final class RegistrarSys implements CommandRegistrar {
                             TextChannel channel = context.getMessage().getMentionedChannels().get(0);
                             channel.retrieveMessageById(context.getArguments()[1]).queue(message -> {
                                 List<ActionRow> actionRows = new ArrayList(message.getActionRows());
-                                int button = context.assertInt(context.getArguments()[2], 0, actionRows.size(), "error.generic_arg_length");
-                                actionRows.remove(button);
+                                int row = context.assertInt(context.getArguments()[2], 0, actionRows.size(), "error.generic_arg_length");
+                                ActionRow actionRow = actionRows.remove(row);
+                                List<Button> buttons = new ArrayList(actionRow.getButtons());
+                                int button = context.assertInt(context.getArguments()[3], 0, buttons.size(), "error.generic_arg_length");
+                                buttons.remove(button);
+                                actionRow = ActionRow.of(buttons);
+                                actionRows.add(row, actionRow);
                                 Message newMessage = new MessageBuilder(message)
                                         .setActionRows(actionRows)
                                         .build();
