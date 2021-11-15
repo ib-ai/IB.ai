@@ -35,6 +35,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -154,7 +155,7 @@ public final class RegistrarSys implements CommandRegistrar {
                             }
                             TextChannel channel = context.getMessage().getMentionedChannels().get(0);
                             channel.retrieveMessageById(context.getArguments()[1]).queue(message -> {
-                                List<ActionRow> actionRows = message.getActionRows();
+                                List<ActionRow> actionRows = new ArrayList(message.getActionRows());
                                 int button = context.assertInt(context.getArguments()[2], 0, actionRows.size(), "error.generic_arg_length");
                                 actionRows.remove(button);
                                 Message newMessage = new MessageBuilder(message)
