@@ -30,8 +30,10 @@ import com.ibdiscord.data.db.entries.ReplyData;
 import com.ibdiscord.data.db.entries.react.EmoteData;
 import com.ibdiscord.data.db.entries.react.ReactionData;
 import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
 
 import java.util.Arrays;
 import java.util.List;
@@ -141,7 +143,26 @@ public final class RegistrarSys implements CommandRegistrar {
 
         registry.define("buttonroles")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                .on(new ButtonRoles());
+                .sub(registry.sub("create", "generic_create")
+                        .on(new ButtonRoles()))
+                .sub(registry.sub("delete", "generic_delete")
+                        .on(context -> {
+                            context.assertArguments(3, "error.generic_arg_length");
+                            if (context.getMessage().getMentionedChannels().size() < 1) {
+                                context.replyI18n("error.missing_channel");
+                                return;
+                            }
+                            TextChannel channel = context.getMessage().getMentionedChannels().get(0);
+                            channel.retrieveMessageById(context.getArguments()[1]).queue(message -> {
+                                List<ActionRow> actionRows = message.getActionRows();
+                                int button = context.assertInt(context.getArguments()[2], 0, actionRows.size(), "error.generic_arg_length");
+                                actionRows.remove(button);
+                                Message newMessage = new MessageBuilder(message)
+                                        .setActionRows(actionRows)
+                                        .build();
+                                message.editMessage(newMessage).queue(success -> context.replyI18n("success.done"), failure -> context.replyI18n("error.generic"));
+                            }, failure -> context.replyI18n("error.reaction_message"));
+                        }));
 
         registry.define("reply")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
