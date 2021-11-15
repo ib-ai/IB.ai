@@ -249,9 +249,10 @@ public final class GuildListener extends ListenerAdapter {
                                         break;
                                 }
                             }, error -> {
-                                IBai.INSTANCE.getLogger().info("Could not retrieve user.");
-                                IBai.INSTANCE.getLogger().info(error.getMessage());
-                            });
+                                    IBai.INSTANCE.getLogger().info("Could not retrieve user.");
+                                    IBai.INSTANCE.getLogger().info(error.getMessage());
+                                }
+                            );
                             break;
                         }
                     }
