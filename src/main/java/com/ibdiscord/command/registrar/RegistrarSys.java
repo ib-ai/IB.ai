@@ -67,8 +67,12 @@ public final class RegistrarSys implements CommandRegistrar {
                 .on(new Logging(GuildData.LOGS));
 
         registry.define("modlog")
-                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                .on(new Logging(GuildData.MODLOGS));
+                .sub(registry.sub("channel", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new Logging(GuildData.MODLOGS)))
+                .sub(registry.sub("staff", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new Logging(GuildData.MODLOGS_STAFF)));
 
         registry.define("moderator")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))

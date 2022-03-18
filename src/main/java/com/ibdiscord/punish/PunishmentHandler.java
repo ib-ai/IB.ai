@@ -40,7 +40,7 @@ public final class PunishmentHandler {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         long caseNumber = gravity.load(new PunishmentsData(guild.getId())).size() + 1;
         punishment.dump(guild, caseNumber);
-        TextChannel channel = getLogChannel();
+        TextChannel channel = getLogChannel(GuildData.MODLOGS);
         if(channel == null) {
             return;
         }
@@ -49,6 +49,14 @@ public final class PunishmentHandler {
             punishmentData.set(PunishmentData.MESSAGE, success.getIdLong());
             gravity.save(punishmentData);
         });
+        TextChannel staff_channel = getLogChannel(GuildData.MODLOGS_STAFF);
+        if(staff_channel == null) {
+            return;
+        }
+        staff_channel.sendMessage(punishment
+                .redacting(false)
+                .getLogPunishment(guild, caseNumber))
+                .queue();
     }
 
     /**
@@ -57,7 +65,7 @@ public final class PunishmentHandler {
      * The only required data is the type, user display/id, staff display/id.
      */
     public void onRevocation() {
-        TextChannel channel = getLogChannel();
+        TextChannel channel = getLogChannel(GuildData.MODLOGS);
         if(channel != null) {
             channel.sendMessage(punishment.getLogRevocation()).queue();
         }
@@ -67,9 +75,9 @@ public final class PunishmentHandler {
      * Gets the log channel.
      * @return The possibly null log channel.
      */
-    public TextChannel getLogChannel() {
+    public TextChannel getLogChannel(String modlogs) {
         GuildData guildData = DataContainer.INSTANCE.getGravity().load(new GuildData(guild.getId()));
-        return guild.getTextChannelById(guildData.get(GuildData.MODLOGS)
+        return guild.getTextChannelById(guildData.get(modlogs)
                 .defaulting(0L)
                 .asLong());
     }

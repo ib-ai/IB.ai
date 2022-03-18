@@ -441,7 +441,7 @@ public final class RegistrarMod implements CommandRegistrar {
                     punishment.setReason(reason);
                     PunishmentData punishmentData = gravity.load(new PunishmentData(guild.getId(), caseId));
                     PunishmentHandler punishmentHandler = new PunishmentHandler(guild, punishment);
-                    TextChannel channel = punishmentHandler.getLogChannel();
+                    TextChannel channel = punishmentHandler.getLogChannel(GuildData.MODLOGS);
                     if(channel == null) {
                         context.replyI18n("error.reason_logging");
                         return;
