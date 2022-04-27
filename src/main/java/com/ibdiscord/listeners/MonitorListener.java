@@ -117,9 +117,10 @@ public final class MonitorListener extends ListenerAdapter {
                 .setTitle(title)
                 .setDescription(message.getContentRaw())
                 .addField("Utilities", String.format(
-                        "[21 Jump Street](%s)\nUser: %s",
+                        "[21 Jump Street](%s)\nUser: %s\nChannel: %s",
                         message.getJumpUrl(),
-                        UFormatter.formatMention(message.getAuthor().getId())), false);
+                        UFormatter.formatMention(message.getAuthor().getId()),
+                        message.getTextChannel().getAsMention()), false);
         textChannel.sendMessage(embedBuilder.build()).queue();
     }
 
