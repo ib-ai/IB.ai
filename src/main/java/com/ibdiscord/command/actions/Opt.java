@@ -47,6 +47,13 @@ public final class Opt implements CommandAction {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         OptData optData = gravity.load(new OptData(context.getGuild().getId(), userId));
 
+        Long optChannel = IBai.INSTANCE.getConfig().getOptChannel();
+        if (context.getChannel().getIdLong() != optChannel && optChannel != 0L) {
+            context.replyI18n("error.opt_incorrect",
+                    context.getGuild().getTextChannelById(optChannel).getAsMention());
+            return;
+        }
+
         if(context.getArguments().length < 1) {
             String channels = optData.values().stream()
                     .map(it -> it.defaulting(0).asLong()) // Get all IDs as longs.
