@@ -49,8 +49,10 @@ public final class Opt implements CommandAction {
 
         Long optChannel = IBai.INSTANCE.getConfig().getOptChannel();
         if (context.getChannel().getIdLong() != optChannel && optChannel != 0L) {
-            context.replyI18n("error.opt_incorrect",
-                    context.getGuild().getTextChannelById(optChannel).getAsMention());
+            context.getChannel().sendMessage(
+                    String.format("If you would like to opt in/out of a channel, please do so in %s.",
+                            context.getGuild().getTextChannelById(optChannel).getAsMention())
+            ).queue();
             return;
         }
 
