@@ -23,7 +23,7 @@ import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.PunishmentData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import de.arraying.gravity.Gravity;
-import java.utils.Collections;
+import java.util.Collections;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
