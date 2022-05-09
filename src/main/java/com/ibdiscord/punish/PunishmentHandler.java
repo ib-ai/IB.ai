@@ -23,7 +23,6 @@ import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.PunishmentData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import de.arraying.gravity.Gravity;
-import java.util.Collections;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -39,7 +38,7 @@ public final class PunishmentHandler {
      */
     public void onPunish() {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
-        long caseNumber = Collections.max(gravity.load(new PunishmentsData(guild.getId())).values()) + 1;
+        long caseNumber = gravity.load(new PunishmentsData(guild.getId())).values().stream().map(property -> property.asLong()).max(Long::compare).get() + 1;
         punishment.dump(guild, caseNumber);
         TextChannel channel = getLogChannel(GuildData.MODLOGS);
         if(channel == null) {
