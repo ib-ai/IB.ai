@@ -32,24 +32,29 @@ Please read the `CONTRIBUTING.md` file to find out more about contributing towar
 
 ## Installation and Compilation
 
-### From source
+Create and fill in the following configuration files (neither are Git tracked):
+ - bot.env (see bot.example.env)
+ - backup.env (see backup.example.env)
 
-Configuration files:
- - bot.env
- - backup.env
+### Running in production
 
-Using `Docker` and `Docker-Compose` to build container images and run:    
+The production version will use IB.ai's CI server to automatically obtain the jar.
+Therefore, it will always run the latest release.
+
+Using `Docker-Compose` to build container images and run:    
 ```
-$ docker-compose build
-$ docker-compose up
+$ docker-compose up --build
 ```
 
-### From Docker Hub image
+### Running during development
 
+If there are any changes to the source code that are not reflected on the CI server, use this.
+The sources will be built and subsequently run.
+This may take a few minutes, especially the first time.
+
+Using `Docker-Compose` to build container images and run:
 ```
-$ docker run -d -v db-data:/data redis
-
-$ docker run -d --env-file bot.env --link redis pants1/ib.ai
+$ docker-compose -f dev.docker-compose.yml up --build
 ```
 
 ## License
