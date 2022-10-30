@@ -47,6 +47,15 @@ public final class Opt implements CommandAction {
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         OptData optData = gravity.load(new OptData(context.getGuild().getId(), userId));
 
+        Long optChannel = IBai.INSTANCE.getConfig().getOptChannel();
+        if (context.getChannel().getIdLong() != optChannel && optChannel != 0L) {
+            context.getChannel().sendMessage(
+                    String.format("If you would like to opt in/out of a channel, please do so in %s.",
+                            context.getGuild().getTextChannelById(optChannel).getAsMention())
+            ).queue();
+            return;
+        }
+
         if(context.getArguments().length < 1) {
             String channels = optData.values().stream()
                     .map(it -> it.defaulting(0).asLong()) // Get all IDs as longs.

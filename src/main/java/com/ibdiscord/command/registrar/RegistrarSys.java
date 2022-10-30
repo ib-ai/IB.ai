@@ -30,9 +30,13 @@ import com.ibdiscord.data.db.entries.ReplyData;
 import com.ibdiscord.data.db.entries.react.EmoteData;
 import com.ibdiscord.data.db.entries.react.ReactionData;
 import de.arraying.gravity.Gravity;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Button;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -63,8 +67,12 @@ public final class RegistrarSys implements CommandRegistrar {
                 .on(new Logging(GuildData.LOGS));
 
         registry.define("modlog")
-                .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                .on(new Logging(GuildData.MODLOGS));
+                .sub(registry.sub("channel", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new Logging(GuildData.MODLOGS)))
+                .sub(registry.sub("staff", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new Logging(GuildData.MODLOGS_STAFF)));
 
         registry.define("moderator")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
@@ -141,7 +149,31 @@ public final class RegistrarSys implements CommandRegistrar {
 
         registry.define("buttonroles")
                 .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
-                .on(new ButtonRoles());
+                .sub(registry.sub("create", "generic_create")
+                        .on(new ButtonRoles()))
+                .sub(registry.sub("delete", "generic_delete")
+                        .on(context -> {
+                            context.assertArguments(4, "error.generic_arg_length");
+                            if (context.getMessage().getMentionedChannels().size() < 1) {
+                                context.replyI18n("error.missing_channel");
+                                return;
+                            }
+                            TextChannel channel = context.getMessage().getMentionedChannels().get(0);
+                            channel.retrieveMessageById(context.getArguments()[1]).queue(message -> {
+                                List<ActionRow> actionRows = new ArrayList(message.getActionRows());
+                                int row = context.assertInt(context.getArguments()[2], 0, actionRows.size(), "error.generic_arg_length");
+                                ActionRow actionRow = actionRows.remove(row);
+                                List<Button> buttons = new ArrayList(actionRow.getButtons());
+                                int button = context.assertInt(context.getArguments()[3], 0, buttons.size(), "error.generic_arg_length");
+                                buttons.remove(button);
+                                actionRow = ActionRow.of(buttons);
+                                actionRows.add(row, actionRow);
+                                Message newMessage = new MessageBuilder(message)
+                                        .setActionRows(actionRows)
+                                        .build();
+                                message.editMessage(newMessage).queue(success -> context.replyI18n("success.done"), failure -> context.replyI18n("error.generic"));
+                            }, failure -> context.replyI18n("error.reaction_message"));
+                        }));
 
         registry.define("reply")
                 .restrict(CommandPermission.role(GuildData.MODERATOR))

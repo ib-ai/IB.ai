@@ -55,7 +55,7 @@ public final class UEmbed {
         builder.addField(
                 "*How do I become a Helper?*",
                 "To apply to become a Helper, please fill out this form: "
-                        + "<https://forms.gle/UhRmZdUJNDFgPJgeA>\n\nYour application will be reviewed by the Helper "
+                        + "<https://cutt.ly/ibo-subject-helper-form>\n\nYour application will be reviewed by the Helper "
                         + "Managers. Once a decision's been made, you'll be notified via DMs.",
                 false
         );

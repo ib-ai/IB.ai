@@ -18,13 +18,12 @@
 
 package com.ibdiscord.listeners;
 
-import com.ibdiscord.button.ButtonCallbackAction;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.RawGatewayEvent;
+import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.utils.data.DataObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -37,36 +36,55 @@ public final class ButtonListener extends ListenerAdapter {
      * @param event The event.
      */
     @Override
-    public void onRawGateway(@NotNull RawGatewayEvent event) {
-        if (event.getType().equals("INTERACTION_CREATE")) {
-            DataObject payload = event.getPayload();
-            DataObject member = payload.getObject("member");
-            DataObject data = payload.getObject("data");
-            String author = payload.getObject("message").getObject("author").getString("id");
-            if (!author.equals(event.getJDA().getSelfUser().getId())) {
-                return;
-            }
-            String customId = data.getString("custom_id");
-            String memberId = member.getObject("user").getString("id");
-            String guildId = payload.getString("guild_id");
-            Guild guild = event.getJDA().getGuildById(guildId);
-            if (guild == null) {
-                return;
-            }
-            Member guildMember = guild.getMemberById(memberId);
-            if (guildMember == null) {
-                return;
-            }
-            List<Role> toAdd = new ArrayList<>();
-            for (String roleId : customId.split(",")) {
-                Role role = guild.getRoleById(roleId);
-                if (role != null) {
-                    toAdd.add(role);
-                }
-            }
-            guild.modifyMemberRoles(guildMember, toAdd, null).queue(yes -> {
-                new ButtonCallbackAction(event.getJDA(), payload.getString("id"), payload.getString("token"), toAdd.size(), 0).queue();
-            });
+    public void onButtonClick(@NotNull ButtonClickEvent event) {
+        if (event.getMessage() == null) {
+            return;
         }
+        Message message = event.getMessage();
+        Guild guild = event.getGuild();
+        if (message.getAuthor().getIdLong() != message.getJDA().getSelfUser().getIdLong() || guild == null) {
+            return;
+        }
+        String customId = event.getComponentId();
+        if (customId.isEmpty()) {
+            return;
+        }
+        Member member = event.getMember();
+        if (member == null) {
+            return;
+        }
+        List<Role> toAdd = new ArrayList<>();
+        for (String roleId : customId.split(",")) {
+            Role role = guild.getRoleById(roleId);
+            if (role != null) {
+                toAdd.add(role);
+            }
+        }
+        event.deferReply(true).queue(deferred -> {
+            guild.modifyMemberRoles(member, toAdd, new ArrayList<>()).queue(yes -> {
+                event.getHook().sendMessage(generateMessage(toAdd.size(), 0))
+                        .queue();
+                }, Throwable::printStackTrace);
+            }, Throwable::printStackTrace);
+    }
+
+    /**
+     * Generates a message.
+     * @param added The number of roles added.
+     * @param removed The number of roles removed.
+     * @return A message.
+     */
+    private String generateMessage(int added, int removed) {
+        String content;
+        if (added > 0 && removed == 0) {
+            content = "Added " + added + " role(s).";
+        } else if (removed > 0 && added == 0) {
+            content = "Removed " + removed + " role(s).";
+        } else if(added > 0 && removed > 0) {
+            content = "Added " + added + " role(s) and removed " + removed + " role(s).";
+        } else {
+            content = "Did not update roles";
+        }
+        return content;
     }
 }

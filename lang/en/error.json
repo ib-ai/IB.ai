@@ -52,6 +52,7 @@
   "odds_user": "Please mention a user to challenge.",
   "opt_channel": "Please provide a valid channel ID, name or mention.",
   "opt_disabled": "You cannot opt in/out of this channel.",
+  "opt_incorrect": "If you would like to opt in/out of a channel, please do so in {0}.",
   "opt_override": "For security reasons, opting in/out of channels where you have an existing user override is disabled. Please contact staff.",
   "opt_permission": "You cannot opt in/out of channels you do not have permission to view.",
   "permission": "You do not have permission to execute this command.",

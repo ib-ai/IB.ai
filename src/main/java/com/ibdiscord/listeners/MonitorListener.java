@@ -28,10 +28,7 @@ import com.ibdiscord.utils.objects.GuildedCache;
 import de.arraying.gravity.Gravity;
 import de.arraying.gravity.data.property.Property;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -51,10 +48,15 @@ public final class MonitorListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        GuildChannel guildChannel = event.getGuild().getGuildChannelById(event.getChannel().getIdLong());
         if(event.getAuthor().isBot()) {
             return;
         }
         if(event.getChannelType() != ChannelType.TEXT) {
+            return;
+        }
+        if(guildChannel.getParent() != null
+                && IBai.INSTANCE.getConfig().getNsaDenyList().contains(guildChannel.getParent().getIdLong())) {
             return;
         }
         Message message = event.getMessage();
@@ -115,9 +117,10 @@ public final class MonitorListener extends ListenerAdapter {
                 .setTitle(title)
                 .setDescription(message.getContentRaw())
                 .addField("Utilities", String.format(
-                        "[21 Jump Street](%s)\nUser: %s",
+                        "[21 Jump Street](%s)\nUser: %s\nChannel: %s",
                         message.getJumpUrl(),
-                        UFormatter.formatMention(message.getAuthor().getId())), false);
+                        UFormatter.formatMention(message.getAuthor().getId()),
+                        message.getTextChannel().getAsMention()), false);
         textChannel.sendMessage(embedBuilder.build()).queue();
     }
 

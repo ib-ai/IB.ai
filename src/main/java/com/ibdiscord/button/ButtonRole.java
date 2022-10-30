@@ -20,13 +20,15 @@ package com.ibdiscord.button;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.dv8tion.jda.api.entities.Emoji;
+import net.dv8tion.jda.api.interactions.components.ButtonStyle;
 
 @RequiredArgsConstructor
 @Getter
 public final class ButtonRole {
 
-    private final ButtonEmoji emoji;
-    private final ButtonColour colour;
+    private final Emoji emoji;
+    private final ButtonStyle colour;
     private final String name;
     private final String roles;
     private final int row;

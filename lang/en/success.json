@@ -20,6 +20,7 @@
   "ladder_specify": "The duration has been specified.",
   "lang_command": "Successfully updated your language preferences.",
   "logging": "The channel has been set to: {0}.",
+  "min_upvote_update": "The minimum upvote threshold has been updated.",
   "mod_permission": "The moderator permission has been updated.",
   "monitor_disable": "Monitoring disabled.",
   "monitor_enable": "Monitoring enabled.",

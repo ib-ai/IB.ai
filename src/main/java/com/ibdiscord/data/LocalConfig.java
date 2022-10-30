@@ -104,6 +104,16 @@ public final class LocalConfig {
     @Getter private final List<Long> optBlacklist;
 
     /**
+     * OPT_CHANNEL
+     */
+    @Getter private final Long optChannel;
+
+    /**
+     * NSA_DENYLIST.
+     */
+    @Getter private final List<Long> nsaDenyList;
+
+    /**
      * Constructor for the local configuration object.
      * Sets all of the class properties to their corresponding environment
      * variable.
@@ -134,6 +144,8 @@ public final class LocalConfig {
         this.sensitiveRoles = getEnvironment("SENSITIVE_ROLES", lambdaMapId, new ArrayList<>());
         this.optCategories = getEnvironment("OPT_CATEGORIES", lambdaMapId, new ArrayList<>());
         this.optBlacklist = getEnvironment("OPT_BLACKLIST", lambdaMapId, new ArrayList<>());
+        this.nsaDenyList = getEnvironment("NSA_DENYLIST", lambdaMapId, new ArrayList<>());
+        this.optChannel = getEnvironment("OPT_CHANNEL", Long::valueOf, 0L);
     }
 
     /**

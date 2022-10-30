@@ -21,6 +21,7 @@ package com.ibdiscord.command.actions;
 import com.ibdiscord.command.CommandAction;
 import com.ibdiscord.command.CommandContext;
 import com.ibdiscord.data.db.DataContainer;
+import com.ibdiscord.data.db.entries.GuildData;
 import com.ibdiscord.data.db.entries.punish.PunishmentData;
 import com.ibdiscord.data.db.entries.punish.PunishmentsData;
 import com.ibdiscord.punish.Punishment;
@@ -76,7 +77,7 @@ public final class History implements CommandAction {
             PunishmentData punishmentData = gravity.load(new PunishmentData(guild.getId(), caseId));
             PunishmentHandler punishmentHandler = new PunishmentHandler(guild, punishment);
 
-            TextChannel channel = punishmentHandler.getLogChannel();
+            TextChannel channel = punishmentHandler.getLogChannel(GuildData.MODLOGS);
             if(channel == null) {
                 context.replyI18n("error.reason_logging");
                 return;

@@ -421,9 +421,12 @@ public final class RegistrarMod implements CommandRegistrar {
                 .restrict(CommandPermission.role(GuildData.MODERATOR))
                 .on(context -> {
                     context.assertArguments(1, "error.lookup_noexist");
+                    boolean academicDishonesty = context.getOptions().stream()
+                        .anyMatch(it -> it.getName().equalsIgnoreCase("r5"));
                     Guild guild = context.getGuild();
                     String caseNumber = context.getArguments()[0];
-                    String reason = UString.concat(context.getArguments(), " ", 1);
+                    String reason = academicDishonesty ? 
+                        "Rule 5. Academic Dishonesty is strictly prohibited." : UString.concat(context.getArguments(), " ", 1);
                     Gravity gravity = DataContainer.INSTANCE.getGravity();
                     PunishmentsData punishmentList = gravity.load(new PunishmentsData(guild.getId()));
                     if(!punishmentList.contains(caseNumber)) {
@@ -438,14 +441,14 @@ public final class RegistrarMod implements CommandRegistrar {
                     punishment.setReason(reason);
                     PunishmentData punishmentData = gravity.load(new PunishmentData(guild.getId(), caseId));
                     PunishmentHandler punishmentHandler = new PunishmentHandler(guild, punishment);
-                    TextChannel channel = punishmentHandler.getLogChannel();
+                    TextChannel channel = punishmentHandler.getLogChannel(GuildData.MODLOGS);
                     if(channel == null) {
                         context.replyI18n("error.reason_logging");
                         return;
                     }
                     boolean redacted = context.getOptions().stream()
                             .anyMatch(it -> it.getName().equalsIgnoreCase("redacted") || it.getName()
-                                    .equalsIgnoreCase("redact"));
+                                    .equalsIgnoreCase("redact")) || academicDishonesty;
                     IBai.INSTANCE.getLogger().info("Redacting: " + redacted);
                     punishmentData.set(REASON, reason);
                     punishmentData.set(REDACTED, redacted);
@@ -538,7 +541,8 @@ public final class RegistrarMod implements CommandRegistrar {
                                 context.assertArguments(2, "error.ladder_format");
                                 long time = context.assertDuration(context.getArguments()[1],
                                         "error.ladder_format");
-                                ladderData.set(VoteLadderData.TIMEOUT, time);
+                                long diff = time - System.currentTimeMillis();
+                                ladderData.set(VoteLadderData.TIMEOUT, diff);
                                 context.replyI18n("success.ladder_specify");
                             }
                         })
@@ -554,6 +558,20 @@ public final class RegistrarMod implements CommandRegistrar {
                                         "error.missing_number");
                                 ladderData.set(VoteLadderData.THRESHOLD, result);
                                 context.replyI18n("success.threshold_update");
+                            }
+                        })
+                )
+                .sub(registry.sub("minimum", null)
+                        .restrict(CommandPermission.discord(Permission.MANAGE_SERVER))
+                        .on(new VoteLadderManage() {
+                            protected void handle(CommandContext context, VoteLadderData ladderData) {
+                                context.assertArguments(2, "error.missing_number");
+                                int result = context.assertInt(context.getArguments()[1],
+                                        null,
+                                        null,
+                                        "error.missing_number");
+                                ladderData.set(VoteLadderData.MIN_UPVOTES, result);
+                                context.replyI18n("success.min_upvote_update");
                             }
                         })
                 );
