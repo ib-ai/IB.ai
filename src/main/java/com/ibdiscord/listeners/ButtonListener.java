@@ -33,58 +33,44 @@ public final class ButtonListener extends ListenerAdapter {
 
     /**
      * Adds the respective member to the role when the interaction is triggered.
+     *
      * @param event The event.
      */
     @Override
     public void onButtonClick(@NotNull ButtonClickEvent event) {
-        if (event.getMessage() == null) {
-            return;
-        }
+        if (event.getMessage() == null) return;
         Message message = event.getMessage();
         Guild guild = event.getGuild();
-        if (message.getAuthor().getIdLong() != message.getJDA().getSelfUser().getIdLong() || guild == null) {
-            return;
-        }
+        if (message.getAuthor().getIdLong() != message.getJDA().getSelfUser().getIdLong() || guild == null) return;
         String customId = event.getComponentId();
-        if (customId.isEmpty()) {
-            return;
-        }
+        if (customId.isEmpty()) return;
         Member member = event.getMember();
-        if (member == null) {
-            return;
-        }
+        if (member == null) return;
+
         List<Role> toAdd = new ArrayList<>();
         for (String roleId : customId.split(",")) {
             Role role = guild.getRoleById(roleId);
-            if (role != null) {
-                toAdd.add(role);
-            }
+            if (role != null) toAdd.add(role);
         }
-        event.deferReply(true).queue(deferred -> {
-            guild.modifyMemberRoles(member, toAdd, new ArrayList<>()).queue(yes -> {
-                event.getHook().sendMessage(generateMessage(toAdd.size(), 0))
-                        .queue();
-                }, Throwable::printStackTrace);
-            }, Throwable::printStackTrace);
+        event.deferReply(true).queue(deferred ->
+                guild.modifyMemberRoles(member, toAdd, new ArrayList<>()).queue(yes ->
+                        event.getHook().sendMessage(generateMessage(toAdd.size() > 0, false))
+                .queue(), Throwable::printStackTrace), Throwable::printStackTrace);
     }
 
     /**
      * Generates a message.
-     * @param added The number of roles added.
+     *
+     * @param added   The number of roles added.
      * @param removed The number of roles removed.
      * @return A message.
      */
-    private String generateMessage(int added, int removed) {
+    private String generateMessage(boolean added, boolean removed) {
         String content;
-        if (added > 0 && removed == 0) {
-            content = "Added " + added + " role(s).";
-        } else if (removed > 0 && added == 0) {
-            content = "Removed " + removed + " role(s).";
-        } else if(added > 0 && removed > 0) {
-            content = "Added " + added + " role(s) and removed " + removed + " role(s).";
-        } else {
-            content = "Did not update roles";
-        }
+        if (added && !removed) content = "Added " + added + " role(s).";
+        else if (removed && !added) content = "Removed " + removed + " role(s).";
+        else if (added) content = "Added " + added + " role(s) and removed " + removed + " role(s).";
+        else content = "Did not update roles";
         return content;
     }
 }
