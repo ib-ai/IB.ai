@@ -56,6 +56,7 @@ public final class FilterListener extends ListenerAdapter {
 
     /**
      * When a message is updated.
+     *
      * @param event The event.
      */
     @Override
@@ -65,97 +66,115 @@ public final class FilterListener extends ListenerAdapter {
 
     /**
      * Handles filtering messages.
-     * @param messageObject The JDA message object
+     *
+     * @param msgObj The JDA message object
      */
-    public void handleFilter(Message messageObject) {
-        Guild guild = messageObject.getGuild();
-        User author = messageObject.getAuthor();
-        if (author.getId().equals(guild.getSelfMember().getId())) {
-            return;
-        }
-        GuildChannel guildChannel = guild.getGuildChannelById(messageObject.getChannel().getIdLong());
-        if(guildChannel.getParent() != null
-                && IBai.INSTANCE.getConfig().getNsaDenyList().contains(guildChannel.getParent().getIdLong())) {
-            return;
-        }
-        String message = messageObject.getContentRaw();
+    public void handleFilter(Message msgObj) {
+        Guild guild = msgObj.getGuild();
+        User author = msgObj.getAuthor();
+
+        if (author.getId().equals(guild.getSelfMember().getId())) return;
+        GuildChannel parent = guild.getGuildChannelById(msgObj.getChannel().getIdLong()).getParent();
+        if (parent != null && IBai.INSTANCE.getConfig().getNsaDenyList().contains(parent.getIdLong())) return;
+
+        String msg = msgObj.getContentRaw();
         String prefix = UDatabase.getPrefix(guild);
 
-        if (messageObject.getContentRaw().startsWith(prefix)) {
-            String messageSub = message.substring(prefix.length()).replaceAll(" +", " ");
-            String[] arguments = messageSub.split(" ");
-            String commandName = arguments[0].toLowerCase();
-            Command command = IBai.INSTANCE.getCommandRegistry().query(commandName);
-            if (command != null && command.getName().equalsIgnoreCase("filter")) {
-                return;
-            }
-        }
+        if (msg.startsWith(prefix))
+            if (renderCommand(msg, prefix)) return; //Renders command and returns if command name is 'filter'
 
         Gravity gravity = DataContainer.INSTANCE.getGravity();
         GuildData guildData = gravity.load(new GuildData(guild.getId()));
         FilterData filterData = gravity.load(new FilterData(guild.getId()));
         FilterNotifyData filterNotifyData = gravity.load(new FilterNotifyData(guild.getId()));
-        if (!guildData.get(GuildData.FILTERING).defaulting(false).asBoolean()) {
-            return;
-        }
+        if (!guildData.get(GuildData.FILTERING).defaulting(false).asBoolean()) return;
         Optional<Matcher> match = filterData.values().stream()
                 .map(it -> filterCache.compute(guild.getIdLong(),
                         it.asString(),
                         Pattern.compile(it.asString(), Pattern.CASE_INSENSITIVE))
                 )
-                .map(it -> it.matcher(message))
-                .filter(it -> it.find())
+                .map(it -> it.matcher(msg))
+                .filter(Matcher::find)
                 .findFirst();
-        if (match.isPresent()) {
-            messageObject.delete().queue(success -> {
-                StringBuilder builder = new StringBuilder(message);
-                builder.insert(match.get().end(), "**");
-                builder.insert(match.get().start(), "**");
-                author.openPrivateChannel().queue(dm -> {
-                    String send = String.format("The following message has been flagged and deleted for potentially "
-                            + "breaking the rules on %s (offending phrase bolded):\n\n%s"
-                            + "\n\n If you believe you haven't broken any rules, or have any other questions or concerns "
-                            + "regarding this, you can contact the staff team for clarification by DMing the ModMail bot, "
-                            + "at the top of the sidebar on the server.", guild.getName(), builder.toString());
-                    send = send.length() > 2000 ? send.substring(0, 2000) : send;
-                    dm.sendMessage(send).queue();
-                });
-                MonitorData monitorData = gravity.load(new MonitorData(guild.getId()));
-                TextChannel monitorChannel = guild.getTextChannelById(
-                        monitorData.get(MonitorData.MESSAGE_CHANNEL).defaulting(0).asLong()
-                );
-                if (monitorChannel == null) {
-                    IBai.INSTANCE.getLogger().info("Monitor channel not found: %s sent %s",
-                            author.getAsTag(),
-                            messageObject.getContentRaw()
-                    );
-                    return;
-                }
-                String title = UFormatter.formatUserInfo(author);
+        if (!match.isPresent()) return; //Returns if no words match
 
-                if (title.length() > MessageEmbed.TITLE_MAX_LENGTH) {
-                    title = title.substring(0, MessageEmbed.TITLE_MAX_LENGTH);
-                }
-
-                String description = String.format(
-                        "\"%s\", sent in **%s** by %s",
-                        messageObject.getContentRaw(),
-                        messageObject.getTextChannel().getAsMention(),
-                        UFormatter.formatMention(author.getId())
-                );
-
-                description = description.length() > 2000 ? description.substring(0, 2000) : description;
-                EmbedBuilder embedBuilder = new EmbedBuilder()
-                        .setColor(Color.MAGENTA)
-                        .setAuthor("Filter was triggered!")
-                        .setTitle(title)
-                        .setDescription(description);
-                monitorChannel.sendMessage(embedBuilder.build()).queue();
-                if (!filterNotifyData.contains(match.get().pattern())) {
-                    monitorChannel.sendMessage("@here").queue();
-                }
+        msgObj.delete().queue(success -> { //Deletion and warning process of the user/msg
+            StringBuilder builder = new StringBuilder(msg).insert(match.get().start(), "**").insert(match.get().end(), "**");
+            author.openPrivateChannel().queue(dm -> {
+                String send = getWarning(guild.getName(), builder.toString());
+                send = send.length() > 2000 ? send.substring(0, 2000) : send;
+                dm.sendMessage(send).queue();
             });
-        }
+
+            TextChannel monitorChannel = getMonitorChannel(guild, gravity);
+            if (monitorChannel == null) {
+                IBai.INSTANCE.getLogger().info("Monitor channel not found: %s sent %s", author.getAsTag(), msgObj.getContentRaw());
+                return;
+            }
+            //Log process into the monitor channel.
+            String title = UFormatter.formatUserInfo(author);
+            if (title.length() > MessageEmbed.TITLE_MAX_LENGTH) title = title.substring(0, MessageEmbed.TITLE_MAX_LENGTH);
+
+            String description = String.format(
+                    "\"%s\", sent in **%s** by %s",
+                    msgObj.getContentRaw(),
+                    msgObj.getTextChannel().getAsMention(),
+                    UFormatter.formatMention(author.getId())
+            );
+
+            description = description.length() > 2000 ? description.substring(0, 2000) : description;
+            EmbedBuilder embedBuilder = new EmbedBuilder()
+                    .setColor(Color.MAGENTA)
+                    .setAuthor("Filter was triggered!")
+                    .setTitle(title)
+                    .setDescription(description);
+            monitorChannel.sendMessageEmbeds(embedBuilder.build()).queue();
+            if(!filterNotifyData.contains(match.get().pattern())) monitorChannel.sendMessage("@here").queue();
+        });
+    }
+
+    /**
+     * Renders the message as a command if detect as such.
+     *
+     * @param msg The message
+     * @param prefix Bot prefix
+     * **/
+    private boolean renderCommand(String msg, String prefix) {
+        String messageSub = msg.substring(prefix.length()).replaceAll(" +", " ");
+        String[] arguments = messageSub.split(" ");
+        String commandName = arguments[0].toLowerCase();
+        Command command = IBai.INSTANCE.getCommandRegistry().query(commandName);
+        if (command != null && command.getName().equalsIgnoreCase("filter")) return true;
+        return false;
+    }
+
+    /**
+     * Returns the formatted warning message DM's to a user after their use of filtered contents.
+     *
+     * @param content The content in question.
+     * @param guildName Name of the server.
+     * **/
+    private static String getWarning(String guildName, String content) {
+        return String.format("The following message has been flagged and deleted for potentially "
+                + "breaking the rules on %s (offending phrase bolded):\n\n%s"
+                + "\n\n If you believe you haven't broken any rules, or have any other questions or concerns "
+                + "regarding this, you can contact the staff team for clarification by DMing the ModMail bot, "
+                + "at the top of the sidebar on the server.", guildName, content);
+    }
+
+    //TODO May need a better description of the gravity parameter, as without docs, I have no idea what it does.
+
+    /**
+     * Gets the monitor channel.
+     *
+     * @param guild Guild in question
+     * @param gravity Gravity instance
+     * **/
+    private static TextChannel getMonitorChannel(Guild guild, Gravity gravity){
+        MonitorData monitorData = gravity.load(new MonitorData(guild.getId()));
+        return guild.getTextChannelById(
+                monitorData.get(MonitorData.MESSAGE_CHANNEL).defaulting(0).asLong()
+        );
     }
 }
 
