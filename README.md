@@ -1,3 +1,9 @@
+# This project is not under active development
+This repository is not accepting any further contributions, except to fix critical issues, and will be archived in the near future. 
+Please refer to the [IB.py repository](https://github.com/ib-ai/ib.py).
+
+---
+
 # IB.ai
 
 [![Discord](https://img.shields.io/discord/230296179991248896?color=7289DA&label=discord&style=flat-square)](https://discord.gg/IBO) [![Current Version](https://img.shields.io/github/v/tag/ib-ai/IB.ai?label=version&style=flat-square)](https://hub.docker.com/r/pants1/ib.ai/tags) [![Docker Pulls](https://img.shields.io/docker/pulls/pants1/ib.ai?style=flat-square)](https://hub.docker.com/r/pants1/ib.ai) [![Docker Build](https://img.shields.io/docker/cloud/build/pants1/ib.ai?style=flat-square)](https://cloud.docker.com/repository/docker/pants1/ib.ai/builds) [![Repo License](https://img.shields.io/github/license/ib-ai/IB.ai?style=flat-square)](https://github.com/ib-ai/IB.ai/blob/master/LICENSE.md)
