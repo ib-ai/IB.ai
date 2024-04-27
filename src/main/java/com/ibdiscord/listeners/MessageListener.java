@@ -171,6 +171,12 @@ public final class MessageListener extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
         // Presently event is used for users to submit 'odds' guesses.
+
+        // Return early if bot DM
+        if(event.getAuthor().isBot()) {
+            return;
+        }
+
         String rawMessage = event.getMessage().getContentRaw();
         OddsManager.INSTANCE.newGuess(event.getChannel(), event.getAuthor().getId(), rawMessage);
     }
