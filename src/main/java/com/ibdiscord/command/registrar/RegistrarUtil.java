@@ -189,14 +189,7 @@ public final class RegistrarUtil implements CommandRegistrar {
         registry.define("help")
                 .on(context -> {
                     String botPrefix = UDatabase.getPrefix(context.getGuild());
-                    List<TextChannel> channelsGetRoles =
-                            context.getGuild().getTextChannelsByName("get-roles", true);
-                    String getRoles =
-                            channelsGetRoles.isEmpty() ? "#get-roles" : channelsGetRoles.get(0).getAsMention();
-                    List<TextChannel> channelsJoinLounge =
-                            context.getGuild().getTextChannelsByName("join-lounge", true);
-                    String joinLounge =
-                            channelsJoinLounge.isEmpty() ? "#join-lounge" : channelsJoinLounge.get(0).getAsMention();
+                    String channelsAndRoles = "<id:customize>";
 
                     EmbedBuilderI18n embedBuilder = new EmbedBuilderI18n(context)
                             .setColor(Color.white)
@@ -205,7 +198,7 @@ public final class RegistrarUtil implements CommandRegistrar {
                             .setDescription(new StringI18n("info.intro_welcome",
                                     IBai.INSTANCE.getConfig().getBotVersion()))
                             .addField(new StringI18n("info.intro_started1"),
-                                    new StringI18n("info.intro_started2", getRoles, joinLounge),
+                                    new StringI18n("info.intro_started2", channelsAndRoles),
                                     false)
                             .addField(new StringI18n("info.intro_features1"),
                                     new StringI18n("info.intro_features2", botPrefix),

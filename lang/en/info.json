@@ -13,7 +13,7 @@
   "intro_features2": "- Show user information about a specific user: `{0}userinfo [user]`\n - Show information about the server `{0}serverinfo`\n - Check if the bot is responding: `{0}ping`\n",
   "intro_footer": "Developed with ❤",
   "intro_started1": "Getting Started:",
-  "intro_started2": "Grab a year role by clicking the appropriate emote in {0}. You can also add yourself to certain subjects this way. Share your passions with others by joining the lounges of certain interests, also using reactions, in {1}.",
+  "intro_started2": "Grab a year role by clicking the appropriate emote in {0}. You can also add yourself to certain subjects this way. Share your passions with others by joining the lounges of certain interests, also in {0}.",
   "intro_welcome": "Hey! Welcome to the IBO Discord Server. I'm IB.ai version: `{0}`. All command arguments in <> are required, [] are optional.",
   "ladder_list": "Listed are the different vote ladders.",
   "latency": "Pong! Latency is currently {0}ms for REST and {1}ms for WebSocket.",
