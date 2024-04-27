@@ -251,8 +251,8 @@ public final class RegistrarUtil implements CommandRegistrar {
                 );
         commandLang.on(context -> context.replySyntax(commandLang));
 
-        registry.define("opt")
-                .on(new Opt());
+        // registry.define("opt")
+        //         .on(new Opt());
 
         // Needs a noinspection because checkstyle is annoying with lambda expressions.
         // Why do we even need a program to tell us how to factor our code?
