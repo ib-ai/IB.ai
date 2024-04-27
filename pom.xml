@@ -185,7 +185,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.3.0_310</version>
+            <version>4.2.1_266</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -212,7 +212,7 @@
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>5.3.6.RELEASE</version>
+            <version>5.0.5.RELEASE</version>
 
         </dependency>
         <dependency>

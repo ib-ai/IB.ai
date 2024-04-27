@@ -30,6 +30,7 @@ import com.ibdiscord.listeners.FilterListener;
 import com.ibdiscord.listeners.GuildListener;
 import com.ibdiscord.listeners.MessageListener;
 import com.ibdiscord.listeners.MonitorListener;
+import com.ibdiscord.listeners.QualityListener;
 import com.ibdiscord.listeners.ReactionListener;
 import com.ibdiscord.listeners.ReadyListener;
 import com.ibdiscord.utils.UFormatter;
@@ -108,6 +109,7 @@ public enum IBai {
                             new GuildListener(),
                             new MessageListener(),
                             new MonitorListener(),
+                            new QualityListener(),
                             new ReactionListener(),
                             new ReadyListener()
                     )
