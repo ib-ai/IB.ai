@@ -125,7 +125,7 @@ public final class MessageListener extends ListenerAdapter {
     @Override
     public void onGuildMessageUpdate(GuildMessageUpdateEvent event) {
         MinimalMessage message = messageCache.get(event.getMessageIdLong());
-        if(message != null) {
+        if(message != null && !event.getAuthor().isBot()) {
             forLogChannel(channel -> {
                 MessageEmbed embed = new EmbedBuilder()
                         .setAuthor(author(channel.getJDA(), message) + " edited in #" + event.getChannel().getName())
