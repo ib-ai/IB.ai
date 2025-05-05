@@ -89,8 +89,7 @@ public final class UString {
             throw new IllegalArgumentException("input null");
         }
         return input
-                .replace("@everyone", "@\u200Beveryone")
-                .replace("@here", "@\u200Bhere");
+                .replace("@", "@\u200B");
     }
 
     /**
